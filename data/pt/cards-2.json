@@ -1,0 +1,338 @@
+{
+ "Pick and Pull": {
+  "n": "Gazua e Furto",
+  "x": "Você tem vantagem em Testes de Ação para abrir fechaduras não mágicas, desarmar armadilhas não mágicas ou roubar itens de um alvo (seja por furtividade ou à força)."
+ },
+ "Rain of Blades": {
+  "n": "Chuva de Lâminas",
+  "x": "**Gaste 1 de Esperança** para fazer um **Teste de Conjuração** e conjurar lâminas de arremesso que atingem todos os alvos a até alcance Muito Perto. Os alvos contra os quais você obtiver sucesso sofrem **d8+2** de dano mágico usando sua Proficiência.\n\nSe um alvo que você atingir estiver _Vulnerável_, ele sofre **1d8** de dano adicional."
+ },
+ "Uncanny Disguise": {
+  "n": "Disfarce Sobrenatural",
+  "x": "Quando tiver alguns minutos para se preparar, você pode **marcar 1 de Estresse** para assumir a aparência de qualquer humanoide que consiga imaginar claramente. Enquanto estiver disfarçado, você tem vantagem em Testes de Presença para evitar escrutínio.\n\nColoque nesta carta uma quantidade de marcadores igual ao seu atributo de Conjuração. Quando realizar uma ação enquanto estiver disfarçado, gaste um marcador desta carta. Depois que a ação que gastar o último marcador for resolvida, o disfarce se desfaz."
+ },
+ "Midnight Spirit": {
+  "n": "Espírito da Meia-Noite",
+  "x": "**Gaste 1 de Esperança** para invocar um espírito do tamanho de um humanoide que pode se mover ou carregar coisas para você até o seu próximo descanso.\n\nVocê também pode enviá-lo para atacar um adversário. Quando fizer isso, faça um **Teste de Conjuração** contra um alvo a até alcance Muito Longe. Em caso de sucesso, o espírito se move até o alcance Corpo a Corpo desse alvo. Role uma quantidade de **d6** igual ao seu atributo de Conjuração e cause esse total de dano mágico ao alvo. Em seguida, o espírito se dissipa. Você só pode ter um espírito por vez."
+ },
+ "Shadowbind": {
+  "n": "Amarra Sombria",
+  "x": "Faça um **Teste de Conjuração** contra todos os adversários a até alcance Muito Perto. Os alvos contra os quais você obtiver sucesso ficam temporariamente _Contidos_, pois suas sombras os prendem no lugar."
+ },
+ "Chokehold": {
+  "n": "Mata-Leão",
+  "x": "Quando se posicionar atrás de uma criatura de tamanho próximo ao seu, você pode **marcar 1 de Estresse** para aplicar-lhe um mata-leão, deixando-a temporariamente _Vulnerável_.\n\nQuando uma criatura ataca um alvo que esteja _Vulnerável_ dessa forma, ela causa **2d6** de dano adicional."
+ },
+ "Veil of Night": {
+  "n": "Véu da Noite",
+  "x": "Faça um **Teste de Conjuração (13)**. Em caso de sucesso, você pode criar uma cortina temporária de escuridão entre dois pontos a até alcance Longe. Somente você consegue enxergar através dessa escuridão. Você é considerado _Oculto_ para os adversários do outro lado do véu e tem vantagem nos ataques que fizer através da escuridão. O véu permanece até você conjurar outra magia."
+ },
+ "Glyph of Nightfall": {
+  "n": "Glifo do Anoitecer",
+  "x": "Faça um **Teste de Conjuração** contra um alvo a até alcance Muito Perto. Em caso de sucesso, **gaste 1 de Esperança** para conjurar um glifo sombrio sobre o corpo dele que expõe seus pontos fracos, reduzindo temporariamente a Dificuldade do alvo em um valor igual ao seu Conhecimento (mínimo 1)."
+ },
+ "Stealth Expertise": {
+  "n": "Perícia em Furtividade",
+  "x": "Quando rolar com Medo enquanto tenta se mover sem ser notado por uma área perigosa, você pode **marcar 1 de Estresse** para, em vez disso, rolar com Esperança.\n\nSe um aliado a até alcance Perto também estiver tentando se mover sem ser notado e rolar com Medo, você pode **marcar 1 de Estresse** para mudar o resultado dele para uma rolagem com Esperança."
+ },
+ "Hush": {
+  "n": "Silêncio",
+  "x": "Faça um **Teste de Conjuração** contra um alvo a até alcance Perto. Em caso de sucesso, **gaste 1 de Esperança** para conjurar uma magia supressora ao redor do alvo, que abrange tudo a até alcance Muito Perto dele e o acompanha conforme ele se move.\n\nO alvo e tudo o que estiver dentro da área ficam _Silenciados_ até que o Mestre gaste 1 de Medo em seu turno para remover essa condição, você conjure Silêncio novamente ou você sofra dano Maior. Enquanto estiverem _Silenciados_, eles não podem fazer barulho nem conjurar magias."
+ },
+ "Phantom Retreat": {
+  "n": "Retirada Fantasma",
+  "x": "**Gaste 1 de Esperança** para ativar Retirada Fantasma no local onde você está. **Gaste outro 1 de Esperança** a qualquer momento antes do seu próximo descanso para desaparecer de onde estiver e reaparecer onde estava quando ativou Retirada Fantasma. Esta magia termina depois que você reaparece."
+ },
+ "Dark Whispers": {
+  "n": "Sussurros Sombrios",
+  "x": "Você pode falar na mente de qualquer pessoa com quem tenha feito contato físico. Depois de abrir um canal com ela, ela pode responder na sua mente. Além disso, você pode **marcar 1 de Estresse** para fazer um **Teste de Conjuração** contra ela. Em caso de sucesso, você pode fazer ao Mestre uma das perguntas a seguir e receber uma resposta:\n\n- Onde ela está?\n- O que ela está fazendo?\n- Do que ela tem medo?\n- O que ela mais estima no mundo?"
+ },
+ "Mass Disguise": {
+  "n": "Disfarce em Massa",
+  "x": "Quando tiver alguns minutos de silêncio para se concentrar, você pode **marcar 1 de Estresse** para mudar a aparência de todas as criaturas voluntárias a até alcance Perto. As novas formas devem manter estrutura corporal e tamanho gerais semelhantes, e podem ser alguém ou algo que você já viu antes ou ser inteiramente inventadas. Uma criatura disfarçada tem vantagem em Testes de Presença para evitar escrutínio.\n\nAtive uma Contagem Regressiva (8). Ela avança como uma consequência escolhida pelo Mestre. Quando for acionada, o disfarce se desfaz."
+ },
+ "Midnight-Touched": {
+  "n": "Tocado pela Meia-Noite",
+  "x": "Quando 4 ou mais das cartas de domínio na sua mão forem do domínio Meia-Noite, receba os seguintes benefícios:\n\n- Uma vez por descanso, quando você tiver 0 de Esperança e o Mestre fosse ganhar 1 de Medo, você pode, em vez disso, ganhar 1 de Esperança.\n- Quando fizer um ataque bem-sucedido, você pode **marcar 1 de Estresse** para somar o resultado do seu Dado de Medo à sua rolagem de dano."
+ },
+ "Vanishing Dodge": {
+  "n": "Esquiva Evanescente",
+  "x": "Quando um ataque feito contra você que causaria dano físico falhar, você pode **gastar 1 de Esperança** para se envolver em sombras, ficando _Oculto_ e se teleportando para um ponto a até alcance Perto do atacante. Você permanece _Oculto_ até a próxima vez que fizer um Teste de Ação."
+ },
+ "Shadowhunter": {
+  "n": "Caçador das Sombras",
+  "x": "Sua destreza é ampliada sob o manto das sombras. Enquanto estiver envolto em penumbra ou escuridão, você recebe +1 de bônus na sua Evasão e faz testes de ataque com vantagem."
+ },
+ "Spellcharge": {
+  "n": "Carga Arcana",
+  "x": "Quando sofrer dano mágico, coloque nesta carta uma quantidade de marcadores igual ao número de Pontos de Vida que você marcou. Você pode armazenar uma quantidade de marcadores igual ao seu atributo de Conjuração.\n\nQuando fizer um ataque bem-sucedido contra um alvo, você pode gastar qualquer quantidade de marcadores para somar **1d6** por marcador gasto à sua rolagem de dano."
+ },
+ "Night Terror": {
+  "n": "Terror Noturno",
+  "x": "Uma vez por descanso longo, escolha quaisquer alvos a até alcance Muito Perto para que o percebam como um horror saído de pesadelos. Os alvos devem ser bem-sucedidos em um Teste de Reação (16) ou ficam temporariamente _Horrorizados_. Enquanto estiverem _Horrorizados_, eles ficam _Vulneráveis_. Roube do Mestre uma quantidade de Medo igual ao número de alvos _Horrorizados_ (até o número de Medo na reserva do Mestre). Role uma quantidade de **d6** igual ao número de Medo roubado e cause o dano total a cada alvo _Horrorizado_. Descarte o Medo roubado."
+ },
+ "Twilight Toll": {
+  "n": "Tributo do Crepúsculo",
+  "x": "Escolha um alvo a até alcance Longe. Quando obtiver sucesso em um Teste de Ação contra ele que não resulte em uma rolagem de dano, coloque um marcador nesta carta. Quando causar dano a esse alvo, gaste qualquer quantidade de marcadores para somar **1d12** por marcador gasto à sua rolagem de dano. Você só pode manter Tributo do Crepúsculo sobre uma criatura por vez.\n\nQuando escolher um novo alvo ou fizer um descanso, remova todos os marcadores não gastos."
+ },
+ "Eclipse": {
+  "n": "Eclipse",
+  "x": "Faça um **Teste de Conjuração (16)**. Uma vez por descanso longo, em caso de sucesso, mergulhe toda a área a até alcance Longe em uma escuridão completa, através da qual somente você e seus aliados conseguem enxergar. Testes de ataque têm desvantagem quando têm como alvo você ou um aliado dentro dessa sombra.\n\nAlém disso, quando você ou um aliado obtiver sucesso com Esperança contra um adversário dentro dessa sombra, o alvo deve marcar 1 de Estresse.\n\nEsta magia dura até que o Mestre gaste 1 de Medo em seu turno para remover esse efeito ou até você sofrer dano Grave."
+ },
+ "Specter of the Dark": {
+  "n": "Espectro da Escuridão",
+  "x": "**Marque 1 de Estresse** para se tornar _Espectral_ até fazer um Teste de Ação que tenha outra criatura como alvo. Enquanto estiver _Espectral_, você é imune a dano físico e pode flutuar e atravessar objetos sólidos. Outras criaturas ainda conseguem vê-lo enquanto você estiver nessa forma."
+ },
+ "Gifted Tracker": {
+  "n": "Rastreador Talentoso",
+  "x": "Quando estiver rastreando uma criatura ou um grupo de criaturas específico com base em sinais de sua passagem, você pode **gastar qualquer quantidade de Esperança** e fazer ao Mestre esse mesmo número de perguntas da lista a seguir.\n\n- Em que direção foram?\n- Há quanto tempo passaram por aqui?\n- O que estavam fazendo neste local?\n- Quantos deles estavam aqui?\n\nQuando encontrar criaturas que você rastreou dessa forma, receba +1 de bônus na sua Evasão contra elas."
+ },
+ "Nature's Tongue": {
+  "n": "Língua da Natureza",
+  "x": "Você sabe falar a língua do mundo natural. Quando quiser falar com as plantas e os animais ao seu redor, faça um **Teste de Instinto (12)**. Em caso de sucesso, eles lhe darão as informações que conhecem. Em uma rolagem com Medo, o conhecimento deles pode ser limitado ou ter um custo.\n\nAlém disso, antes de fazer um Teste de Conjuração enquanto estiver em um ambiente natural, você pode **gastar 1 de Esperança** para receber +2 de bônus no teste."
+ },
+ "Vicious Entangle": {
+  "n": "Enredar Feroz",
+  "x": "Faça um **Teste de Conjuração** contra um alvo a até alcance Longe. Em caso de sucesso, raízes e vinhas brotam do chão, causando **1d8+1** de dano físico e deixando o alvo temporariamente _Contido_.\n\nAlém disso, em caso de sucesso, você pode **gastar 1 de Esperança** para deixar temporariamente _Contido_ outro adversário a até alcance Muito Perto do seu alvo."
+ },
+ "Conjure Swarm": {
+  "n": "Conjurar Enxame",
+  "x": "_Besouros Blindados de Tekaira:_ **Marque 1 de Estresse** para conjurar besouros blindados que o cercam. Na próxima vez que sofrer dano, reduza a gravidade em um limiar. Você pode **gastar 1 de Esperança** para manter os besouros conjurados depois de sofrer dano.\n\n_Vaga-lumes de Fogo:_ Faça um **Teste de Conjuração** contra todos os adversários a até alcance Perto. **Gaste 1 de Esperança** para causar **2d8+3** de dano mágico aos alvos contra os quais você obteve sucesso."
+ },
+ "Natural Familiar": {
+  "n": "Familiar Natural",
+  "x": "**Gaste 1 de Esperança** para invocar um pequeno espírito da natureza ou um bichinho da floresta para ficar ao seu lado até o seu próximo descanso, até você conjurar Familiar Natural novamente ou até o familiar ser alvo de um ataque. Se **gastar 1 de Esperança adicional**, você pode invocar um familiar que voa. Você pode se comunicar com ele, fazer um **Teste de Conjuração** para comandá-lo a realizar tarefas simples e **marcar 1 de Estresse** para ver através dos olhos dele.\n\nQuando causar dano a um adversário a até alcance Corpo a Corpo do seu familiar, você soma **1d6** à sua rolagem de dano."
+ },
+ "Corrosive Projectile": {
+  "n": "Projétil Corrosivo",
+  "x": "Faça um **Teste de Conjuração** contra um alvo a até alcance Longe. Em caso de sucesso, cause **d6+4** de dano mágico usando sua Proficiência. Além disso, **marque 2 ou mais de Estresse** para deixá-lo permanentemente _Corroído_. Enquanto um alvo estiver _Corroído_, ele recebe -1 de penalidade na sua Dificuldade para cada 2 de Estresse que você gastou. Esta condição é cumulativa."
+ },
+ "Towering Stalk": {
+  "n": "Caule Colossal",
+  "x": "Uma vez por descanso, você pode conjurar um caule grosso e retorcido a até alcance Perto, que pode ser escalado facilmente. Sua altura pode crescer até o alcance Longe.\n\n**Marque 1 de Estresse** para usar esta magia como um ataque. Faça um **Teste de Conjuração** contra um adversário ou grupo de adversários a até alcance Perto. O caule irrompe e ergue no ar os alvos contra os quais você obtiver sucesso, depois os derruba, causando **d8** de dano físico usando sua Proficiência."
+ },
+ "Death Grip": {
+  "n": "Aperto Mortal",
+  "x": "Faça um **Teste de Conjuração** contra um alvo a até alcance Perto e escolha uma das opções a seguir:\n\n- Você puxa o alvo para o alcance Corpo a Corpo ou se puxa para o alcance Corpo a Corpo dele.\n- Você constringe o alvo e o força a marcar 2 de Estresse.\n- Todos os adversários entre você e o alvo devem ser bem-sucedidos em um Teste de Reação (13) ou são atingidos por vinhas, sofrendo **3d6+2** de dano físico.\n\nEm caso de sucesso, vinhas brotam de suas mãos, causando o efeito escolhido e deixando o alvo temporariamente _Contido_."
+ },
+ "Healing Field": {
+  "n": "Campo Curativo",
+  "x": "Uma vez por descanso longo, você pode conjurar um campo de plantas curativas ao seu redor. Todo o espaço a até alcance Perto de você ganha vida com uma natureza vibrante, permitindo que você e todos os aliados na área recuperem 1 Ponto de Vida.\n\n**Gaste 2 de Esperança** para permitir que você e todos os aliados recuperem 2 Pontos de Vida em vez disso."
+ },
+ "Thorn Skin": {
+  "n": "Pele de Espinhos",
+  "x": "Uma vez por descanso, **gaste 1 de Esperança** para fazer brotar espinhos por todo o seu corpo. Quando fizer isso, coloque nesta carta uma quantidade de marcadores igual ao seu atributo de Conjuração. Quando sofrer dano, você pode gastar qualquer quantidade de marcadores para rolar esse mesmo número de **d6**. Some os resultados e reduza o dano recebido nesse valor. Se estiver a até alcance Corpo a Corpo do atacante, cause a ele esse mesmo valor de dano.\n\nQuando fizer um descanso, remova todos os marcadores não gastos."
+ },
+ "Wild Fortress": {
+  "n": "Fortaleza Selvagem",
+  "x": "Faça um **Teste de Conjuração (13)**. Em caso de sucesso, **gaste 2 de Esperança** para fazer crescer uma barricada natural em forma de cúpula, dentro da qual você e um aliado podem se abrigar. Enquanto estiver dentro da cúpula, uma criatura não pode ser alvo de ataques nem fazer ataques. Ataques feitos contra a cúpula são automaticamente bem-sucedidos. A cúpula tem os seguintes limiares de dano e dura até marcar 3 Pontos de Vida. Coloque marcadores nesta carta para representar a marcação de Pontos de Vida.\n\nLimiares: 15/30"
+ },
+ "Conjured Steeds": {
+  "n": "Montarias Conjuradas",
+  "x": "**Gaste qualquer quantidade de Esperança** para conjurar esse mesmo número de montarias mágicas (como cavalos, camelos ou elefantes) que você e seus aliados podem montar até o seu próximo descanso longo ou até as montarias sofrerem qualquer dano. As montarias dobram seu deslocamento terrestre durante viagens e, em situações de perigo, permitem que você se mova a até alcance Longe sem precisar rolar. Criaturas montadas recebem -2 de penalidade em testes de ataque e +2 de bônus em rolagens de dano."
+ },
+ "Forager": {
+  "n": "Coletor",
+  "x": "Como uma ação adicional de período de descanso que você pode escolher, role 1d6 para ver o que você coleta. Trabalhe com o Mestre para descrevê-lo e adicione-o ao seu inventário como um consumível. Seu grupo pode carregar até cinco consumíveis coletados por vez.\n\n1. Um alimento único (Recupere 2 de Estresse)\n2. Uma bela relíquia (Ganhe 2 de Esperança)\n3. Uma runa arcana (+2 em um Teste de Conjuração)\n4. Um frasco de cura (Recupere 2 Pontos de Vida)\n5. Um amuleto da sorte (Role novamente qualquer dado)\n6. Escolha uma das opções acima."
+ },
+ "Sage-Touched": {
+  "n": "Tocado pelo Sábio",
+  "x": "Quando 4 ou mais das cartas de domínio na sua mão forem do domínio Sábio, receba os seguintes benefícios:\n\n- Enquanto estiver em um ambiente natural, você recebe +2 de bônus nos seus Testes de Conjuração.\n- Uma vez por descanso, você pode dobrar sua Agilidade ou seu Instinto ao fazer uma rolagem que use esse atributo. Você deve escolher fazer isso antes de rolar."
+ },
+ "Wild Surge": {
+  "n": "Surto Selvagem",
+  "x": "Uma vez por descanso longo, **marque 1 de Estresse** para canalizar o mundo natural ao seu redor e fortalecer a si mesmo. Descreva como sua aparência muda e, em seguida, coloque **1d6** nesta carta com a face 1 voltada para cima.\n\nEnquanto o Dado de Surto Selvagem estiver ativo, você soma o valor dele a todo Teste de Ação que fizer. Depois de somar o valor dele a uma rolagem, aumente o valor do Dado de Surto Selvagem em um. Quando o valor do dado fosse exceder 6 ou você fizer um descanso, esta forma se desfaz e você deve **marcar 1 de Estresse adicional**."
+ },
+ "Forest Sprites": {
+  "n": "Duendes da Floresta",
+  "x": "Faça um **Teste de Conjuração (13)**. Em caso de sucesso, **gaste qualquer quantidade de Esperança** para criar o mesmo número de pequenos duendes da floresta, que surgem em pontos à sua escolha a até alcance Longe, concedendo os seguintes benefícios:\n\n- Seus aliados recebem +3 de bônus em testes de ataque contra adversários a até alcance Corpo a Corpo de um duende.\n- Um aliado que marcar um Espaço de Armadura enquanto estiver a até alcance Corpo a Corpo de um duende pode marcar um Espaço de Armadura adicional.\n\nUm duende desaparece depois de conceder um benefício ou de sofrer qualquer dano."
+ },
+ "Rejuvenation Barrier": {
+  "n": "Barreira Rejuvenescedora",
+  "x": "Faça um **Teste de Conjuração (15)**. Uma vez por descanso, em caso de sucesso, crie uma barreira temporária de energia protetora ao seu redor, com alcance Muito Perto. Você e todos os aliados dentro da barreira quando esta magia é conjurada recuperam **1d4** Pontos de Vida. Enquanto a barreira estiver erguida, você e todos os aliados dentro dela têm resistência a dano físico vindo de fora da barreira.\n\nQuando você se move, a barreira o acompanha."
+ },
+ "Fane of the Wilds": {
+  "n": "Santuário das Terras Selvagens",
+  "x": "Após um descanso longo, coloque nesta carta uma quantidade de marcadores igual ao número de cartas de domínio Sábio na sua mão e no seu cofre.\n\nQuando for fazer um Teste de Conjuração, você pode gastar qualquer quantidade de marcadores depois da rolagem para receber +1 de bônus por marcador gasto.\n\nQuando obtiver um sucesso crítico em um Teste de Conjuração de uma magia do domínio Sábio, ganhe um marcador.\n\nQuando fizer um descanso longo, remova todos os marcadores não gastos."
+ },
+ "Plant Dominion": {
+  "n": "Domínio Vegetal",
+  "x": "Faça um **Teste de Conjuração (18)**. Uma vez por descanso longo, em caso de sucesso, você remodela o mundo natural, alterando a vegetação ao redor em qualquer lugar a até alcance Longe de você. Por exemplo, você pode fazer árvores crescerem instantaneamente, abrir caminho através de vinhas densas ou criar uma muralha de raízes."
+ },
+ "Force of Nature": {
+  "n": "Força da Natureza",
+  "x": "**Marque 1 de Estresse** para se transformar em um enorme espírito da natureza, recebendo os seguintes benefícios:\n\n- Quando obtiver sucesso em um ataque ou Teste de Conjuração, receba +10 de bônus na rolagem de dano.\n- Quando causar dano suficiente para derrotar uma criatura a até alcance Perto, você a absorve e recupera 1 Espaço de Armadura.\n- Você não pode ficar _Contido_.\n\nAntes de fazer um Teste de Ação, você deve **gastar 1 de Esperança**. Se não puder, você retorna à sua forma normal."
+ },
+ "Tempest": {
+  "n": "Tempestade",
+  "x": "Escolha uma das tempestades a seguir e faça um **Teste de Conjuração** contra todos os alvos a até alcance Longe. Os alvos contra os quais você obtiver sucesso sofrem seus efeitos até que o Mestre gaste 1 de Medo em seu turno para encerrar esta magia.\n\n- _Nevasca_: Cause **2d20+8** de dano mágico, e os alvos ficam temporariamente _Vulneráveis._\n- _Furacão_: Cause **3d10+10** de dano mágico e escolha a direção em que o vento sopra. Os alvos não podem se mover contra o vento.\n- _Tempestade de Areia_: Cause **5d6+9** de dano mágico. Ataques feitos de além do alcance Corpo a Corpo têm desvantagem."
+ },
+ "Bolt Beacon": {
+  "n": "Farol Fulgurante",
+  "x": "Faça um **Teste de Conjuração** contra um alvo a até alcance Longe. Em caso de sucesso, **gaste 1 de Esperança** para lançar contra ele um raio de luz cintilante, causando **d8+2** de dano mágico usando sua Proficiência. O alvo fica temporariamente _Vulnerável_ e brilha intensamente até que essa condição seja removida."
+ },
+ "Mending Touch": {
+  "n": "Toque Restaurador",
+  "x": "Você impõe as mãos sobre uma criatura e canaliza magia curativa para fechar suas feridas. Quando puder dedicar alguns minutos para se concentrar no alvo que está ajudando, você pode **gastar 2 de Esperança** para recuperar 1 Ponto de Vida ou 1 de Estresse dele.\n\nUma vez por descanso longo, quando passar esse tempo de cura aprendendo algo novo sobre ele ou revelando algo sobre si mesmo, você pode, em vez disso, recuperar 2 Pontos de Vida ou 2 de Estresse dele."
+ },
+ "Reassurance": {
+  "n": "Palavras de Conforto",
+  "x": "Uma vez por descanso, depois que um aliado tentar um Teste de Ação, mas antes que as consequências ocorram, você pode oferecer ajuda ou palavras de apoio. Quando fizer isso, seu aliado pode rolar novamente os dados dele."
+ },
+ "Final Words": {
+  "n": "Últimas Palavras",
+  "x": "Você pode infundir um cadáver com um momento de vida para falar com ele. Faça um **Teste de Conjuração (13)**. Em um sucesso com Esperança, o cadáver responde a até três perguntas. Em um sucesso com Medo, o cadáver responde a uma pergunta. O cadáver responde com sinceridade, mas não pode transmitir informações que não conhecia em vida. Em uma falha, ou assim que o cadáver terminar de responder às suas perguntas, o corpo vira pó."
+ },
+ "Healing Hands": {
+  "n": "Mãos Curativas",
+  "x": "Faça um **Teste de Conjuração (13)** e escolha como alvo uma criatura que não seja você a até alcance Corpo a Corpo. Em caso de sucesso, **marque 1 de Estresse** para recuperar 2 Pontos de Vida ou 2 de Estresse do alvo. Em uma falha, **marque 1 de Estresse** para recuperar 1 Ponto de Vida ou 1 de Estresse do alvo. Você não pode curar o mesmo alvo novamente até o seu próximo descanso longo."
+ },
+ "Second Wind": {
+  "n": "Fôlego Renovado",
+  "x": "Uma vez por descanso, quando obtiver sucesso em um ataque contra um adversário, você pode recuperar 3 de Estresse ou 1 Ponto de Vida. Em um sucesso com Esperança, você também recupera 3 de Estresse ou 1 Ponto de Vida de um aliado a até alcance Perto de você."
+ },
+ "Voice of Reason": {
+  "n": "Voz da Razão",
+  "x": "Você fala com um poder e uma autoridade inigualáveis. Você tem vantagem em Testes de Ação para acalmar situações violentas ou convencer alguém a seguir sua liderança.\n\nAlém disso, você se encoraja em momentos de aflição. Quando todos os seus espaços de Estresse estiverem marcados, você recebe +1 de bônus na sua Proficiência para rolagens de dano."
+ },
+ "Divination": {
+  "n": "Adivinhação",
+  "x": "Uma vez por descanso longo, **gaste 3 de Esperança** para contatar as forças do além e fazer uma pergunta de \"sim ou não\" sobre um evento, pessoa, lugar ou situação no futuro próximo. Por um momento, o presente se desvanece e você vê a resposta diante de si."
+ },
+ "Life Ward": {
+  "n": "Proteção Vital",
+  "x": "**Gaste 3 de Esperança** e escolha um aliado a até alcance Perto. Ele é marcado com um sigilo de proteção brilhante. Quando esse aliado fosse fazer um movimento de morte, ele recupera 1 Ponto de Vida em vez disso.\n\nEste efeito termina quando salva o alvo de um movimento de morte, quando você conjura Proteção Vital em outro alvo ou quando você faz um descanso longo."
+ },
+ "Shape Material": {
+  "n": "Moldar Matéria",
+  "x": "**Gaste 1 de Esperança** para moldar uma parte de um material natural que você esteja tocando (como pedra, gelo ou madeira) conforme seu propósito. A área do material não pode ser maior do que você. Por exemplo, você pode formar uma ferramenta rudimentar ou criar uma porta.\n\nVocê só pode afetar o material a até alcance Perto do ponto em que o está tocando."
+ },
+ "Smite": {
+  "n": "Golpe Divino",
+  "x": "Uma vez por descanso, **gaste 3 de Esperança** para carregar seu poderoso golpe divino. Na próxima vez que atacar com sucesso com uma arma, dobre o resultado da sua rolagem de dano. Este ataque causa dano mágico, independentemente do tipo de dano da arma."
+ },
+ "Restoration": {
+  "n": "Restauração",
+  "x": "Após um descanso longo, coloque nesta carta uma quantidade de marcadores igual ao seu atributo de Conjuração. Toque uma criatura e gaste qualquer quantidade de marcadores para recuperar 2 Pontos de Vida ou 2 de Estresse por marcador gasto.\n\nVocê também pode gastar um marcador desta carta ao tocar uma criatura para remover a condição _Vulnerável_ ou curar uma enfermidade física ou mágica (o Mestre pode exigir marcadores adicionais, dependendo da intensidade da enfermidade).\n\nQuando fizer um descanso longo, remova todos os marcadores não gastos."
+ },
+ "Zone of Protection": {
+  "n": "Zona de Proteção",
+  "x": "Faça um **Teste de Conjuração (16)**. Uma vez por descanso longo, em caso de sucesso, escolha um ponto a até alcance Longe e crie ali uma zona de proteção visível para todos os aliados a até alcance Muito Perto desse ponto. Quando fizer isso, coloque **1d6** nesta carta com a face 1 voltada para cima. Quando um aliado nesta zona sofrer dano, ele o reduz no valor do dado. Em seguida, você aumenta o valor do dado em um. Quando o valor do dado fosse exceder 6, este efeito termina."
+ },
+ "Healing Strike": {
+  "n": "Golpe Curativo",
+  "x": "Quando causar dano a um adversário, você pode **gastar 2 de Esperança** para recuperar 1 Ponto de Vida de um aliado a até alcance Perto."
+ },
+ "Splendor-Touched": {
+  "n": "Tocado pelo Esplendor",
+  "x": "Quando 4 ou mais das cartas de domínio na sua mão forem do domínio Esplendor, receba os seguintes benefícios:\n\n- +3 de bônus no seu limiar de dano Grave\n- Uma vez por descanso longo, quando o dano recebido exigir que você marque uma quantidade de Pontos de Vida, você pode escolher, em vez disso, marcar essa mesma quantidade de Estresse ou gastar essa mesma quantidade de Esperança."
+ },
+ "Shield Aura": {
+  "n": "Aura Escudo",
+  "x": "**Marque 1 de Estresse** para conjurar uma aura protetora em um alvo a até alcance Muito Perto. Quando o alvo marcar um Espaço de Armadura, ele reduz a gravidade do ataque em um limiar adicional. Se esta magia fizer com que uma criatura que sofreria dano não marque nenhum Ponto de Vida, o efeito termina.\n\nVocê só pode manter Aura Escudo sobre uma criatura por vez."
+ },
+ "Stunning Sunlight": {
+  "n": "Luz Solar Atordoante",
+  "x": "Faça um **Teste de Conjuração** para liberar poderosos raios de luz solar escaldante contra todos os adversários à sua frente a até alcance Longe. Em caso de sucesso, **gaste qualquer quantidade de Esperança** e force esse mesmo número de alvos contra os quais você obteve sucesso a fazer um Teste de Reação (14).\n\nOs alvos que obtiverem sucesso sofrem **3d20+3** de dano mágico. Os alvos que falharem sofrem **4d20+5** de dano mágico e ficam temporariamente _Atordoados_. Enquanto estiverem _Atordoados_, eles não podem usar reações nem realizar quaisquer outras ações até removerem essa condição."
+ },
+ "Overwhelming Aura": {
+  "n": "Aura Avassaladora",
+  "x": "Faça um **Teste de Conjuração (15)** para fortalecer magicamente sua aura. Em caso de sucesso, **gaste 2 de Esperança** para tornar sua Presença igual ao seu atributo de Conjuração até o seu próximo descanso longo.\n\nEnquanto esta magia estiver ativa, um adversário deve marcar 1 de Estresse quando escolher você como alvo de um ataque."
+ },
+ "Salvation Beam": {
+  "n": "Raio da Salvação",
+  "x": "Faça um **Teste de Conjuração (16)**. Em caso de sucesso, **marque qualquer quantidade de Estresse** para escolher como alvo uma linha de aliados a até alcance Longe. Você pode recuperar dos alvos uma quantidade de Pontos de Vida igual à quantidade de Estresse marcada, dividida entre eles como preferir."
+ },
+ "Invigoration": {
+  "n": "Revigoramento",
+  "x": "Quando você ou um aliado a até alcance Perto tiver usado uma característica que tenha um limite de uso (como uma vez por descanso ou uma vez por sessão), você pode **gastar qualquer quantidade de Esperança** e rolar esse mesmo número de **d6**. Se algum resultado for 6, a característica pode ser usada novamente."
+ },
+ "Resurrection": {
+  "n": "Ressurreição",
+  "x": "Faça um **Teste de Conjuração (20)**. Em caso de sucesso, restaure com força total uma criatura que esteja morta há no máximo 100 anos. Em seguida, role **1d6**. Com um resultado 5 ou menor, coloque esta carta no seu cofre permanentemente.\n\nEm uma falha, você não pode conjurar Ressurreição novamente por uma semana."
+ },
+ "Bare Bones": {
+  "n": "Pele e Osso",
+  "x": "Quando escolher não equipar armadura, você tem um Valor de Armadura base de 3 + sua Força e usa os seguintes valores como seus Limiares de Dano base:\n\n- _Patamar 1_: 9/19\n- _Patamar 2_: 11/24\n- _Patamar 3_: 13/31\n- _Patamar 4_: 15/38"
+ },
+ "Forceful Push": {
+  "n": "Empurrão Vigoroso",
+  "x": "Faça um ataque com sua arma primária contra um alvo a até alcance Corpo a Corpo. Em caso de sucesso, você causa dano e o arremessa para o alcance Perto. Em um sucesso com Esperança, some **1d6** à sua rolagem de dano.\n\nAlém disso, você pode **gastar 1 de Esperança** para deixá-lo temporariamente _Vulnerável_."
+ },
+ "I Am Your Shield": {
+  "n": "Eu Sou Seu Escudo",
+  "x": "Quando um aliado a até alcance Muito Perto fosse sofrer dano, você pode **marcar 1 de Estresse** para se colocar no caminho e se tornar o alvo do ataque em vez dele. Quando sofrer dano desse ataque, você pode marcar qualquer quantidade de Espaços de Armadura."
+ },
+ "Body Basher": {
+  "n": "Aríete Humano",
+  "x": "Você usa toda a força do seu corpo em uma luta. Em um ataque bem-sucedido com uma arma de alcance Corpo a Corpo, receba um bônus na sua rolagem de dano igual à sua Força."
+ },
+ "Bold Presence": {
+  "n": "Presença Ousada",
+  "x": "Quando fizer um Teste de Presença, você pode **gastar 1 de Esperança** para somar sua Força ao teste.\n\nAlém disso, uma vez por descanso, quando fosse receber uma condição, você pode descrever como sua presença ousada o ajuda na situação e evitar receber a condição."
+ },
+ "Critical Inspiration": {
+  "n": "Inspiração Crítica",
+  "x": "Uma vez por descanso, quando obtiver um sucesso crítico em um ataque, todos os aliados a até alcance Muito Perto podem recuperar 1 de Estresse ou ganhar 1 de Esperança."
+ },
+ "Lean on Me": {
+  "n": "Conte Comigo",
+  "x": "Uma vez por descanso longo, quando consolar ou inspirar um aliado que falhou em um Teste de Ação, ambos podem recuperar 2 de Estresse."
+ },
+ "Goad Them on": {
+  "n": "Provocação",
+  "x": "Descreva como você provoca um alvo a até alcance Perto e, em seguida, faça um **Teste de Presença** contra ele. Em caso de sucesso, o alvo deve marcar 1 de Estresse e, na próxima vez que o Mestre colocá-lo sob o holofote, ele deve escolher você como alvo de um ataque, que ele faz com desvantagem."
+ },
+ "Support Tank": {
+  "n": "Baluarte de Apoio",
+  "x": "Quando um aliado a até alcance Perto falhar em uma rolagem, você pode **gastar 2 de Esperança** para permitir que ele role novamente o Dado de Esperança ou o Dado de Medo."
+ },
+ "Armorer": {
+  "n": "Armeiro",
+  "x": "Enquanto estiver usando armadura, receba +1 de bônus no seu Valor de Armadura.\n\nDurante um descanso, quando escolher consertar sua armadura como ação de período de descanso, seus aliados também recuperam 1 Espaço de Armadura."
+ },
+ "Rousing Strike": {
+  "n": "Golpe Inspirador",
+  "x": "Uma vez por descanso, quando obtiver um sucesso crítico em um ataque, você e todos os aliados que puderem vê-lo ou ouvi-lo podem recuperar 1 Ponto de Vida ou **1d4** de Estresse."
+ },
+ "Inevitable": {
+  "n": "Inevitável",
+  "x": "Quando falhar em um Teste de Ação, seu próximo Teste de Ação tem vantagem."
+ },
+ "Rise Up": {
+  "n": "Reerguer-se",
+  "x": "Receba um bônus no seu limiar Grave igual à sua Proficiência.\n\nQuando marcar 1 ou mais Pontos de Vida por causa de um ataque, recupere 1 de Estresse."
+ },
+ "Shrug It Off": {
+  "n": "Nem Senti",
+  "x": "Quando fosse sofrer dano, você pode **marcar 1 de Estresse** para reduzir a gravidade do dano em um limiar. Quando fizer isso, role **1d6**. Com um resultado 3 ou menor, coloque esta carta no seu cofre."
+ },
+ "Valor-Touched": {
+  "n": "Tocado pelo Valor",
+  "x": "Quando 4 ou mais das cartas de domínio na sua mão forem do domínio Valor, receba os seguintes benefícios:\n\n- +1 de bônus no seu Valor de Armadura\n- Quando marcar 1 ou mais Pontos de Vida sem marcar um Espaço de Armadura, recupere 1 Espaço de Armadura."
+ },
+ "Full Surge": {
+  "n": "Ímpeto Total",
+  "x": "Uma vez por descanso longo, **marque 3 de Estresse** para levar seu corpo ao limite. Receba +2 de bônus em todos os seus atributos de personagem até o seu próximo descanso."
+ },
+ "Ground Pound": {
+  "n": "Abalo Sísmico",
+  "x": "**Gaste 2 de Esperança** para golpear o chão onde você está e faça um **Teste de Força** contra todos os alvos a até alcance Muito Perto. Os alvos contra os quais você obtiver sucesso são arremessados para o alcance Longe e devem fazer um Teste de Reação (17). Os alvos que falharem sofrem **4d10+8** de dano. Os alvos que obtiverem sucesso sofrem metade do dano."
+ },
+ "Hold the Line": {
+  "n": "Manter a Linha",
+  "x": "Descreva a postura defensiva que você assume e **gaste 1 de Esperança**. Se um adversário se mover para dentro do alcance Muito Perto, ele é puxado para o alcance Corpo a Corpo e fica _Contido_.\n\nEssa condição dura até você se mover ou falhar em uma rolagem com Medo, ou até o Mestre gastar 2 de Medo em seu turno para removê-la."
+ },
+ "Lead by Example": {
+  "n": "Liderar pelo Exemplo",
+  "x": "Quando causar dano a um adversário, você pode **marcar 1 de Estresse** e descrever como encoraja seus aliados. O próximo personagem a fazer um ataque contra esse adversário pode recuperar 1 de Estresse ou ganhar 1 de Esperança."
+ },
+ "Unbreakable": {
+  "n": "Inquebrável",
+  "x": "Quando marcar seu último Ponto de Vida, em vez de fazer um movimento de morte, você pode rolar **1d6** e recuperar uma quantidade de Pontos de Vida igual ao resultado. Em seguida, coloque esta carta no seu cofre."
+ },
+ "Unyielding Armor": {
+  "n": "Armadura Inflexível",
+  "x": "Quando fosse marcar um Espaço de Armadura, role uma quantidade de **d6** igual à sua Proficiência. Se algum resultado for 6, reduza a gravidade em um limiar sem marcar um Espaço de Armadura."
+ }
+}

@@ -1,0 +1,422 @@
+{
+ "Rune Ward": {
+  "n": "Proteção Rúnica",
+  "x": "Você possui um pequeno objeto profundamente pessoal que pode ser imbuído de magia protetora e carregado como proteção por você ou por um aliado. Descreva o que ele é e por que é importante para você. Quem estiver com a proteção pode gastar 1 de Esperança para reduzir o dano recebido em **1d8**.\n\nSe o resultado do Dado de Proteção for 8, o poder da proteção se encerra depois que ela reduzir o dano neste turno. Ela pode ser recarregada gratuitamente no seu próximo descanso."
+ },
+ "Unleash Chaos": {
+  "n": "Liberar o Caos",
+  "x": "No início de uma sessão, coloque nesta carta um número de marcadores igual ao seu atributo de Conjuração.\n\nFaça um **Teste de Conjuração** contra um alvo a até alcance Longe e gaste qualquer quantidade de marcadores para canalizar energia bruta de dentro de você e liberá-la contra ele. Em caso de sucesso, role um número de **d10s** igual aos marcadores gastos e cause essa quantidade de dano mágico ao alvo. **Marque 1 de Estresse** para reabastecer esta carta com marcadores (até o valor do seu atributo de Conjuração).\n\nAo final de cada sessão, remova todos os marcadores não gastos."
+ },
+ "Wall Walk": {
+  "n": "Andar nas Paredes",
+  "x": "**Gaste 1 de Esperança** para permitir que uma criatura que você possa tocar escale paredes e tetos com a mesma facilidade com que anda no chão. Isso dura até o fim da cena ou até você conjurar Andar nas Paredes novamente"
+ },
+ "Cinder Grasp": {
+  "n": "Toque das Brasas",
+  "x": "Faça um **Teste de Conjuração** contra um alvo a alcance Corpo a Corpo. Em caso de sucesso, o alvo entra instantaneamente em combustão, sofre **1d20+3** de dano mágico e fica temporariamente _Em Chamas_.\n\nQuando uma criatura age enquanto está _Em Chamas_, ela sofre **2d6** de dano mágico adicional se ainda estiver _Em Chamas_ ao final da sua ação."
+ },
+ "Floating Eye": {
+  "n": "Olho Flutuante",
+  "x": "**Gaste 1 de Esperança** para criar uma única pequena esfera flutuante que você pode mover para qualquer lugar a até alcance Muito Longe. Enquanto esta magia estiver ativa, você pode ver através da esfera como se estivesse olhando a partir da posição dela. Você pode alternar livremente entre usar seus próprios sentidos e ver através da esfera. Se a esfera sofrer dano ou sair do alcance, a magia termina."
+ },
+ "Counterspell": {
+  "n": "Contramágica",
+  "x": "Você pode interromper um efeito mágico em andamento fazendo um teste de reação com seu atributo de Conjuração. Em caso de sucesso, o efeito cessa, quaisquer consequências são evitadas e esta carta é colocada no seu cofre."
+ },
+ "Flight": {
+  "n": "Voo",
+  "x": "Faça um **Teste de Conjuração (15)**. Em caso de sucesso, coloque nesta carta um número de marcadores igual à sua Agilidade (mínimo 1). Quando fizer um teste de ação enquanto estiver voando, gaste um marcador desta carta. Depois que a ação que gastar o último marcador for resolvida, você desce até o chão diretamente abaixo de você."
+ },
+ "Blink Out": {
+  "n": "Lampejo",
+  "x": "Faça um **Teste de Conjuração (12)**. Em caso de sucesso, **gaste 1 de Esperança** para se teleportar para outro ponto que você possa ver a até alcance Longe. Se houver criaturas voluntárias a até alcance Muito Perto, **gaste 1 de Esperança adicional** por criatura para levá-las com você."
+ },
+ "Preservation Blast": {
+  "n": "Explosão Preservadora",
+  "x": "Faça um **Teste de Conjuração** contra todos os alvos a alcance Corpo a Corpo. Os alvos contra os quais você obtiver sucesso são empurrados para alcance Longe e sofrem **d8+3** de dano mágico usando seu atributo de Conjuração."
+ },
+ "Chain Lightning": {
+  "n": "Relâmpago em Cadeia",
+  "x": "**Marque 2 de Estresse** para fazer um **Teste de Conjuração**, liberando relâmpagos sobre todos os alvos a até alcance Perto. Os alvos contra os quais você obtiver sucesso devem fazer um teste de reação com Dificuldade igual ao resultado do seu Teste de Conjuração. Os alvos que falharem sofrem **2d8+4** de dano mágico. Adversários adicionais que ainda não tenham sido alvo do Relâmpago em Cadeia e estejam a até alcance Perto de alvos anteriores que sofreram dano também devem fazer o teste de reação. Os alvos que falharem sofrem **2d8+4** de dano mágico. Essa cadeia continua até não haver mais adversários dentro do alcance."
+ },
+ "Premonition": {
+  "n": "Premonição",
+  "x": "Você pode canalizar energia arcana para ter visões do futuro. Uma vez por descanso longo, imediatamente depois que o Mestre descrever as consequências de um teste que você fez, você pode anular o movimento e as consequências como se nunca tivessem acontecido e fazer outro movimento no lugar."
+ },
+ "Rift Walker": {
+  "n": "Andarilho da Fenda",
+  "x": "Faça um **Teste de Conjuração (15)**. Em caso de sucesso, você coloca uma marca arcana no chão onde está agora. Na próxima vez que você conjurar Andarilho da Fenda com sucesso, uma fenda no espaço se abre, oferecendo passagem segura de volta ao ponto exato onde a marca foi colocada. Essa fenda permanece aberta até você decidir fechá-la ou conjurar outra magia.\n\nVocê pode encerrar a magia a qualquer momento para conjurar Andarilho da Fenda novamente e colocar a marca em outro lugar."
+ },
+ "Telekinesis": {
+  "n": "Telecinese",
+  "x": "Faça um **Teste de Conjuração** contra um alvo a até alcance Longe. Em caso de sucesso, você pode usar sua mente para movê-lo para qualquer lugar a até alcance Longe da posição original dele. Você pode arremessar o alvo erguido como um ataque, fazendo um Teste de Conjuração adicional contra o segundo alvo que está tentando atacar. Em caso de sucesso, cause **d12+4** de dano físico ao segundo alvo usando sua Proficiência. Então, esta magia termina."
+ },
+ "Arcana-Touched": {
+  "n": "Tocado pelo Arcano",
+  "x": "Quando 4 ou mais das cartas de domínio na sua mão forem do domínio Arcano, receba os seguintes benefícios:\n\n- +1 de bônus nos seus Testes de Conjuração\n- Uma vez por descanso, você pode trocar os resultados dos seus Dados de Esperança e de Medo."
+ },
+ "Cloaking Blast": {
+  "n": "Explosão Encobridora",
+  "x": "Quando você obtiver sucesso em um **Teste de Conjuração** para conjurar uma magia diferente, você pode **gastar 1 de Esperança** para ficar _Encoberto_. Enquanto estiver _Encoberto_, você permanece sem ser visto se estiver parado quando um adversário se mover para onde normalmente veria você. Quando você entra na linha de visão de um adversário ou se move dentro dela, ou faz um ataque, deixa de estar _Encoberto_."
+ },
+ "Arcane Reflection": {
+  "n": "Reflexo Arcano",
+  "x": "Quando você for sofrer dano mágico, pode **gastar qualquer quantidade de Esperança** para rolar essa quantidade de **d6s**. Se algum resultado for 6, o ataque é refletido de volta para quem o conjurou, causando o dano a ele no seu lugar."
+ },
+ "Confusing Aura": {
+  "n": "Aura Confusa",
+  "x": "Faça um **Teste de Conjuração (14)**. Uma vez por descanso longo, em caso de sucesso, você cria uma camada de ilusão sobre seu corpo que dificulta saber exatamente onde você está. **Marque qualquer quantidade de Estresse** para criar essa quantidade de camadas adicionais. Quando um adversário fizer um ataque contra você, role um número de **d6s** igual ao número de camadas ativas no momento. Se algum resultado for 5 ou mais, uma camada da aura é destruída e o ataque falha. Se todos os resultados forem 4 ou menos, você sofre o dano e esta magia termina"
+ },
+ "Earthquake": {
+  "n": "Terremoto",
+  "x": "Faça um **Teste de Conjuração (16)**. Uma vez por descanso, em caso de sucesso, todos os alvos a até alcance Muito Longe que não estejam voando devem fazer um Teste de Reação (18). Os alvos que falharem sofrem **3d10+8** de dano físico e ficam temporariamente _Vulneráveis_. Os alvos que obtiverem sucesso sofrem metade do dano.\n\nAlém disso, quando você obtém sucesso no Teste de Conjuração, todo o terreno a até alcance Muito Longe se torna difícil de atravessar, e estruturas dentro desse alcance podem sofrer danos ou desmoronar."
+ },
+ "Sensory Projection": {
+  "n": "Projeção Sensorial",
+  "x": "Uma vez por descanso, faça um **Teste de Conjuração (15)**. Em caso de sucesso, você mergulha em uma visão que lhe permite ver e ouvir claramente qualquer lugar onde já esteve, como se estivesse lá neste momento. Você pode se mover livremente nessa visão e não está limitado pela física nem pelos impedimentos de um corpo físico. Esta magia não pode ser detectada por meios mundanos ou mágicos. Você sai da visão ao sofrer dano ou conjurar outra magia."
+ },
+ "Adjust Reality": {
+  "n": "Ajustar a Realidade",
+  "x": "Depois que você ou um aliado voluntário fizer qualquer rolagem, você pode **gastar 5 de Esperança** para mudar o resultado numérico dessa rolagem para um resultado à sua escolha. O resultado deve ser plausível dentro do intervalo dos dados."
+ },
+ "Falling Sky": {
+  "n": "Céu Desabando",
+  "x": "Faça um **Teste de Conjuração** contra todos os adversários a até alcance Longe. **Marque qualquer quantidade de Estresse** para fazer estilhaços de energia arcana chover do alto. Os alvos contra os quais você obtiver sucesso sofrem **1d20+2** de dano mágico para cada ponto de Estresse marcado."
+ },
+ "Get Back Up": {
+  "n": "De Pé Outra Vez",
+  "x": "Quando você sofrer dano Grave, pode **marcar 1 de Estresse** para reduzir a gravidade em um limiar."
+ },
+ "Not Good Enough": {
+  "n": "Não Basta",
+  "x": "Quando rolar seus dados de dano, você pode rolar novamente quaisquer resultados 1 ou 2."
+ },
+ "Whirlwind": {
+  "n": "Redemoinho",
+  "x": "Quando você fizer um ataque bem-sucedido contra um alvo a até alcance Muito Perto, pode **gastar 1 de Esperança** para usar o ataque contra todos os outros alvos a até alcance Muito Perto. Todos os adversários adicionais contra os quais você obtiver sucesso com esta habilidade sofrem metade do dano."
+ },
+ "A Soldier's Bond": {
+  "n": "Laço de Soldado",
+  "x": "Uma vez por descanso longo, quando você elogiar alguém ou perguntar sobre algo em que essa pessoa é boa, vocês dois podem ganhar 3 de Esperança."
+ },
+ "Reckless": {
+  "n": "Imprudente",
+  "x": "**Marque 1 de Estresse** para ter vantagem em um ataque."
+ },
+ "Scramble": {
+  "n": "Esquiva Atabalhoada",
+  "x": "Uma vez por descanso, quando uma criatura a alcance Corpo a Corpo for causar dano a você, você pode evitar o ataque e se afastar em segurança para fora do alcance Corpo a Corpo do inimigo."
+ },
+ "Versatile Fighter": {
+  "n": "Combatente Versátil",
+  "x": "Você pode usar um atributo de personagem diferente para uma arma equipada, em vez do atributo que a arma exige.\n\nQuando causar dano, você pode **marcar 1 de Estresse** para usar o resultado máximo de um dos seus dados de dano em vez de rolá-lo."
+ },
+ "Deadly Focus": {
+  "n": "Foco Mortal",
+  "x": "Uma vez por descanso, você pode direcionar todo o seu foco para um alvo à sua escolha. Até você atacar outra criatura, derrotar o alvo ou a batalha terminar, receba +1 de bônus na sua Proficiência."
+ },
+ "Fortified Armor": {
+  "n": "Armadura Fortificada",
+  "x": "Enquanto estiver usando armadura, receba +2 de bônus nos seus limiares de dano."
+ },
+ "Champion's Edge": {
+  "n": "Gume do Campeão",
+  "x": "Quando obtiver um sucesso crítico em um ataque, você pode **gastar até 3 de Esperança** e escolher uma das opções a seguir para cada ponto de Esperança gasto:\n\n- Você recupera 1 Ponto de Vida.\n- Você recupera 1 Espaço de Armadura.\n- O alvo deve marcar 1 Ponto de Vida adicional.\n\nVocê não pode escolher a mesma opção mais de uma vez."
+ },
+ "Vitality": {
+  "n": "Vitalidade",
+  "x": "Quando escolher esta carta, receba permanentemente dois dos benefícios a seguir:\n\n- Um espaço de Estresse\n- Um espaço de Ponto de Vida\n- +2 de bônus nos seus limiares de dano\n\nEm seguida, coloque esta carta no seu cofre permanentemente."
+ },
+ "Battle-Hardened": {
+  "n": "Calejado pela Batalha",
+  "x": "Uma vez por descanso longo, quando você for fazer um Movimento de Morte, pode **gastar 1 de Esperança** para recuperar 1 Ponto de Vida em vez disso."
+ },
+ "Rage Up": {
+  "n": "Fúria Crescente",
+  "x": "Antes de fazer um ataque, você pode **marcar 1 de Estresse** para receber um bônus na sua rolagem de dano igual ao dobro da sua Força.\n\nVocê pode usar Fúria Crescente duas vezes por ataque."
+ },
+ "Blade-Touched": {
+  "n": "Tocado pela Lâmina",
+  "x": "Quando 4 ou mais das cartas de domínio na sua mão forem do domínio Lâmina, receba os seguintes benefícios:\n\n- +2 de bônus nos seus testes de ataque\n- +4 de bônus no seu limiar de dano Grave"
+ },
+ "Glancing Blow": {
+  "n": "Golpe de Raspão",
+  "x": "Quando falhar em um ataque, você pode **marcar 1 de Estresse** para causar o dano da arma usando metade da sua Proficiência."
+ },
+ "Battle Cry": {
+  "n": "Grito de Guerra",
+  "x": "Uma vez por descanso longo, enquanto avança rumo ao perigo, você pode soltar um brado empolgante que inspira seus aliados. Todos os aliados que puderem ouvir você recuperam 1 de Estresse e ganham 1 de Esperança cada. Além disso, seus aliados têm vantagem em testes de ataque até que você ou um aliado role uma falha com Medo."
+ },
+ "Frenzy": {
+  "n": "Frenesi",
+  "x": "Uma vez por descanso longo, você pode entrar em _Frenesi_ até não haver mais adversários à vista.\n\nEnquanto estiver em _Frenesi_, você não pode usar Espaços de Armadura e recebe +10 de bônus nas suas rolagens de dano e +8 de bônus no seu limiar de dano Grave."
+ },
+ "Gore and Glory": {
+  "n": "Sangue e Glória",
+  "x": "Quando obtiver um sucesso crítico em um ataque com arma, ganhe 1 de Esperança adicional ou recupere 1 de Estresse adicional.\n\nAlém disso, quando causar dano suficiente para derrotar um inimigo, ganhe 1 de Esperança ou recupere 1 de Estresse."
+ },
+ "Reaper's Strike": {
+  "n": "Golpe do Ceifador",
+  "x": "Uma vez por descanso longo, **gaste 1 de Esperança** para fazer um teste de ataque. O Mestre informa contra quais alvos dentro do alcance ele teria sucesso. Escolha um desses alvos e force-o a marcar 5 Pontos de Vida."
+ },
+ "Battle Monster": {
+  "n": "Monstro de Batalha",
+  "x": "Quando você fizer um ataque bem-sucedido contra um adversário, pode **marcar 4 de Estresse** para forçar o alvo a marcar um número de Pontos de Vida igual ao número de Pontos de Vida que você tem marcados no momento, em vez de rolar o dano."
+ },
+ "Onslaught": {
+  "n": "Investida Implacável",
+  "x": "Quando você acerta um ataque com sua arma, nunca causa dano abaixo do limiar de dano Maior do alvo (o alvo sempre marca no mínimo 2 Pontos de Vida).\n\nAlém disso, quando uma criatura dentro do alcance da sua arma causar dano a um aliado com um ataque que não inclua você, você pode **marcar 1 de Estresse** para forçá-la a fazer um Teste de Reação (15).\n\nEm caso de falha, o alvo deve marcar 1 Ponto de Vida."
+ },
+ "Deft Maneuvers": {
+  "n": "Manobras Ágeis",
+  "x": "Uma vez por descanso, **marque 1 de Estresse** para correr até qualquer ponto a até alcance Longe sem precisar fazer um Teste de Agilidade para chegar lá.\n\nSe você terminar esse movimento a alcance Corpo a Corpo de um adversário e imediatamente fizer um ataque contra ele, receba +1 de bônus no teste de ataque."
+ },
+ "I See It Coming": {
+  "n": "Eu Vi Isso Vindo",
+  "x": "Quando você for alvo de um ataque feito de além do alcance Corpo a Corpo, pode **marcar 1 de Estresse** para rolar um **d4** e receber um bônus na sua Evasão igual ao resultado contra esse ataque."
+ },
+ "Untouchable": {
+  "n": "Intocável",
+  "x": "Receba um bônus na sua Evasão igual à metade da sua Agilidade."
+ },
+ "Ferocity": {
+  "n": "Ferocidade",
+  "x": "Quando você fizer um adversário marcar 1 ou mais Pontos de Vida, pode **gastar 2 de Esperança** para aumentar sua Evasão pelo número de Pontos de Vida que ele marcou. Esse bônus dura até depois do próximo ataque feito contra você."
+ },
+ "Strategic Approach": {
+  "n": "Abordagem Estratégica",
+  "x": "Depois de um descanso longo, coloque nesta carta um número de marcadores igual ao seu Conhecimento (mínimo 1). Na primeira vez que você se mover a até alcance Perto de um adversário e fizer um ataque contra ele, você pode gastar um marcador para escolher uma das opções a seguir:\n\n- Você faz o ataque com vantagem.\n- Você recupera 1 de Estresse de um aliado a alcance Corpo a Corpo do adversário.\n- Você adiciona um **d8** à sua rolagem de dano.\n\nQuando fizer um descanso longo, remova todos os marcadores não gastos."
+ },
+ "Brace": {
+  "n": "Firmar-se",
+  "x": "Quando você marcar um Espaço de Armadura para reduzir o dano recebido, pode **marcar 1 de Estresse** para marcar um Espaço de Armadura adicional."
+ },
+ "Tactician": {
+  "n": "Estrategista",
+  "x": "Quando você Ajudar um Aliado, ele pode gastar 1 de Esperança para adicionar uma das suas Experiências à rolagem dele, junto com o seu dado de vantagem.\n\nAo fazer um Teste em Equipe, você pode rolar um **d20** como seu Dado de Esperança."
+ },
+ "Boost": {
+  "n": "Impulso",
+  "x": "**Marque 1 de Estresse** para tomar impulso em um aliado voluntário a até alcance Perto, lançar-se no ar e realizar um ataque aéreo contra um alvo a até alcance Longe. Você tem vantagem no ataque, adiciona um **d10** à rolagem de dano e termina seu movimento a alcance Corpo a Corpo do alvo."
+ },
+ "Redirect": {
+  "n": "Redirecionar",
+  "x": "Quando um ataque feito contra você de além do alcance Corpo a Corpo falhar, role um número de **d6s** igual à sua Proficiência. Se algum resultado for 6, você pode **marcar 1 de Estresse** para redirecionar o ataque e causar dano a um adversário a até alcance Muito Perto em vez disso."
+ },
+ "Know Thy Enemy": {
+  "n": "Conheça Teu Inimigo",
+  "x": "Ao observar uma criatura, você pode fazer um **Teste de Instinto** contra ela. Em caso de sucesso, **gaste 1 de Esperança** e peça ao Mestre um conjunto de informações sobre o alvo, entre as opções a seguir:\n\n- Os Pontos de Vida e o Estresse não marcados dele.\n- A Dificuldade e os limiares de dano dele.\n- As táticas e os dados de dano do ataque padrão dele.\n- As características e as Experiências dele.\n\nAlém disso, em caso de sucesso, você pode **marcar 1 de Estresse** para remover 1 de Medo da Reserva de Medo do Mestre."
+ },
+ "Signature Move": {
+  "n": "Golpe Assinatura",
+  "x": "Dê um nome e descreva seu golpe de combate característico. Uma vez por descanso, quando executar esse golpe assinatura como parte de uma ação que estiver realizando, você pode rolar um **d20** como seu Dado de Esperança. Em caso de sucesso, recupere 1 de Estresse."
+ },
+ "Rapid Riposte": {
+  "n": "Contra-ataque Veloz",
+  "x": "Quando um ataque feito contra você a partir do alcance Corpo a Corpo falhar, você pode **marcar 1 de Estresse** e aproveitar a oportunidade para causar ao atacante o dano de arma de uma das suas armas ativas."
+ },
+ "Recovery": {
+  "n": "Recuperação",
+  "x": "Durante um descanso curto, você pode escolher um movimento de período de descanso de descanso longo em vez disso. Você pode **gastar 1 de Esperança** para permitir que um aliado faça o mesmo."
+ },
+ "Bone-Touched": {
+  "n": "Tocado pelo Osso",
+  "x": "Quando 4 ou mais das cartas de domínio na sua mão forem do domínio Osso, receba os seguintes benefícios:\n\n- +1 de bônus em Agilidade\n- Uma vez por descanso, você pode **gastar 3 de Esperança** para fazer um ataque que teve sucesso contra você falhar em vez disso."
+ },
+ "Cruel Precision": {
+  "n": "Precisão Cruel",
+  "x": "Quando você fizer um ataque bem-sucedido com uma arma, receba um bônus na sua rolagem de dano igual à sua Acuidade ou à sua Agilidade."
+ },
+ "Breaking Blow": {
+  "n": "Golpe Demolidor",
+  "x": "Quando você fizer um ataque bem-sucedido, pode **marcar 1 de Estresse** para que o próximo ataque bem-sucedido contra esse mesmo alvo cause **2d12** de dano adicional."
+ },
+ "Wrangle": {
+  "n": "Arrebanhar",
+  "x": "Faça um Teste de Agilidade contra todos os alvos a até alcance Perto. **Gaste 1 de Esperança** para mover os alvos contra os quais você obtiver sucesso, e quaisquer aliados voluntários a até alcance Perto, para outro ponto a até alcance Perto."
+ },
+ "On the Brink": {
+  "n": "À Beira do Abismo",
+  "x": "Quando você tiver 2 ou menos Pontos de Vida não marcados, você não sofre dano Menor."
+ },
+ "Splintering Strike": {
+  "n": "Golpe Estilhaçante",
+  "x": "**Gaste 1 de Esperança** e faça um ataque contra todos os adversários dentro do alcance da sua arma. Uma vez por descanso longo, em caso de sucesso contra quaisquer alvos, role o dano da sua arma e distribua esse dano como quiser entre os alvos contra os quais você obteve sucesso. Antes de causar dano a cada alvo, role um dado de dano adicional e some o resultado ao dano que você causa a ele."
+ },
+ "Deathrun": {
+  "n": "Corrida Mortal",
+  "x": "**Gaste 3 de Esperança** para correr em linha reta pelo campo de batalha até um ponto a até alcance Longe, fazendo um ataque contra todos os adversários dentro do alcance da sua arma ao longo desse caminho. Escolha a ordem em que você causa dano aos alvos contra os quais obteve sucesso. Para o primeiro, role o dano da sua arma com +1 de bônus na sua Proficiência. Em seguida, remova um dado da sua rolagem de dano e cause o dano restante ao próximo alvo. Continue removendo um dado para cada alvo seguinte até não ter mais dados de dano ou adversários.\n\nVocê não pode escolher o mesmo adversário como alvo mais de uma vez por ataque."
+ },
+ "Swift Step": {
+  "n": "Passo Ligeiro",
+  "x": "Quando um ataque feito contra você falhar, recupere 1 de Estresse. Se não puder recuperar Estresse, ganhe 1 de Esperança."
+ },
+ "Book of Ava": {
+  "n": "Livro de Ava",
+  "x": "_Empurrão de Poder:_ Faça um **Teste de Conjuração** contra um alvo a alcance Corpo a Corpo. Em caso de sucesso, ele é arremessado para alcance Longe e sofre **d10+2** de dano mágico usando sua Proficiência.\n\n_Armadura de Tava:_ **Gaste 1 de Esperança** para conceder a um alvo que você possa tocar +1 de bônus no Valor de Armadura dele até o próximo descanso dele ou até você conjurar Armadura de Tava novamente.\n\n_Estaca de Gelo:_ Faça um **Teste de Conjuração (12)** para invocar uma grande estaca de gelo a até alcance Longe. Se usá-la como arma, faça o Teste de Conjuração contra a Dificuldade do alvo em vez disso. Em caso de sucesso, cause **d6** de dano físico usando sua Proficiência."
+ },
+ "Book of Illiat": {
+  "n": "Livro de Illiat",
+  "x": "_Sono:_ Faça um **Teste de Conjuração** contra um alvo a até alcance Muito Perto. Em caso de sucesso, ele fica _Adormecido_ até sofrer dano ou até o Mestre gastar 1 de Medo no turno dele para remover essa condição.\n\n_Barragem Arcana:_ Uma vez por descanso, **gaste qualquer quantidade de Esperança** e dispare projéteis mágicos que atingem um alvo à sua escolha a até alcance Perto. Role um número de **d6s** igual à Esperança gasta e cause essa quantidade de dano mágico ao alvo.\n\n_Telepatia:_ **Gaste 1 de Esperança** para abrir uma linha de comunicação mental com um alvo que você possa ver. Essa conexão dura até o seu próximo descanso ou até você conjurar Telepatia novamente."
+ },
+ "Book of Tyfar": {
+  "n": "Livro de Tyfar",
+  "x": "_Chama Selvagem:_ Faça um **Teste de Conjuração** contra até três adversários a alcance Corpo a Corpo. Os alvos contra os quais você obtiver sucesso sofrem **2d6** de dano mágico e devem marcar 1 de Estresse enquanto chamas irrompem da sua mão.\n\n_Mão Mágica:_ Você conjura uma mão mágica, com o mesmo tamanho e força que a sua, a até alcance Longe.\n\n_Névoa Misteriosa:_ Faça um **Teste de Conjuração (13)** para conjurar uma névoa espessa temporária que se acumula em uma área fixa a até alcance Muito Perto. A névoa encobre totalmente essa área e tudo o que estiver nela."
+ },
+ "Book of Sitil": {
+  "n": "Livro de Sitil",
+  "x": "_Ajustar Aparência:_ Você altera magicamente sua aparência e suas roupas para evitar ser reconhecido.\n\n_Parallela:_ **Gaste 2 de Esperança** para conjurar esta magia em você ou em um aliado a até alcance Perto. Na próxima vez que o alvo fizer um ataque, ele pode atingir um alvo adicional dentro do alcance contra o qual seu teste de ataque teria sucesso. Você só pode manter esta magia em uma criatura por vez.\n\n_Ilusão:_ Faça um **Teste de Conjuração (14)**. Em caso de sucesso, crie uma ilusão visual temporária, não maior que você, a até alcance Perto, que dura enquanto você olhar para ela. Ela resiste a um exame atento até que um observador esteja a alcance Corpo a Corpo."
+ },
+ "Book of Vagras": {
+  "n": "Livro de Vagras",
+  "x": "_Tranca Rúnica:_ Faça um **Teste de Conjuração (15)** em um objeto que você esteja tocando e que possa ser fechado (como uma fechadura, um baú ou uma caixa). Uma vez por descanso, em caso de sucesso, você pode trancar o objeto de modo que ele só possa ser aberto por criaturas à sua escolha. Alguém com acesso a magia e uma hora para estudar a magia pode quebrá-la.\n\n_Porta Arcana:_ Quando não houver adversários a alcance Corpo a Corpo de você, faça um **Teste de Conjuração (13)**. Em caso de sucesso, **gaste 1 de Esperança** para criar um portal de onde você está até um ponto que você possa ver a até alcance Longe. Ele se fecha assim que uma criatura passa por ele.\n\n_Revelar:_ Faça um **Teste de Conjuração**. Se houver algo magicamente oculto a até alcance Perto, isso é revelado."
+ },
+ "Book of Korvax": {
+  "n": "Livro de Korvax",
+  "x": "_Levitação:_ Faça um **Teste de Conjuração** para erguer temporariamente no ar um alvo que você possa ver e movê-lo a até alcance Perto da posição original dele.\n\n_Retratação:_ **Gaste 1 de Esperança** para forçar um alvo a alcance Corpo a Corpo a fazer um Teste de Reação (15). Em caso de falha, ele esquece o último minuto da conversa com você.\n\n_Círculo Rúnico:_ **Marque 1 de Estresse** para criar um círculo mágico temporário no chão onde você está. Todos os adversários a alcance Corpo a Corpo, ou que entrarem no alcance Corpo a Corpo, sofrem **2d12+4** de dano mágico e são arremessados para alcance Muito Perto."
+ },
+ "Book of Norai": {
+  "n": "Livro de Norai",
+  "x": "_Amarra Mística:_ Faça um **Teste de Conjuração** contra um alvo a até alcance Longe. Em caso de sucesso, ele fica temporariamente _Contido_ e deve marcar 1 de Estresse. Se o alvo for uma criatura voadora, esta magia a derruba ao chão e a deixa temporariamente _Contida_.\n\n_Bola de Fogo:_ Faça um **Teste de Conjuração** contra um alvo a até alcance Muito Longe. Em caso de sucesso, arremesse em direção a ele uma esfera de fogo que explode no impacto. O alvo e todas as criaturas a até alcance Muito Perto dele devem fazer um Teste de Reação (13). Os alvos que falharem sofrem **d20+5** de dano mágico usando sua Proficiência. Os alvos que obtiverem sucesso sofrem metade do dano."
+ },
+ "Book of Exota": {
+  "n": "Livro de Exota",
+  "x": "_Repudiar:_ Você pode interromper um efeito mágico em andamento. Faça um teste de reação usando seu atributo de Conjuração. Uma vez por descanso, em caso de sucesso, o efeito cessa e quaisquer consequências são evitadas.\n\n_Criar Constructo:_ **Gaste 1 de Esperança** para escolher um grupo de objetos ao seu redor e criar a partir deles um constructo animado que obedece a comandos básicos. Faça um **Teste de Conjuração** para comandá-lo a agir. Quando necessário, ele compartilha sua Evasão e seus atributos, e os ataques dele causam **2d10+3** de dano físico. Você só pode manter um constructo por vez, e ele se desfaz ao sofrer qualquer quantidade de dano."
+ },
+ "Book of Grynn": {
+  "n": "Livro de Grynn",
+  "x": "_Deflexão Arcana:_ Uma vez por descanso longo, **gaste 1 de Esperança** para anular o dano de um ataque que tenha como alvo você ou um aliado a até alcance Muito Perto.\n\n_Trava Temporal:_ Escolha como alvo um objeto a até alcance Longe. Esse objeto para no tempo e no espaço exatamente onde está até o seu próximo descanso. Se uma criatura tentar movê-lo, faça um **Teste de Conjuração** contra ela para manter esta magia.\n\n_Muralha de Chamas:_ Faça um **Teste de Conjuração (15)**. Em caso de sucesso, crie uma muralha temporária de chamas mágicas entre dois pontos a até alcance Longe. Todas as criaturas no caminho dela devem escolher de que lado ficar, e qualquer coisa que depois atravesse a muralha sofre **4d10+3** de dano mágico."
+ },
+ "Manifest Wall": {
+  "n": "Manifestar Muralha",
+  "x": "Faça um **Teste de Conjuração (15)**. Uma vez por descanso, em caso de sucesso, **gaste 1 de Esperança** para criar uma muralha mágica temporária entre dois pontos a até alcance Longe. Ela pode ter até 15 metros (50 pés) de altura e se formar em qualquer ângulo. Criaturas ou objetos no caminho dela são empurrados para um lado à sua escolha. A muralha permanece de pé até o seu próximo descanso ou até você conjurar Manifestar Muralha novamente."
+ },
+ "Teleport": {
+  "n": "Teleporte",
+  "x": "Uma vez por descanso longo, você pode se teleportar instantaneamente, junto com qualquer quantidade de alvos voluntários a até alcance Perto, para um lugar onde já esteve. Escolha uma das opções a seguir e então faça um **Teste de Conjuração (16)**:\n\n- Se você conhece o lugar muito bem, receba +3 de bônus.\n- Se você visitou o lugar com frequência, receba +1 de bônus.\n- Se você visitou o lugar raramente, não recebe modificador.\n- Se você esteve lá apenas uma vez, receba -2 de penalidade.\n\nEm caso de sucesso, você aparece onde pretendia ir. Em caso de falha, você aparece fora do destino, e a margem da falha determina o quão longe dele."
+ },
+ "Banish": {
+  "n": "Banir",
+  "x": "Faça um **Teste de Conjuração** contra um alvo a até alcance Perto. Em caso de sucesso, role um número de **d20s** igual ao seu atributo de Conjuração. O alvo deve fazer um teste de reação com Dificuldade igual ao seu maior resultado. Em caso de sucesso, o alvo deve marcar 1 de Estresse, mas não é banido. Uma vez por descanso, em caso de falha, ele é banido deste reino.\n\nQuando os personagens rolarem com Medo, a Dificuldade recebe -1 de penalidade e o alvo faz outro teste de reação. Em caso de sucesso, ele retorna do banimento."
+ },
+ "Sigil of Retribution": {
+  "n": "Sigilo da Retribuição",
+  "x": "Marque um adversário a até alcance Perto com um sigilo da retribuição. O Mestre ganha 1 de Medo. Quando o adversário marcado causar dano a você ou a seus aliados, coloque um **d8** nesta carta. Você pode manter um número de **d8s** igual ao seu nível. Quando atacar com sucesso o adversário marcado, role os dados desta carta e some o total à sua rolagem de dano; depois, remova os dados. Este efeito termina quando o adversário marcado for derrotado ou quando você conjurar Sigilo da Retribuição novamente."
+ },
+ "Book of Homet": {
+  "n": "Livro de Homet",
+  "x": "_Atravessar:_ Faça um **Teste de Conjuração (13)**. Uma vez por descanso, em caso de sucesso, você e todas as criaturas que estiverem tocando você podem atravessar uma parede ou porta a até alcance Perto. O efeito termina assim que todos estiverem do outro lado.\n\n_Portal Planar:_ Faça um **Teste de Conjuração (14)**. Uma vez por descanso longo, em caso de sucesso, abra um portal para um local em outra dimensão ou plano de existência onde você já esteve. Esse portal dura até o seu próximo descanso."
+ },
+ "Codex-Touched": {
+  "n": "Tocado pelo Códice",
+  "x": "Quando 4 ou mais das cartas de domínio na sua mão forem do domínio Códice, receba os seguintes benefícios:\n\n- Você pode **marcar 1 de Estresse** para adicionar sua Proficiência a um Teste de Conjuração.\n- Uma vez por descanso, substitua esta carta por qualquer carta do seu cofre sem pagar o Custo de Recordação dela."
+ },
+ "Book of Vyola": {
+  "n": "Livro de Vyola",
+  "x": "_Mergulho na Memória:_ Faça um **Teste de Conjuração** contra um alvo a até alcance Longe. Em caso de sucesso, perscrute a mente do alvo e faça uma pergunta ao Mestre. O Mestre descreve quaisquer memórias que o alvo tenha relacionadas à resposta.\n\n_Clareza Compartilhada:_ Uma vez por descanso longo, **gaste 1 de Esperança** para escolher duas criaturas voluntárias. Quando uma delas for marcar Estresse, elas podem escolher qual das duas o marca. Esta magia dura até o próximo descanso delas."
+ },
+ "Safe Haven": {
+  "n": "Porto Seguro",
+  "x": "Quando tiver alguns minutos de calma para se concentrar, você pode **gastar 2 de Esperança** para invocar seu Porto Seguro, um grande lar interdimensional onde você e seus aliados podem se abrigar. Ao fazer isso, uma porta mágica aparece em algum lugar a até alcance Perto. Apenas criaturas à sua escolha podem entrar. Uma vez lá dentro, você pode tornar a entrada invisível. Você e qualquer outra pessoa lá dentro sempre podem sair. Depois que você sair, a porta precisa ser invocada novamente.\n\nQuando fizer um descanso dentro do seu próprio Porto Seguro, você pode escolher um movimento de período de descanso adicional."
+ },
+ "Book of Ronin": {
+  "n": "Livro de Ronin",
+  "x": "_Transformar:_ Faça um **Teste de Conjuração (15)**. Em caso de sucesso, transforme-se em um objeto inanimado com no máximo o dobro do seu tamanho normal. Você pode permanecer nessa forma até sofrer dano.\n\n_Enervação Eterna:_ Uma vez por descanso longo, faça um **Teste de Conjuração** contra um alvo a até alcance Perto. Em caso de sucesso, ele fica permanentemente _Vulnerável_. Ele não pode remover essa condição por nenhum meio."
+ },
+ "Disintegration Wave": {
+  "n": "Onda de Desintegração",
+  "x": "Faça um **Teste de Conjuração (18)**. Uma vez por descanso longo, em caso de sucesso, o Mestre informa quais adversários a até alcance Longe têm Dificuldade 18 ou menor. **Marque 1 de Estresse** para cada um que você quiser atingir com esta magia. Eles são mortos e não podem voltar à vida por nenhum meio."
+ },
+ "Book of Yarrow": {
+  "n": "Livro de Yarrow",
+  "x": "_Trava-Tempo:_ Faça um **Teste de Conjuração (18)**. Em caso de sucesso, o tempo desacelera temporariamente até parar para todos a até alcance Longe, exceto você. Ele volta a correr na próxima vez que você fizer um teste de ação que tenha como alvo outra criatura.\n\n_Imunidade Mágica:_ **Gaste 5 de Esperança** para se tornar imune a dano mágico até o seu próximo descanso."
+ },
+ "Transcendent Union": {
+  "n": "União Transcendente",
+  "x": "Uma vez por descanso longo, **gaste 5 de Esperança** para conjurar esta magia em duas ou mais criaturas voluntárias. Até o seu próximo descanso, quando uma criatura conectada por esta união for marcar Estresse ou Pontos de Vida, as criaturas conectadas podem escolher quem o marca."
+ },
+ "Deft Deceiver": {
+  "n": "Enganador Habilidoso",
+  "x": "**Gaste 1 de Esperança** para ter vantagem em um teste para enganar alguém ou levá-lo a acreditar em uma mentira que você contar."
+ },
+ "Enrapture": {
+  "n": "Arrebatar",
+  "x": "Faça um **Teste de Conjuração** contra um alvo a até alcance Perto. Em caso de sucesso, ele fica temporariamente _Arrebatado_. Enquanto estiver _Arrebatado_, a atenção do alvo fica fixa em você, estreitando seu campo de visão e abafando qualquer som que não seja a sua voz. Uma vez por descanso, em caso de sucesso, você pode **marcar 1 de Estresse** para forçar o alvo _Arrebatado_ a também marcar 1 de Estresse."
+ },
+ "Inspirational Words": {
+  "n": "Palavras Inspiradoras",
+  "x": "Sua fala é imbuída de poder. Depois de um descanso longo, coloque nesta carta um número de marcadores igual à sua Presença. Quando falar com um aliado, você pode gastar um marcador desta carta para conceder a ele um benefício entre as opções a seguir:\n\n- Seu aliado recupera 1 de Estresse.\n- Seu aliado recupera 1 Ponto de Vida.\n- Seu aliado ganha 1 de Esperança.\n\nQuando fizer um descanso longo, remova todos os marcadores não gastos."
+ },
+ "Tell No Lies": {
+  "n": "Não Minta",
+  "x": "Faça um **Teste de Conjuração** contra um alvo a até alcance Muito Perto. Em caso de sucesso, ele não pode mentir para você enquanto permanecer a até alcance Perto, mas não é obrigado a falar. Se você fizer uma pergunta e ele se recusar a responder, ele deve marcar 1 de Estresse e o efeito termina. Normalmente, o alvo não percebe que esta magia foi conjurada sobre ele até que ela o faça dizer a verdade."
+ },
+ "Troublemaker": {
+  "n": "Encrenqueiro",
+  "x": "Quando você provocar ou instigar um alvo a até alcance Longe, faça um **Teste de Presença** contra ele. Uma vez por descanso, em caso de sucesso, role um número de **d4s** igual à sua Proficiência. O alvo deve marcar Estresse igual ao maior resultado rolado."
+ },
+ "Hypnotic Shimmer": {
+  "n": "Cintilar Hipnótico",
+  "x": "Faça um **Teste de Conjuração** contra todos os adversários à sua frente a até alcance Perto. Uma vez por descanso, em caso de sucesso, crie uma ilusão de cores e luzes piscantes que deixa temporariamente _Atordoados_ os alvos contra os quais você obtiver sucesso e os força a marcar 1 de Estresse. Enquanto estiverem _Atordoados_, eles não podem usar reações nem realizar quaisquer outras ações até removerem essa condição."
+ },
+ "Invisibility": {
+  "n": "Invisibilidade",
+  "x": "Faça um **Teste de Conjuração (10)**. Em caso de sucesso, **marque 1 de Estresse** e escolha você ou um aliado a alcance Corpo a Corpo para ficar _Invisível_. Uma criatura _Invisível_ não pode ser vista, exceto por meios mágicos, e testes de ataque contra ela são feitos com desvantagem. Coloque nesta carta um número de marcadores igual ao seu atributo de Conjuração. Quando a criatura _Invisível_ realizar uma ação, gaste um marcador desta carta. Depois que a ação que gastar o último marcador for resolvida, o efeito termina.\n\nVocê só pode manter Invisibilidade em uma criatura por vez."
+ },
+ "Soothing Speech": {
+  "n": "Palavras Reconfortantes",
+  "x": "Durante um descanso curto, quando você dedicar tempo a confortar outro personagem enquanto usa nele o movimento de período de descanso Tratar Ferimentos, recupere 1 Ponto de Vida adicional desse personagem. Quando fizer isso, você também recupera 2 Pontos de Vida."
+ },
+ "Through Your Eyes": {
+  "n": "Através dos Seus Olhos",
+  "x": "Escolha um alvo a até alcance Muito Longe. Você pode ver pelos olhos dele e ouvir pelos ouvidos dele. Você pode alternar livremente entre usar seus próprios sentidos e os do alvo até conjurar outra magia ou até o seu próximo descanso."
+ },
+ "Thought Delver": {
+  "n": "Sondador de Pensamentos",
+  "x": "Você pode espiar a mente dos outros. **Gaste 1 de Esperança** para ler os pensamentos superficiais e vagos de um alvo a até alcance Longe. Faça um **Teste de Conjuração** contra o alvo para sondar pensamentos mais profundos e ocultos.\n\nEm uma rolagem com Medo, o alvo pode, a critério do Mestre, perceber que você está lendo os pensamentos dele."
+ },
+ "Words of Discord": {
+  "n": "Palavras de Discórdia",
+  "x": "Sussurre palavras de discórdia para um adversário a alcance Corpo a Corpo e faça um **Teste de Conjuração (13)**. Em caso de sucesso, o alvo deve marcar 1 de Estresse e fazer um ataque contra outro adversário, em vez de contra você ou seus aliados.\n\nAssim que esse ataque terminar, o alvo percebe o que aconteceu. Na próxima vez que você conjurar Palavras de Discórdia sobre ele, receba -5 de penalidade no Teste de Conjuração."
+ },
+ "Never Upstaged": {
+  "n": "Nunca Ofuscado",
+  "x": "Quando você marcar 1 ou mais Pontos de Vida por causa de um ataque, pode **marcar 1 de Estresse** para colocar nesta carta um número de marcadores igual ao número de Pontos de Vida que marcou. No seu próximo ataque bem-sucedido, receba +5 de bônus na sua rolagem de dano para cada marcador nesta carta e, em seguida, remova todos os marcadores."
+ },
+ "Share the Burden": {
+  "n": "Dividir o Fardo",
+  "x": "Uma vez por descanso, assuma o Estresse de uma criatura voluntária a alcance Corpo a Corpo. O alvo descreve quais conhecimentos íntimos ou emoções vazam telepaticamente da mente dele neste momento entre vocês. Transfira para você qualquer quantidade do Estresse marcado dele e, em seguida, ganhe 1 de Esperança para cada ponto de Estresse transferido."
+ },
+ "Endless Charisma": {
+  "n": "Carisma Infinito",
+  "x": "Depois de fazer um teste de ação para persuadir, mentir ou conquistar favores, você pode **gastar 1 de Esperança** para rolar novamente o Dado de Esperança ou o Dado de Medo."
+ },
+ "Grace-Touched": {
+  "n": "Tocado pela Graça",
+  "x": "Quando 4 ou mais das cartas de domínio na sua mão forem do domínio Graça, receba os seguintes benefícios:\n\n- Você pode **marcar 1 Espaço de Armadura** em vez de marcar 1 de Estresse.\n- Quando for forçar um alvo a marcar uma quantidade de Pontos de Vida, você pode, em vez disso, forçá-lo a marcar essa mesma quantidade de Estresse."
+ },
+ "Astral Projection": {
+  "n": "Projeção Astral",
+  "x": "Uma vez por descanso longo, **marque 1 de Estresse** para criar uma cópia projetada de si mesmo que pode aparecer em qualquer lugar onde você já esteve.\n\nVocê pode ver e ouvir através da projeção como se ela fosse você e afetar o mundo como se estivesse lá. Uma criatura que investigue a projeção consegue perceber que ela é de origem mágica. Este efeito dura até o seu próximo descanso ou até a projeção sofrer qualquer dano."
+ },
+ "Mass Enrapture": {
+  "n": "Arrebatamento em Massa",
+  "x": "Faça um **Teste de Conjuração** contra todos os alvos a até alcance Longe. Os alvos contra os quais você obtiver sucesso ficam temporariamente _Arrebatados_. Enquanto estiver _Arrebatado_, a atenção do alvo fica fixa em você, estreitando seu campo de visão e abafando qualquer som que não seja a sua voz. **Marque 1 de Estresse** para forçar todos os alvos _Arrebatados_ a marcar 1 de Estresse, encerrando esta magia."
+ },
+ "Copycat": {
+  "n": "Imitador",
+  "x": "Uma vez por descanso longo, esta carta pode imitar as características de outra carta de domínio de nível 8 ou menor na mão de outro jogador. **Gaste Esperança igual à metade do nível da carta** para ter acesso à característica. Isso dura até o seu próximo descanso ou até essa pessoa colocar a carta no cofre."
+ },
+ "Master of the Craft": {
+  "n": "Mestre do Ofício",
+  "x": "Receba +2 de bônus permanente em duas das suas Experiências ou +3 de bônus permanente em uma das suas Experiências. Em seguida, coloque esta carta no seu cofre permanentemente."
+ },
+ "Encore": {
+  "n": "Bis",
+  "x": "Quando um aliado a até alcance Perto causar dano a um adversário, você pode fazer um **Teste de Conjuração** contra esse mesmo alvo. Em caso de sucesso, você causa ao alvo o mesmo dano que seu aliado causou. Se seu Teste de Conjuração tiver sucesso com Medo, coloque esta carta no seu cofre."
+ },
+ "Notorious": {
+  "n": "Notório",
+  "x": "As pessoas sabem quem você é e o que você fez, e o tratam de forma diferente por causa disso. Quando usar sua notoriedade para conseguir o que quer, você pode **marcar 1 de Estresse** antes de rolar para receber +10 de bônus no resultado. Sua comida e sua bebida são sempre de graça aonde quer que você vá, e tudo o mais que você compra tem o preço reduzido em uma bolsa de ouro (até o mínimo de um punhado).\n\nEsta carta não conta para o limite máximo de 5 cartas de domínio na sua mão e não pode ser colocada no seu cofre."
+ }
+}

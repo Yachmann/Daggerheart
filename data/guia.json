@@ -1,0 +1,281 @@
+[
+{
+"id": "basico",
+"t": "O teste de Dualidade",
+"cap": "Ações e testes",
+"tags": [
+"teste",
+"dualidade",
+"rolagem",
+"2d12",
+"dificuldade",
+"esperanca",
+"medo",
+"critico"
+],
+"x": "Quando o resultado de algo for incerto e interessante, você faz um **Teste de Ação**: role os **Dados de Dualidade** — dois d12, um de **Esperança** e um de **Medo** — e some o atributo usado e os modificadores.\n\n- Se o total for **igual ou maior que a Dificuldade**, você tem sucesso.\n- O **dado mais alto** define o tom: resultado **com Esperança** (você ganha 1 de Esperança) ou **com Medo** (o mestre ganha 1 de Medo).\n- Se os dois dados mostram **o mesmo número**, é um **sucesso crítico**: sucesso automático, você ganha 1 de Esperança e recupera 1 de Estresse. Em ataques, o dano é crítico.\n\nOs quatro resultados possíveis são: sucesso com Esperança, sucesso com Medo, falha com Esperança e falha com Medo. Um resultado com Medo ou uma falha normalmente passa o holofote para o mestre."
+},
+{
+"id": "vantagem",
+"t": "Vantagem e desvantagem",
+"cap": "Ações e testes",
+"tags": [
+"vantagem",
+"desvantagem",
+"d6"
+],
+"x": "Com **vantagem**, role 1d6 e **some** ao total. Com **desvantagem**, role 1d6 e **subtraia**. Vantagens e desvantagens se cancelam uma a uma; você nunca rola mais de um dado de vantagem ou desvantagem no mesmo teste."
+},
+{
+"id": "experiencias",
+"t": "Experiências",
+"cap": "Ações e testes",
+"tags": [
+"experiencia",
+"bonus",
+"esperanca"
+],
+"x": "Experiências descrevem o que seu personagem viveu e sabe fazer. Quando uma Experiência for relevante para um teste, **gaste 1 de Esperança** para somar o bônus dela ao resultado. Você pode usar mais de uma Experiência no mesmo teste, pagando 1 de Esperança por cada.\n\nVocê começa com duas Experiências em +2 e ganha uma nova nos níveis 2, 5 e 8."
+},
+{
+"id": "reacao",
+"t": "Testes de Reação",
+"cap": "Ações e testes",
+"tags": [
+"reacao",
+"resistir",
+"evitar",
+"salvaguarda"
+],
+"x": "Um **Teste de Reação** acontece quando algo acontece com você e você tenta resistir ou evitar (por exemplo, um teste de Agilidade para escapar de uma explosão). Você rola os Dados de Dualidade contra a Dificuldade normalmente, mas **não ganha Esperança nem gera Medo**. Você pode usar Experiências gastando Esperança."
+},
+{
+"id": "esperanca",
+"t": "Esperança",
+"cap": "Esperança e Medo",
+"tags": [
+"esperanca",
+"hope",
+"gastar",
+"ajudar",
+"equipe"
+],
+"x": "Você tem até **6 de Esperança** (menos se tiver cicatrizes) e começa a campanha com 2. Ganha 1 sempre que rola **com Esperança** ou tem sucesso crítico, e ao **Preparar** num descanso.\n\nFormas comuns de gastar:\n\n- **Usar uma Experiência**: 1 de Esperança para somar o bônus.\n- **Ajudar um aliado**: 1 de Esperança para rolar um d6 de vantagem no teste de outro personagem (se vários ajudarem, vale o maior dado).\n- **Habilidade de Esperança da classe**: 3 de Esperança.\n- **Teste em Equipe**: uma vez por sessão, gaste 3 de Esperança para agir junto com outro personagem; os dois rolam e vocês escolhem qual resultado usar.\n- Cartas de domínio e habilidades que pedem Esperança."
+},
+{
+"id": "medo",
+"t": "Medo (do mestre)",
+"cap": "Esperança e Medo",
+"tags": [
+"medo",
+"fear",
+"mestre",
+"holofote"
+],
+"x": "O mestre acumula **Medo** (até 12) quando os jogadores rolam com Medo e quando o grupo descansa. Ele gasta Medo para fazer jogadas fortes: interromper vocês, usar habilidades poderosas de adversários, trazer complicações ou colocar mais adversários sob o holofote."
+},
+{
+"id": "holofote",
+"t": "Holofote e turnos",
+"cap": "Combate",
+"tags": [
+"holofote",
+"turno",
+"iniciativa",
+"acao",
+"vez"
+],
+"x": "Daggerheart não tem iniciativa nem ordem fixa de turnos. O **holofote** passa de um personagem para outro conforme a cena pede. Quando você age, descreve o que faz e rola se for preciso. O holofote passa para o mestre quando você **falha** ou rola **com Medo**, ou quando o mestre gasta Medo para tomá-lo."
+},
+{
+"id": "ataque",
+"t": "Atacar e causar dano",
+"cap": "Combate",
+"tags": [
+"ataque",
+"atacar",
+"dano",
+"proficiencia",
+"arma",
+"critico"
+],
+"x": "Para atacar, faça um Teste de Ação com o **atributo da sua arma** (ou de Conjuração, para magias) contra a **Dificuldade** do adversário.\n\nNo acerto, role o dano: **Proficiência × dado da arma + modificador**. Exemplo: Proficiência 2 e arma d8+2 → 2d8+2. A Proficiência só aumenta a quantidade de dados, não o modificador fixo.\n\n**Crítico:** some o valor máximo possível dos dados de dano ao resultado rolado."
+},
+{
+"id": "evasao",
+"t": "Evasão e ataques contra você",
+"cap": "Combate",
+"tags": [
+"evasao",
+"defesa",
+"ataque",
+"acerto"
+],
+"x": "Quando um adversário ataca você, o mestre rola um d20 + o bônus de ataque dele. Se o resultado for **igual ou maior que sua Evasão**, o ataque acerta."
+},
+{
+"id": "limiares",
+"t": "Dano, limiares e Pontos de Vida",
+"cap": "Combate",
+"tags": [
+"dano",
+"limiar",
+"limiares",
+"pv",
+"pontos de vida",
+"maior",
+"grave",
+"menor",
+"resistencia"
+],
+"x": "Compare o dano recebido com seus **limiares** (Maior / Grave):\n\n- Abaixo do limiar Maior: dano **Menor** → marque **1 PV**.\n- Igual ou acima do Maior: dano **Maior** → marque **2 PV**.\n- Igual ou acima do Grave: dano **Grave** → marque **3 PV**.\n- Regra opcional: dano igual ou maior que o **dobro** do limiar Grave marca **4 PV**.\n\nSeus limiares são os da armadura **somados ao seu nível**. Sem armadura, o limiar Maior é igual ao seu nível e o Grave ao dobro dele.\n\n**Resistência** reduz o dano à metade antes de comparar; **imunidade** ignora o dano."
+},
+{
+"id": "armadura",
+"t": "Armadura",
+"cap": "Combate",
+"tags": [
+"armadura",
+"espaco",
+"espacos",
+"reduzir",
+"dano"
+],
+"x": "Seu **Valor de Armadura** é o número de **espaços de Armadura**. Quando recebe dano, você pode **marcar 1 espaço** para reduzir a gravidade em um limiar (Grave vira Maior, Maior vira Menor, Menor vira nenhum). Só um espaço por ataque, salvo habilidades. Dano **direto** não pode ser reduzido por armadura. Espaços marcados são recuperados com a ação de descanso **Reparar armadura**."
+},
+{
+"id": "estresse",
+"t": "Estresse",
+"cap": "Combate",
+"tags": [
+"estresse",
+"stress",
+"vulneravel",
+"marcar"
+],
+"x": "Você marca **Estresse** quando habilidades pedem ou por consequências da cena. Você começa com 6 espaços.\n\n- Ao marcar o **último** espaço de Estresse, você fica **Vulnerável** até recuperar ao menos 1.\n- Se precisar marcar Estresse e não houver espaço livre, **marque 1 PV** no lugar."
+},
+{
+"id": "condicoes",
+"t": "Condições",
+"cap": "Combate",
+"tags": [
+"condicao",
+"condicoes",
+"vulneravel",
+"contido",
+"oculto"
+],
+"x": "- **Oculto**: ataques contra você têm desvantagem. Termina quando um inimigo te vê ou quando você ataca.\n- **Contido**: você não pode se mover, mas ainda pode agir.\n- **Vulnerável**: testes contra você têm vantagem.\n\nCondições **temporárias** podem ser removidas com uma ação adequada (normalmente um teste com Dificuldade definida pelo mestre). Cartas e adversários podem criar condições especiais."
+},
+{
+"id": "alcance",
+"t": "Alcance e movimento",
+"cap": "Combate",
+"tags": [
+"alcance",
+"distancia",
+"movimento",
+"mover",
+"perto",
+"longe",
+"corpo a corpo"
+],
+"x": "- **Corpo a Corpo**: ao alcance da mão ou da arma.\n- **Muito Perto**: cerca de 1,5 a 3 m.\n- **Perto**: cerca de 3 a 9 m.\n- **Longe**: cerca de 9 a 30 m.\n- **Muito Longe**: cerca de 30 a 90 m.\n- **Fora de Alcance**: além disso.\n\nComo parte de uma ação, você pode se mover até **Perto**. Mover-se mais longe sob pressão normalmente exige um teste de Agilidade."
+},
+{
+"id": "descanso",
+"t": "Descansos",
+"cap": "Descanso",
+"tags": [
+"descanso",
+"curto",
+"longo",
+"descansar",
+"recuperar",
+"preparar",
+"tempo livre"
+],
+"x": "Ao descansar, escolha **duas ações** (pode repetir a mesma). Você também pode trocar cartas entre mão e cofre sem custo.\n\n**Descanso curto** (cerca de 1 hora) — role 1d4 + patamar:\n\n- **Tratar ferimentos**: recupere PV (seus ou de um aliado).\n- **Aliviar o Estresse**: recupere Estresse.\n- **Reparar armadura**: recupere espaços de Armadura.\n- **Preparar**: ganhe 1 de Esperança (2 se preparar junto com aliados).\n\n**Descanso longo** (várias horas): as três primeiras ações recuperam **tudo**; Preparar funciona igual; e há **Trabalhar num projeto**.\n\nO mestre ganha **1d4 de Medo** num descanso curto e **1d4 + número de personagens** num descanso longo. Depois de três descansos curtos seguidos, o próximo precisa ser longo."
+},
+{
+"id": "cartas",
+"t": "Mão e cofre",
+"cap": "Cartas de domínio",
+"tags": [
+"carta",
+"cartas",
+"mao",
+"cofre",
+"recordacao",
+"dominio"
+],
+"x": "Você pode ter até **5 cartas de domínio na mão** (ativas). As demais ficam no **cofre** e não podem ser usadas.\n\nPara trazer uma carta do cofre para a mão **fora de um descanso**, marque Estresse igual ao **Custo de Recordação** (↺) dela. Durante um descanso, a troca é gratuita."
+},
+{
+"id": "morte",
+"t": "Movimentos de morte",
+"cap": "Morte",
+"tags": [
+"morte",
+"morrer",
+"ultimo pv",
+"cicatriz",
+"gloria"
+],
+"x": "Quando você marca seu **último Ponto de Vida**, escolha um movimento de morte:\n\n- **Chama da Glória**: faça uma última ação heroica, que é automaticamente um sucesso crítico; depois, seu personagem morre.\n- **Evitar a Morte**: você cai inconsciente e fica fora da cena. Role o Dado de Esperança: se o resultado for **igual ou menor que seu nível**, você ganha uma **cicatriz** (risque permanentemente 1 espaço de Esperança).\n- **Arriscar Tudo**: role os Dados de Dualidade. Se a Esperança for maior, você sobrevive e recupera PV e/ou Estresse somando o valor do Dado de Esperança. Se o Medo for maior, você morre. Se forem iguais, recupere todos os PV e o Estresse."
+},
+{
+"id": "nivel",
+"t": "Subir de nível",
+"cap": "Progressão",
+"tags": [
+"nivel",
+"subir",
+"avanco",
+"patamar",
+"proficiencia",
+"multiclasse"
+],
+"x": "A cada nível:\n\n1. **Conquistas de patamar** — nos níveis **2, 5 e 8**: nova Experiência em +2 e +1 de Proficiência. Nos níveis 5 e 8, as marcas de atributos são limpas.\n2. **Dois avanços** à sua escolha: +1 em dois atributos não marcados, +1 espaço de PV, +1 espaço de Estresse, +1 em duas Experiências, carta de domínio adicional, +1 em Evasão; a partir do patamar 3 também carta de subclasse aprimorada, +1 de Proficiência ou multiclasse (estes dois últimos contam como os dois avanços).\n3. **Limiares** sobem 1.\n4. **Nova carta de domínio** de nível igual ou menor que o seu. Você pode também trocar uma carta antiga por outra de nível igual ou menor.\n\n**Patamares:** 1 (nível 1), 2 (níveis 2 a 4), 3 (5 a 7), 4 (8 a 10)."
+},
+{
+"id": "multiclasse",
+"t": "Multiclasse",
+"cap": "Progressão",
+"tags": [
+"multiclasse",
+"segunda classe",
+"dominio"
+],
+"x": "A partir do nível 5, o avanço **Multiclasse** (que conta como os dois avanços do nível) permite escolher uma segunda classe: você ganha a **habilidade de classe** dela, a **Fundação** de uma das subclasses e acesso a **um dos domínios** dela. Cartas desse domínio vão só até **metade do seu nível**, arredondado para cima. No mesmo patamar, multiclasse e carta de subclasse aprimorada se excluem."
+},
+{
+"id": "ouro",
+"t": "Ouro",
+"cap": "Equipamento",
+"tags": [
+"ouro",
+"punhado",
+"bolsa",
+"bau",
+"dinheiro"
+],
+"x": "O ouro é contado de forma abstrata: **10 punhados = 1 bolsa** e **10 bolsas = 1 baú**. Você começa com um punhado."
+},
+{
+"id": "armas",
+"t": "Armas e empunhadura",
+"cap": "Equipamento",
+"tags": [
+"arma",
+"primaria",
+"secundaria",
+"duas maos",
+"uma mao",
+"empunhadura",
+"magica"
+],
+"x": "Você pode portar uma **arma primária de duas mãos**, ou uma **primária de uma mão** e uma **secundária**. Armas **mágicas** só podem ser usadas por personagens com atributo de Conjuração. Trocar a arma equipada em situação de perigo custa 1 de Estresse."
+}
+]

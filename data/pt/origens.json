@@ -1,0 +1,1054 @@
+{
+ "classes": {
+  "Bard": {
+   "n": "Bardo",
+   "desc": "Os bardos são as pessoas mais carismáticas de todos os reinos. Os membros desta classe são mestres da cativação e se especializam em vários tipos de apresentação, incluindo cantar, tocar instrumentos musicais, tecer histórias ou contar piadas. Seja se apresentando para uma plateia ou falando com um único indivíduo, os bardos prosperam em situações sociais. Os membros desta profissão criam laços e treinam em escolas ou guildas, mas uma corrente de egocentrismo percorre aqueles de inclinação bárdica. Embora talvez sejam a classe mais propensa a unir as pessoas, um bardo de mau temperamento pode, com a mesma facilidade, destruir um grupo.",
+   "items": "Um romance ou uma carta nunca aberta",
+   "hope": {
+    "n": "Fazer uma Cena",
+    "t": "**Gaste 3 de Esperança** para _Distrair_ temporariamente um alvo dentro do alcance Perto, dando a ele uma penalidade de -2 em sua Dificuldade."
+   },
+   "feats": [
+    {
+     "n": "Inspirar",
+     "t": "Uma vez por sessão, descreva como você inspira o grupo e dê a si mesmo e a cada um de seus aliados um Dado de Inspiração. No nível 1, seu Dado de Inspiração é um **d6**. Um personagem pode gastar seu Dado de Inspiração para rolá-lo, somando o resultado ao seu teste de ação, teste de reação, rolagem de dano, ou para recuperar uma quantidade de Estresse igual ao resultado. No fim de cada sessão, descarte todos os Dados de Inspiração não gastos. No nível 5, seu Dado de Inspiração aumenta para um **d8**."
+    }
+   ],
+   "questions": [
+    "Quem da sua comunidade ensinou você a ter tanta confiança em si mesmo?",
+    "Você já se apaixonou uma vez. Por quem você era apaixonado, e como essa pessoa magoou você?",
+    "Você sempre admirou outro bardo. Quem é ele, e por que você o idolatra?"
+   ],
+   "connections": [
+    "O que fez você perceber que seríamos tão bons amigos?",
+    "O que eu faço que irrita você?",
+    "Por que você segura minha mão à noite?"
+   ]
+  },
+  "Druid": {
+   "n": "Druida",
+   "desc": "Tornar-se druida é mais do que uma ocupação; é um chamado para aqueles que desejam aprender com a magia da natureza selvagem e protegê-la. Embora alguém possa subestimar um druida gentil que pratica o trabalho, muitas vezes silencioso, de cultivar a flora, os druidas que canalizam as forças indomadas da natureza são aterrorizantes de se ver. Os druidas cultivam suas habilidades em pequenos grupos, muitas vezes ligados por um ethos ou local específico, mas alguns preferem trabalhar sozinhos. Por meio de anos de estudo e dedicação, os druidas podem aprender a se transformar em feras e a moldar a própria natureza.",
+   "items": "Uma bolsinha de pedras e ossos ou um pingente estranho encontrado na terra",
+   "hope": {
+    "n": "Evolução",
+    "t": "**Gaste 3 de Esperança** para se transformar em uma Forma Bestial sem marcar Estresse. Ao fazer isso, escolha um atributo para aumentar em +1 até você sair dessa Forma Bestial."
+   },
+   "feats": [
+    {
+     "n": "Forma Bestial",
+     "t": "Marque 1 de Estresse para se transformar magicamente em uma criatura do seu patamar ou inferior da lista de Formas Bestiais. Você pode sair dessa forma a qualquer momento. Enquanto transformado, você não pode usar armas nem conjurar magias de cartas de domínio, mas ainda pode usar outras características ou habilidades a que tenha acesso. Magias que você conjurou antes de se transformar permanecem ativas e duram pelo tempo normal, e você pode falar e se comunicar normalmente. Além disso, você ganha as características da Forma Bestial, soma o bônus de Evasão dela à sua Evasão e usa o atributo especificado nas estatísticas dela para o seu ataque. Enquanto estiver em uma Forma Bestial, sua armadura se torna parte do seu corpo e você marca Espaços de Armadura normalmente; quando você sai de uma Forma Bestial, esses Espaços de Armadura marcados permanecem marcados. Se você marcar seu último Ponto de Vida, sai automaticamente dessa forma."
+    },
+    {
+     "n": "Toque Selvagem",
+     "t": "Você pode realizar efeitos inofensivos e sutis que envolvem a natureza — como fazer uma flor crescer rapidamente, invocar uma leve rajada de vento ou acender uma fogueira — à vontade."
+    }
+   ],
+   "questions": [
+    "Por que a comunidade em que você cresceu dependia tanto da natureza e de suas criaturas?",
+    "Qual foi o primeiro animal selvagem com quem você criou um laço? Por que esse laço terminou?",
+    "Quem vem tentando caçar você? O que essa pessoa quer de você?"
+   ],
+   "connections": [
+    "O que você me confidenciou que me faz saltar no perigo por você todas as vezes?",
+    "Com que animal eu digo que você se parece?",
+    "Que apelido carinhoso você me deu?"
+   ]
+  },
+  "Guardian": {
+   "n": "Guardião",
+   "desc": "O título de guardião representa uma variedade de profissões marciais, dizendo mais sobre sua bússola moral e fortaleza inabalável do que sobre os meios pelos quais lutam. Embora muitos guardiões se juntem a grupos militantes por um país ou causa, é mais provável que sigam aqueles poucos de quem realmente gostam, não importa o que a maioria pense. Os guardiões são conhecidos por lutar com ferocidade notável mesmo contra probabilidades esmagadoras, defendendo seus companheiros acima de tudo. Ai daqueles que ferem o aliado de um guardião, pois o guardião responderá a essa ofensa na mesma moeda.",
+   "items": "Um totem do seu mentor ou uma chave secreta",
+   "hope": {
+    "n": "Tanque da Linha de Frente",
+    "t": "**Gaste 3 de Esperança** para recuperar 2 Espaços de Armadura."
+   },
+   "feats": [
+    {
+     "n": "Imparável",
+     "t": "Uma vez por descanso longo, você pode se tornar _Imparável._ Você ganha um Dado Imparável. No nível 1, seu Dado Imparável é um **d4.** Coloque-o na sua ficha de personagem no espaço indicado, começando com a face 1 para cima. Depois de fazer uma rolagem de dano que cause 1 ou mais Pontos de Vida a um alvo, aumente o valor do Dado Imparável em um. Quando o valor do dado fosse exceder seu valor máximo ou quando a cena terminar, remova o dado e deixe de estar _Imparável_. No nível 5, seu Dado Imparável aumenta para um **d6.**\n\nEnquanto estiver _Imparável_, você ganha os seguintes benefícios:\n\n- Você reduz a gravidade do dano físico em um limiar (Grave para Maior, Maior para Menor, Menor para Nenhum).\n- Você soma o valor atual do Dado Imparável à sua rolagem de dano.\n- Você não pode ficar _Contido_ nem _Vulnerável_.\n\n> _**Dica:** Se o seu Dado Imparável for um d4 e o 4 estiver virado para cima, você remove o dado na próxima vez que fosse aumentá-lo. Porém, se o seu Dado Imparável tiver aumentado para um d6 e o 4 estiver virado para cima, você o virará para 5 na próxima vez que fosse aumentá-lo. Nesse caso, você removerá o dado depois que precisasse aumentá-lo além de 6._"
+    }
+   ],
+   "questions": [
+    "Quem da sua comunidade você não conseguiu proteger, e por que ainda pensa nessa pessoa?",
+    "Você foi encarregado de proteger algo importante e entregá-lo em algum lugar perigoso. O que é, e para onde precisa ir?",
+    "Você considera um aspecto de si mesmo uma fraqueza. Qual é, e como isso afetou você?"
+   ],
+   "connections": [
+    "Como eu salvei sua vida na primeira vez em que nos encontramos?",
+    "Que pequeno presente você me deu que percebe que eu sempre carrego comigo?",
+    "Que mentira você me contou sobre si mesmo em que eu acredito plenamente?"
+   ]
+  },
+  "Ranger": {
+   "n": "Patrulheiro",
+   "desc": "Os patrulheiros são caçadores altamente habilidosos que, apesar de suas habilidades marciais, raramente oferecem seus talentos a um exército. Por meio do domínio do corpo e de uma compreensão profunda da natureza selvagem, os patrulheiros se tornam táticos astutos, perseguindo suas presas com esperteza e paciência. Muitos patrulheiros rastreiam e lutam ao lado de um companheiro animal com quem forjaram um poderoso laço espiritual. Ao aprimorar suas habilidades na natureza, os patrulheiros se tornam rastreadores especialistas, tão propensos a prender seus inimigos em uma armadilha quanto a atacá-los de frente.",
+   "items": "Um troféu da sua primeira caça ou uma bússola aparentemente quebrada",
+   "hope": {
+    "n": "Contê-los",
+    "t": "**Gaste 3 de Esperança** quando tiver sucesso em um ataque com uma arma para usar essa mesma rolagem contra dois adversários adicionais dentro do alcance do ataque."
+   },
+   "feats": [
+    {
+     "n": "Foco do Patrulheiro",
+     "t": "**Gaste 1 de Esperança** e faça um ataque contra um alvo. Em um sucesso, cause o dano normal do seu ataque e torne temporariamente o alvo do ataque o seu _Foco_. Até esta característica terminar ou você tornar outra criatura o seu _Foco_, você ganha os seguintes benefícios contra o seu _Foco:_\n\n- Você sabe exatamente em que direção ele está.\n- Quando você causa dano a ele, ele deve marcar 1 de Estresse.\n- Quando você falha em um ataque contra ele, pode encerrar sua característica Foco do Patrulheiro para rolar novamente seus Dados de Dualidade."
+    }
+   ],
+   "questions": [
+    "Uma criatura terrível feriu sua comunidade, e você jurou caçá-la. O que ela é, e que rastro ou sinal único ela deixa para trás?",
+    "Sua primeira caça quase matou você também. O que era, e que parte de você nunca mais foi a mesma depois desse evento?",
+    "Você já viajou por muitas terras perigosas, mas qual é o único lugar aonde você se recusa a ir?"
+   ],
+   "connections": [
+    "Que competição amigável existe entre nós?",
+    "Por que você age de maneira diferente quando estamos sozinhos e quando há outras pessoas por perto?",
+    "Que ameaça você me pediu para vigiar, e por que ela preocupa você?"
+   ]
+  },
+  "Rogue": {
+   "n": "Ladino",
+   "desc": "Os ladinos são canalhas, muitas vezes tanto na atitude quanto na prática. Amplamente conhecidos como mentirosos e ladrões, os melhores desta classe circulam pelo mundo anonimamente. Usando sua sagacidade e suas lâminas afiadas, os ladinos enganam seus inimigos por meio de manipulação social com a mesma facilidade com que arrombam fechaduras, escalam janelas ou desferem golpes traiçoeiros. Esses mestres da arte mágica manipulam sombras e movimento, acrescentando uma variedade de ferramentas úteis e mortais ao seu repertório. Os ladinos frequentemente fundam guildas para conhecer futuros cúmplices, contratar serviços e aprimorar habilidades secretas, provando que existe honra entre ladrões para quem sabe onde procurar.",
+   "items": "Um kit de ferramentas de falsificação ou um gancho de escalada",
+   "hope": {
+    "n": "Esquiva do Ladino",
+    "t": "**Gaste 3 de Esperança** para ganhar um bônus de +2 na sua Evasão até a próxima vez que um ataque tiver sucesso contra você. Caso contrário, esse bônus dura até o seu próximo descanso."
+   },
+   "feats": [
+    {
+     "n": "Encoberto",
+     "t": "Sempre que você fosse ficar _Oculto,_ em vez disso você fica _Encoberto._ Além dos benefícios da condição _Oculto_, enquanto estiver _Encoberto_ você permanece sem ser visto se estiver parado quando um adversário se move para onde normalmente veria você. Depois que você faz um ataque ou termina um movimento dentro da linha de visão de um adversário, deixa de estar _Encoberto_."
+    },
+    {
+     "n": "Ataque Furtivo",
+     "t": "Quando você tiver sucesso em um ataque enquanto estiver _Encoberto_ ou enquanto um aliado estiver dentro do alcance Corpo a Corpo do seu alvo, some à sua rolagem de dano uma quantidade de **d6** igual ao seu patamar.\n\n- Nível 1 → Patamar 1\n- Níveis 2-4 → Patamar 2\n- Níveis 5-7 → Patamar 3\n- Níveis 8-10 → Patamar 4"
+    }
+   ],
+   "questions": [
+    "O que você foi pego fazendo que fez com que fosse exilado da sua comunidade natal?",
+    "Você costumava ter uma vida diferente, mas tentou deixá-la para trás. Quem do seu passado ainda está perseguindo você?",
+    "De quem do seu passado você ficou mais triste em se despedir?"
+   ],
+   "connections": [
+    "O que eu convenci você a fazer recentemente que colocou nós dois em apuros?",
+    "O que eu descobri sobre o seu passado que mantenho em segredo dos outros?",
+    "Quem você conhece do meu passado, e como essa pessoa influenciou seus sentimentos em relação a mim?"
+   ]
+  },
+  "Seraph": {
+   "n": "Serafim",
+   "desc": "Os serafins são combatentes e curandeiros divinos imbuídos de um propósito sagrado. Uma grande variedade de divindades existe nos reinos, e, portanto, inúmeros tipos de serafins são designados por esses deuses. Seu ethos tradicionalmente se alinha ao domínio ou aos objetivos de seu deus, como defender os fracos, executar vingança, proteger uma terra ou um artefato, ou sustentar uma fé específica. Alguns serafins se aliam a um exército ou local, para grande satisfação de seus governantes, mas outros cruzados lutam em oposição às loucuras do Reino Mortal. É melhor ser aliado de um serafim do que seu inimigo, pois eles são adversários aterrorizantes para aqueles que desafiam seu propósito.",
+   "items": "Um maço de oferendas ou um sigilo do seu deus",
+   "hope": {
+    "n": "Suporte Vital",
+    "t": "**Gaste 3 de Esperança** para recuperar 1 Ponto de Vida de um aliado dentro do alcance Perto."
+   },
+   "feats": [
+    {
+     "n": "Dados de Prece",
+     "t": "No início de cada sessão, role uma quantidade de **d4** igual ao atributo de Conjuração da sua subclasse e coloque-os na sua ficha de personagem no espaço indicado. Esses são os seus Dados de Prece. Você pode gastar qualquer quantidade de Dados de Prece para ajudar a si mesmo ou a um aliado dentro do alcance Longe. Você pode usar o valor de um dado gasto para reduzir o dano recebido, somar ao resultado de uma rolagem depois que ela é feita, ou ganhar Esperança igual ao resultado. No fim de cada sessão, descarte todos os Dados de Prece não gastos."
+    }
+   ],
+   "questions": [
+    "A qual deus você se dedicou? Que feito incrível ele realizou por você em um momento de desespero?",
+    "Como sua aparência mudou depois que você fez seu juramento?",
+    "De que maneira estranha ou única você se comunica com seu deus?"
+   ],
+   "connections": [
+    "Que promessa você me fez concordar em cumprir, caso você morra no campo de batalha?",
+    "Por que você me faz tantas perguntas sobre o meu deus?",
+    "Você me disse para proteger um membro do nosso grupo acima de todos os outros, até de você mesmo. Quem é, e por quê?"
+   ]
+  },
+  "Sorcerer": {
+   "n": "Feiticeiro",
+   "desc": "Nem todos os usuários de magia inata escolhem aprimorar sua arte, mas aqueles que o fazem podem se tornar feiticeiros poderosos. Os dons desses portadores são transmitidos por famílias, mesmo que a família não tenha consciência deles ou relute em praticá-los. As habilidades de um feiticeiro podem ir do elemental ao ilusório e além, e muitos praticantes se reúnem em coletivos com base em seus talentos. Tornar-se um feiticeiro formidável não é a prática de adquirir poder, mas de aprender a cultivar e controlar o poder que já se possui. A magia de um feiticeiro desorientado ou indisciplinado é, de fato, uma força perigosa.",
+   "items": "Um orbe sussurrante ou uma herança de família",
+   "hope": {
+    "n": "Magia Volátil",
+    "t": "**Gaste 3 de Esperança** para rolar novamente qualquer quantidade dos seus dados de dano em um ataque que cause dano mágico."
+   },
+   "feats": [
+    {
+     "n": "Sentido Arcano",
+     "t": "Você consegue sentir a presença de pessoas e objetos mágicos dentro do alcance Perto."
+    },
+    {
+     "n": "Ilusão Menor",
+     "t": "Faça um **Teste de Conjuração (10).** Em um sucesso, você cria uma ilusão visual menor, não maior do que você, dentro do alcance Perto. Essa ilusão é convincente para qualquer um a uma distância Perto ou maior."
+    },
+    {
+     "n": "Canalizar Poder Bruto",
+     "t": "Uma vez por descanso longo, você pode colocar uma carta de domínio da sua mão no seu cofre e escolher entre:\n\n- Ganhar Esperança igual ao nível da carta.\n- Potencializar uma magia que causa dano, ganhando um bônus na sua rolagem de dano igual ao dobro do nível da carta."
+    }
+   ],
+   "questions": [
+    "O que você fez que deixou as pessoas da sua comunidade desconfiadas de você?",
+    "Que mentor ensinou você a controlar sua magia indomada, e por que ele não pode mais guiar você?",
+    "Você tem um medo profundo que esconde de todos. Qual é, e por que ele assusta você?"
+   ],
+   "connections": [
+    "Por que você confia tanto em mim?",
+    "O que eu fiz que deixa você cauteloso perto de mim?",
+    "Por que mantemos nosso passado em comum em segredo?"
+   ]
+  },
+  "Warrior": {
+   "n": "Guerreiro",
+   "desc": "Tornar-se guerreiro exige anos, muitas vezes uma vida inteira, de treinamento e dedicação ao domínio das armas e da violência. Embora muitos que buscam lutar aprimorem apenas sua força, os guerreiros entendem a importância de um corpo e uma mente ágeis, o que os torna alguns dos combatentes mais procurados em todos os reinos. Com frequência, os guerreiros encontram emprego em um exército, em um bando de mercenários ou até em uma guarda real, mas seu potencial é desperdiçado em qualquer posição em que não possam continuar a aprimorar e expandir suas habilidades. Os guerreiros são conhecidos por ter uma arma favorita; ficar entre eles e sua lâmina seria um erro grave.",
+   "items": "O desenho de um amor ou uma pedra de amolar",
+   "hope": {
+    "n": "Sem Piedade",
+    "t": "**Gaste 3 de Esperança** para ganhar um bônus de +1 nos seus testes de ataque até o seu próximo descanso."
+   },
+   "feats": [
+    {
+     "n": "Ataque de Oportunidade",
+     "t": "Se um adversário dentro do alcance Corpo a Corpo tentar sair desse alcance, faça um teste de reação usando um atributo à sua escolha contra a Dificuldade dele. Escolha um efeito em um sucesso, ou dois se obtiver um sucesso crítico:\n\n- Ele não pode se mover de onde está.\n- Você causa a ele dano igual ao dano da sua arma primária.\n- Você se move junto com ele."
+    },
+    {
+     "n": "Treinamento de Combate",
+     "t": "Você ignora a empunhadura ao equipar armas. Quando você causa dano físico, ganha um bônus na sua rolagem de dano igual ao seu nível."
+    }
+   ],
+   "questions": [
+    "Quem ensinou você a lutar, e por que essa pessoa ficou para trás quando você saiu de casa?",
+    "Alguém derrotou você em batalha anos atrás e o deixou para morrer. Quem foi, e como essa pessoa traiu você?",
+    "Que lugar lendário você sempre quis visitar, e por que ele é tão especial?"
+   ],
+   "connections": [
+    "Nós nos conhecíamos muito antes de este grupo se formar. Como?",
+    "Com que tarefa mundana você costuma me ajudar fora do campo de batalha?",
+    "Que medo eu estou ajudando você a superar?"
+   ]
+  },
+  "Wizard": {
+   "n": "Mago",
+   "desc": "Seja por meio de uma instituição ou de estudo individual, aqueles conhecidos como magos adquirem e aprimoram imenso poder mágico ao longo de anos de aprendizado, usando uma variedade de ferramentas, incluindo livros, pedras, poções e ervas. Alguns magos dedicam a vida a dominar uma escola de magia específica, enquanto outros aprendem com uma grande variedade de disciplinas. Muitos magos se tornam figuras sábias e poderosas em suas comunidades, aconselhando governantes, fornecendo remédios e cura, e até liderando conselhos de guerra. Embora todos esses magos trabalhem em direção ao objetivo comum de reunir conhecimento mágico, os magos costumam ter os maiores conflitos dentro de suas próprias fileiras, pois a aquisição, a guarda e o compartilhamento de segredos poderosos são tema de intenso debate que já resultou em inúmeras mortes.",
+   "items": "Um livro que você está tentando traduzir ou um minúsculo e inofensivo bichinho elemental",
+   "hope": {
+    "n": "Não Desta Vez",
+    "t": "**Gaste 3 de Esperança** para forçar um adversário dentro do alcance Longe a rolar novamente um teste de ataque ou uma rolagem de dano."
+   },
+   "feats": [
+    {
+     "n": "Prestidigitação",
+     "t": "Você pode realizar efeitos mágicos inofensivos e sutis à vontade. Por exemplo, você pode mudar a cor de um objeto, criar um cheiro, acender uma vela, fazer um objeto minúsculo flutuar, iluminar um cômodo ou consertar um objeto pequeno."
+    },
+    {
+     "n": "Padrões Estranhos",
+     "t": "Escolha um número entre 1 e 12. Quando você rolar esse número em um Dado de Dualidade, ganhe 1 de Esperança ou recupere 1 de Estresse.\n\nVocê pode mudar esse número quando fizer um descanso longo."
+    }
+   ],
+   "questions": [
+    "Por quais responsabilidades sua comunidade um dia contou com você? Como você a decepcionou?",
+    "Você passou a vida procurando um livro ou objeto de grande importância. O que é, e por que é tão importante para você?",
+    "Você tem um rival poderoso. Quem é ele, e por que você está tão determinado a derrotá-lo?"
+   ],
+   "connections": [
+    "Que favor eu pedi a você que você não tem certeza de que consegue cumprir?",
+    "Que hobby esquisito ou fascínio estranho nós dois compartilhamos?",
+    "Que segredo sobre si mesmo você confiou apenas a mim?"
+   ]
+  }
+ },
+ "subclasses": {
+  "Troubadour": {
+   "n": "Trovador",
+   "f": [
+    {
+     "n": "Artista Talentoso",
+     "t": "Você pode tocar três tipos diferentes de canções, cada uma uma vez por descanso longo; descreva como você se apresenta para os outros para obter o benefício indicado:\n\n- _Canção Relaxante:_ Você e todos os aliados dentro do alcance Perto recuperam 1 Ponto de Vida.\n- _Canção Épica:_ Torne um alvo dentro do alcance Perto temporariamente _Vulnerável._\n- _Canção Comovente:_ Você e todos os aliados dentro do alcance Perto ganham 1 de Esperança."
+    }
+   ],
+   "s": [
+    {
+     "n": "Maestro",
+     "t": "Suas canções de inspiração fortalecem a coragem de quem as ouve. Quando você dá um Dado de Inspiração a um aliado, ele pode ganhar 1 de Esperança ou recuperar 1 de Estresse."
+    }
+   ],
+   "m": [
+    {
+     "n": "Virtuose",
+     "t": "Você está entre os maiores de seu ofício e sua habilidade não tem limites. Você pode executar cada uma das canções da sua característica \"Artista Talentoso\" duas vezes por descanso longo."
+    }
+   ]
+  },
+  "Wordsmith": {
+   "n": "Artífice das Palavras",
+   "f": [
+    {
+     "n": "Discurso Arrebatador",
+     "t": "Uma vez por descanso longo, você pode fazer um discurso sincero e inspirador. Todos os aliados dentro do alcance Longe recuperam 2 de Estresse."
+    },
+    {
+     "n": "Coração de Poeta",
+     "t": "Depois de fazer um teste de ação para impressionar, persuadir ou ofender alguém, você pode **gastar 1 de Esperança** para somar um **d4** ao teste."
+    }
+   ],
+   "s": [
+    {
+     "n": "Eloquente",
+     "t": "Suas palavras comoventes elevam o moral. Uma vez por sessão, quando você encoraja um aliado, pode fazer uma das seguintes opções:\n\n- Permitir que ele encontre um objeto ou ferramenta mundana de que precisa.\n- Ajudar um Aliado sem gastar Esperança.\n- Dar a ele um movimento de período de descanso adicional durante o próximo descanso dele."
+    }
+   ],
+   "m": [
+    {
+     "n": "Poesia Épica",
+     "t": "Seu Dado de Inspiração aumenta para um **d10.** Além disso, quando você Ajuda um Aliado, pode narrar o momento como se estivesse escrevendo a história do heroísmo dele em um livro de memórias. Ao fazer isso, role um **d10** como seu dado de vantagem."
+    }
+   ]
+  },
+  "Warden of the Elements": {
+   "n": "Protetor dos Elementos",
+   "f": [
+    {
+     "n": "Encarnação Elemental",
+     "t": "**Marque 1 de Estresse** para _Canalizar_ um dos seguintes elementos até sofrer dano Grave ou até o seu próximo descanso:\n\n- _Fogo:_ Quando um adversário dentro do alcance Corpo a Corpo causa dano a você, ele sofre **1d10** de dano mágico.\n- _Terra:_ Ganhe um bônus nos seus Limiares de Dano igual à sua Proficiência.\n- _Água:_ Quando você causa dano a um adversário dentro do alcance Corpo a Corpo, todos os outros adversários dentro do alcance Muito Perto devem marcar 1 de Estresse.\n- _Ar:_ Você pode pairar no ar, ganhando vantagem em testes de Agilidade."
+    }
+   ],
+   "s": [
+    {
+     "n": "Aura Elemental",
+     "t": "Uma vez por descanso, enquanto estiver _Canalizando_, você pode assumir uma aura correspondente ao seu elemento. A aura afeta alvos dentro do alcance Perto até sua _Canalização_ terminar.\n\n- _Fogo:_ Quando um adversário marca 1 ou mais Pontos de Vida, ele também deve marcar 1 de Estresse.\n- _Terra:_ Seus aliados ganham um bônus de +1 em Força.\n- _Água:_ Quando um adversário causa dano a você, você pode **marcar 1 de Estresse** para movê-lo para qualquer lugar dentro do alcance Muito Perto de onde ele está.\n- _Ar:_ Quando você ou um aliado sofre dano de um ataque além do alcance Corpo a Corpo, reduza o dano em **1d8**."
+    }
+   ],
+   "m": [
+    {
+     "n": "Domínio Elemental",
+     "t": "Você incorpora ainda mais o seu elemento. Enquanto estiver _Canalizando_, você ganha o seguinte benefício:\n\n- _Fogo:_ Você ganha um bônus de +1 na sua Proficiência para ataques e magias que causam dano.\n- _Terra:_ Quando você fosse marcar Pontos de Vida, role um **d6** por Ponto de Vida marcado. Para cada resultado 6, reduza em 1 a quantidade de Pontos de Vida que você marca.\n- _Água:_ Quando um ataque contra você tem sucesso, você pode **marcar 1 de Estresse** para tornar o atacante temporariamente _Vulnerável_.\n- _Ar:_ Você ganha um bônus de +1 na sua Evasão e pode voar."
+    }
+   ]
+  },
+  "Warden of Renewal": {
+   "n": "Protetor da Renovação",
+   "f": [
+    {
+     "n": "Clareza da Natureza",
+     "t": "Uma vez por descanso longo, você pode criar um espaço de serenidade natural dentro do alcance Perto. Quando você passa alguns minutos descansando nesse espaço, recupere Estresse igual ao seu Instinto, distribuído como quiser entre você e seus aliados."
+    },
+    {
+     "n": "Regeneração",
+     "t": "Toque uma criatura e **gaste 3 de Esperança.** Essa criatura recupera **1d4** Pontos de Vida."
+    }
+   ],
+   "s": [
+    {
+     "n": "Alcance Regenerativo",
+     "t": "Você pode escolher como alvo criaturas dentro do alcance Muito Perto com sua característica \"Regeneração\"."
+    },
+    {
+     "n": "Proteção do Protetor",
+     "t": "Uma vez por descanso longo, **gaste 2 de Esperança** para recuperar 2 Pontos de Vida de **1d4** aliados dentro do alcance Perto."
+    }
+   ],
+   "m": [
+    {
+     "n": "Defensor",
+     "t": "Sua transformação animal incorpora um espírito guardião curador. Quando você está em uma Forma Bestial e um aliado dentro do alcance Perto marca 2 ou mais Pontos de Vida, você pode **marcar 1 de Estresse** para reduzir em 1 a quantidade de Pontos de Vida que ele marca."
+    }
+   ]
+  },
+  "Stalwart": {
+   "n": "Inabalável",
+   "f": [
+    {
+     "n": "Firme",
+     "t": "Ganhe um bônus permanente de +1 nos seus Limiares de Dano."
+    },
+    {
+     "n": "Vontade de Ferro",
+     "t": "Quando você sofre dano físico, pode **marcar um Espaço de Armadura adicional** para reduzir a gravidade."
+    }
+   ],
+   "s": [
+    {
+     "n": "Implacável",
+     "t": "Ganhe um bônus permanente de +2 nos seus Limiares de Dano."
+    },
+    {
+     "n": "Companheiros de Armas",
+     "t": "Quando um aliado dentro do alcance Muito Perto sofre dano, você pode **marcar um Espaço de Armadura** para reduzir a gravidade em um limiar."
+    }
+   ],
+   "m": [
+    {
+     "n": "Destemido",
+     "t": "Ganhe um bônus permanente de +3 nos seus Limiares de Dano."
+    },
+    {
+     "n": "Protetor Leal",
+     "t": "Quando um aliado dentro do alcance Perto tem 2 ou menos Pontos de Vida e fosse sofrer dano, você pode **marcar 1 de Estresse** para correr até o lado dele e sofrer o dano no lugar dele."
+    }
+   ]
+  },
+  "Vengeance": {
+   "n": "Vingança",
+   "f": [
+    {
+     "n": "À Vontade",
+     "t": "Ganhe um espaço de Estresse adicional."
+    },
+    {
+     "n": "Revanche",
+     "t": "Quando um adversário dentro do alcance Corpo a Corpo tem sucesso em um ataque contra você, você pode **marcar 2 de Estresse** para forçar o atacante a marcar 1 Ponto de Vida."
+    }
+   ],
+   "s": [
+    {
+     "n": "Ato de Represália",
+     "t": "Quando um adversário causa dano a um aliado dentro do alcance Corpo a Corpo, você ganha um bônus de +1 na sua Proficiência para o próximo ataque bem-sucedido que fizer contra esse adversário."
+    }
+   ],
+   "m": [
+    {
+     "n": "Nêmesis",
+     "t": "**Gaste 2 de Esperança** para _Priorizar_ um adversário até o seu próximo descanso. Quando você faz um ataque contra o seu adversário _Priorizado_, pode trocar os resultados dos seus Dados de Esperança e de Medo. Você só pode _Priorizar_ um adversário por vez."
+    }
+   ]
+  },
+  "Beastbound": {
+   "n": "Vínculo Bestial",
+   "f": [
+    {
+     "n": "Companheiro",
+     "t": "Você tem um companheiro animal à sua escolha (a critério do Mestre). Ele fica ao seu lado, a menos que você diga o contrário.\n\nPegue a ficha de Companheiro do Patrulheiro. Quando você subir de nível o seu personagem, escolha também uma opção de avanço de nível para o seu companheiro nessa ficha."
+    }
+   ],
+   "s": [
+    {
+     "n": "Treinamento Especializado",
+     "t": "Escolha uma opção de avanço de nível adicional para o seu companheiro."
+    },
+    {
+     "n": "Laço de Batalha",
+     "t": "Quando um adversário ataca você enquanto está dentro do alcance Corpo a Corpo do seu companheiro, você ganha um bônus de +2 na sua Evasão contra o ataque."
+    }
+   ],
+   "m": [
+    {
+     "n": "Treinamento Avançado",
+     "t": "Escolha duas opções de avanço de nível adicionais para o seu companheiro."
+    },
+    {
+     "n": "Amigo Leal",
+     "t": "Uma vez por descanso longo, quando o dano de um ataque fosse fazer seu companheiro marcar o último Estresse ou fazer você marcar seu último Ponto de Vida, e vocês estiverem dentro do alcance Perto um do outro, você ou seu companheiro pode correr até o lado do outro e sofrer esse dano no lugar dele."
+    }
+   ]
+  },
+  "Wayfinder": {
+   "n": "Desbravador",
+   "f": [
+    {
+     "n": "Predador Impiedoso",
+     "t": "Quando você faz uma rolagem de dano, pode **marcar 1 de Estresse** para ganhar um bônus de +1 na sua Proficiência. Além disso, quando você causa dano Grave a um adversário, ele deve marcar 1 de Estresse."
+    },
+    {
+     "n": "Caminho Adiante",
+     "t": "Quando você está viajando para um lugar que já visitou antes, ou carrega um objeto que já esteve no local, você consegue identificar o caminho mais curto e direto até o seu destino."
+    }
+   ],
+   "s": [
+    {
+     "n": "Predador Esquivo",
+     "t": "Quando o seu Foco faz um ataque contra você, você ganha um bônus de +2 na sua Evasão contra o ataque."
+    }
+   ],
+   "m": [
+    {
+     "n": "Predador Alfa",
+     "t": "Antes de fazer um teste de ataque contra o seu _Foco_, você pode **gastar 1 de Esperança.** Em um ataque bem-sucedido, você remove 1 de Medo da reserva de Medo do Mestre."
+    }
+   ]
+  },
+  "Nightwalker": {
+   "n": "Andarilho Noturno",
+   "f": [
+    {
+     "n": "Passo Sombrio",
+     "t": "Você pode se mover de sombra em sombra. Quando você se move para uma área de escuridão ou para uma sombra projetada por outra criatura ou objeto, pode **marcar 1 de Estresse** para desaparecer de onde está e reaparecer dentro de outra sombra dentro do alcance Longe. Ao reaparecer, você está _Encoberto._"
+    }
+   ],
+   "s": [
+    {
+     "n": "Nuvem Sombria",
+     "t": "Faça um **Teste de Conjuração (15).** Em um sucesso, crie uma nuvem escura temporária que cobre qualquer área dentro do alcance Perto. Ninguém dentro dessa nuvem consegue ver o lado de fora, e ninguém do lado de fora consegue ver o interior. Você é considerado _Encoberto_ em relação a qualquer adversário cuja linha de visão seja bloqueada pela nuvem."
+    },
+    {
+     "n": "Adrenalina",
+     "t": "Enquanto estiver _Vulnerável,_ some o seu nível às suas rolagens de dano."
+    }
+   ],
+   "m": [
+    {
+     "n": "Sombra Fugaz",
+     "t": "Ganhe um bônus permanente de +1 na sua Evasão. Você pode usar sua característica \"Passo Sombrio\" para se mover dentro do alcance Muito Longe."
+    },
+    {
+     "n": "Ato de Desaparecimento",
+     "t": "**Marque 1 de Estresse** para ficar _Encoberto_ a qualquer momento. Quando estiver _Encoberto_ por esta característica, você remove automaticamente a condição _Contido_, se a tiver. Você permanece _Encoberto_ dessa forma até rolar com Medo ou até o seu próximo descanso."
+    }
+   ]
+  },
+  "Syndicate": {
+   "n": "Sindicato",
+   "f": [
+    {
+     "n": "Bem Relacionado",
+     "t": "Quando você chega a uma cidade ou ambiente importante, conhece alguém que chama esse lugar de lar. Dê um nome a essa pessoa, anote como acha que ela pode ser útil e escolha um fato da lista a seguir:\n\n- Ela me deve um favor, mas vai ser difícil de encontrar.\n- Ela vai pedir algo em troca.\n- Ela está sempre metida em muitos problemas.\n- Nós já fomos um casal. É uma longa história.\n- Não nos separamos em bons termos."
+    }
+   ],
+   "s": [
+    {
+     "n": "Contatos em Toda Parte",
+     "t": "Uma vez por sessão, você pode recorrer brevemente a um contato duvidoso. Escolha um dos benefícios a seguir e descreva o que o trouxe até aqui para ajudar você neste momento:\n\n- Ele fornece 1 punhado de ouro, uma ferramenta única ou um objeto mundano de que a situação precisa.\n- No seu próximo teste de ação, a ajuda dele concede um bônus de +3 ao resultado do seu Dado de Esperança ou Dado de Medo.\n- Na próxima vez que você causar dano, ele dispara das sombras, somando **2d8** à sua rolagem de dano."
+    }
+   ],
+   "m": [
+    {
+     "n": "Reforço Confiável",
+     "t": "Você pode usar sua característica \"Contatos em Toda Parte\" três vezes por sessão. As seguintes opções são adicionadas à lista de benefícios que você pode escolher ao usar essa característica:\n\n- Quando você marca 1 ou mais Pontos de Vida, ele pode correr para proteger você, reduzindo em 1 os Pontos de Vida marcados.\n- Quando você faz um teste de Presença em uma conversa, ele apoia você. Você pode rolar um **d20** como seu Dado de Esperança."
+    }
+   ]
+  },
+  "Divine Wielder": {
+   "n": "Portador Divino",
+   "f": [
+    {
+     "n": "Arma Espiritual",
+     "t": "Quando você tem uma arma equipada com alcance Corpo a Corpo ou Muito Perto, ela pode voar da sua mão para atacar um adversário dentro do alcance Perto e depois voltar para você. Você pode **marcar 1 de Estresse** para escolher como alvo um adversário adicional dentro do alcance com o mesmo teste de ataque."
+    },
+    {
+     "n": "Toque Poupador",
+     "t": "Uma vez por descanso longo, toque uma criatura e recupere 2 Pontos de Vida ou 2 de Estresse dela."
+    }
+   ],
+   "s": [
+    {
+     "n": "Devoto",
+     "t": "Quando você rola seus Dados de Prece, pode rolar um dado adicional e descartar o menor resultado. Além disso, você pode usar sua característica \"Toque Poupador\" duas vezes, em vez de uma, por descanso longo."
+    }
+   ],
+   "m": [
+    {
+     "n": "Ressonância Sagrada",
+     "t": "Quando você rola o dano da sua característica \"Arma Espiritual\", se algum dos resultados dos dados coincidir, dobre o valor de cada dado coincidente. Por exemplo, se você rolar dois 5, eles contam como dois 10."
+    }
+   ]
+  },
+  "Winged Sentinel": {
+   "n": "Sentinela Alada",
+   "f": [
+    {
+     "n": "Asas de Luz",
+     "t": "Você pode voar. Enquanto voa, você pode fazer o seguinte:\n\n- **Marcar 1 de Estresse** para levantar e carregar outra criatura voluntária de tamanho aproximadamente igual ao seu ou menor.\n- **Gastar 1 de Esperança** para causar **1d8** de dano extra em um ataque bem-sucedido."
+    }
+   ],
+   "s": [
+    {
+     "n": "Semblante Etéreo",
+     "t": "Seu semblante sobrenatural inspira assombro e medo. Enquanto voa, você tem vantagem em testes de Presença. Quando você tem sucesso com Esperança em um teste de Presença, pode remover 1 de Medo da reserva de Medo do Mestre em vez de ganhar Esperança."
+    }
+   ],
+   "m": [
+    {
+     "n": "Ascendente",
+     "t": "Ganhe um bônus permanente de +4 no seu limiar de dano Grave."
+    },
+    {
+     "n": "Poder dos Deuses",
+     "t": "Enquanto voa, você causa **1d12** de dano extra, em vez de 1d8, com sua característica \"Asas de Luz\"."
+    }
+   ]
+  },
+  "Elemental Origin": {
+   "n": "Origem Elemental",
+   "f": [
+    {
+     "n": "Elementalista",
+     "t": "Escolha um dos seguintes elementos na criação de personagem: ar, terra, fogo, raio, água.\n\nVocê pode moldar esse elemento em efeitos inofensivos. Além disso, **gaste 1 de Esperança** e descreva como o seu controle sobre esse elemento ajuda um teste de ação que você está prestes a fazer; então, ganhe um bônus de +2 no teste ou um bônus de +3 no dano do teste."
+    }
+   ],
+   "s": [
+    {
+     "n": "Evasão Natural",
+     "t": "Você pode invocar o seu elemento para protegê-lo do perigo. Quando um teste de ataque contra você tem sucesso, você pode **marcar 1 de Estresse** e descrever como usa o seu elemento para se defender. Ao fazer isso, role um **d6** e some o resultado à sua Evasão contra o ataque."
+    }
+   ],
+   "m": [
+    {
+     "n": "Transcendência",
+     "t": "Uma vez por descanso longo, você pode se transformar em uma manifestação física do seu elemento. Ao fazer isso, descreva sua transformação e escolha dois dos benefícios a seguir para ganhar até o seu próximo descanso:\n\n- Bônus de +4 no seu limiar Grave\n- Bônus de +1 em um atributo de personagem à sua escolha\n- Bônus de +1 na sua Proficiência\n- Bônus de +2 na sua Evasão"
+    }
+   ]
+  },
+  "Primal Origin": {
+   "n": "Origem Primordial",
+   "f": [
+    {
+     "n": "Manipular Magia",
+     "t": "Sua origem primordial permite que você modifique a própria essência da magia. Depois de conjurar uma magia ou fazer um ataque com uma arma que causa dano mágico, você pode **marcar 1 de Estresse** para fazer uma das seguintes opções:\n\n- Estender o alcance da magia ou do ataque em uma faixa de alcance\n- Ganhar um bônus de +2 no resultado do teste de ação\n- Dobrar um dado de dano à sua escolha\n- Atingir um alvo adicional dentro do alcance"
+    }
+   ],
+   "s": [
+    {
+     "n": "Auxílio Encantado",
+     "t": "Você pode potencializar a magia dos outros com sua essência. Quando você Ajuda um Aliado em um Teste de Conjuração, pode rolar um **d8** como seu dado de vantagem. Uma vez por descanso longo, depois que um aliado fizer um Teste de Conjuração com a sua ajuda, você pode trocar os resultados dos Dados de Dualidade dele."
+    }
+   ],
+   "m": [
+    {
+     "n": "Carga Arcana",
+     "t": "Você pode acumular energia mágica para potencializar suas capacidades. Quando você sofre dano mágico, fica _Carregado_. Alternativamente, você pode **gastar 2 de Esperança** para ficar _Carregado_. Quando você faz com sucesso um ataque que causa dano mágico enquanto está _Carregado_, pode descarregar sua _Carga_ para ganhar um bônus de +10 na rolagem de dano ou um bônus de +3 na Dificuldade de um teste de reação que a magia obriga o alvo a fazer. Você deixa de estar _Carregado_ no seu próximo descanso longo."
+    }
+   ]
+  },
+  "Call of the Brave": {
+   "n": "Chamado dos Bravos",
+   "f": [
+    {
+     "n": "Coragem",
+     "t": "Quando você falha em um teste com Medo, ganha 1 de Esperança."
+    },
+    {
+     "n": "Ritual de Batalha",
+     "t": "Uma vez por descanso longo, antes de tentar algo incrivelmente perigoso ou de enfrentar um inimigo claramente superior a você, descreva que ritual você realiza ou que preparativos faz. Ao fazer isso, recupere 2 de Estresse e ganhe 2 de Esperança."
+    }
+   ],
+   "s": [
+    {
+     "n": "À Altura do Desafio",
+     "t": "Você se mantém vigilante diante do perigo crescente. Enquanto tiver 2 ou menos Pontos de Vida não marcados, você pode rolar um **d20** como seu Dado de Esperança."
+    }
+   ],
+   "m": [
+    {
+     "n": "Camaradagem",
+     "t": "Sua bravura inabalável é um ponto de união para seus aliados. Você pode iniciar um Teste em Equipe uma vez adicional por sessão. Além disso, quando um aliado inicia um Teste em Equipe com você, ele só precisa gastar 2 de Esperança para fazê-lo."
+    }
+   ]
+  },
+  "Call of the Slayer": {
+   "n": "Chamado do Matador",
+   "f": [
+    {
+     "n": "Matador",
+     "t": "Você ganha uma reserva de dados chamados Dados de Matador. Em uma rolagem com Esperança, você pode colocar um **d6** nesta carta em vez de ganhar 1 de Esperança, adicionando o dado à reserva. Você pode armazenar uma quantidade de Dados de Matador igual à sua Proficiência. Quando você faz um teste de ataque ou uma rolagem de dano, pode gastar qualquer quantidade desses Dados de Matador, rolando-os e somando o resultado à rolagem. No fim de cada sessão, descarte os Dados de Matador não gastos nesta carta e ganhe 1 de Esperança por dado descartado."
+    }
+   ],
+   "s": [
+    {
+     "n": "Especialista em Armas",
+     "t": "Você consegue empunhar várias armas com uma facilidade perigosa. Quando você tem sucesso em um ataque, pode **gastar 1 de Esperança** para somar um dos dados de dano da sua arma secundária à rolagem de dano. Além disso, uma vez por descanso longo, quando rolar seus Dados de Matador, role novamente qualquer resultado 1."
+    }
+   ],
+   "m": [
+    {
+     "n": "Preparação Marcial",
+     "t": "Você é um guerreiro inspirador para todos que viajam com você. Seu grupo ganha acesso ao movimento de período de descanso Preparação Marcial. Para usar esse movimento durante um descanso, descreva como você instrui e treina com o seu grupo. Você e cada aliado que escolher esse movimento de período de descanso ganham um Dado de Matador **d6**. Um personagem com um Dado de Matador pode gastá-lo para rolar o dado e somar o resultado a um teste de ataque ou rolagem de dano à sua escolha."
+    }
+   ]
+  },
+  "School of Knowledge": {
+   "n": "Escola do Conhecimento",
+   "f": [
+    {
+     "n": "Preparado",
+     "t": "Pegue uma carta de domínio adicional do seu nível ou inferior de um domínio a que você tenha acesso."
+    },
+    {
+     "n": "Adepto",
+     "t": "Quando você Utiliza uma Experiência, pode **marcar 1 de Estresse** em vez de gastar 1 de Esperança. Se fizer isso, dobre o modificador da sua Experiência para esse teste."
+    }
+   ],
+   "s": [
+    {
+     "n": "Realizado",
+     "t": "Pegue uma carta de domínio adicional do seu nível ou inferior de um domínio a que você tenha acesso."
+    },
+    {
+     "n": "Memória Perfeita",
+     "t": "Uma vez por descanso, quando você recorda uma carta de domínio do seu cofre, pode reduzir o Custo de Recordação dela em 1."
+    }
+   ],
+   "m": [
+    {
+     "n": "Brilhante",
+     "t": "Pegue uma carta de domínio adicional do seu nível ou inferior de um domínio a que você tenha acesso."
+    },
+    {
+     "n": "Especialização Aprimorada",
+     "t": "Quando você usa uma Experiência, role um **d6.** Em um resultado 5 ou maior, você pode usá-la sem gastar Esperança."
+    }
+   ]
+  },
+  "School of War": {
+   "n": "Escola da Guerra",
+   "f": [
+    {
+     "n": "Mago de Batalha",
+     "t": "Você concentrou seus estudos em se tornar uma força invencível no campo de batalha. Ganhe um espaço de Ponto de Vida adicional."
+    },
+    {
+     "n": "Encare Seu Medo",
+     "t": "Quando você tem sucesso com Medo em um teste de ataque, causa **1d10** de dano mágico extra."
+    }
+   ],
+   "s": [
+    {
+     "n": "Conjurar Escudo",
+     "t": "Você consegue manter uma barreira protetora de magia. Enquanto tiver pelo menos 2 de Esperança, você soma sua Proficiência à sua Evasão."
+    },
+    {
+     "n": "Movido pelo Medo",
+     "t": "O dano mágico extra da sua característica \"Encare Seu Medo\" aumenta para **2d10**."
+    }
+   ],
+   "m": [
+    {
+     "n": "Prosperar no Caos",
+     "t": "Quando você tem sucesso em um ataque, pode **marcar 1 de Estresse** depois de rolar o dano para forçar o alvo a marcar 1 Ponto de Vida adicional."
+    },
+    {
+     "n": "Não Tenha Medo",
+     "t": "O dano mágico extra da sua característica \"Encare Seu Medo\" aumenta para **3d10.**"
+    }
+   ]
+  }
+ },
+ "ancestries": {
+  "Clank": {
+   "n": "Clank",
+   "desc": "Clanks são seres mecânicos sencientes construídos a partir de uma variedade de materiais, incluindo metal, madeira e pedra. Eles podem se assemelhar a humanoides, animais ou até objetos inanimados. Assim como os seres orgânicos, seus corpos existem em uma ampla gama de tamanhos. Por causa de sua construção sob medida, muitos clanks têm configurações físicas altamente especializadas. Exemplos incluem mãos com garras para agarrar, rodas para locomoção ou armamento embutido.\n\nMuitos clanks adotam modificações corporais tanto por estilo quanto por função, e membros de outras ancestralidades frequentemente recorrem a artesãos clanks para construir auxílios de mobilidade personalizados e adornos físicos. Outras ancestralidades podem criar clanks, até usando suas próprias características físicas como inspiração, mas também é comum que clanks construam uns aos outros. A vida de um clank se estende enquanto ele for capaz de adquirir ou fabricar novas peças, o que torna sua forma física efetivamente imortal. Dito isso, suas mentes estão sujeitas aos efeitos do tempo e se deterioram à medida que a magia que as alimenta perde potência.",
+   "f": [
+    {
+     "n": "Projeto com Propósito",
+     "t": "Decida quem criou você e com que propósito. Na criação de personagem, escolha uma das suas Experiências que melhor se alinhe a esse propósito e ganhe um bônus permanente de +1 nela."
+    },
+    {
+     "n": "Eficiente",
+     "t": "Quando você faz um descanso curto, pode escolher um movimento de descanso longo em vez de um movimento de descanso curto."
+    }
+   ]
+  },
+  "Drakona": {
+   "n": "Drakona",
+   "desc": "Os drakona se assemelham a dragões sem asas em forma humanoide e possuem um poderoso sopro elemental. Todos os drakona têm escamas grossas que fornecem excelente armadura natural tanto contra ataques quanto contra as forças da natureza. Eles são grandes, medindo em média de 5 a 7 pés, com dentes longos e afiados. Novos dentes crescem ao longo dos aproximadamente 350 anos de vida de um drakona, de modo que eles nunca correm o risco de perder um incisivo permanentemente. Ao contrário de seus ancestrais dragões, os drakona não têm asas e não podem voar sem auxílio mágico. Os membros desta ancestralidade transmitem o elemento de seu sopro ao longo das gerações, embora, em casos raros, o poder elemental de um drakona seja diferente do restante de sua família.",
+   "f": [
+    {
+     "n": "Escamas",
+     "t": "Suas escamas funcionam como proteção natural. Quando você fosse sofrer dano Grave, pode **marcar 1 de Estresse** para marcar 1 Ponto de Vida a menos."
+    },
+    {
+     "n": "Sopro Elemental",
+     "t": "Escolha um elemento para o seu sopro (como eletricidade, fogo ou gelo). Você pode usar esse sopro contra um alvo ou grupo de alvos dentro do alcance Muito Perto, tratando-o como uma arma de Instinto que causa **d8** de dano mágico usando sua Proficiência."
+    }
+   ]
+  },
+  "Dwarf": {
+   "n": "Anão",
+   "desc": "Os anões são mais facilmente reconhecidos como humanoides baixos, de constituição quadrada, musculatura densa e cabelos grossos. Sua altura média varia de 4 a 5 ½ pés, e eles costumam ser largos em proporção à sua estatura. Sua pele e suas unhas contêm uma grande quantidade de queratina, o que os torna naturalmente resistentes. Isso permite que os anões incrustem pedras preciosas no corpo e se decorem com tatuagens ou piercings. Seus pelos crescem densos — geralmente na cabeça, mas alguns anões também têm pelos grossos pelo corpo. Anões de todos os gêneros podem ter pelos faciais, que muitas vezes arrumam em penteados elaborados. Normalmente, os anões vivem até 250 anos, mantendo sua massa muscular até idades avançadas.",
+   "f": [
+    {
+     "n": "Pele Grossa",
+     "t": "Quando você sofre dano Menor, pode **marcar 2 de Estresse** em vez de marcar 1 Ponto de Vida."
+    },
+    {
+     "n": "Fortitude Aumentada",
+     "t": "**Gaste 3 de Esperança** para reduzir pela metade o dano físico recebido."
+    }
+   ]
+  },
+  "Elf": {
+   "n": "Elfo",
+   "desc": "Os elfos são tipicamente humanoides altos, com orelhas pontudas e sentidos extremamente aguçados. Suas orelhas variam em tamanho e formato da ponta e, à medida que envelhecem, as pontas começam a cair. Embora os elfos tenham uma grande variedade de tipos físicos, todos são bem altos, com alturas que vão de cerca de 6 a 6 ½ pés. Todos os elfos têm a capacidade de entrar em um transe celestial em vez de dormir. Isso lhes permite descansar de forma eficaz em pouco tempo.\n\nAlguns elfos possuem o que é conhecido como \"forma mística\", que ocorre quando um elfo se dedica tão profundamente ao estudo ou à proteção do mundo natural que sua forma física se transforma. Essas características podem incluir sardas celestiais, a presença de folhas, trepadeiras ou flores nos cabelos, olhos que tremeluzem como fogo, entre outras. Às vezes esses traços são herdados dos pais, mas, se um elfo muda de ambiente ou de foco mágico, sua aparência muda com o tempo. Como os elfos vivem cerca de 350 anos, esses traços podem mudar mais de uma vez ao longo de sua vida.",
+   "f": [
+    {
+     "n": "Reações Rápidas",
+     "t": "**Marque 1 de Estresse** para ganhar vantagem em um teste de reação."
+    },
+    {
+     "n": "Transe Celestial",
+     "t": "Durante um descanso, você pode entrar em transe para escolher um movimento de período de descanso adicional."
+    }
+   ]
+  },
+  "Faerie": {
+   "n": "Fada",
+   "desc": "As fadas são criaturas humanoides aladas com características de insetos. Essas características abrangem um amplo espectro, do humanoide ao insetoide — algumas possuem braços adicionais, olhos compostos, órgãos luminosos, exoesqueletos quitinosos ou ferrões. Por causa de seus laços estreitos com o mundo natural, elas também costumam possuir atributos que lhes permitem se camuflar entre diversas plantas. A altura média de uma fada varia de cerca de 2 a 5 pés, mas algumas chegam a 7 pés de altura. Todas as fadas possuem asas membranosas e cada uma passa por um processo de metamorfose. O processo e as mudanças variam de fada para fada, mas, durante essa transformação, cada indivíduo manifesta a aparência única que carregará pelo resto de seus aproximadamente 50 anos de vida.",
+   "f": [
+    {
+     "n": "Dobra-Sorte",
+     "t": "Uma vez por sessão, depois que você ou um aliado voluntário dentro do alcance Perto fizer um teste de ação, você pode **gastar 3 de Esperança** para rolar novamente os Dados de Dualidade."
+    },
+    {
+     "n": "Asas",
+     "t": "Você pode voar. Enquanto voa, você pode **marcar 1 de Estresse** depois que um adversário faz um ataque contra você para ganhar um bônus de +2 na sua Evasão contra esse ataque."
+    }
+   ]
+  },
+  "Faun": {
+   "n": "Fauno",
+   "desc": "Os faunos se assemelham a bodes humanoides com chifres curvos, pupilas quadradas e cascos fendidos. Embora sua aparência possa variar, a maioria dos faunos tem um torso humanoide e a parte inferior do corpo semelhante à de um bode, coberta de pelo denso. O rosto de um fauno pode ser mais caprino ou mais humano, e eles têm uma grande variedade de formatos de orelhas e chifres. Os chifres dos faunos vão de curtos e pouco curvados a muito maiores, com uma espiral marcante. O fauno médio mede de 4 a 6 ½ pés de altura, mas sua altura pode mudar drasticamente de um momento para outro, dependendo da postura. A maioria dos faunos tem membros proporcionalmente longos, não importa seu tamanho ou formato, e eles são conhecidos pela capacidade de desferir golpes poderosos com seus cascos fendidos. Os faunos vivem cerca de 225 anos e, à medida que envelhecem, sua aparência pode se tornar cada vez mais semelhante à de um bode.",
+   "f": [
+    {
+     "n": "Salto Caprino",
+     "t": "Você pode saltar para qualquer lugar dentro do alcance Perto como se estivesse usando movimento normal, o que permite transpor obstáculos, pular sobre fendas ou escalar barreiras com facilidade."
+    },
+    {
+     "n": "Coice",
+     "t": "Quando você tem sucesso em um ataque contra um alvo dentro do alcance Corpo a Corpo, pode **marcar 1 de Estresse** para se impulsionar contra ele com um coice, causando **2d6** de dano extra e empurrando você ou o alvo para o alcance Muito Perto."
+    }
+   ]
+  },
+  "Firbolg": {
+   "n": "Firbolg",
+   "desc": "Os firbolgs são humanoides bovinos, tipicamente reconhecidos por seus narizes largos e orelhas longas e caídas. Alguns têm rostos que são uma mistura de humanoide e bisão, boi, vaca ou outras criaturas bovinas. Outros, frequentemente chamados de minotauros, têm cabeças inteiramente semelhantes às do gado. São criaturas altas e musculosas, com alturas que vão de cerca de 5 a 7 pés, e possuem força notável, não importa a idade. Alguns firbolgs são conhecidos por usar essa força para investir contra seus adversários, uma ação particularmente eficaz para aqueles que têm uma das muitas variedades de chifres comumente encontradas nesta ancestralidade. Embora suas características únicas possam variar, todos os firbolgs são cobertos de pelo, que pode ter cores suaves e terrosas ou vir em uma variedade de tons pastel, como rosas e azuis suaves. Em média, os firbolgs vivem cerca de 150 anos.",
+   "f": [
+    {
+     "n": "Investida",
+     "t": "Quando você tem sucesso em um teste de Agilidade para se mover do alcance Longe ou Muito Longe até o alcance Corpo a Corpo de um ou mais alvos, pode **marcar 1 de Estresse** para causar **1d12** de dano físico a todos os alvos dentro do alcance Corpo a Corpo."
+    },
+    {
+     "n": "Inabalável",
+     "t": "Quando você fosse marcar 1 de Estresse, role um **d6.** Em um resultado 6, não o marque."
+    }
+   ]
+  },
+  "Fungril": {
+   "n": "Fungril",
+   "desc": "Os fungril se assemelham a cogumelos humanoides. Podem ter aparência mais humanoide ou mais fúngica, e existem em uma variedade de cores, de tons terrosos a vermelhos, amarelos, roxos e azuis vibrantes. Os fungril exibem uma variedade incrível de corpos, rostos e membros, pois não há uma forma comum única entre eles. Até suas alturas variam de minúsculos 2 pés a impressionantes 7 pés. Embora a expectativa de vida comum de um fungril seja de cerca de 300 anos, há relatos de alguns que viveram muito mais. Eles podem se comunicar de forma não verbal, e muitos membros desta ancestralidade usam uma rede micelial para trocar informações quimicamente com outros fungril a longas distâncias.",
+   "f": [
+    {
+     "n": "Rede Fungril",
+     "t": "Faça um **teste de Instinto (12)** para usar sua rede micelial para falar com outros da sua ancestralidade. Em um sucesso, você pode se comunicar a qualquer distância."
+    },
+    {
+     "n": "Conexão com a Morte",
+     "t": "Enquanto estiver tocando um cadáver que morreu recentemente, você pode **marcar 1 de Estresse** para extrair do cadáver uma memória relacionada a uma emoção ou sensação específica à sua escolha."
+    }
+   ]
+  },
+  "Galapa": {
+   "n": "Galapa",
+   "desc": "Os galapa se assemelham a tartarugas antropomórficas com grandes cascos abaulados, para dentro dos quais podem se recolher. Em média, medem de 4 a 6 pés de altura, e o formato de sua cabeça e corpo pode lembrar qualquer tipo de tartaruga. Os galapa existem em uma variedade de tons terrosos — mais frequentemente tons de verde e marrom — e possuem padrões únicos em seus cascos. Os membros desta ancestralidade podem recolher a cabeça, os braços e as pernas para dentro do casco para se proteger, usando-o como um escudo natural quando medidas defensivas são necessárias. Alguns reforçam a resistência ou a aparência do casco prendendo armaduras ou entalhando desenhos únicos, mas o processo é extremamente doloroso. A maioria dos galapa se move devagar, não importa a idade, e eles podem viver aproximadamente 150 anos.",
+   "f": [
+    {
+     "n": "Casco",
+     "t": "Ganhe um bônus nos seus Limiares de Dano igual à sua Proficiência."
+    },
+    {
+     "n": "Recolher",
+     "t": "**Marque 1 de Estresse** para se recolher no seu casco. Enquanto estiver no casco, você tem resistência a dano físico, tem desvantagem em testes de ação e não pode se mover."
+    }
+   ]
+  },
+  "Giant": {
+   "n": "Gigante",
+   "desc": "Os gigantes são humanoides imponentes, com ombros largos, braços longos e de um a três olhos. Gigantes adultos medem de 6 ½ a 8 ½ pés de altura e são naturalmente musculosos, independentemente do tipo físico. São facilmente reconhecidos por suas estruturas largas e braços e pescoços alongados. Embora possam ter até três olhos, todos os gigantes nascem sem nenhum e permanecem sem enxergar durante o primeiro ano de vida. Até que um gigante atinja os 10 anos e suas feições se desenvolvam por completo, a formação de seus olhos pode oscilar. Aqueles com um único olho são comumente conhecidos como ciclopes. A expectativa de vida média de um gigante é de cerca de 75 anos.",
+   "f": [
+    {
+     "n": "Resistência",
+     "t": "Ganhe um espaço de Ponto de Vida adicional na criação de personagem."
+    },
+    {
+     "n": "Alcance",
+     "t": "Trate qualquer arma, habilidade, magia ou outra característica que tenha alcance Corpo a Corpo como se tivesse alcance Muito Perto."
+    }
+   ]
+  },
+  "Goblin": {
+   "n": "Goblin",
+   "desc": "Os goblins são pequenos humanoides facilmente reconhecíveis por seus olhos grandes e enormes orelhas membranosas. Com audição aguçada e visão afiada, eles percebem detalhes tanto a grandes distâncias quanto na escuridão, o que lhes permite se mover por ambientes menos favoráveis com facilidade. As cores de sua pele e de seus olhos são incrivelmente variadas, sem que nenhum tom, vibrante ou suave, predomine sobre outro. Um goblin típico mede entre 3 e 4 pés de altura, e cada uma de suas orelhas tem mais ou menos o tamanho de sua cabeça. Os goblins são conhecidos por usar a posição das orelhas com efeitos bem específicos ao se comunicarem de forma não verbal. A expectativa de vida de um goblin é de cerca de 100 anos, e muitos mantêm a audição e a visão aguçadas até idades bem avançadas.",
+   "f": [
+    {
+     "n": "Pés Firmes",
+     "t": "Você ignora desvantagem em testes de Agilidade."
+    },
+    {
+     "n": "Sentido de Perigo",
+     "t": "Uma vez por descanso, **marque 1 de Estresse** para forçar um adversário a rolar novamente um ataque contra você ou contra um aliado dentro do alcance Muito Perto."
+    }
+   ]
+  },
+  "Halfling": {
+   "n": "Halfling",
+   "desc": "Os halflings são pequenos humanoides com pés grandes e peludos e orelhas arredondadas proeminentes. Em média, os halflings medem de 3 a 4 pés de altura, e suas orelhas, nariz e pés são maiores em proporção ao resto do corpo. Os membros desta ancestralidade vivem cerca de 150 anos, e a aparência de um halfling tende a permanecer jovial mesmo quando ele passa da idade adulta para a velhice. Os halflings estão naturalmente sintonizados com os campos magnéticos do Reino Mortal, o que lhes confere uma forte bússola interna. Eles também possuem audição e olfato aguçados, e muitas vezes conseguem reconhecer pessoas familiares pelo som de seus movimentos.",
+   "f": [
+    {
+     "n": "Portador da Sorte",
+     "t": "No início de cada sessão, todos do seu grupo ganham 1 de Esperança."
+    },
+    {
+     "n": "Bússola Interna",
+     "t": "Quando você rolar 1 no seu Dado de Esperança, pode rolá-lo novamente."
+    }
+   ]
+  },
+  "Human": {
+   "n": "Humano",
+   "desc": "Os humanos são mais facilmente reconhecidos por suas mãos hábeis, orelhas arredondadas e corpos feitos para a resistência. Sua altura média vai de pouco menos de 5 pés a cerca de 6 ½ pés. Eles têm uma grande variedade de compleições, alguns bastante largos, outros esguios, e muitos em algum ponto entre esses extremos. Os humanos são fisicamente adaptáveis e se ajustam a climas rigorosos com relativa facilidade. Em geral, os humanos vivem até cerca de 100 anos, e seus corpos mudam drasticamente entre a juventude e a velhice.",
+   "f": [
+    {
+     "n": "Grande Vigor",
+     "t": "Ganhe um espaço de Estresse adicional na criação de personagem."
+    },
+    {
+     "n": "Adaptabilidade",
+     "t": "Quando você falha em um teste que utilizou uma das suas Experiências, pode **marcar 1 de Estresse** para rolar novamente."
+    }
+   ]
+  },
+  "Infernis": {
+   "n": "Infernis",
+   "desc": "Os infernis são humanoides que possuem caninos afiados, orelhas pontudas e chifres. Eles são descendentes de demônios dos Círculos Inferiores. Em média, os infernis medem de 5 a 7 pés de altura e são conhecidos por ter dedos longos e unhas pontudas. Alguns têm caudas longas, finas e lisas que terminam em pontas, forquilhas ou pontas de flecha. É comum que os infernis tenham dois ou quatro chifres — embora alguns tenham coroas de muitos chifres, ou apenas um. Esses chifres também podem crescer de forma assimétrica, formando formatos únicos, muitas vezes curvos, que os infernis realçam com entalhes e ornamentos. Sua pele, seus cabelos e seus chifres existem em uma variedade de cores que podem incluir tons pastel suaves, tons contrastantes ou matizes vibrantes, como escarlate rosado, roxo profundo e preto retinto.\n\nOs infernis possuem um \"semblante temível\" que se manifesta tanto involuntariamente, como quando sentem medo ou outras emoções fortes, quanto de propósito, como quando desejam intimidar um adversário. Esse semblante pode modificar brevemente sua aparência de várias maneiras, incluindo alongar seus dentes e unhas, mudar a cor de seus olhos, torcer seus chifres ou aumentar sua altura. Em média, os infernis vivem até 350 anos, e alguns atribuem essa longevidade à sua linhagem demoníaca.",
+   "f": [
+    {
+     "n": "Destemido",
+     "t": "Quando você rola com Medo, pode **marcar 2 de Estresse** para transformar a rolagem em uma rolagem com Esperança."
+    },
+    {
+     "n": "Semblante Temível",
+     "t": "Você tem vantagem em testes para intimidar criaturas hostis."
+    }
+   ]
+  },
+  "Katari": {
+   "n": "Katari",
+   "desc": "Os katari são humanoides felinos com garras retráteis, pupilas em fenda vertical e orelhas altas e triangulares. Eles também podem ter pequenos caninos pontudos, pelo macio e longos bigodes que auxiliam sua percepção e orientação. Suas orelhas podem girar quase 180 graus para detectar sons, o que contribui para seus sentidos aguçados. Os katari podem parecer mais ou menos felinos ou humanoides, com atributos felinos na forma de pelos, bigodes e focinho. Cerca de metade da população katari tem cauda. Sua pele e seu pelo existem em uma ampla gama de tons e padrões, incluindo cores sólidas, tons tricolores, listras tigradas e uma variedade de pintas, manchas, marmorizados ou faixas. Sua altura varia de cerca de 3 a 6 ½ pés, e eles vivem até cerca de 150 anos.",
+   "f": [
+    {
+     "n": "Instintos Felinos",
+     "t": "Quando você faz um teste de Agilidade, pode **gastar 2 de Esperança** para rolar novamente seu Dado de Esperança."
+    },
+    {
+     "n": "Garras Retráteis",
+     "t": "Faça um **teste de Agilidade** para arranhar um alvo dentro do alcance Corpo a Corpo. Em um sucesso, ele fica temporariamente _Vulnerável._"
+    }
+   ]
+  },
+  "Orc": {
+   "n": "Orc",
+   "desc": "Os orcs são humanoides mais facilmente reconhecidos por suas feições quadradas e presas semelhantes às de um javali, que se projetam da mandíbula inferior. As presas existem em vários tamanhos e, embora saiam da boca, não são usadas para comer. Em vez disso, muitos orcs escolhem decorar suas presas com ornamentos significativos. Os orcs normalmente vivem 125 anos e, a menos que sejam alteradas, suas presas continuam crescendo ao longo de toda a vida. Suas orelhas são pontudas, e seus cabelos e sua pele normalmente têm tons de verde, azul, rosa ou cinza. Os orcs tendem a ter uma compleição musculosa, e sua altura média varia de 5 a 6 ½ pés.",
+   "f": [
+    {
+     "n": "Robusto",
+     "t": "Quando você tem 1 Ponto de Vida restante, ataques contra você têm desvantagem."
+    },
+    {
+     "n": "Presas",
+     "t": "Quando você tem sucesso em um ataque contra um alvo dentro do alcance Corpo a Corpo, pode **gastar 1 de Esperança** para perfurar o alvo com suas presas, causando **1d6** de dano extra."
+    }
+   ]
+  },
+  "Ribbet": {
+   "n": "Ribbet",
+   "desc": "Os ribbets se assemelham a sapos antropomórficos, com olhos saltados e mãos e pés palmados. Eles têm pele lisa (embora às vezes verrugosa) e úmida, e olhos posicionados em cada lado da cabeça. Alguns ribbets têm pernas traseiras com mais do que o dobro do comprimento do torso, enquanto outros têm membros curtos. Não importa seu tamanho (que varia de cerca de 3 a 4 ½ pés), os ribbets se locomovem principalmente aos saltos. Todos os ribbets têm membros palmados, o que lhes permite nadar com facilidade. Alguns ribbets possuem uma camuflagem natural verde e marrom, enquanto outros têm cores vibrantes com padrões marcantes. Não importa sua aparência, todos os ribbets nascem de ovos postos na água, eclodem como girinos e, depois de cerca de 6 a 7 anos, se tornam anfíbios capazes de se locomover em terra. Os ribbets vivem aproximadamente 100 anos.",
+   "f": [
+    {
+     "n": "Anfíbio",
+     "t": "Você pode respirar e se mover naturalmente debaixo d'água."
+    },
+    {
+     "n": "Língua Comprida",
+     "t": "Você pode usar sua língua comprida para agarrar coisas dentro do alcance Perto. **Marque 1 de Estresse** para usar sua língua como uma arma de Acuidade com alcance Perto que causa **d12** de dano físico usando sua Proficiência."
+    }
+   ]
+  },
+  "Simiah": {
+   "n": "Simiah",
+   "desc": "Os simiah se assemelham a macacos e grandes símios antropomórficos, com membros longos e pés preênseis. Embora sua aparência reflita todas as criaturas símias, do maior gorila ao menor sagui, seu tamanho não corresponde ao de seus equivalentes animais, e eles podem medir de 2 a 6 pés de altura. Todos os simiah podem usar seus pés hábeis para comunicação não verbal, trabalho e combate. Além disso, alguns também têm caudas preênseis que podem agarrar objetos ou ajudar no equilíbrio durante manobras difíceis. Esses traços concedem aos membros desta ancestralidade uma agilidade única que os ajuda em uma variedade de tarefas físicas. Em particular, os simiah são escaladores habilidosos e conseguem passar facilmente do movimento bípede para o andar apoiado nos nós dos dedos e a escalada, e vice-versa. Em média, os simiah vivem cerca de 100 anos.",
+   "f": [
+    {
+     "n": "Escalador Nato",
+     "t": "Você tem vantagem em testes de Agilidade que envolvem equilíbrio e escalada."
+    },
+    {
+     "n": "Ágil",
+     "t": "Ganhe um bônus permanente de +1 na sua Evasão na criação de personagem."
+    }
+   ]
+  }
+ },
+ "communities": {
+  "Highborne": {
+   "n": "Nobreza",
+   "desc": "Fazer parte de uma comunidade da Nobreza significa que você está acostumado a uma vida de elegância, opulência e prestígio nos escalões mais altos da sociedade. Tradicionalmente, os membros de uma comunidade da Nobreza possuem uma riqueza material incrível. Embora ela possa assumir várias formas, dependendo da comunidade — incluindo ouro e outros minerais, terras ou o controle dos meios de produção —, esse status sempre vem acompanhado de poder e influência. A Nobreza dá grande valor a títulos e posses, e há pouca mobilidade social em suas fileiras. Os membros de uma comunidade da Nobreza muitas vezes controlam a situação política e econômica das áreas em que vivem, graças à sua capacidade de influenciar as pessoas e a economia com sua riqueza substancial. A saúde e a segurança das pessoas menos abastadas que vivem nesses lugares muitas vezes dependem da capacidade dessa classe dominante nobre de priorizar o bem-estar de seus súditos acima do lucro.",
+   "adj": "Os membros da Nobreza costumam ser amáveis, francos, maquinadores, empreendedores, ostentosos e imperturbáveis.",
+   "f": {
+    "n": "Privilégio",
+    "t": "Você tem vantagem em testes para se relacionar com nobres, negociar preços ou usar sua reputação para conseguir o que quer."
+   }
+  },
+  "Loreborne": {
+   "n": "Eruditos",
+   "desc": "Fazer parte de uma comunidade de Eruditos significa que você vem de uma sociedade que favorece uma forte competência acadêmica ou política. As comunidades de Eruditos valorizam muito o conhecimento, frequentemente na forma de preservação histórica, avanço político, estudo científico, desenvolvimento de habilidades ou compilação de saberes e mitologias. A maioria dos membros dessas comunidades pesquisa em instituições construídas em bastiões da civilização, enquanto uns poucos excêntricos prosperam reunindo informações do mundo natural. Alguns podem ser isolacionistas, atuando em enclaves, escolas ou guildas menores e seguindo seu próprio ethos único. Outros ainda usam seu conhecimento em uma escala maior, fazendo manobras políticas habilidosas em diversos cenários governamentais.",
+   "adj": "Os Eruditos costumam ser diretos, eloquentes, inquisitivos, pacientes, arrebatados e espirituosos.",
+   "f": {
+    "n": "Instruído",
+    "t": "Você tem vantagem em testes que envolvem a história, a cultura ou a política de uma pessoa ou lugar importante."
+   }
+  },
+  "Orderborne": {
+   "n": "Ordeiros",
+   "desc": "Fazer parte de uma comunidade de Ordeiros significa que você vem de um coletivo focado em disciplina ou fé, e você sustenta um conjunto de princípios que reflete sua experiência ali. Os Ordeiros frequentemente estão entre os mais poderosos das comunidades vizinhas. Ao alinhar os membros de sua sociedade em torno de um valor ou objetivo comum, como um deus, uma doutrina, um ethos ou até um negócio ou ofício compartilhado, os órgãos dirigentes desses enclaves conseguem mobilizar populações maiores com menos esforço. Embora as comunidades de Ordeiros assumam várias formas — algumas até profundamente pacifistas —, talvez as mais temidas sejam aquelas que se estruturam em torno da força militar. Nesse caso, não é incomum que os Ordeiros forneçam soldados de aluguel para outras cidades ou países.",
+   "adj": "Os Ordeiros costumam ser ambiciosos, benevolentes, pensativos, prudentes, sarcásticos e estoicos.",
+   "f": {
+    "n": "Dedicado",
+    "t": "Anote três ditados ou valores que sua criação incutiu em você. Uma vez por descanso, quando você descrever como está incorporando um desses princípios por meio da sua ação atual, pode rolar um **d20** como seu Dado de Esperança."
+   }
+  },
+  "Ridgeborne": {
+   "n": "Montanheses",
+   "desc": "Fazer parte de uma comunidade de Montanheses significa que você chamou de lar os picos rochosos e os penhascos íngremes das encostas das montanhas. Aqueles que viveram nas montanhas muitas vezes se consideram mais resistentes do que a maioria, porque prosperaram em meio aos terrenos mais perigosos que muitos continentes têm a oferecer. Esses grupos são hábeis em se adaptar, desenvolvendo tecnologias e equipamentos únicos para transportar pessoas e produtos por terrenos difíceis. Por isso, os Montanheses crescem trepando em rochas e escalando, o que os torna robustos e obstinados. As localidades dos Montanheses aparecem em várias formas — algumas cidades são escavadas em paredões inteiros de penhascos, outras constroem castelos de pedra, e outras ainda vivem em pequenas casas em picos varridos pelo vento. Forças externas frequentemente têm dificuldade para atacar grupos de Montanheses, pois as pequenas milícias e as grandes forças militares das montanhas são hábeis em aproveitar a vantagem do terreno elevado.",
+   "adj": "Os Montanheses costumam ser ousados, resistentes, indomáveis, leais, reservados e teimosos.",
+   "f": {
+    "n": "Firmeza",
+    "t": "Você tem vantagem em testes para atravessar penhascos e beiradas perigosos, navegar por ambientes hostis e usar seus conhecimentos de sobrevivência."
+   }
+  },
+  "Seaborne": {
+   "n": "Marítimos",
+   "desc": "Fazer parte de uma comunidade de Marítimos significa que você viveu sobre ou perto de uma grande massa de água. As comunidades de Marítimos são construídas, tanto física quanto culturalmente, em torno das águas específicas que chamam de lar. Alguns desses grupos vivem ao longo da costa, construindo portos tanto para os locais quanto para os viajantes. Esses portos funcionam como centros de comércio, atrações turísticas ou até apenas um lugar seguro para descansar a cabeça depois de semanas de viagem. Outros Marítimos vivem sobre a água em pequenos barcos ou grandes navios, com a ideia de \"lar\" sendo composta por um navio e sua tripulação, e não por uma porção de terra específica. Não importa sua localização exata, as comunidades de Marítimos estão intimamente ligadas às marés do oceano e às criaturas que as habitam. Os Marítimos aprendem a pescar desde cedo e treinam desde o nascimento para prender a respiração e nadar até nas águas mais tumultuosas. Indivíduos desses grupos são muito procurados por suas habilidades de navegação, e muitos se tornam capitães de embarcações, seja em sua própria comunidade, trabalhando para outra, ou até no comando de uma poderosa operação naval.",
+   "adj": "Os Marítimos costumam ser francos, cooperativos, exuberantes, ferozes, resolutos e calejados.",
+   "f": {
+    "n": "Conhecer a Maré",
+    "t": "Você consegue sentir o fluxo e refluxo da vida. Quando você rola com Medo, coloque um marcador na sua carta de comunidade. Você pode ter uma quantidade de marcadores igual ao seu nível. Antes de fazer um teste de ação, você pode gastar qualquer quantidade desses marcadores para ganhar um bônus de +1 no teste para cada marcador gasto. No fim de cada sessão, descarte todos os marcadores não gastos."
+   }
+  },
+  "Slyborne": {
+   "n": "Ardilosos",
+   "desc": "Fazer parte de uma comunidade de Ardilosos significa que você vem de um grupo que opera fora da lei, incluindo todo tipo de criminosos, trapaceiros e golpistas. Os membros das comunidades de Ardilosos são unidos por seus objetivos de má reputação e pelos meios engenhosos de alcançá-los. Muitas pessoas nessas comunidades têm uma variedade de habilidades inescrupulosas: falsificação, roubo, contrabando e violência. Pessoas de qualquer classe social podem ser Ardilosas, desde aquelas que acumularam vasta riqueza e influência até aquelas sem uma moeda no bolso. Aos olhos de quem vê de fora, os Ardilosos podem parecer rufiões sem lealdade, mas essas comunidades possuem alguns dos códigos de honra mais rígidos, que, quando quebrados, podem resultar em um fim aterrorizante para o transgressor.",
+   "adj": "Os Ardilosos costumam ser calculistas, espertos, formidáveis, perspicazes, astutos e tenazes.",
+   "f": {
+    "n": "Patife",
+    "t": "Você tem vantagem em testes para negociar com criminosos, detectar mentiras ou encontrar um lugar seguro para se esconder."
+   }
+  },
+  "Underborne": {
+   "n": "Subterrâneos",
+   "desc": "Fazer parte de uma comunidade de Subterrâneos significa que você vem de uma sociedade subterrânea. Muitos Subterrâneos vivem logo abaixo das cidades e aldeias de outros coletivos, enquanto alguns vivem muito mais fundo. Essas comunidades vão de pequenos grupos familiares em tocas a enormes metrópoles em cavernas de pedra. Em muitos lugares, os Subterrâneos são reconhecidos por sua ousadia e habilidade incríveis, que possibilitam grandes feitos de arquitetura e engenharia. Os Subterrâneos são regularmente contratados por sua bravura, pois até o menos ousado entre eles provavelmente já encontrou feras subterrâneas formidáveis, e aprender a abater tais criaturas é prática comum nessas sociedades. Por causa dos perigos de seu ambiente, muitas comunidades de Subterrâneos desenvolvem linguagens não verbais únicas, que se mostram igualmente úteis na superfície.",
+   "adj": "Os Subterrâneos costumam ser serenos, esquivos, indomáveis, inovadores, engenhosos e despretensiosos.",
+   "f": {
+    "n": "Vida na Penumbra",
+    "t": "Quando você está em uma área com pouca luz ou sombras densas, tem vantagem em testes para se esconder, investigar ou perceber detalhes dentro dessa área."
+   }
+  },
+  "Wanderborne": {
+   "n": "Andarilhos",
+   "desc": "Fazer parte de uma comunidade de Andarilhos significa que você viveu como nômade, abrindo mão de um lar permanente e vivenciando uma grande variedade de culturas. Ao contrário de muitas comunidades que são definidas por sua localidade, os Andarilhos são definidos por seu estilo de vida itinerante. Por causa de suas migrações frequentes, os Andarilhos dão menos valor ao acúmulo de posses materiais em favor da aquisição de informações, habilidades e contatos. Enquanto alguns Andarilhos se unem por um ethos comum, como uma religião ou um conjunto de valores políticos ou econômicos, outros se reúnem após uma tragédia compartilhada, como a perda de seu lar ou de sua terra. Não importa o motivo, os perigos da vida na estrada e a escolha de continuar juntos por essa estrada fazem com que os Andarilhos sejam conhecidos por sua lealdade inabalável.",
+   "adj": "Os Andarilhos costumam ser inescrutáveis, magnânimos, alegres, confiáveis, sagazes e pouco convencionais.",
+   "f": {
+    "n": "Mochila Nômade",
+    "t": "Adicione uma Mochila Nômade ao seu inventário. Uma vez por sessão, você pode **gastar 1 de Esperança** para enfiar a mão nessa mochila e tirar um item mundano que seja útil para a sua situação. Trabalhe com o Mestre para descobrir qual item você tira."
+   }
+  },
+  "Wildborne": {
+   "n": "Selvagens",
+   "desc": "Fazer parte de uma comunidade de Selvagens significa que você viveu nas profundezas da floresta. As comunidades de Selvagens são definidas por sua dedicação à conservação de suas terras natais, e muitas têm fortes laços religiosos ou culturais com a fauna em meio à qual vivem. Isso resulta em avanços arquitetônicos e tecnológicos únicos que favorecem a sustentabilidade em vez de resultados de alto rendimento a curto prazo. É uma marca registrada das sociedades Selvagens integrar suas aldeias e cidades ao ambiente natural e evitar perturbar a vida das plantas e dos animais. Enquanto alguns constroem suas moradas no alto dos galhos das árvores, outros estabelecem seus lares no chão, sob a copa da floresta. Não é incomum que os Selvagens permaneçam reclusos e escondidos em seus lares na mata.",
+   "adj": "Os Selvagens costumam ser resistentes, leais, acolhedores, reclusos, sábios e vibrantes.",
+   "f": {
+    "n": "Pés Leves",
+    "t": "Seu movimento é naturalmente silencioso. Você tem vantagem em testes para se mover sem ser ouvido."
+   }
+  }
+ }
+}

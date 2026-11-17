@@ -1,0 +1,543 @@
+{
+ "beastforms": [
+  {
+   "id": "Agile Scout",
+   "tier": 1,
+   "n": "Batedor Ágil",
+   "ex": "Raposa, Camundongo, Doninha etc.",
+   "trait": "Agilidade",
+   "tb": 1,
+   "ev": 2,
+   "atk": "Corpo a Corpo",
+   "dmg": "d4 fís",
+   "adv": "enganar, localizar, esgueirar-se",
+   "f": [
+    {
+     "n": "Ágil",
+     "t": "Seu movimento é silencioso, e você pode **gastar 1 de Esperança** para se mover até o alcance Longe sem rolar."
+    },
+    {
+     "n": "Frágil",
+     "t": "Quando você sofre dano Maior ou superior, sai da Forma Bestial."
+    }
+   ]
+  },
+  {
+   "id": "Household Friend",
+   "tier": 1,
+   "n": "Amigo Doméstico",
+   "ex": "Gato, Cachorro, Coelho etc.",
+   "trait": "Instinto",
+   "tb": 1,
+   "ev": 2,
+   "atk": "Corpo a Corpo",
+   "dmg": "d6 fís",
+   "adv": "escalar, localizar, proteger",
+   "f": [
+    {
+     "n": "Companheiro",
+     "t": "Quando você Ajuda um Aliado, pode rolar um **d8** como seu dado de vantagem."
+    },
+    {
+     "n": "Frágil",
+     "t": "Quando você sofre dano Maior ou superior, sai da Forma Bestial."
+    }
+   ]
+  },
+  {
+   "id": "Nimble Grazer",
+   "tier": 1,
+   "n": "Pastador Ligeiro",
+   "ex": "Cervo, Gazela, Cabra etc.",
+   "trait": "Agilidade",
+   "tb": 1,
+   "ev": 3,
+   "atk": "Corpo a Corpo",
+   "dmg": "d6 fís",
+   "adv": "saltar, esgueirar-se, correr em disparada",
+   "f": [
+    {
+     "n": "Presa Esquiva",
+     "t": "Quando um teste de ataque contra você fosse ter sucesso, você pode **marcar 1 de Estresse** e rolar um **d4.** Some o resultado à sua Evasão contra esse ataque."
+    },
+    {
+     "n": "Frágil",
+     "t": "Quando você sofre dano Maior ou superior, sai da Forma Bestial."
+    }
+   ]
+  },
+  {
+   "id": "Pack Predator",
+   "tier": 1,
+   "n": "Predador de Matilha",
+   "ex": "Coiote, Hiena, Lobo etc.",
+   "trait": "Força",
+   "tb": 2,
+   "ev": 1,
+   "atk": "Corpo a Corpo",
+   "dmg": "d8+2 fís",
+   "adv": "atacar, correr em disparada, rastrear",
+   "f": [
+    {
+     "n": "Golpe Incapacitante",
+     "t": "Quando você tem sucesso em um ataque contra um alvo dentro do alcance Corpo a Corpo, pode **marcar 1 de Estresse** para tornar o alvo temporariamente _Vulnerável_."
+    },
+    {
+     "n": "Caça em Matilha",
+     "t": "Quando você tem sucesso em um ataque contra o mesmo alvo de um aliado que agiu imediatamente antes de você, some um **d8** à sua rolagem de dano."
+    }
+   ]
+  },
+  {
+   "id": "Aquatic Scout",
+   "tier": 1,
+   "n": "Batedor Aquático",
+   "ex": "Enguia, Peixe, Polvo etc.",
+   "trait": "Agilidade",
+   "tb": 1,
+   "ev": 2,
+   "atk": "Corpo a Corpo",
+   "dmg": "d4 fís",
+   "adv": "navegar, esgueirar-se, nadar",
+   "f": [
+    {
+     "n": "Aquático",
+     "t": "Você pode respirar e se mover naturalmente debaixo d'água."
+    },
+    {
+     "n": "Frágil",
+     "t": "Quando você sofre dano Maior ou superior, sai da Forma Bestial."
+    }
+   ]
+  },
+  {
+   "id": "Stalking Arachnid",
+   "tier": 1,
+   "n": "Aracnídeo Espreitador",
+   "ex": "Tarântula, Aranha-Lobo etc.",
+   "trait": "Acuidade",
+   "tb": 1,
+   "ev": 2,
+   "atk": "Corpo a Corpo",
+   "dmg": "d6+1 fís",
+   "adv": "atacar, escalar, esgueirar-se",
+   "f": [
+    {
+     "n": "Picada Venenosa",
+     "t": "Quando você tem sucesso em um ataque contra um alvo dentro do alcance Corpo a Corpo, o alvo fica temporariamente _Envenenado_. Uma criatura _Envenenada_ sofre **1d10** de dano físico direto cada vez que age."
+    },
+    {
+     "n": "Tecelã de Teias",
+     "t": "Você pode criar um material de teia resistente, útil tanto para a aventura quanto para a batalha. A teia é resistente o bastante para sustentar uma criatura. Você pode _Conter_ temporariamente um alvo dentro do alcance Perto tendo sucesso em um teste de Acuidade contra ele."
+    }
+   ]
+  },
+  {
+   "id": "Armored Sentry",
+   "tier": 2,
+   "n": "Sentinela Blindada",
+   "ex": "Tatu, Pangolim, Tartaruga etc.",
+   "trait": "Força",
+   "tb": 1,
+   "ev": 1,
+   "atk": "Corpo a Corpo",
+   "dmg": "d8+2 fís",
+   "adv": "cavar, localizar, proteger",
+   "f": [
+    {
+     "n": "Carapaça Blindada",
+     "t": "Seu exterior endurecido lhe dá resistência a dano físico. Além disso, **marque um Espaço de Armadura** para se recolher em sua carapaça. Enquanto estiver na carapaça, o dano físico é reduzido em um valor igual ao seu Valor de Armadura (depois de aplicar a resistência), mas você não pode realizar outras ações sem sair dessa forma."
+    },
+    {
+     "n": "Bala de Canhão",
+     "t": "**Marque 1 de Estresse** para permitir que um aliado arremesse ou lance você contra um adversário. Para isso, o aliado faz um teste de ataque usando Agilidade ou Força (à escolha dele) contra um alvo dentro do alcance Perto. Em um sucesso, o adversário sofre **d12+2** de dano físico usando a Proficiência de quem arremessou. Você pode **gastar 1 de Esperança** para atingir um adversário adicional dentro do alcance Muito Perto do primeiro. O segundo alvo sofre metade do dano causado ao primeiro alvo."
+    }
+   ]
+  },
+  {
+   "id": "Powerful Beast",
+   "tier": 2,
+   "n": "Fera Poderosa",
+   "ex": "Urso, Touro, Alce etc.",
+   "trait": "Força",
+   "tb": 3,
+   "ev": 1,
+   "atk": "Corpo a Corpo",
+   "dmg": "d10+4 fís",
+   "adv": "navegar, proteger, assustar",
+   "f": [
+    {
+     "n": "Fúria Destruidora",
+     "t": "Quando você rola 1 em um dado de dano, pode rolar um **d10** e somar o resultado à rolagem de dano. Além disso, antes de fazer um teste de ataque, você pode **marcar 1 de Estresse** para ganhar um bônus de +1 na sua Proficiência para esse ataque."
+    },
+    {
+     "n": "Couro Grosso",
+     "t": "Você ganha um bônus de +2 nos seus Limiares de Dano."
+    }
+   ]
+  },
+  {
+   "id": "Mighty Strider",
+   "tier": 2,
+   "n": "Corredor Poderoso",
+   "ex": "Camelo, Cavalo, Zebra etc.",
+   "trait": "Agilidade",
+   "tb": 1,
+   "ev": 2,
+   "atk": "Corpo a Corpo",
+   "dmg": "d8+1 fís",
+   "adv": "saltar, navegar, correr em disparada",
+   "f": [
+    {
+     "n": "Carregador",
+     "t": "Você pode carregar até dois aliados voluntários com você quando se move."
+    },
+    {
+     "n": "Pisotear",
+     "t": "**Marque 1 de Estresse** para se mover até o alcance Perto em linha reta e fazer um ataque contra todos os alvos dentro do alcance Corpo a Corpo da linha. Os alvos contra os quais você tiver sucesso sofrem **d8+1** de dano físico usando sua Proficiência e ficam temporariamente _Vulneráveis_."
+    }
+   ]
+  },
+  {
+   "id": "Striking Serpent",
+   "tier": 2,
+   "n": "Serpente Ofensiva",
+   "ex": "Naja, Cascavel, Víbora etc.",
+   "trait": "Acuidade",
+   "tb": 1,
+   "ev": 2,
+   "atk": "Muito Perto",
+   "dmg": "d8+4 fís",
+   "adv": "escalar, enganar, correr em disparada",
+   "f": [
+    {
+     "n": "Bote Venenoso",
+     "t": "Faça um ataque contra qualquer quantidade de alvos dentro do alcance Muito Perto. Em um sucesso, o alvo fica temporariamente _Envenenado_. Uma criatura _Envenenada_ sofre **1d10** de dano físico direto cada vez que age."
+    },
+    {
+     "n": "Sibilo de Advertência",
+     "t": "**Marque 1 de Estresse** para forçar qualquer quantidade de alvos dentro do alcance Corpo a Corpo a recuar para o alcance Muito Perto."
+    }
+   ]
+  },
+  {
+   "id": "Pouncing Predator",
+   "tier": 2,
+   "n": "Predador Saltador",
+   "ex": "Guepardo, Leão, Pantera etc.",
+   "trait": "Instinto",
+   "tb": 1,
+   "ev": 3,
+   "atk": "Corpo a Corpo",
+   "dmg": "d8+6 fís",
+   "adv": "atacar, escalar, esgueirar-se",
+   "f": [
+    {
+     "n": "Veloz",
+     "t": "**Gaste 1 de Esperança** para se mover até o alcance Longe sem rolar."
+    },
+    {
+     "n": "Derrubada",
+     "t": "**Marque 1 de Estresse** para se mover até o alcance Corpo a Corpo de um alvo e fazer um teste de ataque contra ele. Em um sucesso, você ganha um bônus de +2 na sua Proficiência para este ataque e o alvo deve marcar 1 de Estresse."
+    }
+   ]
+  },
+  {
+   "id": "Winged Beast",
+   "tier": 2,
+   "n": "Fera Alada",
+   "ex": "Falcão, Coruja, Corvo etc.",
+   "trait": "Acuidade",
+   "tb": 1,
+   "ev": 3,
+   "atk": "Corpo a Corpo",
+   "dmg": "d4+2 fís",
+   "adv": "enganar, localizar, assustar",
+   "f": [
+    {
+     "n": "Visão Aérea",
+     "t": "Você pode voar à vontade. Uma vez por descanso, enquanto estiver no ar, você pode fazer ao Mestre uma pergunta sobre a cena abaixo de você sem precisar rolar. Na primeira vez que um personagem fizer um teste para agir com base nessa informação, ele ganha vantagem no teste."
+    },
+    {
+     "n": "Ossos Ocos",
+     "t": "Você recebe uma penalidade de -2 nos seus Limiares de Dano."
+    }
+   ]
+  },
+  {
+   "id": "Great Predator",
+   "tier": 3,
+   "n": "Grande Predador",
+   "ex": "Lobo Atroz, Velociraptor, Tigre-Dentes-de-Sabre etc.",
+   "trait": "Força",
+   "tb": 2,
+   "ev": 2,
+   "atk": "Corpo a Corpo",
+   "dmg": "d12+8 fís",
+   "adv": "atacar, esgueirar-se, correr em disparada",
+   "f": [
+    {
+     "n": "Carregador",
+     "t": "Você pode carregar até dois aliados voluntários com você quando se move."
+    },
+    {
+     "n": "Dilacerar Brutal",
+     "t": "Quando você tem sucesso em um ataque contra um alvo, pode **gastar 1 de Esperança** para torná-lo temporariamente _Vulnerável_ e ganhar um bônus de +1 na sua Proficiência para este ataque."
+    }
+   ]
+  },
+  {
+   "id": "Mighty Lizard",
+   "tier": 3,
+   "n": "Lagarto Poderoso",
+   "ex": "Jacaré, Crocodilo, Monstro-de-Gila etc.",
+   "trait": "Instinto",
+   "tb": 2,
+   "ev": 1,
+   "atk": "Corpo a Corpo",
+   "dmg": "d10+7 fís",
+   "adv": "atacar, esgueirar-se, rastrear",
+   "f": [
+    {
+     "n": "Defesa Física",
+     "t": "Você ganha um bônus de +3 nos seus Limiares de Dano."
+    },
+    {
+     "n": "Mordida Tenaz",
+     "t": "Quando você tem sucesso em um ataque contra um alvo dentro do alcance Corpo a Corpo, pode **gastar 1 de Esperança** para prender esse oponente entre suas mandíbulas, deixando-o temporariamente _Contido_ e _Vulnerável._"
+    }
+   ]
+  },
+  {
+   "id": "Great Winged Beast",
+   "tier": 3,
+   "n": "Grande Fera Alada",
+   "ex": "Águia Gigante, Falcão etc.",
+   "trait": "Acuidade",
+   "tb": 2,
+   "ev": 3,
+   "atk": "Corpo a Corpo",
+   "dmg": "d8+6 fís",
+   "adv": "enganar, distrair, localizar",
+   "f": [
+    {
+     "n": "Visão Aérea",
+     "t": "Você pode voar à vontade. Uma vez por descanso, enquanto estiver no ar, você pode fazer ao Mestre uma pergunta sobre a cena abaixo de você sem precisar rolar. Na primeira vez que um personagem fizer um teste para agir com base nessa informação, ele ganha vantagem no teste."
+    },
+    {
+     "n": "Carregador",
+     "t": "Você pode carregar até dois aliados voluntários com você quando se move."
+    }
+   ]
+  },
+  {
+   "id": "Aquatic Predator",
+   "tier": 3,
+   "n": "Predador Aquático",
+   "ex": "Golfinho, Orca, Tubarão etc.",
+   "trait": "Agilidade",
+   "tb": 2,
+   "ev": 4,
+   "atk": "Corpo a Corpo",
+   "dmg": "d10+6 fís",
+   "adv": "atacar, nadar, rastrear",
+   "f": [
+    {
+     "n": "Aquático",
+     "t": "Você pode respirar e se mover naturalmente debaixo d'água."
+    },
+    {
+     "n": "Dilacerar Brutal",
+     "t": "Quando você tem sucesso em um ataque contra um alvo, pode **gastar 1 de Esperança** para torná-lo _Vulnerável_ e ganhar um bônus de +1 na sua Proficiência para este ataque."
+    }
+   ]
+  },
+  {
+   "id": "Legendary Beast",
+   "tier": 3,
+   "n": "Fera Lendária",
+   "ex": "Opções de Patamar 1 aprimoradas",
+   "f": [
+    {
+     "n": "Evoluída",
+     "t": "Escolha uma opção de Forma Bestial de Patamar 1 e torne-se uma versão maior e mais poderosa dessa criatura. Enquanto estiver nessa forma, você mantém todos os atributos e características da forma original e ganha os seguintes bônus:\n\n- Um bônus de +6 nas rolagens de dano\n- Um bônus de +1 no atributo usado por esta forma\n- Um bônus de +2 na Evasão"
+    }
+   ]
+  },
+  {
+   "id": "Legendary Hybrid",
+   "tier": 3,
+   "n": "Híbrido Lendário",
+   "ex": "Grifo, Esfinge etc.",
+   "trait": "Força",
+   "tb": 2,
+   "ev": 3,
+   "atk": "Corpo a Corpo",
+   "dmg": "d10+8 fís",
+   "f": [
+    {
+     "n": "Características Híbridas",
+     "t": "Para se transformar nesta criatura, **marque 1 de Estresse adicional.** Escolha quaisquer duas opções de Forma Bestial dos Patamares 1-2. Escolha um total de quatro vantagens e duas características dessas opções."
+    }
+   ]
+  },
+  {
+   "id": "Massive Behemoth",
+   "tier": 4,
+   "n": "Colosso Descomunal",
+   "ex": "Elefante, Mamute, Rinoceronte etc.",
+   "trait": "Força",
+   "tb": 3,
+   "ev": 1,
+   "atk": "Corpo a Corpo",
+   "dmg": "d12+12 fís",
+   "adv": "localizar, proteger, assustar, correr em disparada",
+   "f": [
+    {
+     "n": "Carregador",
+     "t": "Você pode carregar até quatro aliados voluntários com você quando se move."
+    },
+    {
+     "n": "Demolir",
+     "t": "**Gaste 1 de Esperança** para se mover até o alcance Longe em linha reta e fazer um ataque contra todos os alvos dentro do alcance Corpo a Corpo da linha. Os alvos contra os quais você tiver sucesso sofrem **d8+10** de dano físico usando sua Proficiência e ficam temporariamente _Vulneráveis._"
+    },
+    {
+     "n": "Destemido",
+     "t": "Você ganha um bônus de +2 em todos os seus Limiares de Dano."
+    }
+   ]
+  },
+  {
+   "id": "Terrible Lizard",
+   "tier": 4,
+   "n": "Lagarto Terrível",
+   "ex": "Braquiossauro, Tiranossauro etc.",
+   "trait": "Força",
+   "tb": 3,
+   "ev": 2,
+   "atk": "Corpo a Corpo",
+   "dmg": "d12+10 fís",
+   "adv": "atacar, enganar, assustar, rastrear",
+   "f": [
+    {
+     "n": "Golpes Devastadores",
+     "t": "Quando você causa dano Grave a um alvo dentro do alcance Corpo a Corpo, pode **marcar 1 de Estresse** para forçá-lo a marcar 1 Ponto de Vida adicional."
+    },
+    {
+     "n": "Passada Colossal",
+     "t": "Você pode se mover até o alcance Longe sem rolar. Você ignora terreno acidentado (a critério do Mestre) devido ao seu tamanho."
+    }
+   ]
+  },
+  {
+   "id": "Mythic Aerial Hunter",
+   "tier": 4,
+   "n": "Caçador Aéreo Mítico",
+   "ex": "Dragão, Pterodáctilo, Roca, Serpe etc.",
+   "trait": "Acuidade",
+   "tb": 3,
+   "ev": 4,
+   "atk": "Corpo a Corpo",
+   "dmg": "d10+11 fís",
+   "adv": "atacar, enganar, localizar, navegar",
+   "f": [
+    {
+     "n": "Carregador",
+     "t": "Você pode carregar até três aliados voluntários com você quando se move."
+    },
+    {
+     "n": "Rapinante Mortal",
+     "t": "Você pode voar à vontade e se mover até o alcance Longe como parte da sua ação. Quando você se move em linha reta até o alcance Corpo a Corpo de um alvo a partir de pelo menos o alcance Perto e faz um ataque contra esse alvo na mesma ação, pode rolar novamente todos os dados de dano que tiveram resultado menor que a sua Proficiência."
+    }
+   ]
+  },
+  {
+   "id": "Epic Aquatic Beast",
+   "tier": 4,
+   "n": "Fera Aquática Épica",
+   "ex": "Lula Gigante, Baleia etc.",
+   "trait": "Agilidade",
+   "tb": 3,
+   "ev": 3,
+   "atk": "Corpo a Corpo",
+   "dmg": "d10+10 fís",
+   "adv": "localizar, proteger, assustar, rastrear",
+   "f": [
+    {
+     "n": "Senhor do Oceano",
+     "t": "Você pode respirar e se mover naturalmente debaixo d'água. Quando você tem sucesso em um ataque contra um alvo dentro do alcance Corpo a Corpo, pode _Contê-lo_ temporariamente."
+    },
+    {
+     "n": "Inflexível",
+     "t": "Quando você fosse marcar um Espaço de Armadura, role um **d6.** Em um resultado 5 ou maior, reduza a gravidade em um limiar sem marcar um Espaço de Armadura."
+    }
+   ]
+  },
+  {
+   "id": "Mythic Beast",
+   "tier": 4,
+   "n": "Fera Mítica",
+   "ex": "Opções de Patamar 1 ou Patamar 2 aprimoradas",
+   "f": [
+    {
+     "n": "Evoluída",
+     "t": "Escolha uma opção de Forma Bestial de Patamar 1 ou Patamar 2 e torne-se uma versão maior e mais poderosa dessa criatura. Enquanto estiver nessa forma, você mantém todos os atributos e características da forma original e ganha os seguintes bônus:\n\n- Um bônus de +9 nas rolagens de dano\n- Um bônus de +2 no atributo usado por esta forma\n- Um bônus de +3 na Evasão\n- Seu dado de dano aumenta em um tamanho (d6 vira d8, d8 vira d10 etc.)"
+    }
+   ]
+  },
+  {
+   "id": "Mythic Hybrid",
+   "tier": 4,
+   "n": "Híbrido Mítico",
+   "ex": "Quimera, Cocatriz, Mantícora etc.",
+   "trait": "Força",
+   "tb": 3,
+   "ev": 2,
+   "atk": "Corpo a Corpo",
+   "dmg": "d12+10 fís",
+   "f": [
+    {
+     "n": "Características Híbridas",
+     "t": "Para se transformar nesta criatura, **marque 2 de Estresse adicionais.** Escolha quaisquer três opções de Forma Bestial dos Patamares 1-3. Escolha um total de cinco vantagens e três características dessas opções."
+    }
+   ]
+  }
+ ],
+ "companion": {
+  "rules": "Quando você escolhe a subclasse de Patrulheiro Vínculo Bestial, pegue uma ficha de companheiro. Essa ficha serve para registrar informações importantes sobre o companheiro do seu personagem e pode ser encaixada sob o lado direito da sua ficha de personagem para facilitar a visualização.\n\n##### PASSO 1: DÊ UM NOME AO SEU COMPANHEIRO\n\nTrabalhe com o Mestre para decidir que tipo de animal é o seu companheiro. Dê um nome a ele e acrescente uma imagem dele à ficha de companheiro.\n\n##### PASSO 2: ANOTE A EVASÃO DELE\n\nPreencha a Evasão dele, que começa em 10.\n\n##### PASSO 3: ESCOLHA AS EXPERIÊNCIAS DE COMPANHEIRO DELE\n\nCrie duas Experiências para o seu companheiro com base no treinamento dele e na história que vocês têm juntos.\n\nComece com +2 em ambas as Experiências. Sempre que você ganhar uma nova Experiência, seu companheiro também ganha uma. Todas as novas Experiências começam em +2.\n\n> **Exemplos de Experiências de Companheiro**\n>\n> _Distração Ousada, Escalador Especialista, Buscar, Amigável, Guardião da Floresta, Aterrorizante, Intimidador, Leal Até o Fim, Navegação, Ágil, Ninguém Fica para Trás, Em Alerta Máximo, Protetor, Companheiro Real, Batedor, Animal de Serviço, Montaria Confiável, Vigilante, Sempre os Encontramos, Não Dá para Acertar o que Não Dá para Achar_\n\n##### PASSO 4: ESCOLHA O ATAQUE DELE E ANOTE O DADO DE DANO\n\nPor fim, descreva o método do seu companheiro para causar dano (o ataque padrão dele) e anote-o na seção \"Ataque e Dano\". No nível 1, o dado de dano do seu companheiro é um d6 e o alcance dele é Corpo a Corpo. Escolha se ele causa dano físico ou mágico.\n\n##### TRABALHANDO COM SEU COMPANHEIRO\n\nAs seções a seguir apresentam o básico de como trabalhar com o seu companheiro.\n\n##### USANDO TESTES DE CONJURAÇÃO, ESPERANÇA E EXPERIÊNCIAS\n\nFaça um Teste de Conjuração para se conectar com o seu companheiro e ordenar que ele aja. Gaste 1 de Esperança para somar uma Experiência de Companheiro aplicável ao teste. Em um sucesso com Esperança, se a sua próxima ação aproveitar o sucesso dele, você ganha vantagem no teste.\n\n##### ATACANDO COM SEU COMPANHEIRO\n\nQuando você ordena que seu companheiro ataque, ele recebe quaisquer benefícios que normalmente se aplicariam apenas a você (como os efeitos de \"Foco do Patrulheiro\"). Em um sucesso, a rolagem de dano dele usa a sua Proficiência e o dado de dano dele.\n\n##### SOFRENDO DANO COMO ESTRESSE\n\n- Quando seu companheiro fosse sofrer qualquer quantidade de dano, ele marca 1 de Estresse. Quando ele marca seu último Estresse, sai da cena (escondendo-se, fugindo ou com uma ação semelhante). Ele permanece indisponível até o início do seu próximo descanso longo, quando retorna com 1 de Estresse recuperado.\n- Quando você escolhe um movimento de período de descanso que recupera Estresse de você mesmo, seu companheiro recupera a mesma quantidade de Estresse.\n\n##### SUBINDO DE NÍVEL SEU COMPANHEIRO\n\nQuando o seu personagem sobe de nível, escolha uma opção disponível para o seu companheiro da lista a seguir e marque-a na sua ficha.",
+  "levelUp": [
+   {
+    "n": "Inteligente",
+    "t": "Seu companheiro ganha um bônus permanente de +1 em uma Experiência de Companheiro à sua escolha."
+   },
+   {
+    "n": "Luz na Escuridão",
+    "t": "Use isto como um espaço de Esperança adicional que o seu personagem pode marcar."
+   },
+   {
+    "n": "Conforto Animal",
+    "t": "Uma vez por descanso, quando você dedica um tempo, durante um momento tranquilo, a dar amor e atenção ao seu companheiro, você pode ganhar 1 de Esperança ou ambos podem recuperar 1 de Estresse."
+   },
+   {
+    "n": "Blindado",
+    "t": "Quando seu companheiro sofre dano, você pode **marcar um dos seus Espaços de Armadura** em vez de marcar um dos Estresses dele."
+   },
+   {
+    "n": "Feroz",
+    "t": "Aumente os dados de dano ou o alcance do seu companheiro em um passo (d6 para d8, Perto para Longe etc.)."
+   },
+   {
+    "n": "Resiliente",
+    "t": "Seu companheiro ganha um espaço de Estresse adicional."
+   },
+   {
+    "n": "Vinculado",
+    "t": "Quando você marca seu último Ponto de Vida, seu companheiro corre até o seu lado para confortar você. Role uma quantidade de **d6** igual aos espaços de Estresse não marcados que ele tem e marque-os. Se algum resultado for 6, seu companheiro ajuda você a se levantar. Recupere seu último Ponto de Vida e volte à cena."
+   },
+   {
+    "n": "Atento",
+    "t": "Seu companheiro ganha um bônus permanente de +2 na Evasão dele."
+   }
+  ]
+ }
+}
