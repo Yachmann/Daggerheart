@@ -134,22 +134,41 @@ textarea{width:100%; min-height:60px; resize:vertical}
 .env-a b{flex:1; min-width:12ch}
 .last{margin-top:10px; padding:10px 12px; border-radius:8px; background:var(--fear-soft); border-left:4px solid var(--fear)}
 .last b{font-family:var(--serif)}
-.cards{display:grid; gap:12px; grid-template-columns:1fr; margin-top:12px}
-@media (min-width:860px){.cards{grid-template-columns:1fr 1fr}}
-.cb{background:var(--surface); border:1px solid var(--line); border-top:5px solid var(--blood); border-radius:4px 4px 12px 12px; padding:12px 14px}
-.cb.dead{opacity:.55; border-top-color:var(--muted)}
-.cb-h{display:flex; gap:8px; align-items:baseline; flex-wrap:wrap}
-.cb-h h3{font-size:1.25rem; font-weight:800}
-.cb-h .mt{color:var(--muted); font-size:.9rem}
-.cb-h .x{margin-left:auto}
-.quick{display:flex; flex-wrap:wrap; gap:6px 14px; margin:8px 0; font-size:.98rem}
-.quick b{font-family:var(--serif); font-size:1.1rem}
-.trk{display:grid; grid-template-columns:auto 1fr; gap:6px 10px; align-items:center; margin:8px 0}
-.trk .lb{font-weight:700; font-size:.9rem}
-.dmg{display:flex; flex-wrap:wrap; gap:6px; margin:8px 0}
-.conds{display:flex; flex-wrap:wrap; gap:6px; margin:8px 0}
-.chip{border:1px solid var(--line); background:transparent; border-radius:99px; padding:4px 12px; min-height:36px; font-size:.92rem}
-.chip.on{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+.cards{display:grid; gap:10px; grid-template-columns:1fr; margin-top:12px}
+@media (min-width:640px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1000px){.cards{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:1400px){.cards{grid-template-columns:repeat(4,1fr)}}
+.cb{background:var(--surface); border:1px solid var(--line); border-top:5px solid var(--blood); border-radius:4px 4px 12px 12px; padding:10px 12px; display:flex; flex-direction:column; gap:7px}
+.cb.dead{opacity:.6; border-top-color:var(--muted)}
+.cb-h{display:flex; gap:8px; align-items:flex-start}
+.numb{flex:none; width:30px; height:30px; border-radius:50%; background:var(--ink); color:var(--bg); font-family:var(--serif); font-weight:800; font-size:1.05rem; display:flex; align-items:center; justify-content:center}
+.cb-id{flex:1; min-width:0; display:flex; flex-direction:column; gap:2px}
+.cb-name{font-family:var(--serif); font-weight:800; font-size:1.2rem; border:1px solid transparent; background:transparent; border-radius:6px; padding:1px 4px; min-height:30px; width:100%}
+.cb-name:hover,.cb-name:focus{border-color:var(--line); background:var(--sunk)}
+.cb-desc{font-size:.85rem; color:var(--muted); border:1px solid transparent; background:transparent; border-radius:6px; padding:1px 4px; min-height:26px; width:100%}
+.cb-desc:hover,.cb-desc:focus{border-color:var(--line); background:var(--sunk); color:var(--ink)}
+.cb-h .x{flex:none; min-height:30px; min-width:30px; padding:0}
+.cb-tags{display:flex; gap:6px; align-items:center; flex-wrap:wrap}
+.tag2{font-size:.78rem; color:var(--muted); background:var(--sunk); border-radius:6px; padding:1px 8px}
+.status-badge{font-size:.78rem; font-weight:700; border-radius:6px; padding:1px 8px}
+.status-badge.alive{background:var(--moss-soft); color:var(--moss)}
+.status-badge.dead{background:var(--sunk); color:var(--muted)}
+.quick{font-size:.85rem; color:var(--muted)}
+.quick b{color:var(--ink); font-weight:700}
+.trk{display:grid; grid-template-columns:auto 1fr; gap:6px 8px; align-items:center}
+.trk.big .lb{font-weight:800; font-size:1rem; color:var(--blood)}
+.trk .lb{font-weight:700; font-size:.85rem}
+.dmg{display:flex; flex-wrap:wrap; gap:6px}
+.conds{display:flex; flex-wrap:wrap; gap:6px}
+.chip{border:1px solid var(--line); background:transparent; border-radius:99px; padding:4px 12px; min-height:34px; font-size:.88rem; font-weight:600}
+.chip.on{color:#fff; border-color:transparent}
+.chip.vuln.on{background:var(--blood)}
+.chip.restr.on{background:#8a6d3b}
+.chip.hide.on{background:var(--fear)}
+.fab{position:fixed; right:18px; bottom:calc(18px + env(safe-area-inset-bottom,0px)); width:52px; height:52px; border-radius:50%; background:var(--ink); color:var(--bg); border:none; font-size:1.4rem; box-shadow:0 4px 14px rgba(0,0,0,.25); z-index:15}
+.fabpanel{position:fixed; right:18px; bottom:calc(78px + env(safe-area-inset-bottom,0px)); width:min(320px,calc(100vw - 36px)); background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:10px 12px; box-shadow:0 8px 24px rgba(0,0,0,.25); z-index:15}
+.fabpanel-h{display:flex; align-items:center; gap:8px; margin-bottom:6px}
+.fabpanel textarea{width:100%; min-height:140px}
 details.more{margin-top:6px}
 details.more summary{cursor:pointer; font-weight:700; min-height:36px; display:flex; align-items:center}
 .empty{border:2px dashed var(--line); border-radius:12px; padding:22px; text-align:center; color:var(--muted)}
@@ -317,12 +336,14 @@ const clone=o=>JSON.parse(JSON.stringify(o));
 let toastT; function toast(m){const t=$("#toast"); t.textContent=m; t.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>t.hidden=true,2800);}
 
 /* ---------- state ---------- */
-function newCombat(){return {fear:0,players:4,adjust:0,cds:[],list:[],last:null};}
+function newCombat(){return {fear:0,players:4,adjust:0,cds:[],list:[],last:null,nextNum:1,notes:""};}
 function newCamp(name){return {id:uid(),name,excl:true,combat:newCombat(),pcs:[],lore:[]};}
 function fresh(){const c=newCamp("Minha campanha"); return {v:2,ts:0,custom:[],camps:[c],cur:c.id};}
 function migrate(o){
   if(!o||typeof o!=="object") return null;
-  if(o.v===2&&Array.isArray(o.camps)&&o.camps.length){ o.camps.forEach(c=>{ if(!Array.isArray(c.lore)) c.lore=[]; c.pcs.forEach(p=>{if(!Array.isArray(p.loot)) p.loot=[];}); }); return o; }
+  if(o.v===2&&Array.isArray(o.camps)&&o.camps.length){ o.camps.forEach(c=>{ if(!Array.isArray(c.lore)) c.lore=[]; c.pcs.forEach(p=>{if(!Array.isArray(p.loot)) p.loot=[];});
+      const cb=c.combat; if(typeof cb.notes!=="string") cb.notes=""; if(!cb.nextNum) cb.nextNum=1;
+      cb.list.forEach(x=>{ if(!x.num){x.num=cb.nextNum++;} if(typeof x.desc!=="string") x.desc=""; }); }); return o; }
   if(o.v===1){const c=newCamp("Minha campanha"); c.combat=Object.assign(newCombat(),o.combat||{}); return {v:2,ts:o.ts||0,custom:o.custom||[],camps:[c],cur:c.id};}
   return null;
 }
@@ -331,7 +352,7 @@ const LS="mesa-mestre-dh-v1", LST="mesa-mestre-dh-tr";
 try{const m=migrate(JSON.parse(localStorage.getItem(LS)||"null")); if(m) S=m;}catch(e){}
 try{T=JSON.parse(localStorage.getItem(LST)||"{}")||{};}catch(e){T={};}
 let ui={tab:"gerar",gType:"Standard",gTier:1,gen:null,q:"",fType:"",fTier:"",fSrc:"",open:null,qty:{},
-  rq:"",rc:"",ro:null,authMsg:"",authBusy:false,loreEdit:null,loreOpen:null,gCompCat:"geral",gComp:"",gItemCat:"Arma",gItemTier:"",gItem:null,rc2:{},rcRes:null,encCode:"",encName:"",encBusy:false,myEnc:null,cq:"",cDom:"",cLvl:"",cType:"",cOwn:"",pkq:{},newPc:null,editPc:null,lu:null,campEdit:false};
+  rq:"",rc:"",ro:null,fabOpen:false,authMsg:"",authBusy:false,loreEdit:null,loreOpen:null,gCompCat:"geral",gComp:"",gItemCat:"Arma",gItemTier:"",gItem:null,rc2:{},rcRes:null,encCode:"",encName:"",encBusy:false,myEnc:null,cq:"",cDom:"",cLvl:"",cType:"",cOwn:"",pkq:{},newPc:null,editPc:null,lu:null,campEdit:false};
 const camp=()=>S.camps.find(c=>c.id===S.cur)||S.camps[0];
 const CB=()=>camp().combat;
 
@@ -553,22 +574,36 @@ function vCombate(){
   <div class="panel" style="margin-top:14px"><h2>Ações de ambiente</h2><div class="env">
     ${ENV.map((e,i)=>`<div class="env-a"><b>${e.n}</b><span class="hint" style="flex:2; min-width:16ch">${e.ef}</span>${e.c.map(k=>`<button class="btn sm fear" data-act="env" data-i="${i}" data-c="${k}" ${C.fear<k?"disabled":""}>Gastar ${k} Medo</button>`).join("")}</div>`).join("")}</div>
     ${C.last?`<div class="last"><b>${esc(C.last.n)}:</b> ${esc(C.last.o)}. <span class="hint">${esc(C.last.ef)}.</span></div>`:""}</div>
-  <h2 class="sec-h">Em combate</h2>
+  <h2 class="sec-h">Em combate${C.list.length?` (${C.list.filter(x=>x.hp<x.hpMax).length} de pé, ${C.list.length} no total)`:""}</h2>
   ${C.list.length?`<div class="acts" style="margin:0 0 4px"><button class="btn sm danger" data-act="clear">Encerrar combate</button></div>`:""}
   <div class="cards">${C.list.map(card).join("")}</div>
-  ${C.list.length?"":`<div class="empty">Ninguém em combate. Gere um adversário ou escolha um na Biblioteca e mande para cá.</div>`}`;
+  ${C.list.length?"":`<div class="empty">Ninguém em combate. Gere um adversário ou escolha um na Biblioteca e mande para cá.</div>`}
+  <button class="fab" data-act="fabtoggle" aria-label="Notas do combate" aria-expanded="${ui.fabOpen}">📝</button>
+  ${ui.fabOpen?`<div class="fabpanel"><div class="fabpanel-h"><b>Notas do combate</b><button class="btn sm ghost" data-act="fabtoggle" aria-label="Fechar">✕</button></div>
+    <textarea data-act="cnotes" placeholder="Iniciativa, turno, lembretes gerais...">${esc(C.notes||"")}</textarea></div>`:""}`;
 }
+const CONDCLS={"Vulnerável":"vuln","Contido":"restr","Oculto":"hide"};
 function card(x){
   const dead=x.hp>=x.hpMax, min=x.type==="Minion";
-  return `<article class="cb${dead?" dead":""}"><div class="cb-h"><h3>${esc(x.name)}</h3><span class="mt">T${x.tier} ${esc(x.type)}${dead?", derrotado":""}</span><button class="btn sm ghost danger x" data-act="rm" data-id="${x.id}">Remover</button></div>
-    <div class="quick"><span>Dif <b>${esc(x.dif)}</b></span><span>Limiares <b>${x.maj??"–"} / ${x.sev??"–"}</b></span><span>${esc(x.atk)} <b>${esc(x.wpn)}</b>, ${esc(x.rng)}, ${esc(x.dmg)}</span></div>
-    <div class="trk"><span class="lb">PV</span>${pips(x.hpMax,x.hp,"hp","hp",x.id)}${x.stMax?`<span class="lb">Estresse</span>${pips(x.stMax,x.st,"st","st",x.id)}`:""}</div>
+  return `<article class="cb${dead?" dead":""}">
+    <div class="cb-h">
+      <span class="numb" title="Mesmo número do token físico">${x.num||"?"}</span>
+      <div class="cb-id">
+        <input class="cb-name" data-act="xname" data-id="${x.id}" value="${esc(x.name)}" aria-label="Nome">
+        <input class="cb-desc" data-act="xdesc" data-id="${x.id}" value="${esc(x.desc||"")}" placeholder="Nota rápida (ex.: o do capuz vermelho)" aria-label="Nota rápida">
+      </div>
+      <button class="btn sm ghost danger x" data-act="rm" data-id="${x.id}" aria-label="Remover">✕</button>
+    </div>
+    <div class="cb-tags"><span class="tag2">T${x.tier} ${esc(x.type)}</span><span class="status-badge ${dead?"dead":"alive"}">${dead?"Derrotado":"Em combate"}</span></div>
+    <div class="trk big"><span class="lb">PV</span>${pips(x.hpMax,x.hp,"hp","hp",x.id)}</div>
+    ${x.stMax?`<div class="trk"><span class="lb">Estresse</span>${pips(x.stMax,x.st,"st","st",x.id)}</div>`:""}
+    <div class="conds">${CONDS.map(c=>`<button class="chip ${CONDCLS[c]}${x.cond.includes(c)?" on":""}" data-act="cond" data-id="${x.id}" data-c="${c}" aria-pressed="${x.cond.includes(c)}">${c}</button>`).join("")}</div>
+    <div class="quick">Dif <b>${esc(x.dif)}</b> · Limiares <b>${x.maj??"–"}/${x.sev??"–"}</b> · ${esc(x.atk)} <b>${esc(x.wpn)}</b>, ${esc(x.rng)}, ${esc(x.dmg)}</div>
     ${min?"":`<div class="dmg"><button class="btn sm" data-act="dmg" data-id="${x.id}" data-n="1">${x.maj?`Abaixo de ${x.maj}`:"Dano menor"}: 1 PV</button>${x.maj?`<button class="btn sm" data-act="dmg" data-id="${x.id}" data-n="2">${x.maj}+: 2 PV</button>`:""}${x.sev?`<button class="btn sm" data-act="dmg" data-id="${x.id}" data-n="3">${x.sev}+: 3 PV</button>`:""}</div>`}
-    <div class="conds">${CONDS.map(c=>`<button class="chip${x.cond.includes(c)?" on":""}" data-act="cond" data-id="${x.id}" data-c="${c}" aria-pressed="${x.cond.includes(c)}">${c}</button>`).join("")}</div>
     <details class="more"${x.open?" open":""} data-id="${x.id}"><summary>Habilidades (${x.f.length})</summary>
       ${x.xp?`<p><b>Experiência:</b> ${esc(x.xp)}</p>`:""}${x.mot?`<p><b>Táticas:</b> ${esc(x.mot)}</p>`:""}
       ${x.f.map(f=>`<div class="feat"><div class="feat-h"><b>${esc(f.n)}</b>${f.k?`<span class="tag ${f.k}">${KIND[f.k]}</span>`:""}</div><p>${md(f.t)}</p></div>`).join("")}
-      <label class="f" style="margin-top:8px">Anotações<textarea data-act="note" data-id="${x.id}">${esc(x.notes||"")}</textarea></label>
+      <label class="f" style="margin-top:8px">Anotações longas<textarea data-act="note" data-id="${x.id}">${esc(x.notes||"")}</textarea></label>
     </details></article>`;
 }
 /* ---------- actions ---------- */
@@ -576,14 +611,14 @@ function toCombat(a,n){
   n=Math.max(1,Math.min(20,n||1)); const th=parseTh(a.th);
   const same=CB().list.filter(x=>x.src===a.name).length;
   for(let i=1;i<=n;i++){
-    CB().list.push({id:uid(),src:a.name,name:(n>1||same)?a.name+" "+(same+i):a.name,type:a.type,tier:a.tier,dif:a.dif,maj:th.maj,sev:th.sev,hpMax:+a.hp||1,hp:0,stMax:+a.st||0,st:0,atk:a.atk,wpn:a.wpn,rng:a.rng,dmg:a.dmg,xp:a.xp,mot:a.mot,f:a.f.map(f=>({n:f.n,k:f.k,t:featText(f,a.name)})),cond:[],notes:"",open:false});
+    const C=CB(); C.list.push({id:uid(),num:C.nextNum++,src:a.name,name:(n>1||same)?a.name+" "+(same+i):a.name,desc:"",type:a.type,tier:a.tier,dif:a.dif,maj:th.maj,sev:th.sev,hpMax:+a.hp||1,hp:0,stMax:+a.st||0,st:0,atk:a.atk,wpn:a.wpn,rng:a.rng,dmg:a.dmg,xp:a.xp,mot:a.mot,f:a.f.map(f=>({n:f.n,k:f.k,t:featText(f,a.name)})),cond:[],notes:"",open:false});
   }
   save(); toast(n>1?n+" adversários no combate":a.name+" no combate"); render();
 }
 function toCombatSilent(a,n){
   n=Math.max(1,Math.min(20,n||1)); const th=parseTh(a.th); const C=CB();
   const same=C.list.filter(x=>x.src===a.name).length;
-  for(let i=1;i<=n;i++) C.list.push({id:uid(),src:a.name,name:(n>1||same)?a.name+" "+(same+i):a.name,type:a.type,tier:a.tier,dif:a.dif,maj:th.maj,sev:th.sev,hpMax:+a.hp||1,hp:0,stMax:+a.st||0,st:0,atk:a.atk,wpn:a.wpn,rng:a.rng,dmg:a.dmg,xp:a.xp,mot:a.mot,f:a.f.map(f=>({n:f.n,k:f.k,t:featText(f,a.name)})),cond:[],notes:"",open:false});
+  for(let i=1;i<=n;i++) C.list.push({id:uid(),num:C.nextNum++,src:a.name,name:(n>1||same)?a.name+" "+(same+i):a.name,desc:"",type:a.type,tier:a.tier,dif:a.dif,maj:th.maj,sev:th.sev,hpMax:+a.hp||1,hp:0,stMax:+a.st||0,st:0,atk:a.atk,wpn:a.wpn,rng:a.rng,dmg:a.dmg,xp:a.xp,mot:a.mot,f:a.f.map(f=>({n:f.n,k:f.k,t:featText(f,a.name)})),cond:[],notes:"",open:false});
 }
 function byKey(k){return k.startsWith("c:")?S.custom.find(a=>a.id===k.slice(2)):SRD.find(a=>a.name===k.slice(2));}
 function qtyFor(k,a){return +(ui.qty[k]??(a.type==="Minion"?Math.max(1,CB().players||4):1));}
@@ -774,9 +809,9 @@ async function listEncounters(){
 }
 function applyEncounterUnits(units,mode){
   const C=CB();
-  if(mode==="replace") C.list=[];
+  if(mode==="replace"){ C.list=[]; C.nextNum=1; }
   units.forEach(u=>{const same=C.list.filter(x=>x.src===u.name).length;
-    C.list.push({id:uid(),src:u.name,name:same?u.name+" "+(same+1):u.name,type:u.type,tier:u.tier,dif:u.dif,maj:u.maj,sev:u.sev,hpMax:u.hpMax,hp:0,stMax:u.stMax,st:0,atk:u.atk,wpn:u.wpn,rng:u.rng,dmg:u.dmg,xp:u.xp,mot:u.mot,f:u.f,cond:[],notes:"",open:false});});
+    C.list.push({id:uid(),num:C.nextNum++,src:u.name,name:same?u.name+" "+(same+1):u.name,desc:"",type:u.type,tier:u.tier,dif:u.dif,maj:u.maj,sev:u.sev,hpMax:u.hpMax,hp:0,stMax:u.stMax,st:0,atk:u.atk,wpn:u.wpn,rng:u.rng,dmg:u.dmg,xp:u.xp,mot:u.mot,f:u.f,cond:[],notes:"",open:false});});
 }
 
 /* ---------- Lore da campanha ---------- */
@@ -1045,7 +1080,8 @@ document.addEventListener("click",async ev=>{
     case "dmg": {const x=find(id); if(x){x.hp=Math.min(x.hpMax,x.hp+(+b.dataset.n)); save();} break;}
     case "cond": {const x=find(id), c=b.dataset.c; if(x){x.cond=x.cond.includes(c)?x.cond.filter(y=>y!==c):x.cond.concat(c); save();} break;}
     case "rm": C.list=C.list.filter(x=>x.id!==id); save(); break;
-    case "clear": if(b.dataset.sure){C.list=[]; C.cds=[]; C.last=null; save();} else {b.dataset.sure="1"; b.textContent="Toque de novo para apagar adversários e contagens"; return;} break;
+    case "clear": if(b.dataset.sure){C.list=[]; C.cds=[]; C.last=null; C.nextNum=1; save();} else {b.dataset.sure="1"; b.textContent="Toque de novo para apagar adversários e contagens"; return;} break;
+    case "fabtoggle": ui.fabOpen=!ui.fabOpen; break;
 
     /* saved encounters */
     case "encsave": {const nm=($("#encn")||{}).value||""; if(!nm.trim()){toast("Dê um nome ao combate"); return;} if(!CB().list.length){toast("Monte o combate antes de salvar"); return;}
@@ -1153,6 +1189,9 @@ document.addEventListener("input",ev=>{
   else if(a==="gname"){ui.gen.name=t.value;}
   else if(a==="qty"){ui.qty[t.dataset.key]=Math.max(1,+t.value||1);}
   else if(a==="note"){const x=find(t.dataset.id); if(x){x.notes=t.value; save();}}
+  else if(a==="xname"){const x=find(t.dataset.id); if(x){x.name=t.value; save();}}
+  else if(a==="xdesc"){const x=find(t.dataset.id); if(x){x.desc=t.value; save();}}
+  else if(a==="cnotes"){CB().notes=t.value; save();}
   else if(a==="loref"){}
   else if(a==="players"){if(t.value==="") return; CB().players=Math.max(1,Math.min(8,+t.value||4)); save(); render();}
   else if(a==="adjust"){if(t.value===""||t.value==="-") return; CB().adjust=Math.max(-6,Math.min(6,+t.value||0)); save(); render();}
