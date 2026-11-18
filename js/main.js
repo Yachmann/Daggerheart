@@ -1,7 +1,7 @@
 // Inicialização, rotas e delegação de eventos
 import { $, icon, esc, toast } from "./util.js";
 import { loadData, cfg } from "./data.js";
-import { S, iniciar, onChange, sb } from "./store.js";
+import { S, iniciar, onChange, sb, user } from "./store.js";
 import * as Fichas from "./views/fichas.js";
 import * as Criar from "./views/criar.js";
 import * as Ficha from "./views/ficha.js";
@@ -10,17 +10,22 @@ import * as Regras from "./views/regras.js";
 import * as Compendio from "./views/compendio.js";
 import * as Mesas from "./views/mesas.js";
 import * as Conta from "./views/conta.js";
+import * as Mestre from "./views/mestre.js";
+import { loadGM } from "./gm.js";
 import { abrirRolador } from "./views/rolador.js";
 
-const NAV = [
+const NAV_BASE = [
   { h: "#/", n: "Fichas", i: "user", m: ["", "ficha", "nova"] },
+  { h: "#/mestre", n: "Mestre", i: "crown", m: ["mestre"], mestre: true },
   { h: "#/regras", n: "Regras", i: "book", m: ["regras"] },
   { h: "#/compendio", n: "Compêndio", i: "cards", m: ["compendio"] },
   { h: "#/mesas", n: "Mesas", i: "users", m: ["mesas", "mesa"] },
   { h: "#/conta", n: "Conta", i: "gear", m: ["conta"] },
 ];
 
+const mestreOn = () => cfg().mestre || /^#\/mestre/.test(location.hash) || S.mesas.some(m => user() && m.mestre === user().id);
 const ROTAS = {
+  mestre: Mestre,
   "": Fichas, nova: Criar, ficha: Ficha, regras: Regras, compendio: Compendio, mesas: Mesas, mesa: Mesas, conta: Conta,
 };
 
@@ -37,7 +42,7 @@ function parse() {
 
 function navHtml() {
   const r = rota;
-  return NAV.map(n => `<a href="${n.h}"${n.m.includes(r) ? ' aria-current="page"' : ""}>${icon(n.i)}<span>${n.n}</span></a>`).join("");
+  return NAV_BASE.filter(n => !n.mestre || mestreOn()).map(n => `<a href="${n.h}"${n.m.includes(r) ? ' aria-current="page"' : ""}>${icon(n.i)}<span>${n.n}</span></a>`).join("");
 }
 
 function syncHtml() {
@@ -104,7 +109,7 @@ onChange(motivo => {
 async function boot() {
   const c = cfg();
   if (c.tema && c.tema !== "auto") document.documentElement.dataset.theme = c.tema;
-  try { await loadData(); }
+  try { await Promise.all([loadData(), loadGM()]); }
   catch (e) { $("#main").innerHTML = `<div class="empty"><h3>Não foi possível carregar os dados</h3><p>${esc(e.message)}</p><button class="btn" onclick="location.reload()">Tentar de novo</button></div>`; return; }
   render();
   try { await iniciar(); } catch (e) { console.warn(e); toast("Não foi possível conectar ao servidor. Seguindo offline."); }

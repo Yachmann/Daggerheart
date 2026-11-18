@@ -319,3 +319,55 @@ details.more > summary::-webkit-details-marker{display:none}
 .stat b{font-size:1.6rem} .stat.th b{font-size:1.3rem} .trait b{font-size:1.4rem} .lvl-badge b{font-size:1.5rem}
 .track-h .cnt{font-size:1.15rem} .dcard .lv{font-size:1.05rem} .weap .big{font-size:1.25rem} .roll-total{font-size:2.6rem}
 a.gtile,a.res,a.pc-card{text-decoration:none}
+
+/* ================= Mestre ================= */
+.sb2{background:var(--surface); border:1px solid var(--line); border-left:6px solid var(--blood); border-radius:6px 16px 16px 6px; padding:16px; box-shadow:var(--shadow)}
+.sb2.ty-env{border-left-color:var(--moss)} .sb2.ty-Solo{border-left-color:var(--fear)} .sb2.ty-Minion{border-left-color:var(--muted)} .sb2.ty-Leader{border-left-color:var(--hope)} .sb2.ty-Social,.sb2.ty-Support{border-left-color:var(--steel)}
+.sb2 h3{font-size:1.6rem; margin:2px 0 4px}
+.sb-desc{font-family:var(--display); font-style:italic; font-size:1.08rem; color:var(--muted); margin:2px 0 10px}
+.nums{display:grid; grid-template-columns:repeat(auto-fit,minmax(78px,1fr)); gap:8px; margin:12px 0}
+.num{background:var(--surface-2); border-radius:12px; padding:7px 10px; text-align:center}
+.num b{display:block; font-family:var(--sans); font-weight:750; font-size:1.2rem; line-height:1.15}
+.num span{font-size:.68rem; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:700}
+.sb2 p.l{margin:4px 0; font-size:.94rem}
+.tag.k-Passive{background:var(--moss-soft); color:var(--moss)} .tag.k-Action{background:var(--blood-soft); color:var(--blood)} .tag.k-Reaction{background:var(--fear-soft); color:var(--fear)} .tag.k-Evolution{background:var(--hope-soft); color:var(--hope)}
+.tag.dead{background:var(--blood-soft); color:var(--blood)} .tag.muted{background:var(--surface-2); color:var(--muted)}
+.code-block{background:var(--sunk); border:1px solid var(--line); border-radius:12px; padding:12px; overflow:auto; max-height:320px; font-size:.78rem; line-height:1.45; margin:6px 0 0; font-family:ui-monospace,Consolas,monospace; white-space:pre}
+ol.steps{padding-left:1.3em; margin:8px 0} ol.steps li{margin:8px 0}
+.orc-h{display:flex; align-items:baseline; gap:10px} .orc-h b{font-family:var(--sans); font-size:1.5rem; font-weight:750}
+.orc-b{height:9px; border-radius:6px; background:var(--sunk); overflow:hidden; margin-top:6px} .orc-b i{display:block; height:100%; border-radius:6px; transition:width .2s}
+.battle-head{margin-bottom:14px} .battle-head h1{font-size:2.1rem; margin:2px 0 10px}
+.bh-row{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+.scene{margin-top:12px; padding:12px 14px; border-left:4px solid var(--fear); background:var(--surface); border-radius:0 12px 12px 0}
+.fear-bar{display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; background:var(--fear-soft); border:1px solid color-mix(in srgb,var(--fear) 35%,var(--line)); border-radius:var(--r); padding:12px 14px}
+.fear-bar h3{color:var(--fear); font-size:1.3rem} .fear-bar .cnt{font-weight:750; color:var(--fear)}
+.fear-bar .tokens{display:flex; flex-wrap:wrap; gap:6px; flex:1; min-width:210px}
+.tok{width:28px; height:28px; border-radius:50%; border:2px solid var(--fear); background:transparent; padding:0}
+.tok.on{background:var(--fear)}
+.fold{padding:0} .fold > summary{list-style:none; cursor:pointer; padding:14px; display:flex; align-items:center; min-height:52px} .fold > summary::-webkit-details-marker{display:none}
+.fold > summary h3{font-size:1.2rem; flex:1} .fold[open] > summary{border-bottom:1px solid var(--line)} .fold > :not(summary){margin:14px}
+.cd,.grp-row,.env-a{display:flex; align-items:center; gap:10px; padding:8px 0; border-top:1px solid var(--line); flex-wrap:wrap}
+.cd:first-of-type{border-top:0} .grow{flex:1; min-width:0}
+.grp-row{text-decoration:none; color:var(--ink)} .grp-n{text-align:center; min-width:46px} .grp-n b{display:block; font-family:var(--sans); font-size:1rem} .grp-n span{font-size:.64rem; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; font-weight:700}
+.sec-line{display:flex; align-items:center; gap:10px; margin:24px 0 10px} .sec-line h2{flex:1; font-size:1.4rem}
+.ucards{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:12px}
+.ucard{background:var(--surface); border:1px solid var(--line); border-left:6px solid var(--blood); border-radius:6px 16px 16px 6px; padding:12px 14px; box-shadow:var(--shadow)}
+.ucard.ty-Solo{border-left-color:var(--fear)} .ucard.ty-Minion{border-left-color:var(--muted)} .ucard.ty-Leader{border-left-color:var(--hope)} .ucard.ty-Social,.ucard.ty-Support{border-left-color:var(--steel)}
+.ucard.dead{opacity:.55} .ucard.dead .uc-name{text-decoration:line-through}
+.uc-h{display:flex; gap:10px; align-items:flex-start}
+.numb{flex:none; min-width:36px; height:36px; border-radius:10px; background:var(--ink); color:var(--bg); display:grid; place-items:center; font-weight:750; padding:0 6px}
+.uc-id{flex:1; min-width:0; display:flex; flex-direction:column; gap:2px}
+.uc-name{border:0!important; background:transparent!important; padding:2px 4px!important; min-height:34px!important; font-family:var(--display); font-weight:700; font-size:1.3rem!important; border-radius:8px!important}
+.uc-desc{border:0!important; background:transparent!important; padding:0 4px!important; min-height:28px!important; font-size:.84rem!important; color:var(--muted)}
+.uc-name:focus,.uc-desc:focus{background:var(--surface-2)!important}
+.uc-tags{display:flex; gap:6px; margin:6px 0 8px}
+.uc-trk{display:flex; align-items:center; gap:10px; margin:6px 0} .uc-trk .lb{width:62px; font-size:.78rem; font-weight:700; color:var(--muted)}
+.uc-trk .pip{width:32px; height:32px} .uc-trk .pips{gap:5px}
+.chip.vuln.on{background:var(--blood); border-color:var(--blood); color:#fff} .chip.restr.on{background:var(--hope); border-color:var(--hope); color:var(--on-accent)} .chip.hide.on{background:var(--fear); border-color:var(--fear); color:var(--on-accent)}
+.uc-quick{display:flex; flex-wrap:wrap; gap:4px 12px; font-size:.82rem; color:var(--muted); margin:10px 0 2px}
+.uc-quick b{color:var(--ink)}
+.more-btn{display:flex; align-items:center; gap:6px; width:100%; margin-top:8px; padding:8px 0 2px; border:0; border-top:1px solid var(--line); background:none; font-weight:650; color:var(--fear); min-height:40px}
+.more-btn .rot{transform:rotate(90deg)}
+.uc-more{margin-top:4px}
+@media (max-width:420px){ .ucards{grid-template-columns:1fr} }
+.botnav a{font-size:.68rem; padding:0 2px} .botnav a .ic{width:22px; height:22px}

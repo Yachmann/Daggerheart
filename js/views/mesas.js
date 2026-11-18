@@ -25,7 +25,7 @@ export function html(p, q) {
     <div class="acts"><button class="btn hope" data-act="entrar">Entrar</button></div></section>
   ${jogador.length ? `<section class="sec"><h2>Mesas em que jogo</h2>${jogador.map(item).join("")}</section>` : ""}
   <section class="sec"><h2>Mesas que mestro</h2>${mestre.map(item).join("") || `<p class="muted">Nenhuma ainda.</p>`}
-    <div class="acts"><button class="btn" data-act="criar">${icon("crown")} Criar mesa</button><a class="btn ghost" href="mestre.html">Ferramentas do mestre</a></div></section>`;
+    <div class="acts"><button class="btn" data-act="criar">${icon("crown")} Criar mesa</button><a class="btn ghost" href="#/mestre">Ferramentas do mestre</a></div></section>`;
 }
 
 function detalhe(id) {

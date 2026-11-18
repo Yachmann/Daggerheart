@@ -21,6 +21,7 @@ export function html(p, q) {
   ${conta}
   <section class="sec"><h2>Conteúdo</h2><div class="card">
     <label class="switch"><input type="checkbox" data-ch="hf" ${c.hf ? "checked" : ""} ${EXP.disponivel ? "" : "disabled"}><span class="t"><b>Expansão Hope & Fear</b><span>${EXP.disponivel ? "Mostra as classes Assassino, Lutador, Bruxo e Feiticeira (Witch), o domínio Pavor, novas ancestralidades, comunidades, transformações, cartas e equipamentos. Mesas podem ligar ou desligar isso para as fichas delas." : "Os dados da expansão ainda não estão disponíveis neste site."}</span></span></label>
+    <label class="switch"><input type="checkbox" data-ch="mestre" ${c.mestre ? "checked" : ""}><span class="t"><b>Modo mestre</b><span>Mostra a aba Mestre: batalhas, biblioteca de adversários, criador de adversários e importação de batalhas da IA.</span></span></label>
     <label class="switch"><input type="checkbox" data-ch="nomesEN" ${c.nomesEN ? "checked" : ""}><span class="t"><b>Mostrar nomes originais em inglês</b><span>Exibe o nome em inglês ao lado das cartas, classes e itens — útil para conferir com o livro.</span></span></label>
   </div></section>
   <section class="sec"><h2>Aparência</h2><div class="chips">${[["auto", "Automático"], ["light", "Claro"], ["dark", "Escuro"]].map(([v, n]) => `<button class="chip${c.tema === v ? " on" : ""}" data-act="tema" data-v="${v}">${n}</button>`).join("")}</div></section>
@@ -52,6 +53,7 @@ export async function on(a, el) {
 }
 export async function change(k, el) {
   if (k === "hf") { setCfg({ hf: el.checked }); toast(el.checked ? "Expansão ligada" : "Expansão desligada"); app.render(true); }
+  if (k === "mestre") { setCfg({ mestre: el.checked }); toast(el.checked ? "Aba Mestre ligada" : "Aba Mestre desligada"); app.render(true); }
   if (k === "nomesEN") { setCfg({ nomesEN: el.checked }); location.reload(); }
   if (k === "importar") { const f = el.files[0]; if (!f) return; try { const n = importar(await f.text()); toast(`${n} ficha(s) restaurada(s)`); location.hash = "#/"; } catch (e) { toast("Arquivo inválido: " + e.message, "err"); } }
 }

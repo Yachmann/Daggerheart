@@ -35,7 +35,7 @@ export function html() {
       <a class="gtile" href="#/compendio"><b>Cartas de domínio</b><span>Todas as cartas, filtráveis</span></a>
       <a class="gtile" href="#/compendio?aba=classes"><b>Classes</b><span>Habilidades e subclasses</span></a>
       <a class="gtile" href="#/mesas"><b>Minha mesa</b><span>Entre com o código do mestre</span></a>
-      <a class="gtile" href="mestre.html"><b>Ferramentas do mestre</b><span>Adversários, combate, geradores</span></a>
+      <a class="gtile" href="#/mestre"><b>Ferramentas do mestre</b><span>Adversários, combate, geradores</span></a>
     </div>
   </section>`;
 }

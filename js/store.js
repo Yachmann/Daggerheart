@@ -50,8 +50,8 @@ export async function iniciar() {
     S.sess = session;
     if (ev === "PASSWORD_RECOVERY") emit("recuperar-senha");
     if (agora && agora !== antes) setTimeout(() => sincronizar(), 0);
-    if (!agora && antes) { pararTempoReal(); emit("auth"); }
-    else emit("auth");
+    if (!agora && antes) pararTempoReal();
+    emit("auth");
   });
   if (S.sess) await sincronizar();
   addEventListener("online", () => sincronizar());
