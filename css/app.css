@@ -168,16 +168,28 @@ input:focus,select:focus,textarea:focus{outline:none; border-color:var(--fear); 
 .lvl-badge{display:flex; flex-direction:column; align-items:center; justify-content:center; min-width:62px; height:62px; border-radius:16px; background:var(--ink); color:var(--bg); font-family:var(--display); line-height:1}
 .lvl-badge b{font-size:1.7rem} .lvl-badge span{font-family:var(--sans); font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; opacity:.75}
 .core{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:16px}
-.stat{background:var(--surface-2); border-radius:14px; padding:10px 8px; text-align:center}
-.stat b{display:block; font-family:var(--display); font-size:1.9rem; line-height:1}
-.stat span{font-size:.7rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:700}
-.stat.th b{font-size:1.45rem; padding-top:4px}
-.traits{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px}
-@media (min-width:700px){ .traits{grid-template-columns:repeat(6,1fr)} }
-.trait{border:1px solid var(--line); background:var(--surface); border-radius:14px; padding:9px 6px 8px; text-align:center; color:var(--ink)}
-.trait b{display:block; font-family:var(--display); font-size:1.65rem; line-height:1}
-.trait span{font-size:.72rem; font-weight:700; color:var(--muted)}
-.trait.conj{border-color:var(--fear); box-shadow:inset 0 0 0 1px var(--fear)}
+.stat{position:relative; background:var(--surface-2); border-radius:14px; padding:9px 6px 9px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:2px; border-bottom:3px solid color-mix(in srgb,var(--c1,var(--hope)) 70%,transparent)}
+.stat .gl{display:block; width:22px; height:22px; color:var(--muted); font-style:normal}
+.stat .gl svg{display:block; width:100%; height:100%}
+.stat b{display:block; font-family:var(--display); font-size:1.9rem; line-height:1.05}
+.stat b .sep{font-style:normal; font-weight:500; opacity:.4; margin:0 .14em}
+.stat span{font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:700}
+.stat.th b{font-size:1.45rem}
+.traits{display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:12px}
+@media (min-width:560px){ .traits{grid-template-columns:repeat(3,1fr)} }
+@media (min-width:1000px){ .traits{grid-template-columns:repeat(6,1fr)} }
+.trait{display:flex; align-items:center; gap:10px; text-align:left; border:1px solid var(--line); background:var(--surface); border-radius:14px; padding:6px 10px 6px 6px; min-height:58px; color:var(--ink); transition:transform .06s}
+.trait:active{transform:scale(.97)}
+.trait .die6{flex:none; width:40px; height:44px; display:block}
+.trait .die6 > svg{display:block; width:100%; height:100%}
+.trait .die6 .hx{fill:var(--surface-2); stroke:var(--line); stroke-width:1.8; stroke-linejoin:round}
+.trait .die6 .gl{color:var(--muted)}
+.trait .tv{display:flex; flex-direction:column; min-width:0; line-height:1.1}
+.trait .tv b{font-family:var(--sans); font-weight:750; font-size:1.3rem; letter-spacing:-.02em; line-height:1.05}
+.trait .tn{font-size:.74rem; font-weight:650; color:var(--muted); white-space:nowrap}
+.trait.conj{border-color:var(--fear)}
+.trait.conj .hx{stroke:var(--fear); fill:var(--fear-soft)}
+.trait.conj .die6 .gl{color:var(--fear)}
 
 .tabs{position:sticky; top:calc(56px + var(--top)); z-index:10; display:flex; gap:4px; overflow-x:auto; scrollbar-width:none; background:var(--bg); margin:16px -16px 0; padding:8px 16px; border-bottom:1px solid var(--line)}
 .tabs::-webkit-scrollbar{display:none}
@@ -316,7 +328,7 @@ details.more > summary::-webkit-details-marker{display:none}
 
 /* números sempre em algarismos alinhados (a fonte de títulos usa algarismos antigos) */
 .stat b,.trait b,.lvl-badge b,.track-h .cnt,.roll-total,.die,.weap .big,.gold .g b,.dcard .lv,.pc-card .lvl{font-family:var(--sans); font-weight:750; letter-spacing:-.02em}
-.stat b{font-size:1.6rem} .stat.th b{font-size:1.3rem} .trait b{font-size:1.4rem} .lvl-badge b{font-size:1.5rem}
+.stat b{font-size:1.6rem} .stat.th b{font-size:1.3rem} .lvl-badge b{font-size:1.5rem}
 .track-h .cnt{font-size:1.15rem} .dcard .lv{font-size:1.05rem} .weap .big{font-size:1.25rem} .roll-total{font-size:2.6rem}
 a.gtile,a.res,a.pc-card{text-decoration:none}
 

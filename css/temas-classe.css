@@ -1,0 +1,111 @@
+/* ================= Temas de ficha por classe =================
+   O atributo data-classe (ficha, lista de personagens e "Receber") define as variáveis abaixo.
+   --k1/--k2 = paleta da classe; --ka/--kb = a mesma paleta clareada no modo escuro.
+   --k-r/--k-rs = raio do cartão principal e dos menores; --k-pip = forma dos marcadores; --k-badge = forma do selo de nível;
+   --k-orn = ornamento (padrão geométrico) no canto do cabeçalho. Desligável em Conta → Aparência. */
+:root{--lift:0%}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){--lift:36%} }
+:root[data-theme="dark"]{--lift:36%}
+
+[data-classe]{
+  --k1:var(--hope); --k2:var(--fear);
+  --k-r:22px; --k-rs:14px; --k-pip:10px; --k-badge:16px; --k-band:4px; --k-bw:1px; --k-bs:solid;
+  --k-fs:normal; --k-tt:none; --k-ls:0; --k-nmsz:2.2rem; --k-glow:0 0 0 transparent; --k-orn:none;
+  --ka:color-mix(in srgb,var(--k1) calc(100% - var(--lift)),#fff);
+  --kb:color-mix(in srgb,var(--k2) calc(100% - var(--lift)),#fff);
+  /* variante para TEXTO: escurece no modo claro (contraste ≥ 4,5:1 sobre o creme) e fica clara no escuro */
+  --kt:color-mix(in srgb,var(--ka) 58%,var(--ink));
+}
+/* Bardo — ondas, curvas máximas, itálico */
+[data-classe="Bard"]{--k1:#C9568F; --k2:#3473BE; --k-r:34px; --k-rs:22px; --k-pip:50%; --k-badge:50%; --k-fs:italic; --k-ls:.01em;
+  --k-orn:repeating-radial-gradient(circle at 100% 0,transparent 0 13px,color-mix(in srgb,var(--ka) 30%,transparent) 13px 15px)}
+/* Druida — folhas: cantos opostos arredondados */
+[data-classe="Druid"]{--k1:#3F8F4F; --k2:#8059CC; --k-r:34px 8px 34px 8px; --k-rs:20px 6px 20px 6px; --k-pip:50% 6px 50% 6px; --k-badge:50% 10% 50% 10%;
+  --k-orn:radial-gradient(circle at 92% 8%,color-mix(in srgb,var(--ka) 34%,transparent) 0 22%,transparent 23%),radial-gradient(circle at 70% 0,color-mix(in srgb,var(--kb) 26%,transparent) 0 14%,transparent 15%),radial-gradient(circle at 100% 38%,color-mix(in srgb,var(--kb) 22%,transparent) 0 12%,transparent 13%)}
+/* Guardião — escudo: cantos duros, borda grossa, listras de armadura */
+[data-classe="Guardian"]{--k1:#D06A23; --k2:#C2414A; --k-r:8px; --k-rs:6px; --k-pip:4px; --k-badge:6px; --k-band:9px; --k-bw:3px; --k-tt:uppercase; --k-ls:.05em; --k-nmsz:1.85rem;
+  --k-orn:repeating-linear-gradient(135deg,transparent 0 16px,color-mix(in srgb,var(--ka) 30%,transparent) 16px 19px)}
+/* Patrulheiro — curvas de nível de mapa, borda tracejada */
+[data-classe="Ranger"]{--k1:#5C7F4A; --k2:#7E8790; --k-r:16px; --k-rs:10px; --k-pip:8px; --k-badge:12px; --k-bs:dashed; --k-bw:2px;
+  --k-orn:repeating-radial-gradient(ellipse 120% 80% at 90% 10%,transparent 0 10px,color-mix(in srgb,var(--ka) 30%,transparent) 10px 11.5px)}
+/* Ladino — lâminas diagonais, cantos cortados */
+[data-classe="Rogue"]{--k1:#4A438F; --k2:#C9568F; --k-r:4px 30px 4px 30px; --k-rs:4px 18px 4px 18px; --k-pip:3px 12px 3px 12px; --k-badge:4px 20px 4px 20px; --k-ls:.02em;
+  --k-orn:repeating-linear-gradient(115deg,transparent 0 11px,color-mix(in srgb,var(--ka) 34%,transparent) 11px 13px)}
+/* Serafim — halo e raios, topo em arco */
+[data-classe="Seraph"]{--k1:#C19225; --k2:#D06A23; --k-r:44px 44px 16px 16px; --k-rs:18px; --k-pip:50%; --k-badge:50%; --k-band:6px;
+  --k-glow:0 0 38px -12px color-mix(in srgb,var(--ka) 70%,transparent);
+  --k-orn:repeating-conic-gradient(from 180deg at 90% 0,color-mix(in srgb,var(--ka) 30%,transparent) 0 5deg,transparent 5deg 14deg)}
+/* Feiticeiro — energia crua: brilho e arco de luz */
+[data-classe="Sorcerer"]{--k1:#8059CC; --k2:#4A438F; --k-r:30px 30px 30px 8px; --k-rs:18px 18px 18px 6px; --k-pip:50%; --k-badge:50% 50% 50% 8%;
+  --k-glow:0 0 40px -10px color-mix(in srgb,var(--ka) 75%,transparent);
+  --k-orn:conic-gradient(from 195deg at 100% 0,transparent 0,color-mix(in srgb,var(--ka) 42%,transparent) 22%,color-mix(in srgb,var(--kb) 36%,transparent) 38%,transparent 56%)}
+/* Guerreiro — marcial: maiúsculas, listras verticais, bordas pesadas */
+[data-classe="Warrior"]{--k1:#C2414A; --k2:#7E8790; --k-r:5px; --k-rs:4px; --k-pip:3px; --k-badge:4px; --k-band:9px; --k-bw:3px; --k-tt:uppercase; --k-ls:.06em; --k-nmsz:1.85rem;
+  --k-orn:repeating-linear-gradient(90deg,transparent 0 9px,color-mix(in srgb,var(--ka) 30%,transparent) 9px 12px)}
+/* Mago — círculo arcano: anéis concêntricos, borda dupla */
+[data-classe="Wizard"]{--k1:#3473BE; --k2:#C19225; --k-r:12px; --k-rs:10px; --k-pip:8px; --k-badge:12px; --k-bs:double; --k-bw:4px; --k-ls:.03em;
+  --k-orn:repeating-radial-gradient(circle at 92% 8%,transparent 0 8px,color-mix(in srgb,var(--ka) 36%,transparent) 8px 9.5px)}
+
+/* ---- cabeçalho da ficha ---- */
+:is(.ficha-tema[data-classe] .sheet-hero,.sheet-hero[data-classe]){
+  border:var(--k-bw) var(--k-bs) color-mix(in srgb,var(--ka) 55%,var(--line)); border-radius:var(--k-r);
+  background:linear-gradient(150deg,color-mix(in srgb,var(--ka) 13%,var(--surface)),var(--surface) 58%);
+  box-shadow:var(--k-glow),var(--shadow)}
+:is(.ficha-tema[data-classe] .sheet-hero,.sheet-hero[data-classe])::before{
+  content:""; position:absolute; inset:0 0 auto; height:var(--k-band); background:linear-gradient(90deg,var(--ka),var(--kb)); pointer-events:none; z-index:2}
+:is(.ficha-tema[data-classe] .sheet-hero,.sheet-hero[data-classe])::after{
+  inset:0; width:auto; height:auto; border-radius:inherit; opacity:1; background:var(--k-orn);
+  -webkit-mask-image:linear-gradient(225deg,#000 0,rgba(0,0,0,.55) 30%,transparent 62%); mask-image:linear-gradient(225deg,#000 0,rgba(0,0,0,.55) 30%,transparent 62%)}
+:is(.ficha-tema[data-classe] .sheet-hero,.sheet-hero[data-classe]) > *{position:relative; z-index:1}
+:is(.ficha-tema[data-classe] .sheet-hero,.sheet-hero[data-classe]) .nm{font-style:var(--k-fs); text-transform:var(--k-tt); letter-spacing:var(--k-ls); font-size:var(--k-nmsz)}
+:is(.ficha-tema[data-classe] .sheet-hero,.sheet-hero[data-classe]) .nm + .meta{color:var(--kt); font-weight:650}
+:is(.ficha-tema[data-classe] .sheet-hero,.sheet-hero[data-classe]) .lvl-badge{border-radius:var(--k-badge); box-shadow:0 0 0 3px var(--ka)}
+:is(.ficha-tema[data-classe] .sheet-hero,.sheet-hero[data-classe]) .stat{border-radius:var(--k-rs); background:color-mix(in srgb,var(--ka) 12%,var(--surface-2)); border-bottom-color:var(--ka)}
+:is(.ficha-tema[data-classe] .sheet-hero,.sheet-hero[data-classe]) .stat .gl{color:var(--kt)}
+
+/* ---- corpo da ficha ---- */
+.ficha-tema[data-classe] .trait{border-radius:var(--k-rs); border-color:color-mix(in srgb,var(--ka) 32%,var(--line))}
+.ficha-tema[data-classe] .trait .hx{stroke:color-mix(in srgb,var(--ka) 65%,var(--line)); fill:color-mix(in srgb,var(--ka) 12%,var(--surface-2))}
+.ficha-tema[data-classe] .trait .die6 .gl{color:var(--kt)}
+.ficha-tema[data-classe] .trait.conj{border-color:var(--fear)}
+.ficha-tema[data-classe] .trait.conj .hx{stroke:var(--fear); fill:var(--fear-soft)}
+.ficha-tema[data-classe] .trait.conj .die6 .gl{color:var(--fear)}
+.ficha-tema[data-classe] .tabs button{border-radius:var(--k-rs)}
+.ficha-tema[data-classe] .tabs button[aria-selected="true"]{box-shadow:inset 0 -3px 0 var(--ka)}
+.ficha-tema[data-classe] .track{border-radius:var(--k-rs); border-left:5px solid var(--ka)}
+.ficha-tema[data-classe] .card{border-radius:var(--k-rs); border-top:4px solid var(--ka)}
+.ficha-tema[data-classe] .pv .pip,.ficha-tema[data-classe] .es .pip,.ficha-tema[data-classe] .arm .pip{border-radius:var(--k-pip)}
+.ficha-tema[data-classe] .sec > h2{padding-bottom:5px; border-bottom:2px solid color-mix(in srgb,var(--ka) 45%,transparent)}
+.ficha-tema[data-classe] .feat-h b{color:var(--kt)}
+.ficha-tema[data-classe] .fab{background:linear-gradient(135deg,var(--ka),var(--kb)); border-radius:var(--k-badge); box-shadow:var(--k-glow),0 8px 24px -6px rgba(0,0,0,.45)}
+
+/* ---- cartão na lista de personagens ---- */
+.pc-card[data-classe]{border:var(--k-bw) var(--k-bs) color-mix(in srgb,var(--ka) 50%,var(--line)); border-radius:var(--k-rs); box-shadow:var(--k-glow),var(--shadow);
+  background:linear-gradient(150deg,color-mix(in srgb,var(--ka) 10%,var(--surface)),var(--surface) 60%)}
+.pc-card[data-classe]::before{height:var(--k-band); background:linear-gradient(90deg,var(--ka),var(--kb))}
+.pc-card[data-classe] .nm{font-style:var(--k-fs); text-transform:var(--k-tt); letter-spacing:var(--k-ls); font-size:min(1.55rem,var(--k-nmsz)); padding-right:58px}
+.pc-card[data-classe] .lvl{border-radius:var(--k-badge); background:color-mix(in srgb,var(--ka) 20%,var(--surface-2))}
+
+/* ---- emblema da classe ---- */
+.emblema{fill:none; stroke:currentColor; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; color:var(--ka); pointer-events:none}
+:is(.ficha-tema[data-classe] .sheet-hero,.sheet-hero[data-classe]) > .emblema{position:absolute; z-index:0; top:14px; right:88px; width:76px; height:76px; opacity:.38}
+.pc-card[data-classe] > .emblema{position:absolute; top:14px; right:70px; width:34px; height:34px; opacity:.55}
+
+/* ---- multiclasse: o segundo tom do tema vem da classe de multiclasse ---- */
+[data-mc="Bard"]{--k2:#C9568F} [data-mc="Druid"]{--k2:#3F8F4F} [data-mc="Guardian"]{--k2:#D06A23} [data-mc="Ranger"]{--k2:#5C7F4A} [data-mc="Rogue"]{--k2:#4A438F}
+[data-mc="Seraph"]{--k2:#C19225} [data-mc="Sorcerer"]{--k2:#8059CC} [data-mc="Warrior"]{--k2:#C2414A} [data-mc="Wizard"]{--k2:#3473BE}
+.emblema.mc{color:var(--kb)}
+:is(.ficha-tema[data-classe] .sheet-hero,.sheet-hero[data-classe]) > .emblema.mc{top:60px; right:80px; width:34px; height:34px; opacity:.8}
+.pc-card[data-classe] > .emblema.mc{top:20px; right:108px; width:22px; height:22px; opacity:.6}
+
+/* ---- ícone da classe em listas (grupo do mestre) ---- */
+.cl-ico{flex:none; width:30px; height:30px; display:grid; place-items:center; border-radius:var(--k-pip); background:color-mix(in srgb,var(--ka) 16%,var(--surface-2))}
+.cl-ico .emblema{width:22px; height:22px; color:var(--kt)}
+
+/* ---- assistente de criação: cartões de classe e passos ---- */
+.opt[data-classe]{border-top:4px solid var(--ka); border-radius:var(--k-rs)}
+.opt[data-classe] > .emblema{position:absolute; top:12px; right:46px; width:30px; height:30px; opacity:.7; color:var(--kt)}
+.opt[data-classe].sel{border-color:var(--ka); box-shadow:0 0 0 3px color-mix(in srgb,var(--ka) 25%,transparent)}
+.opt[data-classe].sel .chk{background:var(--ka); border-color:var(--ka)}
+.ficha-tema[data-classe] .wiz-steps button.on{border-color:var(--ka)}
+.ficha-tema[data-classe] .wiz-steps button.on .n{background:var(--ka); color:var(--on-accent)}

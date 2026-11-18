@@ -4,7 +4,7 @@ import { desempacotar } from "../entrega.js";
 import { criarFicha, S, user, sb, entrarNaMesa } from "../store.js";
 import { app } from "../main.js";
 import { deriv } from "../calc.js";
-import { classeSub, origemTxt, coresClasse } from "./common.js";
+import { classeSub, origemTxt, coresClasse, temaAttr, temaVars, temaEmblema } from "./common.js";
 
 const RK = "dh-recebidos";
 let est = { payload: null, st: "carregando", pc: null, erro: "", mesa: "" };
@@ -22,8 +22,8 @@ export function html(p, q) {
   const pc = est.pc, d = deriv(pc);
   const jaId = (store.get(RK, {}))[chave(payload)], ja = jaId && S.fichas[jaId];
   return `<div class="page-h"><h1>Você recebeu um personagem</h1><div class="sub">Quem enviou criou este herói para você. Ao receber, você ganha uma cópia só sua e pode jogar, atualizar e subir de nível.</div></div>
-  <section class="sheet-hero" style="${coresClasse(pc.classe)}">
-    <div class="hero-top"><div class="grow"><div class="nm">${esc(pc.nome || "Sem nome")}</div><div class="meta">${esc(classeSub(pc))}</div><div class="meta small">${esc(origemTxt(pc))}${pc.pronomes ? " · " + esc(pc.pronomes) : ""}</div></div>
+  <section class="sheet-hero"${temaAttr(pc)} style="${coresClasse(pc.classe)};${temaVars(pc)}">
+    ${temaEmblema(pc)}<div class="hero-top"><div class="grow"><div class="nm">${esc(pc.nome || "Sem nome")}</div><div class="meta">${esc(classeSub(pc))}</div><div class="meta small">${esc(origemTxt(pc))}${pc.pronomes ? " · " + esc(pc.pronomes) : ""}</div></div>
       <div class="lvl-badge"><span>Nível</span><b>${pc.nivel}</b></div></div>
     <div class="core"><div class="stat"><b>${d.ev}</b><span>Evasão</span></div><div class="stat"><b>${d.pvMax}</b><span>PV</span></div><div class="stat"><b>${d.esMax}</b><span>Estresse</span></div></div>
   </section>

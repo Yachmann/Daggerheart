@@ -2,15 +2,15 @@
 import { esc, icon } from "../util.js";
 import { S, minhasFichas, sb, user } from "../store.js";
 import { deriv } from "../calc.js";
-import { coresClasse, classeSub, origemTxt, condFx, COND_COR } from "./common.js";
+import { coresClasse, temaAttr, temaVars, temaEmblema, classeSub, origemTxt, condFx, COND_COR } from "./common.js";
 
 const barra = (v, max, cor) => `<div class="tr"><i style="width:${max ? Math.round((v / max) * 100) : 0}%;background:${cor}"></i></div>`;
 
 export function cardPC(f, href) {
   const pc = f.data, d = deriv(pc);
   const fx = condFx(pc.st.cond);
-  return `<a class="pc-card${fx.cls}" href="${href || "#/ficha/" + encodeURIComponent(f.id)}" style="${coresClasse(pc.classe)};${fx.style}">
-    <span class="lvl">Nv ${pc.nivel}</span>
+  return `<a class="pc-card${fx.cls}"${temaAttr(pc)} href="${href || "#/ficha/" + encodeURIComponent(f.id)}" style="${coresClasse(pc.classe)};${temaVars(pc)}${fx.style}">
+    ${temaEmblema(pc)}<span class="lvl">Nv ${pc.nivel}</span>
     ${pc.modelo ? `<div class="eyebrow" style="margin-bottom:2px;color:var(--steel)">Modelo para entregar</div>` : ""}
     <div class="nm">${esc(pc.nome || "Sem nome")}</div>
     <div class="meta">${esc(classeSub(pc) || "Classe não escolhida")}</div>

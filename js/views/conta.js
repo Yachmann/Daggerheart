@@ -24,7 +24,8 @@ export function html(p, q) {
     <label class="switch"><input type="checkbox" data-ch="mestre" ${c.mestre ? "checked" : ""}><span class="t"><b>Modo mestre</b><span>Mostra a aba Mestre: batalhas, biblioteca de adversários, criador de adversários e importação de batalhas da IA.</span></span></label>
     <label class="switch"><input type="checkbox" data-ch="nomesEN" ${c.nomesEN ? "checked" : ""}><span class="t"><b>Mostrar nomes originais em inglês</b><span>Exibe o nome em inglês ao lado das cartas, classes e itens — útil para conferir com o livro.</span></span></label>
   </div></section>
-  <section class="sec"><h2>Aparência</h2><div class="chips">${[["auto", "Automático"], ["light", "Claro"], ["dark", "Escuro"]].map(([v, n]) => `<button class="chip${c.tema === v ? " on" : ""}" data-act="tema" data-v="${v}">${n}</button>`).join("")}</div></section>
+  <section class="sec"><h2>Aparência</h2><div class="chips">${[["auto", "Automático"], ["light", "Claro"], ["dark", "Escuro"]].map(([v, n]) => `<button class="chip${c.tema === v ? " on" : ""}" data-act="tema" data-v="${v}">${n}</button>`).join("")}</div>
+    <label class="switch"><input type="checkbox" data-ch="temaClasse" ${c.temaClasse !== false ? "checked" : ""}><span class="t"><b>Tema da ficha por classe</b><span>Cores, formas e ornamentos da ficha mudam conforme a classe do personagem.</span></span></label></section>
   <section class="sec"><h2>Backup</h2><p class="muted" style="margin-top:-4px">Baixe uma cópia das suas fichas ou restaure de um arquivo.</p>
     <div class="acts"><button class="btn" data-act="exportar">Baixar backup</button><label class="btn" style="position:relative;overflow:hidden">Restaurar backup<input type="file" accept=".json,application/json" data-ch="importar" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label></div></section>
   <section class="sec"><h2>Instalar no celular</h2><p class="muted">No Android (Chrome): menu ⋮ → <b>Instalar app</b>. No iPhone (Safari): botão Compartilhar → <b>Adicionar à Tela de Início</b>. O site abre como um aplicativo, em tela cheia.</p></section>`;
@@ -54,6 +55,7 @@ export async function on(a, el) {
 export async function change(k, el) {
   if (k === "hf") { setCfg({ hf: el.checked }); toast(el.checked ? "Expansão ligada" : "Expansão desligada"); app.render(true); }
   if (k === "mestre") { setCfg({ mestre: el.checked }); toast(el.checked ? "Aba Mestre ligada" : "Aba Mestre desligada"); app.render(true); }
+  if (k === "temaClasse") { setCfg({ temaClasse: el.checked }); toast(el.checked ? "Tema por classe ligado" : "Tema por classe desligado"); }
   if (k === "nomesEN") { setCfg({ nomesEN: el.checked }); location.reload(); }
   if (k === "importar") { const f = el.files[0]; if (!f) return; try { const n = importar(await f.text()); toast(`${n} ficha(s) restaurada(s)`); location.hash = "#/"; } catch (e) { toast("Arquivo inválido: " + e.message, "err"); } }
 }

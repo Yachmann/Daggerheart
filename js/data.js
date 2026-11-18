@@ -45,7 +45,7 @@ const DOMDESC_PT = {};
 
 // ---------- configuração do usuário ----------
 const CFG_KEY = "dh-config";
-const DEF = { hf: false, tema: "auto", nomesEN: false };
+const DEF = { hf: false, tema: "auto", nomesEN: false, temaClasse: true };
 export function cfg() { return Object.assign({}, DEF, store.get(CFG_KEY, {})); }
 export function setCfg(p) { store.set(CFG_KEY, Object.assign(cfg(), p)); }
 // A mesa pode forçar a expansão ligada/desligada para as fichas dela

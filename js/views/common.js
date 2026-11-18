@@ -1,5 +1,6 @@
 // Componentes visuais compartilhados entre as telas
 import { esc, md, mdBlock, icon, openSheet } from "../util.js";
+import { emblema } from "../emblemas.js";
 import { get, loc, nome, domPT, domIcon, T, dmgPT, isExp, traitPT, cfg } from "../data.js";
 
 export const corDom = d => `var(--d-${d || "Bone"})`;
@@ -7,6 +8,15 @@ export function coresClasse(id) {
   const c = get("classes", id);
   return c ? `--c1:${corDom(c.d[0])};--c2:${corDom(c.d[1])}` : "";
 }
+// Tema visual da ficha por classe (cores, formas e ornamento no CSS: "Temas de ficha por classe").
+// Pode ser desligado em Conta → Aparência.
+// Todas recebem o personagem (pc). Multiclasse (pc.mc) dá o segundo tom; pc.cor (Ajustes) troca a cor principal.
+const temaOn = pc => !!(pc && pc.classe) && cfg().temaClasse !== false;
+const HEX = /^#[0-9a-f]{6}$/i;
+export const temaAttr = pc => (temaOn(pc) ? ` data-classe="${esc(pc.classe)}"${pc.mc && pc.mc.cls ? ` data-mc="${esc(pc.mc.cls)}"` : ""}` : "");
+export const temaVars = pc => (temaOn(pc) && HEX.test(pc.cor || "") ? `--k1:${pc.cor};` : "");
+export const temaEmblema = pc => (temaOn(pc) ? emblema(pc.classe) + (pc.mc && pc.mc.cls ? emblema(pc.mc.cls).replace('class="emblema"', 'class="emblema mc"') : "") : "");
+export const temaIcone = pc => (temaOn(pc) ? `<span class="cl-ico"${temaAttr(pc)}>${emblema(pc.classe)}</span>` : "");
 export const expTag = x => (isExp(x) ? `<span class="tag exp" title="Expansão Hope & Fear">H&F</span>` : "");
 export const enName = o => (cfg().nomesEN && o && o.en && o.en !== o.n ? ` <span class="muted small">(${esc(o.en)})</span>` : "");
 

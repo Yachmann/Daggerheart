@@ -7,7 +7,7 @@ import { deriv } from "../calc.js";
 import { tokens as tokensDe, infimo, hbCfg } from "../homebrew.js";
 import { app } from "../main.js";
 import { statBlock, envBlock, pipsU, tipoTag, kindTag, escolherBatalha, barraOrc, fonteTag } from "./mestre-ui.js";
-import { voltar } from "./common.js";
+import { voltar, temaIcone } from "./common.js";
 import { unidadeOn, unidadeInput, painelUnidades } from "./unidades.js";
 
 let ID = null, painel = { prep: false, grupo: true, ambiente: false, notas: false };
@@ -27,7 +27,7 @@ function painelGrupo(b) {
   if (!f.length) return `<p class="muted small" style="margin:0">Nenhuma ficha vinculada à mesa “${esc(mesa.nome)}”.</p>`;
   return f.map(x => {
     const pc = x.data, d = deriv(pc), pv = d.pvMax - pc.st.pv;
-    return `<a class="grp-row" href="#/ficha/${encodeURIComponent(x.id)}"><div class="grow"><b>${esc(pc.nome || "Sem nome")}</b><div class="muted small">${esc(nome("classes", pc.classe))} · nível ${pc.nivel}</div></div>
+    return `<a class="grp-row" href="#/ficha/${encodeURIComponent(x.id)}">${temaIcone(pc)}<div class="grow"><b>${esc(pc.nome || "Sem nome")}</b><div class="muted small">${esc(nome("classes", pc.classe))} · nível ${pc.nivel}</div></div>
       <div class="grp-n"><b style="color:var(--blood)">${pv}/${d.pvMax}</b><span>PV</span></div><div class="grp-n"><b style="color:var(--fear)">${pc.st.es}/${d.esMax}</b><span>Est.</span></div><div class="grp-n"><b style="color:var(--hope)">${pc.st.esp}/${d.espMax}</b><span>Esp.</span></div><div class="grp-n"><b>${d.ev}</b><span>Eva.</span></div><div class="grp-n"><b>${hbCfg(x).limiar && infimo(d.lim[0]) ? infimo(d.lim[0]) + "/" : ""}${d.lim[0]}/${d.lim[1]}</b><span>Lim.</span></div>${(() => { const t = tokensDe(x); return t ? `<div class="grp-n"><b style="color:${t.resta ? "var(--hope)" : "var(--muted)"}">${t.resta}/${t.max}</b><span>Tokens</span></div>` : ""; })()}</a>
       ${pc.st.cond.length ? `<div class="chips" style="margin:-4px 0 8px">${pc.st.cond.map(c => `<span class="tag">${esc(c)}</span>`).join("")}</div>` : ""}`;
   }).join("");

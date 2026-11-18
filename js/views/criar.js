@@ -4,7 +4,7 @@ import { list, get, loc, nome, domPT, domIcon, TRAITS, TRAIT_EN, traitPT, T, dmg
 import { novoPersonagem, deriv } from "../calc.js";
 import { criarFicha, S } from "../store.js";
 import { app } from "../main.js";
-import { dcard, feat, expTag, corDom, enName, verCarta, armaHtml, armaduraHtml } from "./common.js";
+import { temaAttr, temaVars, temaEmblema, dcard, feat, expTag, corDom, enName, verCarta, armaHtml, armaduraHtml } from "./common.js";
 
 const KEY = "dh-rascunho";
 const PASSOS = ["Classe", "Origem", "Atributos", "Equipamento", "Experiências", "Cartas", "Detalhes"];
@@ -37,7 +37,7 @@ export function html() {
   const p = R.passo;
   const body = [passoClasse, passoOrigem, passoAtributos, passoEquip, passoExp, passoCartas, passoDetalhes][p]();
   const todos = PASSOS.every((_, i) => okPasso(i));
-  return `<div class="page-h"><h1>Novo personagem</h1><button class="btn sm ghost" data-act="limpar">${icon("trash")} Recomeçar</button></div>
+  return `<div class="ficha-tema"${temaAttr(R.pc)} style="${temaVars(R.pc)}"><div class="page-h"><h1>Novo personagem</h1><button class="btn sm ghost" data-act="limpar">${icon("trash")} Recomeçar</button></div>
   <div class="wiz-steps" role="tablist">${PASSOS.map((n, i) => `<button role="tab" aria-selected="${i === p}" class="${i === p ? "on" : ""}${okPasso(i) ? " ok" : ""}" data-act="passo" data-i="${i}"><span class="n">${okPasso(i) && i !== p ? "✓" : i + 1}</span>${n}</button>`).join("")}</div>
   ${!hfOn() && EXP.disponivel ? `<p class="muted small" style="margin:-6px 0 12px">Conteúdo da expansão <i>Hope & Fear</i> está desligado. <a href="#/conta">Ligar em Conta</a>.</p>` : ""}
   ${body}
@@ -46,7 +46,7 @@ export function html() {
     ${p < PASSOS.length - 1 ? `<button class="btn pri" data-act="passo" data-i="${p + 1}" ${okPasso(p) ? "" : "disabled"}>Próximo</button>`
       : `<button class="btn hope" data-act="criar" ${todos ? "" : "disabled"}>${icon("sparkle")} Criar personagem</button>`}
   </div>
-  ${p === PASSOS.length - 1 && !todos ? `<p class="muted small">Falta completar: ${PASSOS.filter((_, i) => !okPasso(i)).join(", ")}.</p>` : ""}`;
+  ${p === PASSOS.length - 1 && !todos ? `<p class="muted small">Falta completar: ${PASSOS.filter((_, i) => !okPasso(i)).join(", ")}.</p>` : ""}</div>`;
 }
 
 // ---------- 1. Classe ----------
@@ -56,7 +56,8 @@ function passoClasse() {
   return `<h2>Escolha sua classe</h2><p class="lead" style="margin:4px 0 14px">A classe define seus domínios de cartas, Pontos de Vida, Evasão e habilidades.</p>
   <div class="opts">${cls.map(x => {
     const o = loc("classes", x);
-    return `<div class="opt${pc.classe === x.id ? " sel" : ""}" style="border-top:4px solid ${corDom(x.d[0])}">
+    const tm = temaAttr({ classe: x.id });
+    return `<div class="opt${pc.classe === x.id ? " sel" : ""}"${tm || ` style="border-top:4px solid ${corDom(x.d[0])}"`}>${temaEmblema({ classe: x.id })}
       <button class="sr" data-act="classe" data-id="${esc(x.id)}">Escolher ${esc(o.n)}</button>
       <span class="chk">${pc.classe === x.id ? "✓" : ""}</span>
       <div class="t" data-act="classe" data-id="${esc(x.id)}" style="cursor:pointer">${esc(o.n)}${enName(o)} ${expTag(x)}</div>

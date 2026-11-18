@@ -4,9 +4,10 @@ import { get, loc, list, nome, domPT, TRAITS, traitPT, T, dmgPT, beast, hfOn, se
 import { deriv, ancFeats, tierOf, fmtOuro, cartasElegiveis, RECURSOS_CLASSE } from "../calc.js";
 import { S, ficha, editar, excluirFicha, moverParaMesa, user } from "../store.js";
 import { app } from "../main.js";
+import { glifo, dado6 } from "../simbolos.js";
 import { hbCfg, infimo, tokens as tokensDe, gastarToken, devolverToken } from "../homebrew.js";
 import { montarLink, paraEntrega } from "../entrega.js";
-import { condFx, condBanner, COND_CLS, dcard, feat, armaHtml, armaduraHtml, coresClasse, classeSub, origemTxt, expTag, verCarta, enName, voltar, corDom } from "./common.js";
+import { condFx, condBanner, COND_CLS, dcard, feat, armaHtml, armaduraHtml, coresClasse, temaAttr, temaVars, temaEmblema, classeSub, origemTxt, expTag, verCarta, enName, voltar, corDom } from "./common.js";
 
 const ABAS = [["jogo", "Jogo"], ["cartas", "Cartas"], ["habil", "Habilidades"], ["inv", "Inventário"], ["hist", "História"], ["ajustes", "Ajustes"]];
 const CONDS = [["Vulnerável", "Testes contra você têm vantagem."], ["Contido", "Você não pode se mover, mas pode agir."], ["Oculto", "Ataques contra você têm desvantagem."]];
@@ -26,25 +27,25 @@ export function html(p, q) {
   setMesaExp(mesa && mesa.config && mesa.config.expansao ? !!mesa.config.expansao.hf : null);
   const pc = f.data, d = deriv(pc), ro = !podeEditar(f);
   const corpo = { jogo: abaJogo, cartas: abaCartas, habil: abaHabil, inv: abaInv, hist: abaHist, ajustes: abaAjustes }[aba] || abaJogo;
-  return `<div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">${voltar(mesa && user() && f.dono !== user().id ? "#/mesa/" + mesa.id : "#/", mesa && user() && f.dono !== user().id ? mesa.nome : "Fichas")}<span style="flex:1"></span>
+  return `<div class="ficha-tema"${temaAttr(pc)} style="${temaVars(pc)}"><div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">${voltar(mesa && user() && f.dono !== user().id ? "#/mesa/" + mesa.id : "#/", mesa && user() && f.dono !== user().id ? mesa.nome : "Fichas")}<span style="flex:1"></span>
     ${ro ? `<span class="tag">Somente leitura</span>` : pc.nivel < 10 ? `<a class="btn sm hope" href="#/ficha/${encodeURIComponent(ID)}/nivel">${icon("up")} Subir de nível</a>` : ""}</div>
   <section class="sheet-hero${condFx(pc.st.cond).cls}" style="${coresClasse(pc.classe)};${condFx(pc.st.cond).style}">
-    <div class="hero-top"><div class="grow"><div class="nm">${esc(pc.nome || "Sem nome")}</div>
+    ${temaEmblema(pc)}<div class="hero-top"><div class="grow"><div class="nm">${esc(pc.nome || "Sem nome")}</div>
       <div class="meta">${esc(classeSub(pc))}${pc.mc ? ` · Multiclasse ${esc(nome("classes", pc.mc.cls))}` : ""}</div>
       <div class="meta small">${esc(origemTxt(pc))}${pc.pronomes ? " · " + esc(pc.pronomes) : ""}${mesa ? ` · <span class="tag">${icon("users")} ${esc(mesa.nome)}</span>` : ""}</div></div>
       <div class="lvl-badge"><span>Nível</span><b>${pc.nivel}</b></div></div>
     ${condBanner(pc.st.cond, "você")}
     <div class="core">
-      <div class="stat"><b>${d.ev}</b><span>Evasão</span></div>
-      ${(() => { const inf = hbCfg(f).limiar ? infimo(d.lim[0]) : 0; return `<div class="stat th${inf ? " has-inf" : ""}"><b>${inf ? `<span class="inf-dot" role="img" aria-label="Limiar ínfimo, homebrew: ${inf}" title="Homebrew: dano até ${inf} pode ser pago com 1 Esperança ou 1 Estresse">${inf}</span>` : ""}${d.lim[0]}<span class="muted" style="font-size:1rem"> / </span>${d.lim[1]}</b><span>Maior / Grave</span></div>`; })()}
-      <div class="stat"><b>${d.prof}</b><span>Proficiência</span></div>
+      <div class="stat"><i class="gl">${glifo("evasao")}</i><b>${d.ev}</b><span>Evasão</span></div>
+      ${(() => { const inf = hbCfg(f).limiar ? infimo(d.lim[0]) : 0; return `<div class="stat th${inf ? " has-inf" : ""}" role="group" aria-label="Limiares de dano: Maior ${d.lim[0]}, Grave ${d.lim[1]}" title="Limiares de dano: Maior ${d.lim[0]} · Grave ${d.lim[1]}"><i class="gl">${glifo("limiares")}</i><b>${inf ? `<span class="inf-dot" role="img" aria-label="Limiar ínfimo, homebrew: ${inf}" title="Homebrew: dano até ${inf} pode ser pago com 1 Esperança ou 1 Estresse">${inf}</span>` : ""}${d.lim[0]}<i class="sep">/</i>${d.lim[1]}</b><span>Limiares</span></div>`; })()}
+      <div class="stat"><i class="gl">${glifo("prof")}</i><b>${d.prof}</b><span>Proficiência</span></div>
     </div>
-    <div class="traits">${TRAITS.map(t => `<button class="trait${d.conj && d.conj.k === t.k ? " conj" : ""}" data-act="rolar" data-mod="${d.atr[t.k]}" data-rot="${esc(traitPT(t.en))}" data-pc="${esc(ID)}" title="Rolar ${esc(traitPT(t.en))}"><b>${sgn(d.atr[t.k])}</b><span>${esc(traitPT(t.en))}</span></button>`).join("")}</div>
+    <div class="traits">${TRAITS.map(t => `<button class="trait${d.conj && d.conj.k === t.k ? " conj" : ""}" data-act="rolar" data-mod="${d.atr[t.k]}" data-rot="${esc(traitPT(t.en))}" data-pc="${esc(ID)}" title="Rolar ${esc(traitPT(t.en))}">${dado6(t.k)}<span class="tv"><b>${sgn(d.atr[t.k])}</b><span class="tn">${esc(traitPT(t.en))}</span></span></button>`).join("")}</div>
     ${d.conj ? `<p class="muted small" style="margin:8px 0 0">Atributo de Conjuração: <b style="color:var(--fear)">${esc(traitPT(d.conj.en))}</b></p>` : ""}
   </section>
   <div class="tabs" role="tablist">${ABAS.map(([k, n]) => `<button role="tab" aria-selected="${aba === k}" data-act="aba" data-v="${k}">${n}</button>`).join("")}</div>
   <div class="${ro ? "ro" : ""}">${corpo(pc, d, ro, f)}</div>
-  <button class="fab" data-act="rolar" data-pc="${esc(ID)}" aria-label="Rolar Dados de Dualidade">${icon("dice")}</button>${ro ? "" : tokensFlutuantes(f)}`;
+  <button class="fab" data-act="rolar" data-pc="${esc(ID)}" aria-label="Rolar Dados de Dualidade">${icon("dice")}</button>${ro ? "" : tokensFlutuantes(f)}</div>`;
 }
 
 // Tokens de ação [HB]: bolinhas flutuantes no canto inferior esquerdo, em todas as abas.
@@ -238,7 +239,9 @@ function abaAjustes(pc, d, ro, f) {
     <label class="switch"><input type="checkbox" data-ch="hblimiar" ${hp.limiar ? "checked" : ""}><span class="t"><b>Limiar Ínfimo</b><span>⌊Maior ÷ 3⌋: dano até esse valor pode ser pago com 1 Esperança ou 1 Estresse.${hbc.mesa && hbc.limiar && !hp.limiar ? " Já ligado pelo mestre da mesa." : ""}</span></span></label>
     <label class="switch"><input type="checkbox" data-ch="hbtokens" ${hp.tokens ? "checked" : ""}><span class="t"><b>Tokens de ação (só desta ficha)</b><span>${hbc.daMesa ? "O mestre da mesa já controla os tokens de todos; esta opção é ignorada." : "Cada ação gasta 1 token; ao esgotar, voltam todos. Em mesa, o mestre liga para todos os jogadores."}</span></span></label>
     ${hp.tokens && !hbc.daMesa ? `<label class="f">Tokens por rodada<input type="number" min="1" max="9" value="${hbc.max}" data-ch="hbmaxp"></label>` : ""}</div>`;
-  return hbCard + `<div class="track"><h3 style="margin-bottom:8px">Básico</h3><div class="grid2">
+  const corCard = `<div class="track"><h3 style="margin-bottom:4px">Cor do tema</h3><p class="muted small" style="margin:0 0 8px">Troca a cor principal da ficha (a da classe é o padrão). Só aparece com o tema por classe ligado, em Conta → Aparência.</p>
+    <div class="acts" style="margin-top:0;align-items:center"><input type="color" data-ch="cortema" value="${/^#[0-9a-f]{6}$/i.test(pc.cor || "") ? pc.cor : "#8059cc"}" aria-label="Cor do tema" style="width:56px;height:46px;padding:2px;border-radius:12px;cursor:pointer">${pc.cor ? `<button class="btn sm ghost" data-act="corpadrao">Voltar à cor da classe</button>` : `<span class="muted small">Usando a cor da classe</span>`}</div></div>`;
+  return hbCard + corCard + `<div class="track"><h3 style="margin-bottom:8px">Básico</h3><div class="grid2">
     <label class="f">Nome<input type="text" data-in="nome" data-k="anome" value="${esc(pc.nome)}"></label>
     <label class="f">Pronomes<input type="text" data-in="pron" data-k="apron" value="${esc(pc.pronomes)}"></label></div></div>
   <div class="track"><h3>Bônus manuais</h3><p class="muted small">Para efeitos de cartas, itens ou decisões do mestre que o app não calcula sozinho.</p>
@@ -419,6 +422,7 @@ export function on(a, el) {
     case "expnova": ed(pc => pc.exp.push({ n: "", v: 2 })); return;
     case "desfazernivel": desfazerNivel(); return;
     case "enviar": abrirEnvio(); return;
+    case "corpadrao": ed(pc => { delete pc.cor; }); app.render(true); return;
     case "baixarficha": { const b = new Blob([JSON.stringify({ app: "daggerheart-fichas", v: 1, em: new Date().toISOString(), fichas: [{ nome: pc.nome, data: paraEntrega(pc) }] }, null, 1)], { type: "application/json" }), u = URL.createObjectURL(b), l = document.createElement("a"); l.href = u; l.download = (pc.nome || "personagem").replace(/[^\w-]+/g, "-") + ".json"; l.click(); setTimeout(() => URL.revokeObjectURL(u), 1500); toast("Arquivo baixado: o jogador importa em Conta → Restaurar backup"); return; }
     case "duplicar": import("../store.js").then(m => { const c = JSON.parse(JSON.stringify(pc)); c.nome += " (cópia)"; const nid = m.criarFicha(c); location.hash = "#/ficha/" + nid; }); return;
     case "excluir": confirmar(`Excluir ${pc.nome || "este personagem"} para sempre? Não dá para desfazer.`, { ok: "Excluir", perigo: true }).then(async ok => { if (!ok) return; try { await excluirFicha(ID); toast("Personagem excluído"); location.hash = "#/"; } catch (e) { toast("Não foi possível excluir: " + e.message, "err"); } }); return;
@@ -510,6 +514,7 @@ export function change(k, el) {
   if (k === "hbtokens") { ed(pc => { pc.hb = { ...(pc.hb || {}), tokens: el.checked }; }); app.render(true); return; }
   if (k === "hbmaxp") { ed(pc => { pc.hb = { ...(pc.hb || {}), tokMax: Math.min(9, Math.max(1, parseInt(el.value, 10) || 3)), epoca: ((pc.hb || {}).epoca || 0) + 1 }; }); app.render(true); return; }
   if (k === "hblimiar") { ed(pc => { pc.hb = { ...(pc.hb || {}), limiar: el.checked }; }); app.render(true); return; }
+  if (k === "cortema") { ed(pc => { pc.cor = el.value; }); app.render(true); return; }
   if (k === "transf") ed(pc => { pc.transf = el.value; });
   if (k === "mesa") moverParaMesa(ID, el.value).then(() => toast(el.value ? "Ficha vinculada à mesa" : "Ficha removida da mesa"));
   if (["mod", "scar", "atr", "expv"].includes(el.dataset.in)) app.render(true);
