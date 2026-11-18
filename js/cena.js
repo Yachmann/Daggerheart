@@ -19,6 +19,33 @@ export const LADOS = ["jogadores", "mestre"];
 export const MEDO_MAX = 12;
 const rotuloRes = chave => (RESULTADOS.find(r => r[0] === chave) || [chave, chave])[1];
 
+// ---------- Lembretes (o que o mestre não pode esquecer) ----------
+export const TIPOS_LEMBRETE = [["obrigatorio", "Não pode esquecer"], ["condicao", "Se acontecer…"], ["geral", "Geral"]];
+const TIPO_L = { obrigatorio: "obrigatorio", obrigatoria: "obrigatorio", essencial: "obrigatorio", nao_esquecer: "obrigatorio", beat: "obrigatorio", condicao: "condicao", condicional: "condicao", se: "condicao", gatilho: "condicao", geral: "geral", dica: "geral", nota: "geral" };
+const tipoL = v => TIPO_L[norm(v).replace(/[-\s]+/g, "_")];
+export function validarLembretes(raw) {
+  const erros = [], avisos = [];
+  if (raw == null) return { erros, avisos };
+  if (!Array.isArray(raw)) { erros.push({ campo: "lembretes", msg: "precisa ser uma lista." }); return { erros, avisos }; }
+  raw.forEach((l, i) => {
+    const p = `lembretes[${i}]`;
+    if (!l || typeof l !== "object") { erros.push({ campo: p, msg: "precisa ser um objeto." }); return; }
+    if (!str(l.titulo)) erros.push({ campo: p + ".titulo", msg: "obrigatório." });
+    if (l.texto != null && typeof l.texto !== "string") erros.push({ campo: p + ".texto", msg: "precisa ser texto." });
+    if (l.tipo != null && !tipoL(l.tipo)) avisos.push({ campo: p + ".tipo", msg: `“${l.tipo}” não existe; vale "obrigatorio", "condicao" ou "geral". Usei "geral".` });
+    if (l.adversario != null && typeof l.adversario !== "string") erros.push({ campo: p + ".adversario", msg: "precisa ser o nome do adversário." });
+  });
+  return { erros, avisos };
+}
+export function criarLembretes(raw) {
+  return (Array.isArray(raw) ? raw : []).filter(l => l && str(l.titulo)).map(l => ({ id: novoId(), tipo: (l.tipo != null && tipoL(l.tipo)) || "geral", titulo: String(l.titulo).trim(), texto: String(l.texto || "").trim(), adversario: str(l.adversario) ? l.adversario.trim() : "", feito: false }));
+}
+// Um lembrete vale para uma unidade quando o nome bate com o nome dela, com o adversário de origem ou com o nome sem o número final.
+export function casaLembrete(adversario, u) {
+  const n = norm(adversario);
+  return !!n && [u.name, u.ref, String(u.name || "").replace(/\s+\d+$/, "")].some(x => norm(x) === n);
+}
+
 // ---------- Validação ----------
 // Devolve { erros: [{campo, msg}], avisos: [{campo, msg}] }. Os campos seguem o caminho do JSON (ex.: "resultados.falha_medo").
 export function validarCena(r) {
@@ -120,6 +147,8 @@ export function validarCena(r) {
     });
   }
 
+  const lv = validarLembretes(r.lembretes); erros.push(...lv.erros); avisos.push(...lv.avisos);
+
   // fim
   if (!r.fim || typeof r.fim !== "object") E("fim", 'obrigatório, com pelo menos "vitoria".');
   else {
@@ -156,7 +185,7 @@ export function criarCena(r, extra = {}) {
       derrota: r.fim.derrota ? { contagem: String(r.fim.derrota.contagem).trim(), texto: String(r.fim.derrota.texto) } : null,
       empate: r.fim.empate ? { texto: String(r.fim.empate.texto) } : null,
     },
-    ambiente: null, unidades: [], proxNum: 1, notas: String(r.notas || ""), recompensas: String(r.recompensas || ""),
+    ambiente: null, unidades: [], proxNum: 1, lembretes: criarLembretes(r.lembretes), notas: String(r.notas || ""), recompensas: String(r.recompensas || ""),
     medo: 0, rodada: 1, status: "prep", config: { medoAuto: true },
     alertas: [], fimPendente: null, ultimo: null, log: [], pilha: [], origem: "ia", criadaEm: Date.now(),
     ...extra,

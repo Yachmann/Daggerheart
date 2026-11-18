@@ -173,6 +173,36 @@ await teste("batalha com resultados/contagens mas sem 'tipo' sugere usar tipo ce
 await teste("extrairBlocos ignora blocos de código que não são JSON de conteúdo", () => { const b = extrairBlocos("```js\nconst a = 1\n```\n" + blocoMD(v1)); igual(b.length, 1); });
 await teste("ordem por sessão: reconhece 'Sessão N · …'", () => { igual(C.numeroSessao("Sessão 12 · A Ponte · Fuga"), 12); igual(C.numeroSessao("sessao 3 - X"), 3); igual(C.numeroSessao("Emboscada"), null); });
 
+grupo("Lembretes");
+await teste("lembretes válidos não geram erro", () => { igual(C.validarLembretes([{ titulo: "A", texto: "x", tipo: "obrigatorio" }, { titulo: "B", tipo: "condicao", adversario: "Bear" }, { titulo: "C" }]).erros, []); });
+await teste("sem título é erro apontando o campo; tipo desconhecido é só aviso", () => {
+  const r = C.validarLembretes([{ texto: "x" }, { titulo: "T", tipo: "xyz" }]);
+  igual(r.erros.map(e => e.campo), ["lembretes[0].titulo"]); igual(r.avisos.map(e => e.campo), ["lembretes[1].tipo"]);
+  igual(C.validarLembretes("oi").erros.map(e => e.campo), ["lembretes"]);
+});
+await teste("tipos aceitam variações com acento e espaço", () => {
+  const l = C.criarLembretes([{ titulo: "1", tipo: "Condição" }, { titulo: "2", tipo: "Obrigatório" }, { titulo: "3", tipo: "não esquecer" }, { titulo: "4" }, { titulo: "5", tipo: "dica" }]);
+  igual(l.map(x => x.tipo), ["condicao", "obrigatorio", "obrigatorio", "geral", "geral"]); ok(l.every(x => x.feito === false && x.id));
+});
+await teste("o lembrete casa com o adversário pelo nome, pela origem ou sem o número final", () => {
+  ok(C.casaLembrete("Bandit", { name: "Bandit 2", ref: "Jagged Knife Bandit" })); ok(C.casaLembrete("jagged knife bandit", { name: "Capanga Zé", ref: "Jagged Knife Bandit" }));
+  ok(C.casaLembrete("Capanga Zé", { name: "Capanga Zé", ref: "X" })); ok(!C.casaLembrete("Outro", { name: "Bandit 2", ref: "Bandit" })); ok(!C.casaLembrete("", { name: "A", ref: "A" }));
+});
+await teste("o exemplo de batalha traz lembretes e importa sem avisos", () => {
+  const r = lerResposta(blocoMD(EXEMPLO_JSON))[0]; ok(r.ok, JSON.stringify(r.avisos)); igual(r.registro.lembretes.length, 2); igual(r.avisos.length, 0, "avisos inesperados");
+  igual(r.registro.lembretes.map(l => l.tipo), ["obrigatorio", "condicao"]);
+});
+await teste("lembrete de adversário que não está na batalha avisa, mas não impede", () => {
+  const b = clone(EXEMPLO_JSON); b.lembretes = [{ titulo: "X", adversario: "Dragão Inexistente" }]; const r = lerResposta(blocoMD(b))[0];
+  ok(r.ok); ok(r.avisos.some(a => a.campo === "lembretes[0].adversario"));
+});
+await teste("lembrete sem título numa batalha é erro com o campo", () => { const b = clone(EXEMPLO_JSON); b.lembretes = [{ texto: "só texto" }]; const r = lerResposta(blocoMD(b))[0]; ok(!r.ok); ok(r.avisos.some(a => a.t.startsWith("lembretes[0].titulo:"))); });
+await teste("batalha sem 'lembretes' continua igual (lista vazia)", () => { const b = clone(EXEMPLO_JSON); delete b.lembretes; const r = lerResposta(blocoMD(b))[0]; ok(r.ok); igual(r.registro.lembretes, []); });
+await teste("cena aceita lembretes e valida os campos", () => {
+  const c = nova(r => { r.lembretes = [{ titulo: "Renn vigia", tipo: "obrigatorio", texto: "Renn precisa ver o rosto de alguém." }]; }); igual(c.lembretes.length, 1); igual(c.lembretes[0].tipo, "obrigatorio");
+  const r = clone(fixture); r.lembretes = [{ tipo: "geral" }]; ok(campos(r).includes("lembretes[0].titulo"));
+});
+
 grupo("Listagem");
 await teste("ordena por número de sessão e deixa os outros depois", () => {
   const l = [{ nome: "Emboscada", status: "prep", criadaEm: 5 }, { nome: "Sessão 10 · B · Y", criadaEm: 1 }, { nome: "Sessão 2 · A · Z", criadaEm: 9 }, { nome: "Sessão 2 · A · A", criadaEm: 3 }, { nome: "Antiga", status: "fim", criadaEm: 9 }, { nome: "Nova", status: "ativa", criadaEm: 8 }];

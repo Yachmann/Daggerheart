@@ -2,7 +2,7 @@
 import { store, uid, clone, norm, debounce } from "./util.js";
 import { sb, S, user, onChange } from "./store.js";
 import { hfOn, list, loc } from "./data.js";
-import { validarCena, criarCena } from "./cena.js";
+import { validarCena, criarCena, validarLembretes, criarLembretes, casaLembrete } from "./cena.js";
 
 // ---------- Constantes ----------
 export const TIPOS = ["Bruiser", "Horde", "Leader", "Minion", "Ranged", "Skulk", "Social", "Solo", "Standard", "Support"];
@@ -142,7 +142,7 @@ export function trocaNome(text, al, name) {
 
 // ---------- Batalhas ----------
 export function novaBatalha(p = {}) {
-  return { id: uid(), nome: p.nome || "Nova batalha", cena: p.cena || "", status: "prep", mesa: p.mesa || null, jogadores: p.jogadores || 4, ajuste: p.ajuste || 0, medo: 0, proxNum: 1, unidades: [], contagens: [], ambiente: null, notas: p.notas || "", recompensas: p.recompensas || "", origem: p.origem || "manual", criadaEm: Date.now() };
+  return { id: uid(), nome: p.nome || "Nova batalha", cena: p.cena || "", status: "prep", mesa: p.mesa || null, jogadores: p.jogadores || 4, ajuste: p.ajuste || 0, medo: 0, proxNum: 1, unidades: [], contagens: [], ambiente: null, notas: p.notas || "", recompensas: p.recompensas || "", origem: p.origem || "manual", lembretes: [], criadaEm: Date.now() };
 }
 export function novaUnidade(b, a, { nome, desc = "", n = 1 } = {}) {
   const th = parseTh(a.th), num = b.proxNum++;
@@ -323,6 +323,18 @@ function resolverAdversarios(b, lista, avisos, novos) {
     if (adv) { adicionar(b, adv, qtd, apelido && qtd === 1 ? { nome: String(apelido), desc: String(nota) } : { desc: String(nota) }); if (qtd > 1 && nota) b.unidades.slice(-qtd).forEach(u => { u.desc = String(nota); }); }
   });
 }
+// Lembretes da batalha (a cena valida os dela em validarCena).
+function conferirLembretesAdv(reg, avisos) {
+  (reg.lembretes || []).forEach((l, i) => {
+    if (l.adversario && !reg.unidades.some(u => casaLembrete(l.adversario, u))) avisos.push({ k: "aviso", campo: `lembretes[${i}].adversario`, t: `lembretes[${i}].adversario: “${l.adversario}” não está entre os adversários; o lembrete aparece só na lista.` });
+  });
+}
+function juntarLembretes(b, raw, avisos) {
+  const v = validarLembretes(raw);
+  v.erros.forEach(e => avisos.push({ k: "erro", campo: e.campo, t: `${e.campo}: ${e.msg}` }));
+  v.avisos.forEach(e => avisos.push({ k: "aviso", campo: e.campo, t: `${e.campo}: ${e.msg}` }));
+  if (!v.erros.length) { b.lembretes = criarLembretes(raw); conferirLembretesAdv(b, avisos); }
+}
 function resolverAmbiente(amb, avisos) {
   if (!amb) return null;
   if (typeof amb === "string" || amb.ref) {
@@ -353,6 +365,7 @@ export function montarDaIA(obj) {
   if (!Array.isArray(lista) || !lista.length) throw new Error("O JSON não tem a lista “adversarios”." + (g(obj, "resultados", "contagens") ? ' Se isto é uma cena complexa, use "tipo": "cena" e "versao": 2.' : ""));
   resolverAdversarios(b, lista, avisos, novos);
   b.ambiente = resolverAmbiente(g(obj, "ambiente", "environment"), avisos);
+  juntarLembretes(b, g(obj, "lembretes", "reminders"), avisos);
   (g(obj, "contagens", "countdowns") || []).forEach(c => b.contagens.push({ id: uid(), n: String(g(c, "nome", "name") || "Contagem"), size: Math.max(1, Math.min(12, parseInt(g(c, "caixas", "size"), 10) || 4)), val: 0 }));
   const o = orcamento(b);
   if (o.sobra < 0) avisos.push({ k: "dica", t: `Custo ${o.custo} passa do orçamento ${o.total} em ${-o.sobra} ponto(s): luta mais pesada que o padrão.` });
@@ -373,6 +386,7 @@ export function montarCena(obj) {
   if (!Array.isArray(lista)) avisos.push({ k: "erro", campo: "adversarios", t: "adversarios: precisa ser uma lista." });
   else if (lista.length) resolverAdversarios(c, lista, avisos, novos);
   c.ambiente = resolverAmbiente(g(obj, "ambiente", "environment"), avisos);
+  conferirLembretesAdv(c, avisos);
   return { tipo: "cena", registro: c, cena: c, novos, avisos, ok: !avisos.some(a => a.k === "erro") };
 }
 
@@ -442,6 +456,10 @@ export const EXEMPLO_JSON = {
   contagens: [{ nome: "A névoa se dissipa", caixas: 4 }],
   notas: "Se o grupo recuar, a ponte desaba. A carroça carrega uma carta selada.",
   recompensas: "2 punhados de ouro e o sabre da Madame.",
+  lembretes: [
+    { tipo: "obrigatorio", titulo: "A carta selada", texto: "A Madame precisa entregar a carta selada antes de cair: sem ela a história não segue." },
+    { tipo: "condicao", titulo: "Se o grupo poupou o capanga na sessão 2", adversario: "Madame Ferrugem", texto: "Ela hesita no primeiro ataque e tenta negociar antes de lutar de verdade." },
+  ],
 };
 export function instrucoesIA() {
   return `# Instruções: Daggerheart · criar batalhas para o site
@@ -462,12 +480,15 @@ Você ajuda o mestre a preparar o roteiro de uma campanha de Daggerheart. Sempre
 ${JSON.stringify(EXEMPLO_JSON, null, 2)}
 \`\`\`
 
+Lembretes: inclua de 2 a 5 em "lembretes", cada um com "titulo", "texto" e "tipo": "obrigatorio" (o que precisa acontecer para a história seguir), "condicao" (como um adversário muda se algo acontecer, inclusive pelo que ocorreu em cenas anteriores) ou "geral". Use "adversario" (nome exato de um adversário da batalha) para o lembrete aparecer no cartão dele.
+
 Campos: "ref" = nome do adversário do catálogo; "quantidade"; "nota" opcional por grupo; "nome" opcional (apelido de uma unidade); "novo" = adversário criado do zero (nome, patamar 1–4, tipo, descricao, motivacoes, dificuldade, limiares "maior/grave" ou null, pv, estresse, ataque, arma, alcance, dano, experiencia, habilidades[]). "ambiente" pode ser {"ref": "Nome"} do catálogo ou um ambiente novo. "dificuldade": "facil", "padrao" ou "dificil". Tipos: Bruiser, Horde, Leader, Minion, Ranged, Skulk, Social, Solo, Standard, Support.
 
 ## Cenas complexas (momentos de tensão que não são combate)
 Para perseguição, infiltração, ritual, desastre ou fuga, entregue uma **cena complexa**: bloco JSON com \`"versao": 2\` e \`"tipo": "cena"\`. O \`"formato"\` continua \`"daggerheart-batalha"\`. Um JSON de batalha (versão 1 ou sem \`tipo\`) continua valendo.
 - Obrigatórios: \`nome\`, \`objetivo\`, \`contagens\` (1 ou mais, com \`nome\`, \`caixas\` e \`lado\`: "jogadores" ou "mestre"), \`resultados\` (as 5 chaves: \`critico\`, \`sucesso_esperanca\`, \`sucesso_medo\`, \`falha_esperanca\`, \`falha_medo\`, cada uma com \`texto\` e \`efeitos\`) e \`fim.vitoria\` (\`contagem\` e \`texto\`).
 - Opcionais: \`cena\` (texto para ler em voz alta), \`ciclo\` (o que cada PJ faz por rodada e qual rolagem usa), \`dificuldade_rolagem\`, \`medo\` (jogadas do mestre: \`nome\`, \`custo\`, \`texto\`, \`efeitos\`, \`limite\` {\`por\`: "rodada" ou "cena", \`vezes\`}), \`jogadores_usos\` (\`nome\`, \`recurso\`: "Esperança" ou "Estresse", \`custo\`, \`texto\`, \`efeitos\`), \`gatilhos\` (\`contagem\`, \`quando\`, \`uma_vez\`, \`titulo\`, \`texto\`), \`fim.derrota\`, \`fim.empate\`, \`ambiente\`, \`adversarios\` (mesmo formato da batalha), \`notas\`, \`recompensas\`.
+- \`lembretes\`: opcional, igual ao da batalha (\`titulo\`, \`texto\`, \`tipo\`, \`adversario\`).
 - \`efeitos\`: lista de \`{ "contagem": "Nome", "delta": 1 }\`. Positivo marca caixas; negativo apaga. Todo nome citado em efeitos, gatilhos e fim precisa existir em \`contagens\`. Contadores começam vazios.
 - Prefira dois Contadores em disputa (Progresso dos PJs × Pressão do inimigo). Cada resultado deve mover algo; falha gera história, não beco sem saída. O site já soma +1 de Medo nos resultados "com Medo": não repita isso nos efeitos.
 - Nomeie como "Sessão N · Nome da sessão · Título" para a lista ficar em ordem de sessão.

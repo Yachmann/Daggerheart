@@ -22,6 +22,10 @@ Momentos de tensão que não são combate (perseguição, infiltração, ritual)
 
 Crie o personagem normalmente (marque “Estou criando para entregar a um jogador” no último passo) ou abra uma ficha existente → **Ajustes → Enviar para um jogador**. O site gera um link com a ficha comprimida dentro dele; o jogador abre, toca em **Receber** e ganha uma cópia só dele (o seu continua com você). Não precisa de conta nem de banco. Se a ficha está numa mesa sua, o link pode já colocar o jogador na mesa. Alternativa: baixar o arquivo `.json` e o jogador importa em Conta → Restaurar backup.
 
+## Batalha: faixa fixa e lembretes
+
+Na batalha, o Medo e as contagens regressivas ficam numa **faixa fixa no topo**, sempre visíveis enquanto você rola. Toque no nome de uma contagem para renomear, mudar as caixas, zerar ou excluir. O botão **Lembretes** (lateral esquerda, `Alt+L`) abre o painel “Não esquecer”, com lembretes do tipo *não pode esquecer*, *se acontecer…* e *geral*; um lembrete ligado a um adversário também aparece como selo no cartão dele. Ao iniciar a batalha, o painel abre sozinho se houver lembretes pendentes. O campo `lembretes` também vem no JSON da IA (batalha e cena).
+
 ## Painel de emergência (mestre)
 
 Na aba Mestre há um botão flutuante (`Alt+H`) que abre uma lateral com hooks narrativos para improvisar (mundo vivo, fora da rota, encontro rápido, complicação, puxar de volta, respiro, clima, perguntas ao grupo), nomes de NPC e hooks próprios. Os hooks de partida estão em `js/hooks.js`.

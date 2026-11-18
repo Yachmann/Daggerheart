@@ -4,10 +4,16 @@ import { T, dmgPT } from "../data.js";
 import { adversarios, pvPorDano, CONDICOES, TIPO_PT, adicionar } from "../gm.js";
 import { statBlock, pipsU, tipoTag, kindTag, fonteTag } from "./mestre-ui.js";
 import { condFx, condBanner } from "./common.js";
+import { casaLembrete } from "../cena.js";
 
 const CONDCLS = { Vulnerável: "vuln", Contido: "restr", Oculto: "hide" };
 
-export function cartaoUnidade(x) {
+function seloLembrete(x, reg) {
+  const l = ((reg && reg.lembretes) || []).filter(m => !m.feito && m.adversario && casaLembrete(m.adversario, x));
+  if (!l.length) return "";
+  return `<div class="lem-selos">${l.map(m => `<button class="lem-selo ${esc(m.tipo)}" data-lm="abrir" data-id="${esc(m.id)}" title="${esc(m.texto || m.titulo)}">⚑ ${esc(m.titulo)}</button>`).join("")}</div>`;
+}
+export function cartaoUnidade(x, reg) {
   const morto = x.hp >= x.hpMax, minion = x.type === "Minion";
   const fx = condFx(x.cond);
   return `<article class="ucard${morto ? " dead" : ""}${fx.cls} ty-${esc(x.type)}" style="${fx.style}">
@@ -20,6 +26,7 @@ export function cartaoUnidade(x) {
       <button class="icon-btn" data-act="umenu" data-id="${x.id}" aria-label="Mais opções">⋯</button>
     </div>
     <div class="uc-tags"><span class="tag">${esc(tipoTag(x))}</span><span class="tag ${morto ? "dead" : "hope"}">${morto ? "Derrotado" : "Em combate"}</span></div>
+    ${seloLembrete(x, reg)}
     ${condBanner(x.cond, "ele")}
     <div class="uc-trk"><span class="lb">PV</span><div class="pips pv">${pipsU(x.hpMax, x.hp, "uhp", x.id)}</div></div>
     ${x.stMax ? `<div class="uc-trk"><span class="lb">Estresse</span><div class="pips es">${pipsU(x.stMax, x.st, "ust", x.id)}</div></div>` : ""}
@@ -36,7 +43,7 @@ export function cartaoUnidade(x) {
 
 export function painelUnidades(reg, titulo = "Adversários") {
   return `<div class="sec-line"><h2>${titulo}</h2><button class="btn sm" data-act="addadv">${icon("plus")} Adicionar</button></div>
-  ${reg.unidades.length ? `<div class="ucards">${reg.unidades.map(cartaoUnidade).join("")}</div>` : `<div class="empty"><h3>Ninguém aqui ainda</h3><p>Adicione adversários da biblioteca ou crie um do zero.</p><div class="acts" style="justify-content:center"><button class="btn hope" data-act="addadv">${icon("plus")} Adicionar adversário</button><a class="btn" href="#/mestre/adversario/novo">Criar do zero</a></div></div>`}`;
+  ${reg.unidades.length ? `<div class="ucards">${reg.unidades.map(u => cartaoUnidade(u, reg)).join("")}</div>` : `<div class="empty"><h3>Ninguém aqui ainda</h3><p>Adicione adversários da biblioteca ou crie um do zero.</p><div class="acts" style="justify-content:center"><button class="btn hope" data-act="addadv">${icon("plus")} Adicionar adversário</button><a class="btn" href="#/mestre/adversario/novo">Criar do zero</a></div></div>`}`;
 }
 
 function menuUnidade(id, ctx) {

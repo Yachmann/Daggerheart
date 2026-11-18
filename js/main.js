@@ -13,6 +13,7 @@ import * as Conta from "./views/conta.js";
 import * as Mestre from "./views/mestre.js";
 import * as Receber from "./views/receber.js";
 import { iniciarPainel, atualizarPainel } from "./views/painel.js";
+import { iniciarLembretes, atualizarLembretes } from "./views/lembretes.js";
 import { loadGM } from "./gm.js";
 import { abrirRolador } from "./views/rolador.js";
 
@@ -83,6 +84,7 @@ function render(keepScroll = false) {
   }
   syncHtml();
   atualizarPainel();
+  atualizarLembretes();
 }
 app.render = render;
 
@@ -116,6 +118,7 @@ async function boot() {
   try { await Promise.all([loadData(), loadGM()]); }
   catch (e) { $("#main").innerHTML = `<div class="empty"><h3>Não foi possível carregar os dados</h3><p>${esc(e.message)}</p><button class="btn" onclick="location.reload()">Tentar de novo</button></div>`; return; }
   iniciarPainel();
+  iniciarLembretes();
   render();
   try { await iniciar(); } catch (e) { console.warn(e); toast("Não foi possível conectar ao servidor. Seguindo offline."); }
   render(true);

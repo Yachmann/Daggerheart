@@ -437,3 +437,48 @@ kbd{background:var(--sunk); border:1px solid var(--line); border-radius:5px; pad
 @media (min-width:1000px){ body.em-open{padding-right:380px} body.em-open .em-btn{display:none} }
 @media (max-width:859px){ .em-btn{top:auto; bottom:calc(var(--nav-h) + var(--bot) + 14px); right:14px; border-radius:18px; padding:13px} .em-btn span{display:none} .em-btn:hover{padding-right:13px} }
 body.em-open .topnav a span{display:none} body.em-open .topnav a{padding:8px 10px}
+
+/* ===== Faixa fixa da batalha: Medo e contagens sempre à vista ===== */
+.statusbar{position:sticky; top:calc(var(--top) + 58px); z-index:15; display:flex; gap:8px; align-items:stretch; overflow-x:auto; scrollbar-width:thin; padding:8px 0; margin:0 0 12px; background:color-mix(in srgb,var(--bg) 93%,transparent); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border-bottom:1px solid var(--line)}
+.sb-box{flex:none; display:flex; align-items:center; gap:8px; padding:6px 10px; border-radius:12px; border:1px solid var(--line); background:var(--surface)}
+.sb-medo{background:var(--fear-soft); border-color:color-mix(in srgb,var(--fear) 40%,var(--line))}
+.sb-l{font-size:.78rem; font-weight:700; color:var(--fear); white-space:nowrap} .sb-l b{font-size:1rem; font-family:var(--sans)}
+.sb-medo .tokens{display:flex; flex-wrap:nowrap; gap:3px; flex:none; min-width:0}
+.tok.mini{width:15px; height:15px; border-width:1.5px}
+.sb-medo .btn.sm{min-height:28px; min-width:30px; padding:0 8px}
+.cdmini{flex-direction:column; align-items:flex-start; gap:4px; min-width:96px; justify-content:center}
+.cd-n{border:0; background:none; padding:0; font-weight:700; font-size:.78rem; max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--ink); text-align:left; min-height:0}
+.cdmini .pips{gap:3px} .cdmini .pip{width:18px; height:18px; border-radius:5px; border-width:1.5px} .cdmini .pip.on{background:var(--blood); border-color:var(--blood)}
+.cdmini.cheia{border-color:var(--blood); box-shadow:0 0 0 1px var(--blood), 0 6px 16px -8px var(--blood); background:var(--blood-soft)}
+.sb-add{flex:none; display:flex; align-items:center; gap:4px; padding:0 12px; border-radius:12px; border:1.5px dashed var(--line); background:transparent; color:var(--muted); font-weight:650; font-size:.8rem}
+.sb-add .ic{width:16px; height:16px}
+@media (max-width:520px){ .sb-add span{display:none} }
+
+/* ===== Lembretes (lateral esquerda) ===== */
+.lm-btn{position:fixed; left:0; top:40%; z-index:40; display:flex; align-items:center; gap:8px; padding:11px 12px 11px 14px; border:0; border-radius:0 14px 14px 0; background:linear-gradient(135deg,var(--blood),var(--hope)); color:#fff; font-weight:700; box-shadow:4px 6px 22px -6px rgba(0,0,0,.5); cursor:pointer}
+.lm-btn:hover{padding-left:20px} .lm-btn .ic{width:22px; height:22px}
+.lm-count{font-style:normal; min-width:22px; height:22px; border-radius:99px; background:rgba(0,0,0,.35); display:grid; place-items:center; font-size:.78rem; padding:0 6px} .lm-count.obrig{background:#fff; color:var(--blood)}
+.lm-btn[hidden],.lm-panel[hidden]{display:none!important}
+.lm-panel{position:fixed; top:0; left:0; bottom:0; width:min(380px,100vw); z-index:45; display:flex; flex-direction:column; background:var(--surface); border-right:1px solid var(--line); box-shadow:12px 0 40px rgba(0,0,0,.35); padding-top:var(--top)}
+.lm-panel .em-head h3 .ic{color:var(--blood)}
+.lem-grupo{margin-top:14px} .lem-grupo > .eyebrow{margin-bottom:4px}
+.lem-grupo.obrigatorio > .eyebrow{color:var(--blood)} .lem-grupo.condicao > .eyebrow{color:var(--hope)}
+.lem-item{display:flex; gap:10px; align-items:flex-start; padding:10px 12px; margin-top:6px; border-radius:12px; background:var(--surface-2); border-left:4px solid var(--muted)}
+.lem-item.obrigatorio{border-left-color:var(--blood)} .lem-item.condicao{border-left-color:var(--hope)}
+.lem-item.feito{opacity:.5} .lem-item.feito b{text-decoration:line-through}
+.lem-item.flash{animation:flash 1.2s ease-out} @keyframes flash{0%{box-shadow:0 0 0 3px var(--hope)}100%{box-shadow:none}}
+.lem-check{padding-top:2px} .lem-check input{width:20px; height:20px; min-height:0; accent-color:var(--moss)}
+.lem-acts{display:flex; flex-direction:column} .lem-acts .icon-btn{width:34px; height:34px}
+.lem-form{padding:12px; border-radius:12px; border:1px solid var(--line); background:var(--surface-2); margin-top:6px}
+.lem-selos{display:flex; flex-wrap:wrap; gap:6px; margin:2px 0 8px}
+.lem-selo{border:1.5px solid var(--hope); background:var(--hope-soft); color:var(--ink); border-radius:10px; padding:4px 10px; font-size:.78rem; font-weight:650; text-align:left; min-height:30px; max-width:100%}
+.lem-selo.obrigatorio{border-color:var(--blood); background:var(--blood-soft)}
+@media (min-width:1000px){ body.lm-open{padding-left:380px} body.lm-open .lm-btn{display:none} }
+@media (max-width:859px){ .lm-btn{top:auto; bottom:calc(var(--nav-h) + var(--bot) + 14px); left:14px; border-radius:18px; padding:13px} .lm-btn span{display:none} .lm-btn:hover{padding-left:13px} }
+body.lm-open .topnav a span{display:none} body.lm-open .topnav a{padding:8px 10px}
+@media (min-width:860px){ .statusbar{flex-wrap:wrap; overflow-x:visible} }
+@media (min-width:860px) and (max-width:1399px){
+  .em-btn span,.lm-btn span{display:none} .em-btn:hover span,.lm-btn:hover span{display:inline}
+  .em-btn,.lm-btn{top:58%; padding:11px 10px}
+}
+@media (max-width:520px){ .sb-medo .tokens{display:none} .sb-medo{gap:6px} .sb-l{font-size:.9rem} }

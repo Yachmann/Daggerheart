@@ -67,7 +67,7 @@ function aplica() {
   document.body.classList.toggle("em-open", mestre && S2.aberto);
 }
 export function atualizarPainel() { aplica(); }
-function abrir(v) { S2.aberto = v; salva(); if (v) desenha(); aplica(); }
+function abrir(v) { S2.aberto = v; salva(); if (v) { desenha(); document.dispatchEvent(new CustomEvent("dh-painel-abriu", { detail: "em" })); } aplica(); }
 
 function sortear() {
   let l = pool();
@@ -123,6 +123,7 @@ export function iniciarPainel() {
     else if (e.key === "Escape" && S2.aberto && !document.querySelector(".sheet-wrap")) abrir(false);
   });
   addEventListener("hashchange", aplica);
+  document.addEventListener("dh-painel-abriu", e => { if (e.detail !== "em" && innerWidth < 1400 && S2.aberto) abrir(false); });
   if (S2.aberto) desenha();
   aplica();
 }

@@ -39,13 +39,22 @@ function painelAmbiente(b) {
     ${e ? `<details class="more" style="margin-top:12px"><summary>Ficha do ambiente: ${esc(e.name)}</summary>${envBlock(e)}</details>` : ""}`;
 }
 
+// Faixa fixa no topo: Medo e contagens regressivas sempre à vista, ocupando uma linha.
+function barraStatus(b) {
+  let tok = "";
+  for (let i = 0; i < 12; i++) tok += `<button class="tok mini${i < b.medo ? " on" : ""}" data-act="medo" data-i="${i}" aria-label="Medo ${i + 1}" aria-pressed="${i < b.medo}"></button>`;
+  return `<div class="statusbar" role="region" aria-label="Medo e contagens regressivas">
+    <div class="sb-box sb-medo"><span class="sb-l">Medo <b>${b.medo}</b>/12</span><div class="tokens">${tok}</div>
+      <span class="step-btns"><button class="btn sm" data-act="medod" data-v="-1" aria-label="Gastar 1 Medo">−</button><button class="btn sm fear" data-act="medod" data-v="1" aria-label="Ganhar 1 Medo">+</button></span></div>
+    ${b.contagens.map(c => `<div class="sb-box cdmini${c.val >= c.size ? " cheia" : ""}"><button class="cd-n" data-act="cdedit" data-id="${c.id}" title="Editar contagem: ${esc(c.n)}">${esc(c.n)}</button><div class="pips">${pipsU(c.size, c.val, "cdp", c.id)}</div></div>`).join("")}
+    <button class="sb-add" data-act="cdnova" aria-label="Nova contagem regressiva" title="Nova contagem regressiva">${icon("plus")}<span>Contagem</span></button></div>`;
+}
+
 export function html(p) {
   ID = p[1];
   const b = B();
   if (!b) return `<div class="empty"><h3>Batalha não encontrada</h3><a class="btn" href="#/mestre">Voltar</a></div>`;
   const o = orcamento(b), st = STATUS[b.status] || STATUS.prep, vivos = b.unidades.filter(u => u.hp < u.hpMax).length;
-  let tok = "";
-  for (let i = 0; i < 12; i++) tok += `<button class="tok${i < b.medo ? " on" : ""}" data-act="medo" data-i="${i}" aria-label="Medo ${i + 1}" aria-pressed="${i < b.medo}"></button>`;
   const mesasMinhas = S.mesas.filter(m => user() && m.mestre === user().id);
   return `<div style="margin-bottom:10px">${voltar("#/mestre", "Mestre")}</div>
   <section class="battle-head">
@@ -57,11 +66,7 @@ export function html(p) {
     ${b.cena ? `<div class="scene tx">${mdBlock(b.cena)}</div>` : ""}
   </section>
 
-  <div class="fear-bar"><h3>Medo</h3><span class="cnt">${b.medo}/12</span><div class="tokens">${tok}</div>
-    <span class="step-btns"><button class="btn sm" data-act="medod" data-v="-1" aria-label="Gastar 1 Medo">−1</button><button class="btn sm fear" data-act="medod" data-v="1" aria-label="Ganhar 1 Medo">+1</button></span></div>
-
-  ${b.contagens.length || true ? `<div class="track"><div class="track-h"><h3>Contagens regressivas</h3><button class="btn sm ghost" data-act="cdnova">${icon("plus")} Nova</button></div>
-    ${b.contagens.map(c => `<div class="cd"><div class="grow"><b>${esc(c.n)}</b></div><div class="pips">${pipsU(c.size, c.val, "cdp", c.id)}</div><button class="icon-btn" data-act="cddel" data-id="${c.id}" aria-label="Remover">${icon("trash")}</button></div>`).join("") || `<p class="muted small" style="margin:0">Use para rituais, reforços ou pontes que caem. Marque uma caixa a cada tique.</p>`}</div>` : ""}
+  ${barraStatus(b)}
 
   <details class="track fold" ${painel.grupo ? "open" : ""} data-pn="grupo"><summary><h3>Grupo ${b.mesa ? "" : `<span class="muted small">(sem mesa)</span>`}</h3></summary>${painelGrupo(b)}</details>
   <details class="track fold" ${painel.ambiente ? "open" : ""} data-pn="ambiente"><summary><h3>Ambiente e ações do Medo${b.ambiente ? ` <span class="tag">${esc(b.ambiente.name)}</span>` : ""}</h3></summary>${painelAmbiente(b)}</details>
@@ -101,7 +106,7 @@ export function on(a, el) {
   if (unidadeOn(a, el, ctx)) return;
   const id = el.dataset.id, i = +el.dataset.i;
   switch (a) {
-    case "iniciar": ed(x => { x.status = "ativa"; }); toast("Batalha iniciada"); return;
+    case "iniciar": ed(x => { x.status = "ativa"; }); toast("Batalha iniciada"); document.dispatchEvent(new CustomEvent("dh-lem", { detail: "abrir" })); return;
     case "encerrar": ed(x => { x.status = "fim"; }); return;
     case "reabrir": ed(x => { x.status = "ativa"; }); return;
     case "bmenu": menuBatalha(); return;
@@ -113,6 +118,15 @@ export function on(a, el) {
       return;
     }
     case "cdp": ed(() => { const c = b.contagens.find(x => x.id === id); c.val = c.val === i + 1 ? i : i + 1; }); return;
+    case "cdedit": {
+      const c = b.contagens.find(x => x.id === id);
+      const w = openSheet(`<label class="f">Nome<input type="text" id="cn" value="${esc(c.n)}"></label><label class="f" style="margin-top:10px">Caixas<input type="number" id="cs" min="1" max="12" value="${c.size}"></label>
+        <div class="acts"><button class="btn hope" id="cok">Salvar</button><button class="btn" id="czr">Zerar</button><button class="btn danger" id="cdl">${icon("trash")} Excluir</button></div>`, { title: "Contagem regressiva" });
+      w.querySelector("#cok").addEventListener("click", () => { ed(x => { const k = x.contagens.find(y => y.id === id); k.n = w.querySelector("#cn").value.trim() || k.n; k.size = clamp(parseInt(w.querySelector("#cs").value, 10) || k.size, 1, 12); k.val = Math.min(k.val, k.size); }); closeSheet(); });
+      w.querySelector("#czr").addEventListener("click", () => { ed(() => { c.val = 0; }); closeSheet(); });
+      w.querySelector("#cdl").addEventListener("click", () => { ed(x => { x.contagens = x.contagens.filter(k => k.id !== id); }); closeSheet(); });
+      return;
+    }
     case "cddel": ed(x => { x.contagens = x.contagens.filter(c => c.id !== id); }); return;
     case "env": { const e = AMBIENTE_ACOES[i], c = +el.dataset.c; if (b.medo < c) return; ed(x => { x.medo -= c; x.ultimo = { n: e.n, o: sortear(e.op), ef: e.ef }; }); return; }
   }
