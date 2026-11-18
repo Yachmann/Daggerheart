@@ -4,6 +4,7 @@ import { get, loc, list, nome, domPT, TRAITS, traitPT, T, dmgPT, beast, hfOn, se
 import { deriv, ancFeats, tierOf, fmtOuro, cartasElegiveis, RECURSOS_CLASSE } from "../calc.js";
 import { S, ficha, editar, excluirFicha, moverParaMesa, user } from "../store.js";
 import { app } from "../main.js";
+import { hbCfg, infimo, tokens as tokensDe, gastarToken, devolverToken } from "../homebrew.js";
 import { montarLink, paraEntrega } from "../entrega.js";
 import { condFx, condBanner, COND_CLS, dcard, feat, armaHtml, armaduraHtml, coresClasse, classeSub, origemTxt, expTag, verCarta, enName, voltar, corDom } from "./common.js";
 
@@ -35,6 +36,7 @@ export function html(p, q) {
     ${condBanner(pc.st.cond, "você")}
     <div class="core">
       <div class="stat"><b>${d.ev}</b><span>Evasão</span></div>
+      ${hbCfg(f).limiar && infimo(d.lim[0]) ? `<div class="stat th" title="Homebrew: dano até este valor pode ser pago com 1 Esperança ou 1 Estresse"><b>${infimo(d.lim[0])}</b><span>Ínfimo [HB]</span></div>` : ""}
       <div class="stat th"><b>${d.lim[0]}<span class="muted" style="font-size:1rem"> / </span>${d.lim[1]}</b><span>Maior / Grave</span></div>
       <div class="stat"><b>${d.prof}</b><span>Proficiência</span></div>
     </div>
@@ -57,7 +59,18 @@ function abaJogo(pc, d, ro) {
   const scars = pc.cicatrizes || 0;
   let esp = "";
   for (let i = 0; i < 6; i++) esp += i >= d.espMax ? `<span class="pip scar" title="Cicatriz"></span>` : `<button class="pip${i < st.esp ? " on" : ""}" data-act="esp" data-i="${i}" aria-label="Esperança ${i + 1}"></button>`;
-  return `
+  const f = F(), cfg = hbCfg(f), tk = tokensDe(f);
+  let tokUI = "";
+  if (tk) {
+    let bolas = "";
+    for (let k = 0; k < tk.max; k++) bolas += `<span class="tok${k < tk.resta ? " on" : ""}" aria-hidden="true"></span>`;
+    tokUI = `<div class="track"><div class="track-h"><h3>Tokens de ação <span class="tag">HB</span></h3><span class="cnt">${tk.resta}<small>/${tk.max}</small></span></div>
+      <div class="tokens" style="margin:8px 0">${bolas}</div>
+      <div class="acts" style="margin-top:0"><button class="btn hope" data-act="tokgasta" ${tk.resta ? "" : "disabled"}>Gastar token (fazer uma ação)</button>${tk.gasto ? `<button class="btn ghost" data-act="tokvolta">Desfazer</button>` : ""}</div>
+      <p class="muted small" style="margin:8px 0 0">${tk.resta ? "Cada ação do holofote gasta 1 token." : `Sem tokens. Aguardando: ${tk.esperando.map(esc).join(", ") || "ninguém"}. Quando todos gastarem, os tokens voltam.`}</p></div>`;
+  }
+  const pessoal = !cfg.mesa && !ro ? `<label class="switch"><input type="checkbox" data-ch="hblimiar" ${cfg.limiar ? "checked" : ""}><span class="t"><b>Homebrew: limiar Ínfimo</b><span>Dano até ⌊limiar Maior ÷ 3⌋ pode ser pago com 1 Esperança ou 1 Estresse. (Em mesa, quem liga é o mestre.)</span></span></label>` : "";
+  return `${tokUI}
   <div class="track"><div class="track-h"><h3 style="color:var(--hope)">Esperança</h3><span class="cnt">${st.esp}<small>/${d.espMax}</small></span>
     <div class="step-btns"><button class="btn sm" data-act="espd" data-v="-1" aria-label="Gastar Esperança">${icon("minus")}</button><button class="btn sm" data-act="espd" data-v="1" aria-label="Ganhar Esperança">${icon("plus")}</button></div></div>
     <div class="pips esp">${esp}</div>
@@ -68,7 +81,7 @@ function abaJogo(pc, d, ro) {
     ${pips("pv", d.pvMax, st.pv, "pv")}
     ${st.pv >= d.pvMax ? `<div class="err" style="margin-top:10px">Último PV marcado: escolha um <a href="#/regras/morte">movimento de morte</a>.</div>` : ""}
     <div class="dmg-box"><input type="number" inputmode="numeric" min="0" placeholder="Dano recebido" id="dmgIn" aria-label="Dano recebido"><button class="btn fear" data-act="dano">Calcular</button></div>
-    <p class="muted small" style="margin:6px 0 0">Abaixo de ${d.lim[0]}: 1 PV · de ${d.lim[0]} a ${d.lim[1] - 1}: 2 PV · ${d.lim[1]} ou mais: 3 PV</p></div>
+    <p class="muted small" style="margin:6px 0 0">${cfg.limiar && infimo(d.lim[0]) ? `Até ${infimo(d.lim[0])} [HB]: pague 1 Esperança ou 1 Estresse · ` : ""}Abaixo de ${d.lim[0]}: 1 PV · de ${d.lim[0]} a ${d.lim[1] - 1}: 2 PV · ${d.lim[1]} ou mais: 3 PV</p>${pessoal}</div>
 
   <div class="track"><div class="track-h"><h3 style="color:var(--fear)">Estresse</h3><span class="cnt">${st.es}<small>/${d.esMax}</small></span>
     <div class="step-btns"><button class="btn sm" data-act="esd" data-v="-1" aria-label="Recuperar Estresse">${icon("minus")}</button><button class="btn sm" data-act="esd" data-v="1" aria-label="Marcar Estresse">${icon("plus")}</button></div></div>
@@ -290,12 +303,20 @@ function abrirDano() {
   const sev = v <= 0 ? 0 : v >= d.lim[1] * 2 ? 4 : v >= d.lim[1] ? 3 : v >= d.lim[0] ? 2 : 1;
   const livre = d.armMax - pc.st.arm;
   const nomes = ["Nenhum", "Menor", "Maior", "Grave", "Massivo"];
-  const w = openSheet(`<p class="lead">${v} de dano contra limiares ${d.lim[0]} / ${d.lim[1]}: dano <b>${nomes[sev]}</b> (${Math.min(sev, 3)} PV${sev === 4 ? "; 4 PV se a mesa usa a regra opcional de dano massivo" : ""}).</p>
+  const hb = hbCfg(f).limiar && v > 0 && v <= infimo(d.lim[0]);
+  const w = openSheet(`${hb ? `<div class="note"><b>[HOMEBREW] Dano ínfimo:</b> ${v} ≤ ${infimo(d.lim[0])}. Em vez de tomar o dano, você pode gastar 1 Esperança ou marcar 1 Estresse.</div>` : ""}
+    <p class="lead">${v} de dano contra limiares ${d.lim[0]} / ${d.lim[1]}: dano <b>${nomes[sev]}</b> (${Math.min(sev, 3)} PV${sev === 4 ? "; 4 PV se a mesa usa a regra opcional de dano massivo" : ""}).</p>
     ${livre && sev ? `<p>Você pode marcar 1 espaço de Armadura (${livre} livre${livre > 1 ? "s" : ""}) para reduzir a gravidade em um limiar.</p>` : ""}
-    <div class="acts">${livre && sev ? `<button class="btn" data-dn="arm">Usar Armadura: marcar ${Math.max(0, Math.min(sev, 3) - 1)} PV</button>` : ""}<button class="btn fear" data-dn="sem">Marcar ${Math.min(sev, 3)} PV</button><button class="btn ghost" data-close>Cancelar</button></div>
+    <div class="acts">${hb ? `<button class="btn hope" data-dn="esp" ${pc.st.esp > 0 ? "" : "disabled"}>Gastar 1 Esperança</button><button class="btn fear" data-dn="est" ${pc.st.es < d.esMax ? "" : "disabled"}>Marcar 1 Estresse</button>` : ""}${livre && sev ? `<button class="btn" data-dn="arm">Usar Armadura: marcar ${Math.max(0, Math.min(sev, 3) - 1)} PV</button>` : ""}<button class="btn fear" data-dn="sem">Marcar ${Math.min(sev, 3)} PV</button><button class="btn ghost" data-close>Cancelar</button></div>
     <p class="muted small">Dano com resistência é reduzido à metade antes de comparar com os limiares. Dano direto não pode ser reduzido por Armadura.</p>`, { title: "Receber dano" });
   w.querySelectorAll("[data-dn]").forEach(b => b.addEventListener("click", () => {
-    const arm = b.dataset.dn === "arm", n = Math.max(0, Math.min(sev, 3) - (arm ? 1 : 0));
+    const k = b.dataset.dn;
+    if (k === "esp" || k === "est") {
+      ed(pc => { if (k === "esp") pc.st.esp = Math.max(0, pc.st.esp - 1); else pc.st.es = Math.min(d.esMax, pc.st.es + 1); }, { imediato: true });
+      if ($("#dmgIn")) $("#dmgIn").value = "";
+      closeSheet(); toast(k === "esp" ? "Dano ínfimo evitado: 1 Esperança gasta" : "Dano ínfimo evitado: 1 Estresse marcado"); return;
+    }
+    const arm = k === "arm", n = Math.max(0, Math.min(sev, 3) - (arm ? 1 : 0));
     ed(pc => { pc.st.pv = Math.min(d.pvMax, pc.st.pv + n); if (arm) pc.st.arm = Math.min(d.armMax, pc.st.arm + 1); }, { imediato: true });
     if ($("#dmgIn")) $("#dmgIn").value = "";
     closeSheet(); toast(`${n} PV marcado${n !== 1 ? "s" : ""}${arm ? " e 1 Armadura" : ""}`);
@@ -356,6 +377,8 @@ export function on(a, el) {
     case "cond": ed(pc => { const c = el.dataset.v, k = pc.st.cond.indexOf(c); k >= 0 ? pc.st.cond.splice(k, 1) : pc.st.cond.push(c); }); return;
     case "condnova": pedirTexto("Nova condição", "Nome da condição", t => ed(pc => pc.st.cond.push(t))); return;
     case "dano": abrirDano(); return;
+    case "tokgasta": { const t = tokensDe(f); if (!t || !t.resta) return; ed(pc => gastarToken(pc, hbCfg(f)), { imediato: true }); return; }
+    case "tokvolta": ed(pc => devolverToken(pc, hbCfg(f)), { imediato: true }); return;
     case "descanso": abrirDescanso(el.dataset.v); return;
     case "rolardano": { const m = String(el.dataset.v).match(/(\d+)d(\d+)([+-]\d+)?/); if (!m) return; let s = 0; const r = []; for (let k = 0; k < +m[1]; k++) { const x = 1 + Math.floor(Math.random() * +m[2]); r.push(x); s += x; } s += +(m[3] || 0); openSheet(`<div class="roll-res"><div class="roll-total">${s}</div><p class="muted">${esc(el.dataset.v)}: [${r.join(", ")}]${m[3] ? " " + m[3] : ""}</p><p class="muted small">Num acerto crítico, some o valor máximo dos dados ao resultado.</p></div>`, { title: "Dano" }); return; }
     case "rec": ed(pc => { const r = pc.recursos[i]; r.v = clamp(r.v + v, 0, r.max || 99); }); return;
@@ -479,6 +502,7 @@ function abrirEnvio() {
 }
 export function change(k, el) {
   if (k === "modelo") { ed(pc => { pc.modelo = el.checked; }); return; }
+  if (k === "hblimiar") { ed(pc => { pc.hb = { ...(pc.hb || {}), limiar: el.checked }; }); app.render(true); return; }
   if (k === "transf") ed(pc => { pc.transf = el.value; });
   if (k === "mesa") moverParaMesa(ID, el.value).then(() => toast(el.value ? "Ficha vinculada à mesa" : "Ficha removida da mesa"));
   if (["mod", "scar", "atr", "expv"].includes(el.dataset.in)) app.render(true);

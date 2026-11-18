@@ -6,6 +6,7 @@ import { app } from "../main.js";
 import { cardPC } from "./fichas.js";
 import { voltar } from "./common.js";
 import { deriv } from "../calc.js";
+import { tokens as tokensDe, infimo, TOK_PADRAO } from "../homebrew.js";
 
 let codigoPre = "";
 
@@ -37,6 +38,7 @@ function detalhe(id) {
   const link = location.origin + location.pathname + "#/mesas?entrar=" + m.codigo;
   const membros = m.mesa_membros || [];
   const hf = !!(m.config && m.config.expansao && m.config.expansao.hf);
+  const hb = (m.config && m.config.homebrew) || {}, tokMax = Math.min(9, Math.max(1, parseInt(hb.tokMax, 10) || TOK_PADRAO));
   return `<div style="margin-bottom:10px">${voltar("#/mesas", "Mesas")}</div>
   <div class="page-h"><h1>${esc(m.nome)}</h1><div class="sub">${souMestre ? "Você é o mestre" : "Você é jogador"} · ${membros.length} jogador(es) · as fichas atualizam sozinhas</div></div>
   ${souMestre ? `<section class="card"><div class="mesa-row"><div class="grow"><div class="eyebrow">Código de convite</div><span class="code">${esc(m.codigo)}</span></div><button class="btn sm" data-act="copiar" data-v="${esc(link)}">${icon("link")} Copiar link</button></div></section>` : ""}
@@ -47,14 +49,20 @@ function detalhe(id) {
   ${souMestre ? `<section class="sec"><h2>Configurações da mesa</h2><div class="card">
     <label class="f">Nome<input type="text" id="mnome" value="${esc(m.nome)}"></label>
     ${EXP.disponivel ? `<label class="switch"><input type="checkbox" data-ch="hf" ${hf ? "checked" : ""}><span class="t"><b>Usar a expansão Hope & Fear nesta mesa</b><span>Libera novas classes, ancestralidades, comunidades, cartas e equipamentos para as fichas desta mesa.</span></span></label>` : ""}
+    <div class="divider"></div><h3 style="margin:0">Homebrews da mesa <span class="tag">HB</span></h3>
+    <label class="switch"><input type="checkbox" data-ch="hblimiar" ${hb.limiar ? "checked" : ""}><span class="t"><b>Limiar Ínfimo</b><span>Aparece à esquerda do Maior: ⌊Maior ÷ 3⌋. Dano até esse valor pode ser pago com 1 Esperança ou 1 Estresse.</span></span></label>
+    <label class="switch"><input type="checkbox" data-ch="hbtokens" ${hb.tokens ? "checked" : ""}><span class="t"><b>Tokens de ação</b><span>Cada jogador gasta 1 token por ação. Quando todos esgotam os tokens, todos voltam.</span></span></label>
+    ${hb.tokens ? `<div class="row"><label class="f">Tokens por jogador<input type="number" min="1" max="9" value="${tokMax}" data-ch="hbmax"></label><button class="btn" data-act="hbreset" data-id="${id}" style="align-self:flex-end">Reiniciar tokens</button></div>` : ""}
     <div class="acts"><button class="btn" data-act="renomear" data-id="${id}">Salvar nome</button><button class="btn danger" data-act="excluirmesa" data-id="${id}">${icon("trash")} Excluir mesa</button></div></div>
     ${membros.length ? `<div class="card"><h3>Jogadores</h3>${membros.map(x => `<div class="inv-row"><div class="grow">${esc(x.apelido || "Jogador")}</div><button class="btn sm ghost danger" data-act="remover" data-u="${x.user_id}" data-id="${id}">Remover</button></div>`).join("")}</div>` : ""}</section>`
     : `<div class="acts"><button class="btn danger" data-act="sair" data-id="${id}">Sair da mesa</button></div>`}`;
 }
+const hbInf = (f, d) => { const m = S.mesas.find(x => x.id === f.mesa_id), c = m && m.config && m.config.homebrew; return c && c.limiar && infimo(d.lim[0]) ? infimo(d.lim[0]) + "/" : ""; };
+const tokTxt = f => { const t = tokensDe(f); return t ? `<span>Tokens <b>${t.resta}/${t.max}</b></span>` : ""; };
 function resumo(f) {
   const pc = f.data, d = deriv(pc);
   const cond = (pc.st.cond || []).length ? `<div class="chips" style="margin-top:8px">${pc.st.cond.map(c => `<span class="tag">${esc(c)}</span>`).join("")}</div>` : "";
-  return cardPC(f).replace("</a>", `<div class="kv" style="margin-top:8px"><span>Evasão <b>${d.ev}</b></span><span>Limiares <b>${d.lim[0]}/${d.lim[1]}</b></span><span>Armadura <b>${d.armMax - pc.st.arm}/${d.armMax}</b></span></div>${cond}</a>`);
+  return cardPC(f).replace("</a>", `<div class="kv" style="margin-top:8px"><span>Evasão <b>${d.ev}</b></span><span>Limiares <b>${hbInf(f, d)}${d.lim[0]}/${d.lim[1]}</b></span>${tokTxt(f)}<span>Armadura <b>${d.armMax - pc.st.arm}/${d.armMax}</b></span></div>${cond}</a>`);
 }
 
 export async function on(a, el) {
@@ -68,6 +76,7 @@ export async function on(a, el) {
       const w = openSheet(`<label class="f">Nome da mesa<input type="text" id="nm" placeholder="Ex.: A Queda de Haven"></label><div class="acts"><button class="btn hope" id="ok">Criar</button></div>`, { title: "Nova mesa" });
       w.querySelector("#ok").addEventListener("click", async () => { const n = w.querySelector("#nm").value.trim(); if (!n) return; try { const m = await criarMesa(n); closeSheet(); location.hash = "#/mesa/" + m.id; } catch (e) { toast(e.message, "err"); } });
     }
+    if (a === "hbreset") { const m = S.mesas.find(x => x.id === el.dataset.id), h = { ...((m.config || {}).homebrew || {}) }; h.epoca = (h.epoca || 0) + 1; await atualizarMesa(m.id, { config: { ...(m.config || {}), homebrew: h } }); toast("Tokens reiniciados"); app.render(true); }
     if (a === "copiar") { await navigator.clipboard.writeText(el.dataset.v).catch(() => {}); toast("Link copiado: envie aos jogadores"); }
     if (a === "vincular") { const fid = document.getElementById("vinc").value; await moverParaMesa(fid, el.dataset.id); toast("Ficha vinculada"); app.render(true); }
     if (a === "renomear") { await atualizarMesa(el.dataset.id, { nome: document.getElementById("mnome").value.trim() || "Mesa" }); toast("Salvo"); app.render(true); }
@@ -80,6 +89,14 @@ export async function on(a, el) {
   }
 }
 export async function change(k, el) {
+  if (["hblimiar", "hbtokens", "hbmax"].includes(k)) {
+    const id = location.hash.split("/")[2], m = S.mesas.find(x => x.id === id), h = { ...((m.config || {}).homebrew || {}) };
+    if (k === "hblimiar") h.limiar = el.checked;
+    if (k === "hbtokens") { h.tokens = el.checked; h.epoca = (h.epoca || 0) + 1; }
+    if (k === "hbmax") { h.tokMax = Math.min(9, Math.max(1, parseInt(el.value, 10) || TOK_PADRAO)); h.epoca = (h.epoca || 0) + 1; }
+    try { await atualizarMesa(id, { config: { ...(m.config || {}), homebrew: h } }); toast("Homebrew atualizada"); app.render(true); } catch (e) { toast(e.message, "err"); }
+    return;
+  }
   if (k === "hf") {
     const id = location.hash.split("/")[2];
     const m = S.mesas.find(x => x.id === id);
