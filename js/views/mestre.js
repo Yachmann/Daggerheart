@@ -8,12 +8,14 @@ import * as Batalha from "./batalha.js";
 import * as Editor from "./editor.js";
 import * as Importar from "./importar.js";
 import * as Cena from "./cena.js";
+import { darItem } from "./dar.js";
+import * as Locais from "./locais.js";
 import { ordenarRegistros } from "../cena.js";
 import { statBlock, envBlock, tipoTag, fonteTag, escolherBatalha, barraOrc } from "./mestre-ui.js";
 import { expTag } from "./common.js";
 
 const ui = { aba: "batalhas", ft: "", bq: "", q: "", tipo: "", tier: "", cat: "", fonte: "", livro: "adv", gt: "Standard", gp: 1, gen: null, rc: { tema: "qualquer", tier: 1, jog: 4, adj: 0 }, rcRes: null, comp: "", compCat: "geral", it: null, itCat: "Arma", itTier: "" };
-const ABAS = [["batalhas", "Batalhas"], ["biblioteca", "Biblioteca"], ["geradores", "Geradores"], ["notas", "Notas"], ["ia", "Conectar IA"]];
+const ABAS = [["batalhas", "Batalhas"], ["biblioteca", "Biblioteca"], ["geradores", "Geradores"], ["locais", "Locais"], ["notas", "Notas"], ["ia", "Conectar IA"]];
 
 function sub(p) { return p[0] || ""; }
 function modulo(p) { const s = sub(p); return s === "batalha" ? Batalha : s === "adversario" ? Editor : s === "importar" ? Importar : s === "cena" ? Cena : null; }
@@ -25,7 +27,7 @@ export function html(p, q) {
   if (mod) return mod.html(p, q);
   if (q.aba && ABAS.some(a => a[0] === q.aba)) ui.aba = q.aba;
   if (!user() && sb) { /* funciona local; avisa */ }
-  const corpo = { batalhas: abaBatalhas, biblioteca: abaBiblioteca, geradores: abaGeradores, notas: abaNotas, ia: abaIA }[ui.aba]();
+  const corpo = { batalhas: abaBatalhas, biblioteca: abaBiblioteca, geradores: abaGeradores, locais: Locais.aba, notas: abaNotas, ia: abaIA }[ui.aba]();
   const st = !sb ? "" : !user() ? `<div class="note info" style="margin-bottom:14px">Sem conta, suas batalhas ficam só neste aparelho. <a href="#/conta">Entre</a> para guardá-las na nuvem e abrir no celular.</div>` : gmStatus.erro === "tabela" ? `<div class="err" style="margin-bottom:14px">As tabelas do mestre ainda não existem no banco: rode o arquivo <code>supabase-fichas.sql</code> (versão nova) no Supabase. Enquanto isso, tudo fica salvo neste aparelho.</div>` : "";
   return `<div class="page-h"><h1>Mestre</h1><div class="sub">Prepare batalhas, crie adversários e conduza a mesa.</div></div>
   <div class="scroll-x" role="tablist">${ABAS.map(([k, n]) => `<button class="chip${ui.aba === k ? " on" : ""}" role="tab" aria-selected="${ui.aba === k}" data-act="aba" data-v="${k}">${n}</button>`).join("")}</div>
@@ -117,7 +119,7 @@ function abaGeradores() {
   <section class="card"><h3>Item de tesouro</h3><div class="row"><label class="f">Categoria<select data-ch="ic">${["Arma", "Armadura", "Consumível", "Item"].map(c => `<option${c === ui.itCat ? " selected" : ""}>${c}</option>`).join("")}</select></label>
     ${ui.itCat === "Arma" || ui.itCat === "Armadura" ? `<label class="f">Patamar<select data-ch="it"><option value="">Qualquer</option>${[1, 2, 3, 4].map(t => `<option${String(t) === String(ui.itTier) ? " selected" : ""}>${t}</option>`).join("")}</select></label>` : ""}
     <button class="btn hope" data-act="itgen" style="align-self:end">Sortear</button></div>
-    ${it ? `<div class="card" style="margin-top:12px;background:var(--surface-2)">${itemHtml(it)}</div>` : ""}</section>`;
+    ${it ? `<div class="card" style="margin-top:12px;background:var(--surface-2)">${itemHtml(it)}<div class="acts"><button class="btn sm hope" data-act="dar" data-k="${it.k}" data-id="${esc(it.x.id)}">Adicionar à ficha de um jogador</button></div></div>` : ""}</section>`;
 }
 function agrupar(b) { const g = []; b.unidades.forEach(u => { const x = g.find(y => y[2].ref === u.ref); x ? x[1]++ : g.push([u.ref, 1, u]); }); return g; }
 function itemHtml(it) {
@@ -210,6 +212,7 @@ export async function on(a, el, ev) {
   const mod = modulo(location.hash.replace(/^#\/?mestre\/?/, "").split("/").map(decodeURIComponent));
   if (mod) return mod.on(a, el, ev);
   const id = el.dataset.id;
+  if (a.startsWith("lc-")) { await Locais.on(a, el); return; }
   switch (a) {
     case "aba": ui.aba = el.dataset.v; history.replaceState(null, "", "#/mestre?aba=" + ui.aba); if (ui.aba === "batalhas") lerAntigo().then(() => app.render(true)); app.render(true); return;
     case "nova": {
@@ -231,6 +234,7 @@ export async function on(a, el, ev) {
     case "gsave": { const x = { ...ui.gen, al: [ui.gen.name], src: undefined }; delete x.baseTier; GM.custom.unshift(x); salvarGM(); location.hash = "#/mestre/adversario/" + x.id; return; }
     case "gadd": escolherBatalha({ ...ui.gen, src: "custom" }); return;
     case "comp": ui.comp = sortear(COMPLICACOES[ui.compCat]); break;
+    case "dar": darItem(el.dataset.k, el.dataset.id); return;
     case "itgen": { const k = { Arma: "weapons", Armadura: "armor", "Consumível": "consumables", Item: "items" }[ui.itCat]; let l = list(k); if (ui.itTier && (k === "weapons" || k === "armor")) l = l.filter(x => x.t === +ui.itTier); if (l.length) ui.it = { k, x: sortear(l) }; break; }
     case "notanova": editarNota(null); return;
     case "notaed": editarNota(id); return;
@@ -256,6 +260,7 @@ const atualiza = debounce(() => { const el = document.getElementById("liv"); if 
 export function change(k, el) {
   const mod = modulo(location.hash.replace(/^#\/?mestre\/?/, "").split("/"));
   if (mod) return mod.change(k, el);
+  if (Locais.change(k, el)) return;
   if (k === "f") ui[el.dataset.f] = el.value;
   else if (k === "rc") ui.rc[el.dataset.f] = el.dataset.f === "tema" ? el.value : parseInt(el.value, 10);
   else if (k === "gt") ui.gt = el.value;

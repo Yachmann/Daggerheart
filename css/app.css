@@ -482,3 +482,15 @@ body.lm-open .topnav a span{display:none} body.lm-open .topnav a{padding:8px 10p
   .em-btn,.lm-btn{top:58%; padding:11px 10px}
 }
 @media (max-width:520px){ .sb-medo .tokens{display:none} .sb-medo{gap:6px} .sb-l{font-size:.9rem} }
+
+/* ===== Locais e lojas ===== */
+.loc-tipos{display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:8px}
+.loc-tipo{display:flex; flex-direction:column; gap:2px; text-align:left; padding:10px 12px; border-radius:12px; border:1.5px solid var(--line); background:var(--surface); color:var(--ink); min-height:64px}
+.loc-tipo b{font-family:var(--display); font-size:1.12rem; line-height:1.1} .loc-tipo span{font-size:.78rem; color:var(--muted)}
+.loc-tipo.on{border-color:var(--hope); box-shadow:0 0 0 3px var(--hope-soft)}
+.loc-row{display:flex; gap:10px; align-items:center; padding:9px 0; border-top:1px solid var(--line); flex-wrap:wrap}
+.loc-row:first-of-type{border-top:0}
+.preco{text-align:right; min-width:110px} .preco b{display:block; font-family:var(--sans); font-weight:750; color:var(--hope)} .preco small{display:block; color:var(--muted); font-size:.72rem}
+.loc-acts{display:flex; gap:4px; align-items:center}
+.dar-ok{color:var(--moss); font-weight:700; font-size:.82rem; margin-left:6px}
+@media (max-width:520px){ .loc-row .preco{text-align:left; min-width:0; order:3} }

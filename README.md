@@ -26,6 +26,16 @@ Crie o personagem normalmente (marque “Estou criando para entregar a um jogado
 
 Na batalha, o Medo e as contagens regressivas ficam numa **faixa fixa no topo**, sempre visíveis enquanto você rola. Toque no nome de uma contagem para renomear, mudar as caixas, zerar ou excluir. O botão **Lembretes** (lateral esquerda, `Alt+L`) abre o painel “Não esquecer”, com lembretes do tipo *não pode esquecer*, *se acontecer…* e *geral*; um lembrete ligado a um adversário também aparece como selo no cartão dele. Ao iniciar a batalha, o painel abre sozinho se houver lembretes pendentes. O campo `lembretes` também vem no JSON da IA (batalha e cena).
 
+## Adicionar um item à ficha de um jogador
+
+Em todo lugar onde aparece um item (Compêndio → Armas, Armaduras e Itens; o gerador de tesouro; as lojas da aba Locais), há o botão **Adicionar à ficha**. O mestre escolhe entre as fichas das suas mesas (e as suas); armas e armaduras podem ser guardadas ou equipadas (respeitando o patamar do personagem), consumíveis e itens vão para o inventário e somam a quantidade. A alteração é salva na hora e chega ao celular do jogador em tempo real. Um jogador também pode usar o botão para as próprias fichas. Ficha só local, sem conta, também funciona.
+
+## Locais e lojas (mestre)
+
+Na aba **Mestre → Locais** o site gera estabelecimentos prontos: ferraria, casa de relíquias, boticário, empório arcano, loja geral, alfaiate, taverna, estábulo, templo, escriba, mercado negro e casa de penhores. Cada um tem **tamanho** (banca, loja, empório, casa lendária: mais itens e patamares maiores), **qualidade** (simples, comum, refinada) e **região** (vilarejo a fronteira: ajusta os preços), dono com personalidade, gancho, estoque com preços e serviços. Dá para trocar ou remover itens, salvar nos seus locais, copiar como texto e dar qualquer item a um jogador.
+
+Preços: armas e armaduras seguem a tabela *Average Costs* do SRD (faixa por patamar); refeição, quarto, carruagem, montaria, ferramentas e roupas usam os valores do SRD. Consumíveis, itens e os demais serviços são **sugestões** derivadas dessas faixas (marcadas como “sugestão” na tela). A raridade de consumíveis e itens é aproximada pela posição na tabela de loot. Valores abaixo de 1 punhado usam a regra opcional de moedas (10 moedas = 1 punhado).
+
 ## Painel de emergência (mestre)
 
 Na aba Mestre há um botão flutuante (`Alt+H`) que abre uma lateral com hooks narrativos para improvisar (mundo vivo, fora da rota, encontro rápido, complicação, puxar de volta, respiro, clima, perguntas ao grupo), nomes de NPC e hooks próprios. Os hooks de partida estão em `js/hooks.js`.
@@ -63,6 +73,7 @@ js/gm.js              dados e regras do mestre (batalhas, adversários, importa�
 js/cena.js            lógica pura das cenas complexas (testada em tests/)
 js/entrega.js         envio de personagem por link
 js/hooks.js           banco de hooks do painel de emergência
+js/locais.js          lojas e serviços (preços, estoque, geração)
 tests/                página de testes sem dependências
 js/views/*.js         telas
 data/base.json        SRD base estruturado (EN)

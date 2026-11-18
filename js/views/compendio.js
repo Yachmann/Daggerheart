@@ -4,6 +4,7 @@ import { list, loc, get, nome, domPT, DOMS, traitPT, T, dmgPT, hfOn, EXP, matche
 import { app } from "../main.js";
 import { dcard, feat, expTag, corDom, verCarta, enName } from "./common.js";
 import { detalheClasse, detalheSub } from "./criar.js";
+import { darItem } from "./dar.js";
 
 const ABAS = [["cartas", "Cartas"], ["classes", "Classes"], ["ancestralidades", "Ancestralidades"], ["comunidades", "Comunidades"], ["armas", "Armas"], ["armaduras", "Armaduras"], ["itens", "Itens"], ["transformacoes", "Transformações"]];
 let ultimo = "";
@@ -47,15 +48,15 @@ function lista() {
     }
     case "armas": {
       const l = list("weapons").filter(w => (!st.tier || w.t === +st.tier) && (!st.ps || w.ps === st.ps) && (!st.kind || (st.kind === "Magic" ? /Magic/.test(w.kind) : !/Magic/.test(w.kind))) && matches(loc("weapons", w), q)).sort((a, b) => a.t - b.t || a.ps.localeCompare(b.ps));
-      return `<p class="muted small">${l.length} arma${l.length !== 1 ? "s" : ""}</p><div class="grid3">${l.slice(0, 150).map(w => { const o = loc("weapons", w); return `<div class="card" style="margin:0"><div class="eyebrow">${w.ps === "Primary" ? "Primária" : "Secundária"} · Patamar ${w.t} ${expTag(w)}</div><h3>${esc(o.n)}${enName(o)}</h3><div class="kv"><span><b>${esc(traitPT(w.tr))}</b></span><span>${esc(T(w.rng))}</span><span><b>${esc(dmgPT(w.dmg))}</b></span><span>${esc(T(w.bur))}</span></div>${o.f && o.f.length ? `<div class="tx small" style="margin-top:6px">${o.f.map(f => `<b>${esc(f.n)}:</b> ${md(f.t)}`).join("<br>")}</div>` : ""}</div>`; }).join("")}</div>`;
+      return `<p class="muted small">${l.length} arma${l.length !== 1 ? "s" : ""}</p><div class="grid3">${l.slice(0, 150).map(w => { const o = loc("weapons", w); return `<div class="card" style="margin:0"><div class="eyebrow">${w.ps === "Primary" ? "Primária" : "Secundária"} · Patamar ${w.t} ${expTag(w)}</div><h3>${esc(o.n)}${enName(o)}</h3><div class="kv"><span><b>${esc(traitPT(w.tr))}</b></span><span>${esc(T(w.rng))}</span><span><b>${esc(dmgPT(w.dmg))}</b></span><span>${esc(T(w.bur))}</span></div>${o.f && o.f.length ? `<div class="tx small" style="margin-top:6px">${o.f.map(f => `<b>${esc(f.n)}:</b> ${md(f.t)}`).join("<br>")}</div>` : ""}<div class="acts" style="margin-top:8px"><button class="btn sm" data-act="dar" data-k="weapons" data-id="${esc(w.id)}">Adicionar à ficha</button></div></div>`; }).join("")}</div>`;
     }
     case "armaduras": {
       const l = list("armor").filter(a => (!st.tier || a.t === +st.tier) && matches(loc("armor", a), q)).sort((a, b) => a.t - b.t);
-      return `<div class="grid3">${l.map(a => { const o = loc("armor", a); return `<div class="card" style="margin:0"><div class="eyebrow">Patamar ${a.t} ${expTag(a)}</div><h3>${esc(o.n)}${enName(o)}</h3><div class="kv"><span>Armadura <b>${esc(a.sc)}</b></span><span>Limiares <b>${esc(a.th)}</b></span></div>${o.f && o.f.length ? `<div class="tx small" style="margin-top:6px">${o.f.map(f => `<b>${esc(f.n)}:</b> ${md(f.t)}`).join("<br>")}</div>` : ""}</div>`; }).join("")}</div>`;
+      return `<div class="grid3">${l.map(a => { const o = loc("armor", a); return `<div class="card" style="margin:0"><div class="eyebrow">Patamar ${a.t} ${expTag(a)}</div><h3>${esc(o.n)}${enName(o)}</h3><div class="kv"><span>Armadura <b>${esc(a.sc)}</b></span><span>Limiares <b>${esc(a.th)}</b></span></div>${o.f && o.f.length ? `<div class="tx small" style="margin-top:6px">${o.f.map(f => `<b>${esc(f.n)}:</b> ${md(f.t)}`).join("<br>")}</div>` : ""}<div class="acts" style="margin-top:8px"><button class="btn sm" data-act="dar" data-k="armor" data-id="${esc(a.id)}">Adicionar à ficha</button></div></div>`; }).join("")}</div>`;
     }
     case "itens": {
       const l = [...list("consumables").map(x => ["consumables", x]), ...list("items").map(x => ["items", x])].filter(([k, x]) => matches(loc(k, x), q));
-      return `<div class="grid3">${l.map(([k, x]) => { const o = loc(k, x); return `<div class="card" style="margin:0"><div class="eyebrow">${k === "consumables" ? "Consumível" : "Item"} ${expTag(x)}</div><h3>${esc(o.n)}${enName(o)}</h3><div class="tx small">${md(o.x)}</div></div>`; }).join("")}</div>`;
+      return `<div class="grid3">${l.map(([k, x]) => { const o = loc(k, x); return `<div class="card" style="margin:0"><div class="eyebrow">${k === "consumables" ? "Consumível" : "Item"} ${expTag(x)}</div><h3>${esc(o.n)}${enName(o)}</h3><div class="tx small">${md(o.x)}</div><div class="acts" style="margin-top:8px"><button class="btn sm" data-act="dar" data-k="${k}" data-id="${esc(x.id)}">Adicionar à ficha</button></div></div>`; }).join("")}</div>`;
     }
     case "transformacoes": return `<div class="opts">${list("transformations").filter(t => matches(loc("transformations", t), q)).map(t => { const o = loc("transformations", t); return `<button class="opt" data-act="abrir" data-id="${esc(t.id)}"><span class="t">${esc(o.n)} ${expTag(t)}</span><span class="x">${md((o.desc || "").split("\n")[0])}</span></button>`; }).join("")}</div>`;
   }
@@ -77,5 +78,6 @@ export function change(k, el) { if (k === "f") { st[el.dataset.f] = el.value; ap
 export function on(a, el) {
   if (a === "aba") { st.aba = el.dataset.v; st.q = ""; history.replaceState(null, "", "#/compendio?aba=" + st.aba); app.render(true); }
   if (a === "abrir") abrir(el.dataset.id);
+  if (a === "dar") darItem(el.dataset.k, el.dataset.id);
   if (a === "carta") verCarta(el.dataset.id);
 }

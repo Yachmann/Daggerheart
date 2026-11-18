@@ -53,9 +53,9 @@ export const gmPronto = () => pronto;
 
 // ---------- Estado do mestre (local + nuvem) ----------
 const LK = "dh-mestre-v1";
-const vazio = () => ({ v: 1, ts: 0, batalhas: [], custom: [], notas: [], hooks: [], hooksUsados: {}, migrado: false });
+const vazio = () => ({ v: 1, ts: 0, batalhas: [], custom: [], notas: [], hooks: [], hooksUsados: {}, locais: [], migrado: false });
 export const GM = Object.assign(vazio(), store.get(LK, {}));
-GM.batalhas = GM.batalhas || []; GM.custom = GM.custom || []; GM.notas = GM.notas || []; GM.hooks = GM.hooks || []; GM.hooksUsados = GM.hooksUsados || {};
+GM.batalhas = GM.batalhas || []; GM.custom = GM.custom || []; GM.notas = GM.notas || []; GM.hooks = GM.hooks || []; GM.hooksUsados = GM.hooksUsados || {}; GM.locais = GM.locais || [];
 export const gmStatus = { s: "local", erro: "" };
 const ouv = new Set();
 export const onGM = f => { ouv.add(f); return () => ouv.delete(f); };

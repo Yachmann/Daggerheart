@@ -3,8 +3,12 @@ import * as C from "../js/cena.js";
 import { loadData, get } from "../js/data.js";
 import { empacotar, desempacotar, sanear, paraEntrega, montarLink } from "../js/entrega.js";
 import { novoPersonagem } from "../js/calc.js";
+import * as L from "../js/locais.js";
+import { aplicar } from "../js/views/dar.js";
+import { S as ST } from "../js/store.js";
 import { loadGM, lerResposta, montarDaIA, extrairBlocos, orcamento, EXEMPLO_JSON } from "../js/gm.js";
 
+const _bak = { f: localStorage.getItem("dh-fichas-v1"), m: localStorage.getItem("dh-mestre-v1") }; // os testes mexem em fichas: restauramos o que havia no fim
 const out = document.getElementById("out"), sum = document.getElementById("sum");
 let total = 0, falhas = 0;
 const grupo = nome => { const d = document.createElement("div"); d.className = "g"; d.textContent = nome; out.appendChild(d); };
@@ -214,6 +218,68 @@ await teste("cada lembrete com adversário casa com uma unidade (aparece o selo 
   for (const l of b.lembretes.filter(x => x.adversario)) ok(b.unidades.some(u => C.casaLembrete(l.adversario, u)), "sem unidade para " + l.adversario);
 });
 
+grupo("Locais e preços");
+await teste("preço formatado em baús, bolsas, punhados e moedas", () => {
+  igual(L.fmtPreco(7), "7 moedas"); igual(L.fmtPreco(10), "1 punhado"); igual(L.fmtPreco(15), "1 punhado e 5 moedas"); igual(L.fmtPreco(300), "3 bolsas"); igual(L.fmtPreco(1500), "1 baú e 5 bolsas"); igual(L.fmtPreco(1), "1 moeda");
+});
+await teste("arredondamento mantém no máximo duas unidades", () => { for (const v of [3, 17, 43, 88, 123, 457, 999, 1234, 1850, 2000]) ok(L.fmtPreco(L.arredondar(v)).split(" e ").length <= 2, "preço com mais de duas unidades: " + v + " → " + L.fmtPreco(L.arredondar(v))); });
+await teste("armas e armaduras ficam dentro da faixa do SRD por patamar (antes dos ajustes)", async () => {
+  const { list } = await import("../js/data.js");
+  for (const kind of ["weapons", "armor"]) for (const x of list(kind)) { const [a, b] = L.FAIXA[x.t]; const p = L.precoBase(kind, x); ok(p >= a - 0.01 && p <= b + 0.01, `${x.id} (T${x.t}) fora da faixa: ${p}`); }
+});
+await teste("qualidade e região mexem no preço na ordem certa", async () => {
+  const x = (await import("../js/data.js")).get("weapons", "Broadsword");
+  const pr = (qual, reg) => L.precoFinal("weapons", x, { qual, reg });
+  ok(pr("simples", "cidade") < pr("comum", "cidade") && pr("comum", "cidade") < pr("refinada", "cidade"), "qualidade");
+  ok(pr("comum", "rural") < pr("comum", "cidade") && pr("comum", "cidade") < pr("comum", "capital") && pr("comum", "capital") < pr("comum", "remota"), "região");
+});
+await teste("os preços do SRD aparecem certos: quarto simples e refeição = 1 punhado, quarto de luxo = 1 bolsa, montaria = 3 bolsas, carruagem = 2 punhados", () => {
+  const l = L.gerarLocal({ tipo: "taverna", tam: "lendaria", qual: "comum", reg: "cidade" }); const por = n => l.servicos.find(s => s.n.startsWith(n));
+  igual(por("Quarto simples").preco, 10); igual(por("Refeição para o grupo").preco, 10); igual(por("Quarto de luxo").preco, 100);
+  const e = L.gerarLocal({ tipo: "estabulo", tam: "lendaria", qual: "comum", reg: "cidade" }); igual(e.servicos.find(s => s.n.startsWith("Montaria")).preco, 300); igual(e.servicos.find(s => s.n.startsWith("Corrida")).preco, 20);
+});
+await teste("o tamanho define a quantidade de itens e o patamar máximo", () => {
+  for (const [tam, T] of Object.entries(L.TAMANHOS)) for (let k = 0; k < 6; k++) {
+    const l = L.gerarLocal({ tipo: "ferraria", tam, qual: "comum", reg: "cidade" });
+    ok(l.estoque.length >= 1 && l.estoque.length <= T.linhas[1], `${tam}: ${l.estoque.length} linhas`);
+    ok(l.estoque.every(e => L.nivelItem(e.kind, get(e.kind, e.id)) <= T.maxN), `${tam}: item acima do patamar ${T.maxN}`);
+  }
+});
+await teste("loja simples fica um patamar abaixo; banca nunca passa do patamar 1", () => {
+  for (let k = 0; k < 8; k++) { const l = L.gerarLocal({ tipo: "ferraria", tam: "emporio", qual: "simples", reg: "cidade" }); ok(l.estoque.every(e => L.nivelItem(e.kind, get(e.kind, e.id)) <= 2)); const b = L.gerarLocal({ tipo: "ferraria", tam: "banca", qual: "refinada", reg: "cidade" }); ok(b.estoque.every(e => L.nivelItem(e.kind, get(e.kind, e.id)) === 1)); }
+});
+await teste("todo item do estoque existe, sem repetição e com preço e quantidade válidos", () => {
+  for (const t of L.TIPOS) for (const tam of ["banca", "loja", "lendaria"]) {
+    const l = L.gerarLocal({ tipo: t.k, tam, qual: "comum", reg: "cidade" }); const ids = l.estoque.map(e => e.kind + "|" + e.id);
+    igual(new Set(ids).size, ids.length, `${t.k}/${tam}: repetido`); ok(l.estoque.every(e => get(e.kind, e.id) && e.preco >= 1 && e.qtd >= 1), `${t.k}/${tam}: item inválido`);
+    if (t.estoque.length) ok(l.estoque.length > 0, `${t.k}/${tam}: sem estoque`);
+  }
+});
+await teste("tipos só de serviços não têm estoque; a casa pequena tem menos serviços que a grande", () => {
+  for (const k of ["taverna", "estabulo", "alfaiate", "saber"]) { const a = L.gerarLocal({ tipo: k, tam: "banca" }), g = L.gerarLocal({ tipo: k, tam: "lendaria" }); igual(a.estoque.length, 0); ok(a.servicos.length >= 2 && g.servicos.length > a.servicos.length, k); }
+});
+await teste("trocar e acrescentar linha não repete item do estoque", () => { const l = L.gerarLocal({ tipo: "ferraria", tam: "loja" }); const nova = L.sortearLinha(l); ok(nova); ok(!l.estoque.some(e => e.kind === nova.kind && e.id === nova.id)); });
+await teste("texto do local sai completo para copiar", () => { const t = L.textoLocal(L.gerarLocal({ tipo: "boticario", tam: "loja" })); ok(/À venda/.test(t) && /Dono:/.test(t) && /moeda|punhado|bolsa|baú/.test(t)); });
+
+grupo("Dar item ao jogador");
+const fichaDe = (nivel = 1) => { const p = novoPersonagem(); Object.assign(p, { nome: "Teste", classe: "Warrior", subclasse: "Call of the Brave", nivel, armas: { p: "Broadsword", s: "" }, armadura: "Gambeson Armor" }); const id = "t" + Math.random().toString(36).slice(2, 8); ST.fichas[id] = { id, dono: null, nome: "Teste", data: p, nova: true }; return id; };
+await teste("consumível entra no inventário e soma a quantidade ao repetir", () => {
+  const id = fichaDe(); aplicar(id, "consumables", "Minor Health Potion", { qtd: 2 }); aplicar(id, "consumables", "Minor Health Potion", { qtd: 1 });
+  const inv = ST.fichas[id].data.inventario.filter(x => x.ref === "Minor Health Potion"); igual(inv.length, 1); igual(inv[0].q, 3);
+});
+await teste("item comum entra no inventário", () => { const id = fichaDe(); aplicar(id, "items", "Premium Bedroll"); ok(ST.fichas[id].data.inventario.some(x => x.ref === "Premium Bedroll")); });
+await teste("arma pode ser guardada na reserva sem mexer na equipada", () => { const id = fichaDe(); aplicar(id, "weapons", "Rapier"); igual(ST.fichas[id].data.reserva, [{ k: "weapons", id: "Rapier" }]); igual(ST.fichas[id].data.armas.p, "Broadsword"); });
+await teste("equipar arma primária troca e guarda a antiga", () => { const id = fichaDe(); const msg = aplicar(id, "weapons", "Rapier", { equipar: true }); const pc = ST.fichas[id].data; igual(pc.armas.p, "Rapier"); ok(pc.reserva.some(r => r.id === "Broadsword")); ok(/primária/.test(msg)); });
+await teste("equipar armadura troca, guarda a antiga e zera os espaços marcados", () => { const id = fichaDe(); ST.fichas[id].data.st.arm = 2; aplicar(id, "armor", "Leather Armor", { equipar: true }); const pc = ST.fichas[id].data; igual(pc.armadura, "Leather Armor"); igual(pc.st.arm, 0); ok(pc.reserva.some(r => r.id === "Gambeson Armor")); });
+await teste("item de patamar acima do personagem só pode ser guardado", () => {
+  const id = fichaDe(1); const msg = aplicar(id, "weapons", "Legendary Dagger", { equipar: true }); const pc = ST.fichas[id].data;
+  igual(pc.armas.p, "Broadsword"); ok(/patamar/.test(msg)); ok(pc.reserva.some(r => r.id === "Legendary Dagger"));
+});
+await teste("arma de duas mãos libera a secundária; secundária com primária de duas mãos vai para a reserva", () => {
+  const id = fichaDe(); const pc = ST.fichas[id].data; pc.armas.s = "Small Dagger"; aplicar(id, "weapons", "Greatsword", { equipar: true }); igual(pc.armas.s, ""); ok(pc.reserva.some(r => r.id === "Small Dagger"));
+  const msg = aplicar(id, "weapons", "Round Shield", { equipar: true }); ok(/duas mãos/.test(msg)); igual(pc.armas.s, "");
+});
+
 grupo("Listagem");
 await teste("ordena por número de sessão e deixa os outros depois", () => {
   const l = [{ nome: "Emboscada", status: "prep", criadaEm: 5 }, { nome: "Sessão 10 · B · Y", criadaEm: 1 }, { nome: "Sessão 2 · A · Z", criadaEm: 9 }, { nome: "Sessão 2 · A · A", criadaEm: 3 }, { nome: "Antiga", status: "fim", criadaEm: 9 }, { nome: "Nova", status: "ativa", criadaEm: 8 }];
@@ -237,4 +303,5 @@ await teste("campos com tipo errado não quebram a ficha", () => { const pc = sa
 sum.className = "sum " + (falhas ? "bad" : "ok");
 sum.textContent = falhas ? `${falhas} de ${total} testes falharam` : `Todos os ${total} testes passaram`;
 document.title = (falhas ? "✗ " : "✓ ") + sum.textContent;
+for (const [k, v] of [["dh-fichas-v1", _bak.f], ["dh-mestre-v1", _bak.m]]) { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); }
 window.__testes = { total, falhas };
