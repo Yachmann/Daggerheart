@@ -238,15 +238,28 @@ const KIND_ALIAS = { passive: "Passive", passiva: "Passive", passivo: "Passive",
 const RANGE_PT = { "corpo a corpo": "Melee", melee: "Melee", "muito perto": "Very Close", "very close": "Very Close", perto: "Close", close: "Close", longe: "Far", far: "Far", "muito longe": "Very Far", "very far": "Very Far" };
 const g = (o, ...ks) => { for (const k of ks) if (o && o[k] != null && o[k] !== "") return o[k]; return undefined; };
 
-// Tira cercas de código e texto ao redor do JSON
+// Tira cercas de código e texto ao redor do JSON. Com vários blocos, usa o que tem "adversarios".
+const limpa = t => t.replace(/[“”]/g, '"').replace(/,\s*([}\]])/g, "$1");
+function tentaParse(t) { try { return JSON.parse(limpa(t)); } catch { return null; } }
 export function extrairJSON(txt) {
-  let s = String(txt || "").trim();
-  const fence = s.match(/```(?:json)?\s*([\s\S]*?)```/i);
-  if (fence) s = fence[1].trim();
+  const s = String(txt || "").trim();
+  const cercas = [...s.matchAll(/```(?:json)?\s*([\s\S]*?)```/gi)].map(m => m[1].trim());
+  let ultimoErro = "";
+  for (const c of cercas) {
+    const i = c.indexOf("{"), j = c.lastIndexOf("}");
+    if (i < 0 || j < i) continue;
+    const o = tentaParse(c.slice(i, j + 1));
+    if (o && typeof o === "object" && (o.adversarios || o.adversaries || o.inimigos || o.formato)) return o;
+    if (!o) { try { JSON.parse(limpa(c.slice(i, j + 1))); } catch (e) { ultimoErro = e.message; } }
+  }
   const i = s.indexOf("{"), j = s.lastIndexOf("}");
-  if (i < 0 || j < i) throw new Error("Não encontrei um JSON no texto colado.");
-  s = s.slice(i, j + 1).replace(/[“”]/g, '"').replace(/,\s*([}\]])/g, "$1");
-  try { return JSON.parse(s); } catch (e) { throw new Error("O JSON está inválido: " + e.message); }
+  if (i >= 0 && j > i) {
+    const o = tentaParse(s.slice(i, j + 1));
+    if (o) return o;
+    try { JSON.parse(limpa(s.slice(i, j + 1))); } catch (e) { ultimoErro = ultimoErro || e.message; }
+  }
+  if (ultimoErro) throw new Error("O JSON está inválido: " + ultimoErro);
+  throw new Error("Não encontrei um JSON no texto colado.");
 }
 
 export function normalizarAdv(raw, avisos, ctx = "") {
