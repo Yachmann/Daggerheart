@@ -494,3 +494,14 @@ body.lm-open .topnav a span{display:none} body.lm-open .topnav a{padding:8px 10p
 .loc-acts{display:flex; gap:4px; align-items:center}
 .dar-ok{color:var(--moss); font-weight:700; font-size:.82rem; margin-left:6px}
 @media (max-width:520px){ .loc-row .preco{text-align:left; min-width:0; order:3} }
+
+/* Homebrews [HB] */
+.stat.has-inf{position:relative}
+.inf-dot{position:absolute; top:-9px; left:-7px; display:grid; place-items:center; min-width:24px; height:24px; padding:0 4px; border-radius:50%; background:#1f7a5a; color:#fff !important; font-family:var(--sans); font-size:.8rem; font-weight:800; line-height:1; border:2px dashed #fff; box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.tok-float{position:fixed; left:12px; bottom:calc(var(--nav-h) + var(--bot) + 16px); z-index:15; display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:30px; background:var(--surface); border:1px solid var(--line); box-shadow:0 8px 24px -6px rgba(0,0,0,.45)}
+.tok-float .tok{width:30px; height:30px; border-color:var(--hope); flex:none}
+.tok-float .tok.on{background:var(--hope)}
+.tok-float .tok:disabled{opacity:.4}
+.tok-float .tok-reset{width:30px; height:30px; border-radius:50%; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); font-size:1.1rem; padding:0; line-height:1}
+.tok-float .tok-reset:disabled{opacity:.35}
+@media (min-width:860px){ .tok-float{bottom:24px} }

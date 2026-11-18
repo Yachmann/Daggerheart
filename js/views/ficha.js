@@ -36,8 +36,7 @@ export function html(p, q) {
     ${condBanner(pc.st.cond, "você")}
     <div class="core">
       <div class="stat"><b>${d.ev}</b><span>Evasão</span></div>
-      ${hbCfg(f).limiar && infimo(d.lim[0]) ? `<div class="stat th" title="Homebrew: dano até este valor pode ser pago com 1 Esperança ou 1 Estresse"><b>${infimo(d.lim[0])}</b><span>Ínfimo [HB]</span></div>` : ""}
-      <div class="stat th"><b>${d.lim[0]}<span class="muted" style="font-size:1rem"> / </span>${d.lim[1]}</b><span>Maior / Grave</span></div>
+      ${(() => { const inf = hbCfg(f).limiar ? infimo(d.lim[0]) : 0; return `<div class="stat th${inf ? " has-inf" : ""}"><b>${inf ? `<span class="inf-dot" role="img" aria-label="Limiar ínfimo, homebrew: ${inf}" title="Homebrew: dano até ${inf} pode ser pago com 1 Esperança ou 1 Estresse">${inf}</span>` : ""}${d.lim[0]}<span class="muted" style="font-size:1rem"> / </span>${d.lim[1]}</b><span>Maior / Grave</span></div>`; })()}
       <div class="stat"><b>${d.prof}</b><span>Proficiência</span></div>
     </div>
     <div class="traits">${TRAITS.map(t => `<button class="trait${d.conj && d.conj.k === t.k ? " conj" : ""}" data-act="rolar" data-mod="${d.atr[t.k]}" data-rot="${esc(traitPT(t.en))}" data-pc="${esc(ID)}" title="Rolar ${esc(traitPT(t.en))}"><b>${sgn(d.atr[t.k])}</b><span>${esc(traitPT(t.en))}</span></button>`).join("")}</div>
@@ -45,7 +44,16 @@ export function html(p, q) {
   </section>
   <div class="tabs" role="tablist">${ABAS.map(([k, n]) => `<button role="tab" aria-selected="${aba === k}" data-act="aba" data-v="${k}">${n}</button>`).join("")}</div>
   <div class="${ro ? "ro" : ""}">${corpo(pc, d, ro, f)}</div>
-  <button class="fab" data-act="rolar" data-pc="${esc(ID)}" aria-label="Rolar Dados de Dualidade">${icon("dice")}</button>`;
+  <button class="fab" data-act="rolar" data-pc="${esc(ID)}" aria-label="Rolar Dados de Dualidade">${icon("dice")}</button>${ro ? "" : tokensFlutuantes(f)}`;
+}
+
+// Tokens de ação [HB]: bolinhas flutuantes no canto inferior esquerdo, em todas as abas.
+function tokensFlutuantes(f) {
+  const tk = tokensDe(f);
+  if (!tk) return "";
+  let b = "";
+  for (let k = 0; k < tk.max; k++) b += `<button class="tok${k < tk.resta ? " on" : ""}" data-act="tokgasta" ${k < tk.resta ? "" : "disabled"} aria-label="${k < tk.resta ? "Gastar token" : "Token gasto"}"></button>`;
+  return `<div class="tok-float" role="group" aria-label="Tokens de ação" title="${tk.resta ? "Toque numa bolinha para gastar um token" : "Sem tokens. Aguardando: " + esc(tk.esperando.join(", ") || "ninguém")}">${b}<button class="tok-reset" data-act="tokvolta" ${tk.gasto ? "" : "disabled"} aria-label="Reiniciar meus tokens" title="Reiniciar meus tokens">↺</button></div>`;
 }
 
 // ---------- Jogo ----------
@@ -60,16 +68,8 @@ function abaJogo(pc, d, ro) {
   let esp = "";
   for (let i = 0; i < 6; i++) esp += i >= d.espMax ? `<span class="pip scar" title="Cicatriz"></span>` : `<button class="pip${i < st.esp ? " on" : ""}" data-act="esp" data-i="${i}" aria-label="Esperança ${i + 1}"></button>`;
   const f = F(), cfg = hbCfg(f), tk = tokensDe(f);
-  let tokUI = "";
-  if (tk) {
-    let bolas = "";
-    for (let k = 0; k < tk.max; k++) bolas += `<span class="tok${k < tk.resta ? " on" : ""}" aria-hidden="true"></span>`;
-    tokUI = `<div class="track"><div class="track-h"><h3>Tokens de ação <span class="tag">HB</span></h3><span class="cnt">${tk.resta}<small>/${tk.max}</small></span></div>
-      <div class="tokens" style="margin:8px 0">${bolas}</div>
-      <div class="acts" style="margin-top:0"><button class="btn hope" data-act="tokgasta" ${tk.resta ? "" : "disabled"}>Gastar token (fazer uma ação)</button>${tk.gasto ? `<button class="btn ghost" data-act="tokvolta">Desfazer</button>` : ""}</div>
-      <p class="muted small" style="margin:8px 0 0">${tk.resta ? "Cada ação do holofote gasta 1 token." : `Sem tokens. Aguardando: ${tk.esperando.map(esc).join(", ") || "ninguém"}. Quando todos gastarem, os tokens voltam.`}</p></div>`;
-  }
-  const pessoal = !cfg.mesa && !ro ? `<label class="switch"><input type="checkbox" data-ch="hblimiar" ${cfg.limiar ? "checked" : ""}><span class="t"><b>Homebrew: limiar Ínfimo</b><span>Dano até ⌊limiar Maior ÷ 3⌋ pode ser pago com 1 Esperança ou 1 Estresse. (Em mesa, quem liga é o mestre.)</span></span></label>` : "";
+  const tokUI = "";
+  const pessoal = "";
   return `${tokUI}
   <div class="track"><div class="track-h"><h3 style="color:var(--hope)">Esperança</h3><span class="cnt">${st.esp}<small>/${d.espMax}</small></span>
     <div class="step-btns"><button class="btn sm" data-act="espd" data-v="-1" aria-label="Gastar Esperança">${icon("minus")}</button><button class="btn sm" data-act="espd" data-v="1" aria-label="Ganhar Esperança">${icon("plus")}</button></div></div>
@@ -233,7 +233,12 @@ function abaAjustes(pc, d, ro, f) {
   const mesas = S.mesas || [];
   const souDono = !f.dono || !user() || f.dono === user().id;
   const M = pc.mod || {};
-  return `<div class="track"><h3 style="margin-bottom:8px">Básico</h3><div class="grid2">
+  const hbc = hbCfg(f), hp = pc.hb || {};
+  const hbCard = `<div class="track"><h3 style="margin-bottom:4px">Homebrews <span class="tag">HB</span></h3>
+    <label class="switch"><input type="checkbox" data-ch="hblimiar" ${hp.limiar ? "checked" : ""}><span class="t"><b>Limiar Ínfimo</b><span>⌊Maior ÷ 3⌋: dano até esse valor pode ser pago com 1 Esperança ou 1 Estresse.${hbc.mesa && hbc.limiar && !hp.limiar ? " Já ligado pelo mestre da mesa." : ""}</span></span></label>
+    <label class="switch"><input type="checkbox" data-ch="hbtokens" ${hp.tokens ? "checked" : ""}><span class="t"><b>Tokens de ação (só desta ficha)</b><span>${hbc.daMesa ? "O mestre da mesa já controla os tokens de todos; esta opção é ignorada." : "Cada ação gasta 1 token; ao esgotar, voltam todos. Em mesa, o mestre liga para todos os jogadores."}</span></span></label>
+    ${hp.tokens && !hbc.daMesa ? `<label class="f">Tokens por rodada<input type="number" min="1" max="9" value="${hbc.max}" data-ch="hbmaxp"></label>` : ""}</div>`;
+  return hbCard + `<div class="track"><h3 style="margin-bottom:8px">Básico</h3><div class="grid2">
     <label class="f">Nome<input type="text" data-in="nome" data-k="anome" value="${esc(pc.nome)}"></label>
     <label class="f">Pronomes<input type="text" data-in="pron" data-k="apron" value="${esc(pc.pronomes)}"></label></div></div>
   <div class="track"><h3>Bônus manuais</h3><p class="muted small">Para efeitos de cartas, itens ou decisões do mestre que o app não calcula sozinho.</p>
@@ -378,7 +383,7 @@ export function on(a, el) {
     case "condnova": pedirTexto("Nova condição", "Nome da condição", t => ed(pc => pc.st.cond.push(t))); return;
     case "dano": abrirDano(); return;
     case "tokgasta": { const t = tokensDe(f); if (!t || !t.resta) return; ed(pc => gastarToken(pc, hbCfg(f)), { imediato: true }); return; }
-    case "tokvolta": ed(pc => devolverToken(pc, hbCfg(f)), { imediato: true }); return;
+    case "tokvolta": ed(pc => { const t = tokensDe(f), c = hbCfg(f); for (let k = 0; t && k < t.gasto; k++) devolverToken(pc, c); }, { imediato: true }); return;
     case "descanso": abrirDescanso(el.dataset.v); return;
     case "rolardano": { const m = String(el.dataset.v).match(/(\d+)d(\d+)([+-]\d+)?/); if (!m) return; let s = 0; const r = []; for (let k = 0; k < +m[1]; k++) { const x = 1 + Math.floor(Math.random() * +m[2]); r.push(x); s += x; } s += +(m[3] || 0); openSheet(`<div class="roll-res"><div class="roll-total">${s}</div><p class="muted">${esc(el.dataset.v)}: [${r.join(", ")}]${m[3] ? " " + m[3] : ""}</p><p class="muted small">Num acerto crítico, some o valor máximo dos dados ao resultado.</p></div>`, { title: "Dano" }); return; }
     case "rec": ed(pc => { const r = pc.recursos[i]; r.v = clamp(r.v + v, 0, r.max || 99); }); return;
@@ -502,6 +507,8 @@ function abrirEnvio() {
 }
 export function change(k, el) {
   if (k === "modelo") { ed(pc => { pc.modelo = el.checked; }); return; }
+  if (k === "hbtokens") { ed(pc => { pc.hb = { ...(pc.hb || {}), tokens: el.checked }; }); app.render(true); return; }
+  if (k === "hbmaxp") { ed(pc => { pc.hb = { ...(pc.hb || {}), tokMax: Math.min(9, Math.max(1, parseInt(el.value, 10) || 3)), epoca: ((pc.hb || {}).epoca || 0) + 1 }; }); app.render(true); return; }
   if (k === "hblimiar") { ed(pc => { pc.hb = { ...(pc.hb || {}), limiar: el.checked }; }); app.render(true); return; }
   if (k === "transf") ed(pc => { pc.transf = el.value; });
   if (k === "mesa") moverParaMesa(ID, el.value).then(() => toast(el.value ? "Ficha vinculada à mesa" : "Ficha removida da mesa"));

@@ -12,17 +12,19 @@ export const mesaDe = f => (f && f.mesa_id ? S.mesas.find(m => m.id === f.mesa_i
 export function hbCfg(f) {
   const m = mesaDe(f), c = (m && m.config && m.config.homebrew) || {};
   const p = (f && f.data && f.data.hb) || {};
-  const max = Math.min(9, Math.max(1, parseInt(c.tokMax, 10) || TOK_PADRAO));
-  return { mesa: m, limiar: m ? !!c.limiar : !!p.limiar, tokens: !!(m && c.tokens), max, epoca: c.epoca || 0 };
+  const daMesa = !!(m && c.tokens);
+  const max = Math.min(9, Math.max(1, parseInt(daMesa ? c.tokMax : p.tokMax, 10) || TOK_PADRAO));
+  // Liga se a mesa ligou OU se o próprio jogador ligou na ficha. Tokens da mesa sincronizam entre todos; os pessoais valem só para a ficha.
+  return { mesa: m, daMesa, limiar: !!c.limiar || !!p.limiar, tokens: daMesa || !!p.tokens, max, epoca: daMesa ? c.epoca || 0 : p.epoca || 0 };
 }
 
 const usados = (f, ep) => (f.data.st && f.data.st.tokEp === ep ? f.data.st.tokN || 0 : 0);
 
-// Situação dos tokens de uma ficha dentro da mesa dela (null se a homebrew está desligada).
+// Situação dos tokens de uma ficha (null se a homebrew está desligada).
 export function tokens(f) {
   const cfg = hbCfg(f);
   if (!cfg.tokens) return null;
-  const todas = fichasDaMesa(cfg.mesa.id).filter(x => !x.removida);
+  const todas = cfg.daMesa ? fichasDaMesa(cfg.mesa.id).filter(x => !x.removida) : [f];
   const gastos = todas.map(x => usados(x, cfg.epoca));
   const ciclo = todas.length ? Math.min(...gastos.map(g => Math.floor(g / cfg.max))) : 0;
   const meus = usados(f, cfg.epoca) - ciclo * cfg.max;
