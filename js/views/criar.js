@@ -215,6 +215,7 @@ function passoDetalhes() {
   ${pc.hist.perguntas.length ? `<section class="sec"><h2>Perguntas de história</h2><p class="muted">Responda as que quiser; você pode completar depois.</p>
     ${pc.hist.perguntas.map((p, i) => `<label class="f" style="margin-top:10px">${esc(p.q)}<textarea data-in="perg" data-i="${i}" data-k="perg${i}" style="min-height:64px">${esc(p.a)}</textarea></label>`).join("")}</section>` : ""}
   ${pc.hist.conexoes.length ? `<section class="sec"><h2>Conexões</h2><p class="muted">Faça estas perguntas aos outros jogadores na primeira sessão.</p><ul>${pc.hist.conexoes.map(p => `<li>${esc(p.q)}</li>`).join("")}</ul></section>` : ""}
+  <label class="switch" style="margin-top:14px"><input type="checkbox" data-ch="modelo" ${R.modelo ? "checked" : ""}><span class="t"><b>Estou criando para entregar a um jogador</b><span>Ao terminar, o site já abre a tela para enviar o link do personagem.</span></span></label>
   ${resumo()}`;
 }
 function resumo() {
@@ -308,6 +309,7 @@ export function change(k, el) {
   else if (k === "armas") pc.armas.s = el.value;
   else if (k === "armadura") pc.armadura = el.value;
   else if (k === "mesa") R.mesa = el.value;
+  else if (k === "modelo") R.modelo = el.checked;
   salvar(); app.render(true);
 }
 
@@ -320,10 +322,12 @@ function criar() {
   pc.ouro = { p: 1, b: 0, c: 0 };
   pc.st = { pv: 0, es: 0, esp: 2, arm: 0, cond: [] };
   pc.criadoEm = Date.now();
+  if (R.modelo) pc.modelo = true;
+  const entregar = !!R.modelo;
   const mesa = S.mesas.find(m => m.id === R.mesa);
   if (mesa) setMesaExp(null);
   const id = criarFicha(pc, R.mesa || null);
   store.del(KEY); R = null;
   toast("Personagem criado!");
-  location.hash = "#/ficha/" + encodeURIComponent(id);
+  location.hash = "#/ficha/" + encodeURIComponent(id) + (entregar ? "?aba=ajustes&enviar=1" : "");
 }

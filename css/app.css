@@ -381,3 +381,59 @@ ol.steps{padding-left:1.3em; margin:8px 0} ol.steps li{margin:8px 0}
 .ucard .cond-banner{margin:8px 0 2px} .ucard .cb-item{font-size:.78rem; padding:4px 10px}
 .chip.vuln.on{background:var(--blood); border-color:var(--blood); color:#fff} .chip.restr.on{background:var(--hope); border-color:var(--hope); color:var(--on-accent)} .chip.hide.on{background:var(--fear); border-color:var(--fear); color:var(--on-accent)}
 .chip.vuln:not(.on){border-color:color-mix(in srgb,var(--blood) 45%,var(--line))} .chip.restr:not(.on){border-color:color-mix(in srgb,var(--hope) 45%,var(--line))} .chip.hide:not(.on){border-color:color-mix(in srgb,var(--fear) 45%,var(--line))}
+
+/* ================= Cena complexa ================= */
+.objetivo{margin:6px 0 12px; padding:10px 14px; border-radius:12px; background:var(--surface); border:1px solid var(--line); border-left:5px solid var(--hope)}
+.objetivo b{display:block; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--hope); margin-bottom:2px}
+.tag.rodada{background:var(--ink); color:var(--bg)}
+details.fold-s{margin-top:10px} details.fold-s .scene{margin-top:6px}
+.ctrs{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:12px; margin:14px 0}
+.ctr{--cc:var(--steel); background:var(--surface); border:2px solid color-mix(in srgb,var(--cc) 55%,var(--line)); border-radius:var(--r); padding:14px; box-shadow:var(--shadow)}
+.ctr.lado-jogadores{--cc:var(--moss)} .ctr.lado-mestre{--cc:var(--blood)}
+.ctr.cheia{background:color-mix(in srgb,var(--cc) 12%,var(--surface)); border-color:var(--cc)}
+.ctr-h{display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; margin-bottom:10px}
+.ctr-h b{font-family:var(--display); font-size:1.5rem; color:var(--cc)}
+.ctr-h .cnt{margin-left:auto; font-weight:750; font-size:1.3rem} .ctr-h .cnt small{font-size:.9rem; color:var(--muted)}
+.ctr .pips{gap:6px} .ctr .pip{width:36px; height:36px; border-color:color-mix(in srgb,var(--cc) 40%,var(--line))} .ctr .pip.on{background:var(--cc); border-color:var(--cc)}
+.res-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px}
+.rbtn{display:flex; flex-direction:column; align-items:flex-start; gap:3px; text-align:left; padding:10px 12px; min-height:68px; border-radius:14px; border:2px solid var(--rc,var(--line)); background:color-mix(in srgb,var(--rc,var(--line)) 12%,var(--surface)); color:var(--ink)}
+.rbtn b{font-size:.95rem; color:var(--rc)} .rbtn span{font-size:.78rem; color:var(--muted)}
+.rbtn.crit{--rc:var(--moss)} .rbtn.hope{--rc:var(--hope)} .rbtn.fear{--rc:var(--fear)} .rbtn.hope-bad{--rc:var(--steel)} .rbtn.fear-bad{--rc:var(--blood)}
+.rbtn:active{transform:scale(.98)}
+.ultimo{margin-top:12px; padding:12px 14px; border-radius:12px; background:var(--surface-2)} .ultimo h3{font-size:1.3rem; margin:2px 0 4px}
+.efs{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px}
+.eftag{display:inline-block; padding:3px 10px; border-radius:99px; background:var(--sunk); border:1px solid var(--line); font-size:.8rem; font-weight:650} .eftag.fear{background:var(--fear-soft); color:var(--fear); border-color:var(--fear)}
+.mv-row{display:flex; align-items:flex-start; gap:10px; padding:10px 0; border-top:1px solid var(--line)} .mv-row:first-of-type{border-top:0}
+.mv-no{color:var(--blood)!important}
+.log-row{padding:6px 0; border-top:1px solid var(--line); font-size:.9rem} .log-row:first-child{border-top:0}
+.alert-gatilho{margin:12px 0; padding:14px 16px; border-radius:var(--r); border:2px solid var(--fear); background:var(--fear-soft); box-shadow:0 0 24px -6px var(--fear); animation:pop .35s ease-out}
+.alert-gatilho h3{font-size:1.5rem; color:var(--fear)}
+@keyframes pop{from{transform:scale(.97); opacity:0}}
+.fim-panel{margin:12px 0; padding:16px; border-radius:var(--r); border:2px solid var(--hope); background:var(--hope-soft)}
+.fim-panel.fim-derrota{border-color:var(--blood); background:var(--blood-soft)} .fim-panel.fim-empate{border-color:var(--fear); background:var(--fear-soft)} .fim-panel.fim-manual{border-color:var(--line); background:var(--surface)}
+.fim-panel h2{margin:2px 0 6px}
+.help-code{margin-top:8px}
+@media (max-width:420px){ .ctr .pip{width:31px; height:31px} .ctr .pips{gap:5px} }
+.link-box{display:flex; gap:8px} .link-box input{flex:1; font-family:ui-monospace,Consolas,monospace; font-size:.78rem; min-width:0}
+.tag.modelo{background:var(--steel-soft); color:var(--steel)}
+
+/* ================= Painel de emergência do mestre ================= */
+.em-btn{position:fixed; right:0; top:40%; z-index:40; display:flex; align-items:center; gap:8px; padding:11px 14px 11px 12px; border:0; border-radius:14px 0 0 14px; background:linear-gradient(135deg,var(--hope),var(--fear)); color:#fff; font-weight:700; box-shadow:-4px 6px 22px -6px rgba(0,0,0,.5); cursor:pointer}
+.em-btn:hover{padding-right:20px} .em-btn .ic{width:22px; height:22px}
+.em-btn[hidden],.em-panel[hidden]{display:none!important}
+.em-panel{position:fixed; top:0; right:0; bottom:0; width:min(380px,100vw); z-index:45; display:flex; flex-direction:column; background:var(--surface); border-left:1px solid var(--line); box-shadow:-12px 0 40px rgba(0,0,0,.35); padding-top:var(--top)}
+.em-head{display:flex; align-items:center; gap:8px; padding:10px 8px 6px 16px} .em-head h3{flex:1; display:flex; align-items:center; gap:8px; font-size:1.35rem} .em-head h3 .ic{color:var(--hope)}
+.em-tabs{display:flex; gap:4px; padding:4px 12px 8px; border-bottom:1px solid var(--line)}
+.em-tabs button{flex:1; border:0; background:transparent; padding:8px 4px; border-radius:10px; font-weight:650; color:var(--muted); min-height:40px}
+.em-tabs button[aria-selected="true"]{background:var(--ink); color:var(--bg)}
+.em-body{flex:1; overflow-y:auto; padding:14px; overscroll-behavior:contain}
+.em-vazio{padding:16px; border:1.5px dashed var(--line); border-radius:14px; text-align:center; color:var(--muted)}
+.em-inc{display:inline-flex; align-items:center; gap:6px; margin-left:8px; cursor:pointer} .em-inc input{width:auto; min-height:0}
+.hook-card{padding:16px; border-radius:16px; background:var(--surface-2); border-left:5px solid var(--hope)}
+.hook-card h3{font-size:1.5rem; margin:2px 0 8px} .hook-card p{margin:0 0 4px; font-size:1.02rem}
+.hook-card.usado{opacity:.7; border-left-color:var(--muted)}
+.res.usado{opacity:.55}
+kbd{background:var(--sunk); border:1px solid var(--line); border-radius:5px; padding:0 5px; font-size:.82em}
+@media (min-width:1000px){ body.em-open{padding-right:380px} body.em-open .em-btn{display:none} }
+@media (max-width:859px){ .em-btn{top:auto; bottom:calc(var(--nav-h) + var(--bot) + 14px); right:14px; border-radius:18px; padding:13px} .em-btn span{display:none} .em-btn:hover{padding-right:13px} }
+body.em-open .topnav a span{display:none} body.em-open .topnav a{padding:8px 10px}

@@ -4,6 +4,7 @@ import { get, loc, list, nome, domPT, TRAITS, traitPT, T, dmgPT, beast, hfOn, se
 import { deriv, ancFeats, tierOf, fmtOuro, cartasElegiveis, RECURSOS_CLASSE } from "../calc.js";
 import { S, ficha, editar, excluirFicha, moverParaMesa, user } from "../store.js";
 import { app } from "../main.js";
+import { montarLink, paraEntrega } from "../entrega.js";
 import { condFx, condBanner, COND_CLS, dcard, feat, armaHtml, armaduraHtml, coresClasse, classeSub, origemTxt, expTag, verCarta, enName, voltar, corDom } from "./common.js";
 
 const ABAS = [["jogo", "Jogo"], ["cartas", "Cartas"], ["habil", "Habilidades"], ["inv", "Inventário"], ["hist", "História"], ["ajustes", "Ajustes"]];
@@ -231,6 +232,9 @@ function abaAjustes(pc, d, ro, f) {
   <div class="track"><h3>Nível</h3><div class="acts">
     ${pc.nivel < 10 ? `<a class="btn hope" href="#/ficha/${encodeURIComponent(ID)}/nivel">${icon("up")} Subir para o nível ${pc.nivel + 1}</a>` : ""}
     ${(pc.log || []).length ? `<button class="btn" data-act="desfazernivel">Desfazer nível ${pc.nivel}</button>` : ""}</div></div>
+  ${souDono ? `<div class="track"><h3>Enviar para um jogador</h3><p class="muted small" style="margin:2px 0 8px">Gera um link com este personagem. O jogador abre, vê a ficha e recebe uma cópia só dele; o seu continua com você. Ótimo para one-shots com personagens prontos.</p>
+    <label class="switch"><input type="checkbox" data-ch="modelo" ${pc.modelo ? "checked" : ""}><span class="t"><b>Marcar como modelo</b><span>Aparece com a etiqueta “Modelo” na sua lista.</span></span></label>
+    <div class="acts" style="margin-top:4px"><button class="btn hope" data-act="enviar">${icon("link")} Gerar link para enviar</button><button class="btn" data-act="baixarficha">Baixar arquivo .json</button></div></div>` : ""}
   ${souDono ? `<div class="acts"><button class="btn" data-act="duplicar">${icon("copy")} Duplicar</button><button class="btn danger" data-act="excluir">${icon("trash")} Excluir personagem</button></div>` : ""}`;
 }
 
@@ -386,6 +390,8 @@ export function on(a, el) {
     case "resdel": ed(pc => pc.reserva.splice(i, 1)); return;
     case "expnova": ed(pc => pc.exp.push({ n: "", v: 2 })); return;
     case "desfazernivel": desfazerNivel(); return;
+    case "enviar": abrirEnvio(); return;
+    case "baixarficha": { const b = new Blob([JSON.stringify({ app: "daggerheart-fichas", v: 1, em: new Date().toISOString(), fichas: [{ nome: pc.nome, data: paraEntrega(pc) }] }, null, 1)], { type: "application/json" }), u = URL.createObjectURL(b), l = document.createElement("a"); l.href = u; l.download = (pc.nome || "personagem").replace(/[^\w-]+/g, "-") + ".json"; l.click(); setTimeout(() => URL.revokeObjectURL(u), 1500); toast("Arquivo baixado: o jogador importa em Conta → Restaurar backup"); return; }
     case "duplicar": import("../store.js").then(m => { const c = JSON.parse(JSON.stringify(pc)); c.nome += " (cópia)"; const nid = m.criarFicha(c); location.hash = "#/ficha/" + nid; }); return;
     case "excluir": confirmar(`Excluir ${pc.nome || "este personagem"} para sempre? Não dá para desfazer.`, { ok: "Excluir", perigo: true }).then(async ok => { if (!ok) return; try { await excluirFicha(ID); toast("Personagem excluído"); location.hash = "#/"; } catch (e) { toast("Não foi possível excluir: " + e.message, "err"); } }); return;
   }
@@ -445,7 +451,34 @@ export function input(k, el) {
     }
   });
 }
+// ---------- enviar personagem por link ----------
+let enviarAberto = "";
+export function mount(main, p, q) {
+  if (q.enviar && enviarAberto !== p[0]) { enviarAberto = p[0]; history.replaceState(null, "", "#/ficha/" + encodeURIComponent(p[0]) + "?aba=ajustes"); setTimeout(abrirEnvio, 50); }
+}
+function abrirEnvio() {
+  const f = F(); if (!f) return;
+  const mesa = f.mesa_id && user() && S.mesas.find(m => m.id === f.mesa_id && m.mestre === user().id);
+  let zerar = true, comMesa = !!mesa;
+  const w = openSheet(`<p class="muted" style="margin-top:0">Envie o link ao jogador (WhatsApp, Discord…). Ele abre no celular e toca em “Receber”.</p>
+    ${mesa ? `<label class="switch"><input type="checkbox" id="evm" checked><span class="t"><b>Colocar o jogador na mesa “${esc(mesa.nome)}”</b><span>Ao receber, ele entra na sua mesa e você vê a ficha dele ao vivo.</span></span></label>` : ""}
+    <label class="switch"><input type="checkbox" id="evz" checked><span class="t"><b>Entregar com PV e Estresse limpos</b><span>Esperança volta ao início. Desmarque para entregar exatamente como está agora.</span></span></label>
+    <div class="link-box"><input type="text" id="evl" readonly value="Gerando…" aria-label="Link do personagem"></div>
+    <div class="acts"><button class="btn hope" id="evc">${icon("copy")} Copiar link</button><button class="btn" id="evs" style="display:none">Compartilhar…</button></div>
+    <p class="muted small" id="evn" style="margin-bottom:0"></p>`, { title: "Enviar " + (f.data.nome || "personagem") });
+  const gerar = async () => {
+    const link = await montarLink(F().data, { mesaCodigo: comMesa && mesa ? mesa.codigo : "", zerar });
+    w.querySelector("#evl").value = link;
+    w.querySelector("#evn").textContent = link.length > 3500 ? `Link longo (${link.length} caracteres): alguns aplicativos podem cortá-lo. Se der problema, use “Baixar arquivo .json”.` : "Qualquer pessoa com este link pode receber uma cópia do personagem.";
+  };
+  w.querySelector("#evz").addEventListener("change", e => { zerar = e.target.checked; gerar(); });
+  const m = w.querySelector("#evm"); if (m) m.addEventListener("change", e => { comMesa = e.target.checked; gerar(); });
+  w.querySelector("#evc").addEventListener("click", async () => { const v = w.querySelector("#evl").value; try { await navigator.clipboard.writeText(v); toast("Link copiado"); } catch { w.querySelector("#evl").select(); toast("Selecionei o link: copie manualmente"); } });
+  if (navigator.share) { const b = w.querySelector("#evs"); b.style.display = ""; b.addEventListener("click", () => navigator.share({ title: f.data.nome || "Personagem", text: "Seu personagem de Daggerheart está pronto:", url: w.querySelector("#evl").value }).catch(() => {})); }
+  gerar();
+}
 export function change(k, el) {
+  if (k === "modelo") { ed(pc => { pc.modelo = el.checked; }); return; }
   if (k === "transf") ed(pc => { pc.transf = el.value; });
   if (k === "mesa") moverParaMesa(ID, el.value).then(() => toast(el.value ? "Ficha vinculada à mesa" : "Ficha removida da mesa"));
   if (["mod", "scar", "atr", "expv"].includes(el.dataset.in)) app.render(true);

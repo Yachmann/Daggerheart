@@ -1,20 +1,22 @@
 // Mestre: central de batalhas, biblioteca, geradores, notas e conexão com a IA
 import { esc, md, mdBlock, icon, uid, toast, confirmar, openSheet, closeSheet, debounce, norm, store } from "../util.js";
 import { list, loc, hfOn, nome, T, dmgPT } from "../data.js";
-import { GM, gmStatus, salvarGM, adversarios, ambientes, achaBatalha, novaBatalha, salvarBatalha, orcamento, resumoBatalha, TIPOS, TIPO_PT, TIPO_DESC, CATS, COMPLICACOES, gerarAdversario, gerarBatalha, sortear, catalogoMD, instrucoesIA, EXEMPLO_JSON, gmPronto } from "../gm.js";
+import { GM, gmStatus, salvarGM, adversarios, ambientes, achaBatalha, novaBatalha, salvarBatalha, orcamento, resumoBatalha, TIPOS, TIPO_PT, TIPO_DESC, CATS, COMPLICACOES, gerarAdversario, gerarBatalha, sortear, catalogoMD, instrucoesIA, EXEMPLO_JSON, EXEMPLO_CENA, soBatalhas, gmPronto } from "../gm.js";
 import { S, user, sb, fichasDaMesa } from "../store.js";
 import { app } from "../main.js";
 import * as Batalha from "./batalha.js";
 import * as Editor from "./editor.js";
 import * as Importar from "./importar.js";
+import * as Cena from "./cena.js";
+import { ordenarRegistros } from "../cena.js";
 import { statBlock, envBlock, tipoTag, fonteTag, escolherBatalha, barraOrc } from "./mestre-ui.js";
 import { expTag } from "./common.js";
 
-const ui = { aba: "batalhas", q: "", tipo: "", tier: "", cat: "", fonte: "", livro: "adv", gt: "Standard", gp: 1, gen: null, rc: { tema: "qualquer", tier: 1, jog: 4, adj: 0 }, rcRes: null, comp: "", compCat: "geral", it: null, itCat: "Arma", itTier: "" };
+const ui = { aba: "batalhas", ft: "", bq: "", q: "", tipo: "", tier: "", cat: "", fonte: "", livro: "adv", gt: "Standard", gp: 1, gen: null, rc: { tema: "qualquer", tier: 1, jog: 4, adj: 0 }, rcRes: null, comp: "", compCat: "geral", it: null, itCat: "Arma", itTier: "" };
 const ABAS = [["batalhas", "Batalhas"], ["biblioteca", "Biblioteca"], ["geradores", "Geradores"], ["notas", "Notas"], ["ia", "Conectar IA"]];
 
 function sub(p) { return p[0] || ""; }
-function modulo(p) { const s = sub(p); return s === "batalha" ? Batalha : s === "adversario" ? Editor : s === "importar" ? Importar : null; }
+function modulo(p) { const s = sub(p); return s === "batalha" ? Batalha : s === "adversario" ? Editor : s === "importar" ? Importar : s === "cena" ? Cena : null; }
 export const ouve = m => { const mod = modulo(location.hash.replace(/^#\/?mestre\/?/, "").split("/")); return mod && mod.ouve ? mod.ouve(m) : false; };
 
 export function html(p, q) {
@@ -33,15 +35,35 @@ export function mount(main, p, q) { const mod = modulo(p); if (mod && mod.mount)
 
 // ---------- Batalhas ----------
 const STATUS = { prep: ["Em preparação", ""], ativa: ["Em andamento", "hope"], fim: ["Encerrada", ""] };
+const ordenar = ordenarRegistros;
+function cartaoRegistro(b) {
+  const s = STATUS[b.status] || STATUS.prep, mesa = b.mesa && S.mesas.find(m => m.id === b.mesa);
+  if (b.tipo === "cena") {
+    const pend = b.alertas ? b.alertas.length : 0;
+    return `<a class="pc-card" href="#/mestre/cena/${b.id}" style="--c1:var(--moss);--c2:var(--hope)"><span class="tag ${s[1]}" style="position:absolute;top:14px;right:14px">${s[0]}</span>
+      <div class="eyebrow" style="margin-bottom:4px">Cena complexa</div><div class="nm" style="padding-right:110px">${esc(b.nome)}</div>
+      <div class="meta">${b.contagens.map(k => `${esc(k.n)} ${k.val}/${k.size}`).join(" · ")}${b.status !== "prep" ? ` · rodada ${b.rodada}` : ""}</div>
+      <div class="meta small">${b.origem === "ia" ? "Criada pela IA" : "Manual"}${pend ? ` · ${pend} gatilho${pend > 1 ? "s" : ""} pendente${pend > 1 ? "s" : ""}` : ""}</div>
+      ${b.objetivo ? `<div class="meta small" style="margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(b.objetivo)}</div>` : ""}</a>`;
+  }
+  const o = orcamento(b), r = resumoBatalha(b);
+  return `<a class="pc-card" href="#/mestre/batalha/${b.id}" style="--c1:var(--blood);--c2:var(--fear)"><span class="tag ${s[1]}" style="position:absolute;top:14px;right:14px">${s[0]}</span>
+    <div class="eyebrow" style="margin-bottom:4px">Batalha</div><div class="nm" style="padding-right:110px">${esc(b.nome)}</div><div class="meta">${b.unidades.length} adversário${b.unidades.length === 1 ? "" : "s"}${b.status !== "prep" ? ` · ${r.vivos} de pé` : ""} · ${o.custo}/${o.total} pt</div>
+    <div class="meta small">${b.origem === "ia" ? "Criada pela IA" : b.origem === "sorteio" ? "Sorteada" : "Manual"}${mesa ? " · " + esc(mesa.nome) : ""}</div>
+    ${b.cena ? `<div class="meta small" style="margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(b.cena.replace(/[*_#>]/g, ""))}</div>` : ""}</a>`;
+}
+function listaRegistros() {
+  const q = norm(ui.bq);
+  const l = ordenar(GM.batalhas.filter(x => (!ui.ft || (ui.ft === "cena" ? x.tipo === "cena" : x.tipo !== "cena")) && (!q || norm(x.nome + " " + (x.objetivo || "") + " " + (x.cena || "")).includes(q))));
+  return l.length ? `<div class="pcs">${l.map(cartaoRegistro).join("")}</div>` : `<div class="empty"><h3>Nada encontrado</h3><p>Ajuste a busca ou o filtro.</p></div>`;
+}
 function abaBatalhas() {
-  const l = [...GM.batalhas].sort((a, b) => (a.status === "fim") - (b.status === "fim") || (b.criadaEm || 0) - (a.criadaEm || 0));
+  const nb = GM.batalhas.filter(x => x.tipo !== "cena").length, nc = GM.batalhas.length - nb;
   return `${antigoAviso()}<div class="acts" style="margin:0 0 14px"><button class="btn hope" data-act="nova">${icon("plus")} Nova batalha</button><a class="btn" href="#/mestre/importar">${icon("sparkle")} Importar da IA</a><a class="btn ghost" href="#/mestre/adversario/novo">Criar adversário</a></div>
-  ${l.length ? `<div class="pcs">${l.map(b => { const o = orcamento(b), r = resumoBatalha(b), s = STATUS[b.status] || STATUS.prep, mesa = b.mesa && S.mesas.find(m => m.id === b.mesa);
-    return `<a class="pc-card" href="#/mestre/batalha/${b.id}" style="--c1:var(--blood);--c2:var(--fear)"><span class="tag ${s[1]}" style="position:absolute;top:14px;right:14px">${s[0]}</span>
-      <div class="nm" style="padding-right:110px">${esc(b.nome)}</div><div class="meta">${b.unidades.length} adversário${b.unidades.length === 1 ? "" : "s"}${b.status !== "prep" ? ` · ${r.vivos} de pé` : ""} · ${o.custo}/${o.total} pt</div>
-      <div class="meta small">${b.origem === "ia" ? "Criada pela IA" : b.origem === "sorteio" ? "Sorteada" : "Manual"}${mesa ? " · " + esc(mesa.nome) : ""}</div>
-      ${b.cena ? `<div class="meta small" style="margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(b.cena.replace(/[*_#>]/g, ""))}</div>` : ""}</a>`; }).join("")}</div>`
-    : `<div class="empty"><h3>Nenhuma batalha ainda</h3><p>Peça ao seu projeto do Claude para montar uma e importe aqui, sorteie uma na aba Geradores ou crie a sua do zero.</p><div class="acts" style="justify-content:center"><a class="btn hope" href="#/mestre/importar">${icon("sparkle")} Importar da IA</a><button class="btn" data-act="nova">Nova batalha</button></div></div>`}`;
+  ${GM.batalhas.length ? `<div class="search"><span>${icon("search")}</span><input type="search" data-in="bq" data-k="bq" value="${esc(ui.bq)}" placeholder="Buscar por nome (ex.: Sessão 3)…" autocomplete="off"></div>
+    <div class="chips" style="margin:10px 0 14px"><button class="chip${!ui.ft ? " on" : ""}" data-act="ftipo" data-v="">Tudo (${GM.batalhas.length})</button><button class="chip${ui.ft === "batalha" ? " on" : ""}" data-act="ftipo" data-v="batalha">Batalhas (${nb})</button><button class="chip${ui.ft === "cena" ? " on" : ""}" data-act="ftipo" data-v="cena">Cenas complexas (${nc})</button></div>
+    <div id="lreg">${listaRegistros()}</div>`
+    : `<div class="empty"><h3>Nada preparado ainda</h3><p>Peça ao seu projeto do Claude uma batalha ou uma cena complexa e importe aqui, sorteie uma batalha na aba Geradores ou crie a sua do zero.</p><div class="acts" style="justify-content:center"><a class="btn hope" href="#/mestre/importar">${icon("sparkle")} Importar da IA</a><button class="btn" data-act="nova">Nova batalha</button></div></div>`}`;
 }
 
 // ---------- Biblioteca ----------
@@ -116,6 +138,23 @@ function editarNota(id) {
   w.querySelector("#nok").addEventListener("click", () => { const t = w.querySelector("#nt").value.trim() || "Sem título", b = w.querySelector("#nb").value; if (n.id) { n.title = t; n.body = b; } else GM.notas.unshift({ id: uid(), title: t, body: b }); salvarGM(); closeSheet(); app.render(true); });
 }
 
+// ---------- Ajuda: formato da cena complexa ----------
+function ajudaCena() {
+  const ex = EXEMPLO_CENA ? JSON.stringify(EXEMPLO_CENA, null, 2) : "";
+  return `<section class="card" id="ajuda-cena" style="margin-top:12px"><h3>Cena complexa: o formato</h3>
+    <p class="muted small" style="margin-top:2px">Para momentos de tensão que não são combate (perseguição, infiltração, ritual). A cena é movida por <b>Contadores em disputa</b> e por uma tabela de resultados ligada aos dados de dualidade. Adversários são opcionais. O <code>formato</code> continua sendo <code>daggerheart-batalha</code>; o tipo vem no campo <code>tipo</code>.</p>
+    <ul class="small" style="padding-left:1.2em;margin:8px 0">
+      <li><b>Cabeçalho:</b> <code>"versao": 2</code> e <code>"tipo": "cena"</code>. JSON de batalha (versão 1, ou sem <code>tipo</code>) continua funcionando igual.</li>
+      <li><b>Obrigatórios:</b> <code>nome</code>, <code>objetivo</code>, <code>contagens</code> (pelo menos 1, com <code>nome</code>, <code>caixas</code> e <code>lado</code> “jogadores” ou “mestre”), <code>resultados</code> (as 5 chaves: <code>critico</code>, <code>sucesso_esperanca</code>, <code>sucesso_medo</code>, <code>falha_esperanca</code>, <code>falha_medo</code>, cada uma com <code>texto</code> e <code>efeitos</code>) e <code>fim.vitoria</code>.</li>
+      <li><b>Efeitos:</b> <code>{ "contagem": "Fuga", "delta": 1 }</code>. Positivo marca caixas, negativo apaga; nunca passa do total nem fica abaixo de 0. Todo nome de contagem citado precisa existir em <code>contagens</code>.</li>
+      <li><b>Opcionais:</b> <code>medo</code> (jogadas do mestre com <code>custo</code> e <code>limite</code> “rodada” ou “cena”), <code>jogadores_usos</code> (Esperança ou Estresse), <code>gatilhos</code> (<code>quando</code>, <code>uma_vez</code>), <code>fim.derrota</code>, <code>fim.empate</code>, <code>ambiente</code>, <code>adversarios</code> (mesmo formato da batalha), <code>ciclo</code>, <code>dificuldade_rolagem</code>, <code>notas</code> e <code>recompensas</code>.</li>
+      <li><b>Na mesa:</b> toque no resultado da rolagem para aplicar os efeitos. Resultados “com Medo” somam +1 ao Medo do mestre (dá para desligar nas opções da cena). Gatilhos viram alertas; o fim aparece quando a contagem de vitória ou de derrota enche. Dá para desfazer a última ação e ver tudo no log.</li>
+      <li><b>Nome:</b> use “Sessão N · Nome da sessão · Título” e a lista fica em ordem de sessão.</li>
+      <li><b>Vários blocos:</b> cole a resposta inteira; cada bloco JSON vira uma batalha ou uma cena.</li></ul>
+    ${ex ? `<details class="more"><summary>Ver o exemplo completo (Fuga pelos Telhados)</summary><pre class="code-block help-code">${esc(ex)}</pre></details>
+    <div class="acts"><button class="btn sm" data-act="cpcena">${icon("copy")} Copiar exemplo</button><button class="btn sm ghost" data-act="tstcena">Testar no importador</button></div>` : ""}</section>`;
+}
+
 // ---------- Conectar IA ----------
 function abaIA() {
   return `<section class="card"><h3>Como funciona</h3>
@@ -128,7 +167,7 @@ function abaIA() {
   <section class="card" style="margin-top:12px"><h3>2. Catálogo de adversários</h3><p class="muted small">Lista com nome, patamar, tipo e números de ${adversarios().filter(a => a.src !== "custom").length} adversários e ${ambientes().length} ambientes${hfOn() ? ", incluindo a expansão Hope & Fear" : ""}. Anexe ao projeto como conhecimento; se mudar a opção da expansão, baixe de novo.</p>
     <div class="acts"><button class="btn" data-act="dlcat">Baixar catálogo .md</button></div></section>
   <section class="card" style="margin-top:12px"><h3>Exemplo de resposta</h3><pre class="code-block">${esc(JSON.stringify(EXEMPLO_JSON, null, 2))}</pre><div class="acts"><button class="btn sm" data-act="cpex">${icon("copy")} Copiar exemplo</button><button class="btn sm ghost" data-act="tstex">Testar no importador</button></div></section>
-  ${GM.custom.some(a => a.ia) ? "" : ""}`;
+  ${ajudaCena()}`;
 }
 function baixar(nome, txt, tipo = "text/markdown") { const b = new Blob([txt], { type: tipo + ";charset=utf-8" }), u = URL.createObjectURL(b), a = document.createElement("a"); a.href = u; a.download = nome; a.click(); setTimeout(() => URL.revokeObjectURL(u), 1500); }
 const copiar = (t, m) => navigator.clipboard.writeText(t).then(() => toast(m), () => toast("O navegador bloqueou a cópia"));
@@ -180,6 +219,7 @@ export async function on(a, el, ev) {
       w.querySelector("#bok").addEventListener("click", () => { const b = novaBatalha({ nome: w.querySelector("#bn").value.trim() || "Nova batalha", jogadores: Math.max(1, parseInt(w.querySelector("#bj").value, 10) || 4), mesa: w.querySelector("#bm").value || null }); salvarBatalha(b); closeSheet(); location.hash = "#/mestre/batalha/" + b.id; });
       return;
     }
+    case "ftipo": ui.ft = el.dataset.v; app.render(true); return;
     case "migrar": migrar(); return;
     case "ignorar": GM.migrado = true; salvarGM(); app.render(true); return;
     case "livro": ui.livro = el.dataset.v; ui.q = ""; app.render(true); return;
@@ -199,6 +239,8 @@ export async function on(a, el, ev) {
     case "dlinst": baixar("instrucoes-batalhas-daggerheart.md", instrucoesIA()); return;
     case "dlcat": baixar("catalogo-adversarios-daggerheart.md", catalogoMD()); return;
     case "cpex": copiar(JSON.stringify(EXEMPLO_JSON, null, 2), "Exemplo copiado"); return;
+    case "cpcena": copiar(JSON.stringify(EXEMPLO_CENA, null, 2), "Exemplo copiado"); return;
+    case "tstcena": Importar.preencher("```json\n" + JSON.stringify(EXEMPLO_CENA, null, 2) + "\n```"); location.hash = "#/mestre/importar"; return;
     case "tstex": Importar.preencher(JSON.stringify(EXEMPLO_JSON, null, 2)); location.hash = "#/mestre/importar"; return;
   }
   app.render(true);
@@ -206,6 +248,7 @@ export async function on(a, el, ev) {
 export function input(k, el) {
   const mod = modulo(location.hash.replace(/^#\/?mestre\/?/, "").split("/"));
   if (mod) return mod.input(k, el);
+  if (k === "bq") { ui.bq = el.value; const l = document.getElementById("lreg"); if (l) l.innerHTML = listaRegistros(); return; }
   if (k === "q") { ui.q = el.value; atualiza(); }
   if (k === "rc") ui.rc[el.dataset.f] = parseInt(el.value, 10) || 1;
 }

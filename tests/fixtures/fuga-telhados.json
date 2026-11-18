@@ -1,0 +1,49 @@
+{
+  "formato": "daggerheart-batalha",
+  "versao": 2,
+  "tipo": "cena",
+  "nome": "Sessão 1 · O Aniversário do Ocaso · Fuga pelos Telhados",
+  "cena": "A sirene da Ordem corta a noite. Lá embaixo, **tochas** sobem as escadas; lá em cima, os telhados de Vale Rubro se estendem como um tabuleiro quebrado.",
+  "objetivo": "Chegar ao moinho do outro lado da cidade sem serem pegos pela Ordem.",
+  "jogadores": 4,
+  "patamar": 1,
+  "ciclo": "A cada rodada, cada PJ descreve como ajuda o grupo a avançar e rola Agilidade, Instinto ou Presença, conforme a ideia.",
+  "dificuldade_rolagem": 12,
+  "contagens": [
+    { "nome": "Fuga", "caixas": 8, "lado": "jogadores" },
+    { "nome": "Cerco", "caixas": 8, "lado": "mestre" }
+  ],
+  "resultados": {
+    "critico":           { "texto": "Uma rota perfeita: ninguém os viu passar.", "efeitos": [ { "contagem": "Fuga", "delta": 2 } ] },
+    "sucesso_esperanca": { "texto": "O grupo ganha terreno e confiança.", "efeitos": [ { "contagem": "Fuga", "delta": 1 } ] },
+    "sucesso_medo":      { "texto": "Avançam, mas fazem barulho demais.", "efeitos": [ { "contagem": "Fuga", "delta": 1 } ] },
+    "falha_esperanca":   { "texto": "Tropeçam, mas se recompõem a tempo.", "efeitos": [ { "contagem": "Cerco", "delta": 1 } ] },
+    "falha_medo":        { "texto": "Uma telha cede e a Ordem aponta para o grupo.", "efeitos": [ { "contagem": "Cerco", "delta": 2 } ] }
+  },
+  "medo": [
+    { "nome": "Atalho da Ordem", "custo": 1, "limite": { "por": "rodada", "vezes": 1 },
+      "texto": "Um acólito conhece um atalho e surge à frente do grupo.", "efeitos": [ { "contagem": "Cerco", "delta": 1 } ] },
+    { "nome": "Renn na Rota", "custo": 2, "limite": { "por": "cena", "vezes": 1 },
+      "texto": "Renn aparece na rota e atrapalha a fuga.", "efeitos": [ { "contagem": "Fuga", "delta": -1 } ] },
+    { "nome": "Telhado Podre", "custo": 1, "texto": "Efeito só narrativo.", "efeitos": [] }
+  ],
+  "jogadores_usos": [
+    { "nome": "Salto Impossível", "recurso": "Esperança", "custo": 2,
+      "texto": "Um salto que ninguém esperava.", "efeitos": [ { "contagem": "Fuga", "delta": 1 } ] },
+    { "nome": "Fôlego Extra", "recurso": "Estresse", "custo": 1,
+      "texto": "Anula o Cerco de uma Falha com Esperança.", "efeitos": [ { "contagem": "Cerco", "delta": -1 } ] }
+  ],
+  "gatilhos": [
+    { "contagem": "Fuga", "quando": 4, "uma_vez": true,
+      "titulo": "Iolande!", "texto": "Um acólito agarra Iolande. Salvar: Fuga -2. Abandonar: a Ordem a leva." }
+  ],
+  "fim": {
+    "vitoria": { "contagem": "Fuga",  "texto": "Chegam ao moinho limpos." },
+    "derrota": { "contagem": "Cerco", "texto": "Encurralados; Sabbe os puxa por um alçapão; Caça da Cinza +1." },
+    "empate":  { "texto": "As duas completam na mesma ação: escapam, mas Renn viu um rosto." }
+  },
+  "ambiente": { "ref": "Cliffside Ascent" },
+  "adversarios": [],
+  "notas": "Se o grupo se dividir, a Ordem persegue o mais lento.",
+  "recompensas": "Uma pista sobre o moinho."
+}

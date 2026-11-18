@@ -11,6 +11,8 @@ import * as Compendio from "./views/compendio.js";
 import * as Mesas from "./views/mesas.js";
 import * as Conta from "./views/conta.js";
 import * as Mestre from "./views/mestre.js";
+import * as Receber from "./views/receber.js";
+import { iniciarPainel, atualizarPainel } from "./views/painel.js";
 import { loadGM } from "./gm.js";
 import { abrirRolador } from "./views/rolador.js";
 
@@ -26,6 +28,7 @@ const NAV_BASE = [
 const mestreOn = () => cfg().mestre || /^#\/mestre/.test(location.hash) || S.mesas.some(m => user() && m.mestre === user().id);
 const ROTAS = {
   mestre: Mestre,
+  receber: Receber,
   "": Fichas, nova: Criar, ficha: Ficha, regras: Regras, compendio: Compendio, mesas: Mesas, mesa: Mesas, conta: Conta,
 };
 
@@ -79,6 +82,7 @@ function render(keepScroll = false) {
     if (n) { n.focus({ preventScroll: true }); try { n.setSelectionRange(keep.s, keep.e); } catch {} }
   }
   syncHtml();
+  atualizarPainel();
 }
 app.render = render;
 
@@ -111,6 +115,7 @@ async function boot() {
   if (c.tema && c.tema !== "auto") document.documentElement.dataset.theme = c.tema;
   try { await Promise.all([loadData(), loadGM()]); }
   catch (e) { $("#main").innerHTML = `<div class="empty"><h3>Não foi possível carregar os dados</h3><p>${esc(e.message)}</p><button class="btn" onclick="location.reload()">Tentar de novo</button></div>`; return; }
+  iniciarPainel();
   render();
   try { await iniciar(); } catch (e) { console.warn(e); toast("Não foi possível conectar ao servidor. Seguindo offline."); }
   render(true);

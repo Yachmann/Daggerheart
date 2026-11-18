@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<base href="../">
+<title>Testes · Daggerheart</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body{font:15px/1.5 system-ui,sans-serif; max-width:860px; margin:24px auto; padding:0 16px; background:#14121b; color:#eee9dc}
+  h1{font-size:1.4rem; margin:0 0 4px} .sum{font-size:1.1rem; margin:10px 0 18px; padding:10px 14px; border-radius:10px}
+  .sum.ok{background:#183a2d; color:#62c79c} .sum.bad{background:#40202a; color:#ec6876}
+  .g{margin:18px 0 6px; font-weight:700; color:#a68bf2} .t{padding:3px 0; border-bottom:1px solid #2a2740}
+  .ok::before{content:"✓ "; color:#62c79c} .bad::before{content:"✗ "; color:#ec6876} .bad{color:#ec6876} pre{white-space:pre-wrap; margin:2px 0 0 18px; font-size:.82rem}
+</style>
+</head>
+<body>
+<h1>Testes · cenas complexas e importador</h1>
+<p>Abra esta página pelo servidor do site (ex.: <code>python -m http.server 8765</code> na raiz e acesse <code>/tests/</code>). Sem dependências.</p>
+<div id="sum" class="sum">Rodando…</div>
+<div id="out"></div>
+<script type="module" src="./tests/run.js"></script>
+</body>
+</html>

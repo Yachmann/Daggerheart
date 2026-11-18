@@ -11,6 +11,7 @@ export function cardPC(f, href) {
   const fx = condFx(pc.st.cond);
   return `<a class="pc-card${fx.cls}" href="${href || "#/ficha/" + encodeURIComponent(f.id)}" style="${coresClasse(pc.classe)};${fx.style}">
     <span class="lvl">Nv ${pc.nivel}</span>
+    ${pc.modelo ? `<div class="eyebrow" style="margin-bottom:2px;color:var(--steel)">Modelo para entregar</div>` : ""}
     <div class="nm">${esc(pc.nome || "Sem nome")}</div>
     <div class="meta">${esc(classeSub(pc) || "Classe não escolhida")}</div>
     <div class="meta small">${esc(origemTxt(pc))}</div>

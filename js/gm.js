@@ -2,6 +2,7 @@
 import { store, uid, clone, norm, debounce } from "./util.js";
 import { sb, S, user, onChange } from "./store.js";
 import { hfOn, list, loc } from "./data.js";
+import { validarCena, criarCena } from "./cena.js";
 
 // ---------- Constantes ----------
 export const TIPOS = ["Bruiser", "Horde", "Leader", "Minion", "Ranged", "Skulk", "Social", "Solo", "Standard", "Support"];
@@ -36,11 +37,13 @@ export const CONDICOES = ["Vulnerável", "Contido", "Oculto"];
 
 // ---------- Carregamento ----------
 let BASE = [], EXPADV = [], EXPENV = [], pronto = false;
+export let EXEMPLO_CENA = null;
 export async function loadGM() {
   if (pronto) return;
   const v = "?v=" + (window.APP_VERSION || "1");
   const j = u => fetch(u + v, { cache: "no-cache" }).then(r => (r.ok ? r.json() : null)).catch(() => null);
-  const [b, e] = await Promise.all([j("data/adversarios.json"), j("data/exp-adv.json")]);
+  const [b, e, ec] = await Promise.all([j("data/adversarios.json"), j("data/exp-adv.json"), j("data/exemplo-cena.json")]);
+  EXEMPLO_CENA = ec;
   BASE = (b && b.adv) || [];
   EXPADV = (e && e.adv || []).map(a => ({ ...a, id: a.id || a.name }));
   EXPENV = (e && e.env) || [];
@@ -50,9 +53,9 @@ export const gmPronto = () => pronto;
 
 // ---------- Estado do mestre (local + nuvem) ----------
 const LK = "dh-mestre-v1";
-const vazio = () => ({ v: 1, ts: 0, batalhas: [], custom: [], notas: [], migrado: false });
+const vazio = () => ({ v: 1, ts: 0, batalhas: [], custom: [], notas: [], hooks: [], hooksUsados: {}, migrado: false });
 export const GM = Object.assign(vazio(), store.get(LK, {}));
-GM.batalhas = GM.batalhas || []; GM.custom = GM.custom || []; GM.notas = GM.notas || [];
+GM.batalhas = GM.batalhas || []; GM.custom = GM.custom || []; GM.notas = GM.notas || []; GM.hooks = GM.hooks || []; GM.hooksUsados = GM.hooksUsados || {};
 export const gmStatus = { s: "local", erro: "" };
 const ouv = new Set();
 export const onGM = f => { ouv.add(f); return () => ouv.delete(f); };
@@ -301,18 +304,8 @@ export function normalizarAdv(raw, avisos, ctx = "") {
   return { id: uid(), name: nome, tier, type: tipo, horde: String(g(raw, "horda", "horde") || ""), desc: String(g(raw, "descricao", "description", "desc") || ""), mot: String(g(raw, "motivacoes", "motives", "mot") || ""), dif: String(dif), th, hp: String(hp), st: String(st), atk, wpn: String(g(raw, "arma", "weapon", "wpn") || "Ataque"), rng, dmg, xp: String(g(raw, "experiencia", "experience", "xp") || ""), al: [nome], f, cat: String(g(raw, "categoria", "cat") || ""), ia: true };
 }
 
-// Valida o JSON e monta a batalha (ainda sem salvar)
-export function montarDaIA(obj) {
-  const avisos = [], novos = [];
-  if (!obj || typeof obj !== "object") throw new Error("Formato não reconhecido.");
-  const fmt = String(g(obj, "formato") || "");
-  if (fmt && !/batalha|encounter|battle/i.test(fmt)) avisos.push({ k: "aviso", t: `Campo “formato” é “${fmt}”; esperado “daggerheart-batalha”.` });
-  const jogadores = Math.max(1, Math.min(8, parseInt(g(obj, "jogadores", "players"), 10) || 4));
-  const ajusteTxt = norm(g(obj, "dificuldade", "difficulty") || "");
-  const ajuste = typeof g(obj, "ajuste") === "number" ? obj.ajuste : /facil|easy|curta/.test(ajusteTxt) ? -1 : /dificil|hard|dura|longa/.test(ajusteTxt) ? 2 : 0;
-  const b = novaBatalha({ nome: String(g(obj, "nome", "name") || "Batalha da IA"), cena: String(g(obj, "cena", "scene", "descricao", "description") || ""), jogadores, ajuste, notas: String(g(obj, "notas", "notes") || ""), recompensas: String(g(obj, "recompensas", "rewards") || ""), origem: "ia" });
-  const lista = g(obj, "adversarios", "adversaries", "inimigos", "enemies") || [];
-  if (!Array.isArray(lista) || !lista.length) throw new Error("O JSON não tem a lista “adversarios”.");
+// Adiciona os adversários de uma lista ("ref" do catálogo ou "novo") a uma batalha ou cena.
+function resolverAdversarios(b, lista, avisos, novos) {
   lista.forEach((it, i) => {
     const qtd = Math.max(1, Math.min(30, parseInt(g(it, "quantidade", "qtd", "qty", "count"), 10) || 1));
     const apelido = g(it, "nome", "apelido", "label"), nota = g(it, "nota", "note") || "";
@@ -329,11 +322,37 @@ export function montarDaIA(obj) {
     }
     if (adv) { adicionar(b, adv, qtd, apelido && qtd === 1 ? { nome: String(apelido), desc: String(nota) } : { desc: String(nota) }); if (qtd > 1 && nota) b.unidades.slice(-qtd).forEach(u => { u.desc = String(nota); }); }
   });
-  const amb = g(obj, "ambiente", "environment");
-  if (amb) {
-    if (typeof amb === "string" || amb.ref) { const nm = typeof amb === "string" ? amb : amb.ref; const e = ambientes().concat(EXPENV.map(x => ({ ...x, id: x.name }))).find(x => norm(x.name) === norm(nm)); if (e) b.ambiente = clone(e); else avisos.push({ k: "aviso", t: `Ambiente “${nm}” não encontrado; ignorei.` }); }
-    else if (amb.novo || amb.nome || amb.name) { const r = amb.novo || amb; b.ambiente = { name: String(g(r, "nome", "name") || "Ambiente"), tier: +g(r, "patamar", "tier") || 1, type: String(g(r, "tipo", "type") || "Exploration"), desc: String(g(r, "descricao", "desc", "description") || ""), impulses: String(g(r, "impulsos", "impulses") || ""), dif: String(g(r, "dificuldade", "dif") || ""), adv: "", f: (g(r, "habilidades", "features") || []).map(x => ({ n: String(g(x, "nome", "name") || ""), k: KIND_ALIAS[norm(g(x, "tipo", "kind") || "")] || "", t: String(g(x, "texto", "text") || "") })) }; }
+}
+function resolverAmbiente(amb, avisos) {
+  if (!amb) return null;
+  if (typeof amb === "string" || amb.ref) {
+    const nm = typeof amb === "string" ? amb : amb.ref;
+    const e = ambientes().concat(EXPENV.map(x => ({ ...x, id: x.name }))).find(x => norm(x.name) === norm(nm));
+    if (e) return clone(e);
+    avisos.push({ k: "aviso", t: `Ambiente “${nm}” não encontrado; ignorei.` });
+    return null;
   }
+  if (amb.novo || amb.nome || amb.name) {
+    const r = amb.novo || amb;
+    return { name: String(g(r, "nome", "name") || "Ambiente"), tier: +g(r, "patamar", "tier") || 1, type: String(g(r, "tipo", "type") || "Exploration"), desc: String(g(r, "descricao", "desc", "description") || ""), impulses: String(g(r, "impulsos", "impulses") || ""), dif: String(g(r, "dificuldade", "dif") || ""), adv: "", f: (g(r, "habilidades", "features") || []).map(x => ({ n: String(g(x, "nome", "name") || ""), k: KIND_ALIAS[norm(g(x, "tipo", "kind") || "")] || "", t: String(g(x, "texto", "text") || "") })) };
+  }
+  return null;
+}
+
+// Valida o JSON e monta a batalha (ainda sem salvar)
+export function montarDaIA(obj) {
+  const avisos = [], novos = [];
+  if (!obj || typeof obj !== "object") throw new Error("Formato não reconhecido.");
+  const fmt = String(g(obj, "formato") || "");
+  if (fmt && !/batalha|encounter|battle/i.test(fmt)) avisos.push({ k: "aviso", t: `Campo “formato” é “${fmt}”; esperado “daggerheart-batalha”.` });
+  const jogadores = Math.max(1, Math.min(8, parseInt(g(obj, "jogadores", "players"), 10) || 4));
+  const ajusteTxt = norm(g(obj, "dificuldade", "difficulty") || "");
+  const ajuste = typeof g(obj, "ajuste") === "number" ? obj.ajuste : /facil|easy|curta/.test(ajusteTxt) ? -1 : /dificil|hard|dura|longa/.test(ajusteTxt) ? 2 : 0;
+  const b = novaBatalha({ nome: String(g(obj, "nome", "name") || "Batalha da IA"), cena: String(g(obj, "cena", "scene", "descricao", "description") || ""), jogadores, ajuste, notas: String(g(obj, "notas", "notes") || ""), recompensas: String(g(obj, "recompensas", "rewards") || ""), origem: "ia" });
+  const lista = g(obj, "adversarios", "adversaries", "inimigos", "enemies") || [];
+  if (!Array.isArray(lista) || !lista.length) throw new Error("O JSON não tem a lista “adversarios”." + (g(obj, "resultados", "contagens") ? ' Se isto é uma cena complexa, use "tipo": "cena" e "versao": 2.' : ""));
+  resolverAdversarios(b, lista, avisos, novos);
+  b.ambiente = resolverAmbiente(g(obj, "ambiente", "environment"), avisos);
   (g(obj, "contagens", "countdowns") || []).forEach(c => b.contagens.push({ id: uid(), n: String(g(c, "nome", "name") || "Contagem"), size: Math.max(1, Math.min(12, parseInt(g(c, "caixas", "size"), 10) || 4)), val: 0 }));
   const o = orcamento(b);
   if (o.sobra < 0) avisos.push({ k: "dica", t: `Custo ${o.custo} passa do orçamento ${o.total} em ${-o.sobra} ponto(s): luta mais pesada que o padrão.` });
@@ -342,13 +361,65 @@ export function montarDaIA(obj) {
   return { batalha: b, novos, avisos, ok: !avisos.some(a => a.k === "erro") };
 }
 
+
+// Valida e monta uma cena complexa (tipo "cena", versao 2). Erros apontam o campo do JSON.
+export function montarCena(obj) {
+  const v = validarCena(obj);
+  const avisos = [...v.erros.map(e => ({ k: "erro", campo: e.campo, t: `${e.campo}: ${e.msg}` })), ...v.avisos.map(e => ({ k: "aviso", campo: e.campo, t: `${e.campo}: ${e.msg}` }))];
+  const novos = [];
+  if (v.erros.length) return { tipo: "cena", registro: null, novos, avisos, ok: false };
+  const c = criarCena(obj);
+  const lista = g(obj, "adversarios", "adversaries", "inimigos", "enemies") || [];
+  if (!Array.isArray(lista)) avisos.push({ k: "erro", campo: "adversarios", t: "adversarios: precisa ser uma lista." });
+  else if (lista.length) resolverAdversarios(c, lista, avisos, novos);
+  c.ambiente = resolverAmbiente(g(obj, "ambiente", "environment"), avisos);
+  return { tipo: "cena", registro: c, cena: c, novos, avisos, ok: !avisos.some(a => a.k === "erro") };
+}
+
+// Vários blocos de código na mesma resposta: cada bloco com JSON vira um item. Sem cercas, tenta o texto todo.
+const pareceConteudo = o => o && typeof o === "object" && !Array.isArray(o) && (o.formato || o.tipo || o.adversarios || o.adversaries || o.inimigos || o.resultados || o.contagens);
+function erroJSON(t) { try { JSON.parse(limpa(t)); return ""; } catch (e) { return e.message; } }
+export function extrairBlocos(txt) {
+  const s = String(txt || "").trim(), out = [];
+  const cercas = [...s.matchAll(/```(?:json)?\s*([\s\S]*?)```/gi)].map(m => m[1].trim());
+  for (const c of cercas) {
+    const i = c.indexOf("{"), j = c.lastIndexOf("}");
+    if (i >= 0 && j < i && c.startsWith("{")) { out.push({ erro: "O JSON está incompleto: faltou fechar as chaves (a resposta pode ter sido cortada)." }); continue; }
+    if (i < 0 || j < i) continue;
+    const bruto = c.slice(i, j + 1), o = tentaParse(bruto);
+    if (o) { if (pareceConteudo(o)) out.push({ obj: o }); }
+    else out.push({ erro: "O JSON está inválido: " + erroJSON(bruto) });
+  }
+  if (!out.length) {
+    const i = s.indexOf("{"), j = s.lastIndexOf("}");
+    if (i >= 0 && j > i) { const bruto = s.slice(i, j + 1), o = tentaParse(bruto); out.push(o ? { obj: o } : { erro: "O JSON está inválido: " + erroJSON(bruto) }); }
+  }
+  return out;
+}
+export function lerResposta(txt) {
+  const blocos = extrairBlocos(txt);
+  if (!blocos.length) throw new Error("Não encontrei um JSON no texto colado.");
+  return blocos.map((b, i) => {
+    const base = { indice: i, titulo: `Bloco ${i + 1}`, novos: [] };
+    if (b.erro) return { ...base, ok: false, tipo: "?", registro: null, avisos: [{ k: "erro", t: b.erro }] };
+    const o = b.obj, tipoRaw = o.tipo == null ? "batalha" : String(o.tipo), tipo = norm(tipoRaw);
+    base.titulo = String(o.nome || o.name || base.titulo);
+    if (!["batalha", "cena"].includes(tipo)) return { ...base, ok: false, tipo: "?", registro: null, avisos: [{ k: "erro", t: `tipo: “${tipoRaw}” não existe; use "batalha" ou "cena".` }] };
+    if (tipo === "cena") return { ...base, ...montarCena(o) };
+    try { const r = montarDaIA(o); return { ...base, tipo, registro: r.batalha, ...r }; }
+    catch (e) { return { ...base, ok: false, tipo, registro: null, avisos: [{ k: "erro", t: e.message }] }; }
+  });
+}
+
 export function salvarBatalha(b, { novos = [] } = {}) {
   const i = GM.batalhas.findIndex(x => x.id === b.id);
   if (i >= 0) GM.batalhas[i] = b; else GM.batalhas.unshift(b);
   novos.forEach(n => { if (!GM.custom.some(c => norm(c.name) === norm(n.name))) GM.custom.unshift({ ...n, id: n.id || uid() }); });
   salvarGM();
 }
-export const achaBatalha = id => GM.batalhas.find(b => b.id === id);
+export const achaBatalha = id => GM.batalhas.find(b => b.id === id && b.tipo !== "cena");
+export const achaCena = id => GM.batalhas.find(c => c.id === id && c.tipo === "cena");
+export const soBatalhas = () => GM.batalhas.filter(b => b.tipo !== "cena");
 
 // ---------- Textos para o projeto do Claude ----------
 export function catalogoMD() {
@@ -392,5 +463,19 @@ ${JSON.stringify(EXEMPLO_JSON, null, 2)}
 \`\`\`
 
 Campos: "ref" = nome do adversário do catálogo; "quantidade"; "nota" opcional por grupo; "nome" opcional (apelido de uma unidade); "novo" = adversário criado do zero (nome, patamar 1–4, tipo, descricao, motivacoes, dificuldade, limiares "maior/grave" ou null, pv, estresse, ataque, arma, alcance, dano, experiencia, habilidades[]). "ambiente" pode ser {"ref": "Nome"} do catálogo ou um ambiente novo. "dificuldade": "facil", "padrao" ou "dificil". Tipos: Bruiser, Horde, Leader, Minion, Ranged, Skulk, Social, Solo, Standard, Support.
+
+## Cenas complexas (momentos de tensão que não são combate)
+Para perseguição, infiltração, ritual, desastre ou fuga, entregue uma **cena complexa**: bloco JSON com \`"versao": 2\` e \`"tipo": "cena"\`. O \`"formato"\` continua \`"daggerheart-batalha"\`. Um JSON de batalha (versão 1 ou sem \`tipo\`) continua valendo.
+- Obrigatórios: \`nome\`, \`objetivo\`, \`contagens\` (1 ou mais, com \`nome\`, \`caixas\` e \`lado\`: "jogadores" ou "mestre"), \`resultados\` (as 5 chaves: \`critico\`, \`sucesso_esperanca\`, \`sucesso_medo\`, \`falha_esperanca\`, \`falha_medo\`, cada uma com \`texto\` e \`efeitos\`) e \`fim.vitoria\` (\`contagem\` e \`texto\`).
+- Opcionais: \`cena\` (texto para ler em voz alta), \`ciclo\` (o que cada PJ faz por rodada e qual rolagem usa), \`dificuldade_rolagem\`, \`medo\` (jogadas do mestre: \`nome\`, \`custo\`, \`texto\`, \`efeitos\`, \`limite\` {\`por\`: "rodada" ou "cena", \`vezes\`}), \`jogadores_usos\` (\`nome\`, \`recurso\`: "Esperança" ou "Estresse", \`custo\`, \`texto\`, \`efeitos\`), \`gatilhos\` (\`contagem\`, \`quando\`, \`uma_vez\`, \`titulo\`, \`texto\`), \`fim.derrota\`, \`fim.empate\`, \`ambiente\`, \`adversarios\` (mesmo formato da batalha), \`notas\`, \`recompensas\`.
+- \`efeitos\`: lista de \`{ "contagem": "Nome", "delta": 1 }\`. Positivo marca caixas; negativo apaga. Todo nome citado em efeitos, gatilhos e fim precisa existir em \`contagens\`. Contadores começam vazios.
+- Prefira dois Contadores em disputa (Progresso dos PJs × Pressão do inimigo). Cada resultado deve mover algo; falha gera história, não beco sem saída. O site já soma +1 de Medo nos resultados "com Medo": não repita isso nos efeitos.
+- Nomeie como "Sessão N · Nome da sessão · Título" para a lista ficar em ordem de sessão.
+- Pode haver vários blocos JSON na mesma resposta (uma batalha e uma cena, por exemplo). Cada bloco vira um item.
+
+Exemplo de cena:
+\`\`\`json
+${EXEMPLO_CENA ? JSON.stringify(EXEMPLO_CENA, null, 2) : "{}"}
+\`\`\`
 `;
 }

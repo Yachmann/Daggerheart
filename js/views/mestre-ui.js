@@ -45,7 +45,7 @@ export function pipsU(n, on, act, id) {
 
 // Escolher uma batalha (ou criar uma) para receber adversários
 export function escolherBatalha(a, qtdPadrao = 1, aposAdicionar) {
-  const abertas = GM.batalhas.filter(b => b.status !== "fim");
+  const abertas = GM.batalhas.filter(b => b.tipo !== "cena" && b.status !== "fim");
   const qtd0 = a.type === "Minion" ? 4 : qtdPadrao;
   const w = openSheet(`<p class="muted" style="margin-top:0">${esc(a.name)} · ${esc(tipoTag(a))}</p>
     <label class="f">Quantos<input type="number" id="eqtd" min="1" max="30" value="${qtd0}"></label>
@@ -56,7 +56,7 @@ export function escolherBatalha(a, qtdPadrao = 1, aposAdicionar) {
     const q = parseInt(w.querySelector("#eqtd").value, 10) || 1;
     let b;
     if (btn.dataset.b === "nova") { b = novaBatalha({ nome: "Batalha: " + a.name }); GM.batalhas.unshift(b); }
-    else b = GM.batalhas.find(x => x.id === btn.dataset.b);
+    else b = GM.batalhas.find(x => x.id === btn.dataset.b && x.tipo !== "cena");
     adicionar(b, a, q); salvarGM(); closeSheet();
     toast(`${q > 1 ? q + "× " : ""}${a.name} em “${b.nome}”`);
     if (aposAdicionar) aposAdicionar(b);
