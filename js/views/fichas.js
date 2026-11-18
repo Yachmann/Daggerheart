@@ -2,17 +2,19 @@
 import { esc, icon } from "../util.js";
 import { S, minhasFichas, sb, user } from "../store.js";
 import { deriv } from "../calc.js";
-import { coresClasse, classeSub, origemTxt } from "./common.js";
+import { coresClasse, classeSub, origemTxt, condFx, COND_COR } from "./common.js";
 
 const barra = (v, max, cor) => `<div class="tr"><i style="width:${max ? Math.round((v / max) * 100) : 0}%;background:${cor}"></i></div>`;
 
 export function cardPC(f, href) {
   const pc = f.data, d = deriv(pc);
-  return `<a class="pc-card" href="${href || "#/ficha/" + encodeURIComponent(f.id)}" style="${coresClasse(pc.classe)}">
+  const fx = condFx(pc.st.cond);
+  return `<a class="pc-card${fx.cls}" href="${href || "#/ficha/" + encodeURIComponent(f.id)}" style="${coresClasse(pc.classe)};${fx.style}">
     <span class="lvl">Nv ${pc.nivel}</span>
     <div class="nm">${esc(pc.nome || "Sem nome")}</div>
     <div class="meta">${esc(classeSub(pc) || "Classe não escolhida")}</div>
     <div class="meta small">${esc(origemTxt(pc))}</div>
+    ${pc.st.cond.length ? `<div class="chips" style="margin-top:8px">${pc.st.cond.map(c => `<span class="tag cond-tag" style="--k:${COND_COR[c] || "var(--steel)"}">${esc(c)}</span>`).join("")}</div>` : ""}
     <div class="mini-bars">
       <div class="mbar">PV ${d.pvMax - pc.st.pv}/${d.pvMax}${barra(d.pvMax - pc.st.pv, d.pvMax, "var(--blood)")}</div>
       <div class="mbar">Estresse ${pc.st.es}/${d.esMax}${barra(pc.st.es, d.esMax, "var(--fear)")}</div>

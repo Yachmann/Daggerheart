@@ -58,3 +58,20 @@ export function origemTxt(pc) {
 
 export const voltar = (h, t = "Voltar") => `<a class="btn sm ghost" href="${h}">${icon("back")} ${esc(t)}</a>`;
 export { icon };
+
+// ---------- Destaque visual por condição ----------
+export const COND_COR = { "Vulnerável": "var(--blood)", "Contido": "var(--hope)", "Oculto": "var(--fear)" };
+export const COND_CLS = { "Vulnerável": "vuln", "Contido": "restr", "Oculto": "hide" };
+const COND_REGRA = { "Vulnerável": "testes contra {x} têm vantagem", "Contido": "{x} não pode se mover, mas pode agir", "Oculto": "ataques contra {x} têm desvantagem" };
+// Uma condição: a ficha ganha essa cor. Duas ou mais: borda e brilho em degradê com as duas primeiras cores.
+export function condFx(conds) {
+  const cs = [...new Set((conds || []).map(c => COND_COR[c] || "var(--steel)"))];
+  if (!cs.length) return { cls: "", style: "" };
+  return { cls: " condfx", style: `--k1:${cs[0]};--k2:${cs[1] || cs[0]};` };
+}
+// Faixa com as condições ativas e o que cada uma significa. quem: "você" (jogador) ou "o adversário".
+export function condBanner(conds, quem = "você") {
+  if (!conds || !conds.length) return "";
+  const sujeito = quem === "você" ? "você" : "ele";
+  return `<div class="cond-banner">${conds.map(c => `<span class="cb-item" style="--k:${COND_COR[c] || "var(--steel)"}"><b>${esc(c)}</b>${COND_REGRA[c] ? ` <span>${COND_REGRA[c].replace("{x}", sujeito)}</span>` : ""}</span>`).join("")}</div>`;
+}

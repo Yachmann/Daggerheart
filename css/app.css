@@ -371,3 +371,13 @@ ol.steps{padding-left:1.3em; margin:8px 0} ol.steps li{margin:8px 0}
 .uc-more{margin-top:4px}
 @media (max-width:420px){ .ucards{grid-template-columns:1fr} }
 .botnav a{font-size:.68rem; padding:0 2px} .botnav a .ic{width:22px; height:22px}
+
+/* ===== Destaque por condição (Vulnerável = vermelho, Contido = âmbar, Oculto = roxo; 2 condições = degradê) ===== */
+.condfx{border:3px solid transparent!important; background:linear-gradient(135deg,color-mix(in srgb,var(--k1) 11%,var(--surface)),color-mix(in srgb,var(--k2) 11%,var(--surface))) padding-box,linear-gradient(135deg,var(--k1),var(--k2)) border-box!important; box-shadow:0 0 0 1px color-mix(in srgb,var(--k1) 40%,transparent),0 10px 30px -10px var(--k1)!important}
+.cond-banner{display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 4px}
+.cb-item{display:inline-flex; flex-wrap:wrap; gap:2px 8px; align-items:baseline; padding:6px 12px; border-radius:12px; background:color-mix(in srgb,var(--k) 18%,var(--surface)); border:1.5px solid var(--k); font-size:.84rem}
+.cb-item b{color:var(--k); font-size:.95rem; letter-spacing:.01em} .cb-item span{color:var(--ink); opacity:.85}
+.tag.cond-tag{background:color-mix(in srgb,var(--k) 22%,var(--surface)); color:var(--ink); border:1px solid var(--k)}
+.ucard .cond-banner{margin:8px 0 2px} .ucard .cb-item{font-size:.78rem; padding:4px 10px}
+.chip.vuln.on{background:var(--blood); border-color:var(--blood); color:#fff} .chip.restr.on{background:var(--hope); border-color:var(--hope); color:var(--on-accent)} .chip.hide.on{background:var(--fear); border-color:var(--fear); color:var(--on-accent)}
+.chip.vuln:not(.on){border-color:color-mix(in srgb,var(--blood) 45%,var(--line))} .chip.restr:not(.on){border-color:color-mix(in srgb,var(--hope) 45%,var(--line))} .chip.hide:not(.on){border-color:color-mix(in srgb,var(--fear) 45%,var(--line))}

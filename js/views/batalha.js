@@ -6,7 +6,7 @@ import { S, user, fichasDaMesa } from "../store.js";
 import { deriv } from "../calc.js";
 import { app } from "../main.js";
 import { statBlock, envBlock, pipsU, tipoTag, kindTag, escolherBatalha, barraOrc, fonteTag } from "./mestre-ui.js";
-import { voltar } from "./common.js";
+import { voltar, condFx, condBanner } from "./common.js";
 
 let ID = null, painel = { prep: false, grupo: true, ambiente: false, notas: false };
 export const ouve = m => m.startsWith("ficha:");
@@ -20,7 +20,8 @@ const STATUS = { prep: ["Em preparação", ""], ativa: ["Em andamento", "hope"],
 
 function cartaoUnidade(x) {
   const morto = x.hp >= x.hpMax, minion = x.type === "Minion";
-  return `<article class="ucard${morto ? " dead" : ""} ty-${esc(x.type)}">
+  const fx = condFx(x.cond);
+  return `<article class="ucard${morto ? " dead" : ""}${fx.cls} ty-${esc(x.type)}" style="${fx.style}">
     <div class="uc-h">
       <span class="numb" title="Mesmo número do marcador na mesa">${x.num}</span>
       <div class="uc-id">
@@ -30,6 +31,7 @@ function cartaoUnidade(x) {
       <button class="icon-btn" data-act="umenu" data-id="${x.id}" aria-label="Mais opções">⋯</button>
     </div>
     <div class="uc-tags"><span class="tag">${esc(tipoTag(x))}</span><span class="tag ${morto ? "dead" : "hope"}">${morto ? "Derrotado" : "Em combate"}</span></div>
+    ${condBanner(x.cond, "ele")}
     <div class="uc-trk"><span class="lb">PV</span><div class="pips pv">${pipsU(x.hpMax, x.hp, "uhp", x.id)}</div></div>
     ${x.stMax ? `<div class="uc-trk"><span class="lb">Estresse</span><div class="pips es">${pipsU(x.stMax, x.st, "ust", x.id)}</div></div>` : ""}
     <div class="cond-row">${CONDICOES.map(c => `<button class="chip ${CONDCLS[c]}${x.cond.includes(c) ? " on" : ""}" data-act="ucond" data-id="${x.id}" data-c="${c}" aria-pressed="${x.cond.includes(c)}">${c}</button>`).join("")}${x.cond.filter(c => !CONDICOES.includes(c)).map(c => `<button class="chip on" data-act="ucond" data-id="${x.id}" data-c="${esc(c)}">${esc(c)} ✕</button>`).join("")}</div>

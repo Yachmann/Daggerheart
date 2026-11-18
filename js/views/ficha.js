@@ -4,7 +4,7 @@ import { get, loc, list, nome, domPT, TRAITS, traitPT, T, dmgPT, beast, hfOn, se
 import { deriv, ancFeats, tierOf, fmtOuro, cartasElegiveis, RECURSOS_CLASSE } from "../calc.js";
 import { S, ficha, editar, excluirFicha, moverParaMesa, user } from "../store.js";
 import { app } from "../main.js";
-import { dcard, feat, armaHtml, armaduraHtml, coresClasse, classeSub, origemTxt, expTag, verCarta, enName, voltar, corDom } from "./common.js";
+import { condFx, condBanner, COND_CLS, dcard, feat, armaHtml, armaduraHtml, coresClasse, classeSub, origemTxt, expTag, verCarta, enName, voltar, corDom } from "./common.js";
 
 const ABAS = [["jogo", "Jogo"], ["cartas", "Cartas"], ["habil", "Habilidades"], ["inv", "Inventário"], ["hist", "História"], ["ajustes", "Ajustes"]];
 const CONDS = [["Vulnerável", "Testes contra você têm vantagem."], ["Contido", "Você não pode se mover, mas pode agir."], ["Oculto", "Ataques contra você têm desvantagem."]];
@@ -26,11 +26,12 @@ export function html(p, q) {
   const corpo = { jogo: abaJogo, cartas: abaCartas, habil: abaHabil, inv: abaInv, hist: abaHist, ajustes: abaAjustes }[aba] || abaJogo;
   return `<div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">${voltar(mesa && user() && f.dono !== user().id ? "#/mesa/" + mesa.id : "#/", mesa && user() && f.dono !== user().id ? mesa.nome : "Fichas")}<span style="flex:1"></span>
     ${ro ? `<span class="tag">Somente leitura</span>` : pc.nivel < 10 ? `<a class="btn sm hope" href="#/ficha/${encodeURIComponent(ID)}/nivel">${icon("up")} Subir de nível</a>` : ""}</div>
-  <section class="sheet-hero" style="${coresClasse(pc.classe)}">
+  <section class="sheet-hero${condFx(pc.st.cond).cls}" style="${coresClasse(pc.classe)};${condFx(pc.st.cond).style}">
     <div class="hero-top"><div class="grow"><div class="nm">${esc(pc.nome || "Sem nome")}</div>
       <div class="meta">${esc(classeSub(pc))}${pc.mc ? ` · Multiclasse ${esc(nome("classes", pc.mc.cls))}` : ""}</div>
       <div class="meta small">${esc(origemTxt(pc))}${pc.pronomes ? " · " + esc(pc.pronomes) : ""}${mesa ? ` · <span class="tag">${icon("users")} ${esc(mesa.nome)}</span>` : ""}</div></div>
       <div class="lvl-badge"><span>Nível</span><b>${pc.nivel}</b></div></div>
+    ${condBanner(pc.st.cond, "você")}
     <div class="core">
       <div class="stat"><b>${d.ev}</b><span>Evasão</span></div>
       <div class="stat th"><b>${d.lim[0]}<span class="muted" style="font-size:1rem"> / </span>${d.lim[1]}</b><span>Maior / Grave</span></div>
@@ -79,7 +80,7 @@ function abaJogo(pc, d, ro) {
     <p class="muted small" style="margin:6px 0 0">Marque 1 espaço para reduzir a gravidade do dano em um limiar.</p></div>
 
   <div class="track"><div class="track-h"><h3>Condições</h3></div>
-    <div class="cond-row">${CONDS.map(([c, t]) => `<button class="chip${st.cond.includes(c) ? " on" : ""}" data-act="cond" data-v="${c}" title="${t}">${c}</button>`).join("")}
+    <div class="cond-row">${CONDS.map(([c, t]) => `<button class="chip ${COND_CLS[c]}${st.cond.includes(c) ? " on" : ""}" data-act="cond" data-v="${c}" title="${t}">${c}</button>`).join("")}
     ${st.cond.filter(c => !CONDS.some(x => x[0] === c)).map(c => `<button class="chip on" data-act="cond" data-v="${esc(c)}">${esc(c)} ✕</button>`).join("")}
     <button class="chip" data-act="condnova">${icon("plus")} Outra</button></div></div>
 
