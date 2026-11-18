@@ -83,6 +83,7 @@ export function html(p) {
       ${c.status === "prep" ? `<button class="btn hope" data-act="iniciar">${icon("sword")} Iniciar cena</button>` : fechada ? `<button class="btn" data-act="reabrir">Reabrir</button>` : `<button class="btn" data-act="encerrar">Encerrar cena</button>`}
       ${fechada ? "" : `<button class="btn" data-act="prox">Próxima rodada</button>`}
       <button class="btn ghost" data-act="undo" ${c.pilha.length ? "" : "disabled"}>↶ Desfazer</button>
+      <button class="btn ghost" data-lm="toggle">⚑ Lembretes${(c.lembretes || []).filter(l => !l.feito).length ? ` (${(c.lembretes || []).filter(l => !l.feito).length})` : ""}</button>
       <button class="btn ghost" data-act="smenu">⋯ Opções</button></div>
     ${c.cena ? `<details class="more fold-s" data-pn="cena" ${abre.cena ? "open" : ""}><summary>Texto da cena (para ler em voz alta)</summary><div class="scene tx">${mdBlock(c.cena)}</div></details>` : ""}
     ${c.ciclo ? `<details class="more fold-s" data-pn="ciclo" ${abre.ciclo ? "open" : ""}><summary>Como funciona a rodada</summary><div class="tx">${mdBlock(c.ciclo)}</div></details>` : ""}

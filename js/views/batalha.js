@@ -62,6 +62,7 @@ export function html(p) {
     <h1>${esc(b.nome)}</h1>
     <div class="bh-row"><span class="tag ${st[1]}">${st[0]}</span>
       ${b.status === "prep" ? `<button class="btn hope" data-act="iniciar">${icon("sword")} Iniciar batalha</button>` : b.status === "ativa" ? `<button class="btn" data-act="encerrar">Encerrar batalha</button>` : `<button class="btn" data-act="reabrir">Reabrir</button>`}
+      <button class="btn ghost" data-lm="toggle">⚑ Lembretes${(b.lembretes || []).filter(l => !l.feito).length ? ` (${(b.lembretes || []).filter(l => !l.feito).length})` : ""}</button>
       <button class="btn ghost" data-act="bmenu">⋯ Opções</button></div>
     ${b.cena ? `<div class="scene tx">${mdBlock(b.cena)}</div>` : ""}
   </section>

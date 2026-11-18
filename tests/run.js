@@ -203,6 +203,17 @@ await teste("cena aceita lembretes e valida os campos", () => {
   const r = clone(fixture); r.lembretes = [{ tipo: "geral" }]; ok(campos(r).includes("lembretes[0].titulo"));
 });
 
+grupo("Lembretes: JSON real (Bram Queima)");
+const bram = await (await fetch("./tests/fixtures/bram-queima.json")).text();
+await teste("a batalha da Bram importa com os 5 lembretes e sem avisos", () => {
+  const r = lerResposta(bram)[0]; ok(r.ok, JSON.stringify(r.avisos)); igual(r.registro.lembretes.length, 5); igual(r.avisos.length, 0, "avisos inesperados");
+  igual(r.registro.lembretes.map(l => l.tipo), ["obrigatorio", "obrigatorio", "condicao", "condicao", "geral"]);
+});
+await teste("cada lembrete com adversário casa com uma unidade (aparece o selo no cartão)", () => {
+  const b = lerResposta(bram)[0].registro;
+  for (const l of b.lembretes.filter(x => x.adversario)) ok(b.unidades.some(u => C.casaLembrete(l.adversario, u)), "sem unidade para " + l.adversario);
+});
+
 grupo("Listagem");
 await teste("ordena por número de sessão e deixa os outros depois", () => {
   const l = [{ nome: "Emboscada", status: "prep", criadaEm: 5 }, { nome: "Sessão 10 · B · Y", criadaEm: 1 }, { nome: "Sessão 2 · A · Z", criadaEm: 9 }, { nome: "Sessão 2 · A · A", criadaEm: 3 }, { nome: "Antiga", status: "fim", criadaEm: 9 }, { nome: "Nova", status: "ativa", criadaEm: 8 }];

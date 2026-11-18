@@ -112,6 +112,18 @@ onChange(motivo => {
   }
 });
 
+// Se o servidor já tem uma versão mais nova do site do que a carregada neste navegador, recarrega uma vez.
+async function verificarVersao() {
+  if (location.protocol !== "https:") return;
+  try {
+    const t = await (await fetch(location.pathname + "?_v=" + Date.now(), { cache: "no-store" })).text();
+    const m = t.match(/APP_VERSION\s*=\s*"(\d+)"/);
+    if (m && m[1] !== String(window.APP_VERSION)) {
+      if (!sessionStorage.getItem("dh-recarregou")) { sessionStorage.setItem("dh-recarregou", "1"); toast("Há uma versão nova do site: atualizando…"); setTimeout(() => location.reload(), 900); }
+    } else sessionStorage.removeItem("dh-recarregou");
+  } catch {}
+}
+
 async function boot() {
   const c = cfg();
   if (c.tema && c.tema !== "auto") document.documentElement.dataset.theme = c.tema;
@@ -122,6 +134,7 @@ async function boot() {
   render();
   try { await iniciar(); } catch (e) { console.warn(e); toast("Não foi possível conectar ao servidor. Seguindo offline."); }
   render(true);
+  verificarVersao();
   if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
 }
 boot();

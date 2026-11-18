@@ -1,0 +1,48 @@
+{
+  "formato": "daggerheart-batalha",
+  "versao": 1,
+  "nome": "Sessão 1 · O Aniversário do Ocaso · Bram Queima",
+  "cena": "Na praça do mosaico, Bram Tessel foi tomado pela Brasa e arde em fogo dourado. As barracas pegam fogo e Lis está presa sob uma carroça tombada. Dois soldados da Marca avançam de espada em punho para matar Bram antes que ele queime a cidade.",
+  "jogadores": 4,
+  "patamar": 1,
+  "dificuldade": "facil",
+  "adversarios": [
+    { "quantidade": 1, "novo": {
+        "nome": "Bram Tessel, o Tomado", "patamar": 1, "tipo": "Solo",
+        "descricao": "[HOMEBREW] Estivador enorme e gentil, tomado pela Brasa de Aurem. Fala com a voz do Imperador e arde num fogo dourado que consome a própria pele.",
+        "motivacoes": "Voltar para casa (a Coroa), poupar os Brasados, proteger Lis sem perceber",
+        "dificuldade": 13, "limiares": "8/15", "pv": 8, "estresse": 3,
+        "ataque": "+3", "arma": "Punhos em brasa", "alcance": "Corpo a Corpo", "dano": "1d10+2 fís",
+        "experiencia": "Força do Cais +2",
+        "habilidades": [
+          { "nome": "Reconhecimento", "tipo": "Passiva", "texto": "Bram não ataca PJs Brasados, a menos que eles o ataquem primeiro. Ele ataca os soldados e quem não for Brasado." },
+          { "nome": "Fogo Dourado", "tipo": "Ação", "texto": "**Gaste 1 Medo**: todos os alvos ao alcance Perto fazem uma rolagem de Reação de Agilidade (13). Quem falhar sofre 2d6 mág. Depois, Bram marca 1 PV." },
+          { "nome": "Ainda Sou Eu", "tipo": "Passiva", "texto": "Um PJ pode agir para alcançar Bram (falar o nome dele, falar de Lis, segurar a mão dele) com uma rolagem de Presença contra 13. Sucesso marca 1 caixa de Lucidez de Bram; se o sucesso for com Medo, Bram reage com fogo contra esse PJ. Na falha, Aurem fala dentro da cabeça do PJ e ele marca 1 Estresse." },
+          { "nome": "O Fogo Também Consome", "tipo": "Passiva", "texto": "Ao chegar a 0 PV, Bram morre e a Brasa dele se apaga num clarão. Cada PJ Brasado sente um puxão no peito. Se foram os soldados que o derrubaram, não há momento de lucidez." }
+        ] } },
+    { "ref": "Bladed Guard", "quantidade": 1, "nome": "Sargento Pell", "nota": "Ataca Bram. Só ataca os PJs na condição do lembrete." },
+    { "ref": "Bladed Guard", "quantidade": 1, "nota": "Quer matar Bram. Só ataca um PJ que fique entre ele e Bram." }
+  ],
+  "ambiente": { "novo": {
+      "nome": "Praça do Mosaico em Chamas", "patamar": 1, "tipo": "Event",
+      "descricao": "[HOMEBREW] A praça central de Varessa, com barracas de lona pegando fogo, uma fonte de pedra e uma carroça tombada sobre uma criança.",
+      "impulsos": "Espalhar o fogo, sufocar, separar quem tenta ajudar",
+      "dificuldade": 12,
+      "habilidades": [
+        { "nome": "Barracas em Chamas", "tipo": "Passiva", "texto": "Depois de qualquer rolagem com Medo, todo PJ Muito Perto de uma barraca marca 1 Estresse por causa da fumaça." },
+        { "nome": "A Fonte", "tipo": "Passiva", "texto": "Quem está junto à fonte tem cobertura. Um PJ que gastar uma ação para jogar água em Bram impede o próximo Fogo Dourado." },
+        { "nome": "Lis Presa", "tipo": "Passiva", "texto": "Um PJ junto à carroça pode tentar erguê-la com uma rolagem de Força (12). Enquanto Lis estiver presa, Bram não sai do lugar." },
+        { "nome": "Golpe Desviado", "tipo": "Ação", "texto": "**Gaste 1 Medo**: um soldado ataca Bram, mas o golpe vai na direção de Lis. Um PJ Muito Perto escolhe entre se jogar na frente (sofre o ataque do soldado) e deixar acontecer (Lis fica ferida e isso pesa na Sessão 2)." },
+        { "nome": "O Fogo se Alastra", "tipo": "Ação", "texto": "**Gaste 1 Medo**: o fogo pula para uma nova barraca ou para a carroça de Lis. Um PJ ao alcance Perto escolhe entre se afastar ou marcar 1 Estresse para continuar onde está." }
+      ] } },
+  "contagens": [ { "nome": "Lucidez de Bram", "caixas": 3 } ],
+  "notas": "A luta é um triângulo: Bram queima a praça, os soldados querem matá-lo e os PJs decidem se ajudam os soldados ou se os seguram para trazer Bram de volta. Use o Medo para os soldados atacarem Bram; cada acerto deles encurta o tempo da Lucidez. Lucidez completa: Bram volta a si, segura a mão do PJ mais próximo e pede que o matem antes que Aurem volte. PJs derrotados: Bram foge pelo rio com Lis e a Caça da Cinza avança 1.",
+  "recompensas": "Chave de bronze do Moinho do Afogado e o objeto do bolso de Bram, ligado às Memórias de Brasa do grupo.",
+  "lembretes": [
+    { "tipo": "obrigatorio", "titulo": "A chave e o moinho", "adversario": "Bram Tessel, o Tomado", "texto": "Em qualquer final, mesmo morrendo, Bram coloca a chave de bronze na mão de um PJ e diz: Sabbe... no moinho... ela sabe o que somos. Sem isso a sessão não chega ao moinho." },
+    { "tipo": "obrigatorio", "titulo": "O objeto no bolso", "adversario": "Bram Tessel, o Tomado", "texto": "Antes da luta, defina o objeto do bolso de Bram pelas Memórias de Brasa: desenho do rosto de um PJ criança (memória 5), mapa de um lugar conhecido (6) ou retrato da pessoa amada (1). Os PJs o encontram junto com a chave." },
+    { "tipo": "condicao", "titulo": "Se a Cena 1 deu Sucesso com Medo", "adversario": "Sargento Pell", "texto": "Pell culpou os PJs pelos barris no rio e acha que eles são cúmplices de Bram: ataca os PJs além de Bram. Em qualquer outro resultado, Pell só ataca Bram." },
+    { "tipo": "condicao", "titulo": "Se os PJs ajudaram Bram na ponte", "adversario": "Bram Tessel, o Tomado", "texto": "Se a Cena 1 terminou em Crítico ou Sucesso com Esperança, Bram reconhece os PJs: a primeira rolagem de Ainda Sou Eu tem vantagem." },
+    { "tipo": "geral", "titulo": "Deixe a escolha explícita", "texto": "Quando os soldados entrarem, pergunte em voz alta: Eles vão matar o Bram. O que vocês fazem? Cada acerto dos soldados em Bram encurta o tempo para completar a Lucidez." }
+  ]
+}
