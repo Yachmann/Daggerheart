@@ -27,7 +27,7 @@ export function cardPC(f, href) {
 export function html() {
   const lista = minhasFichas();
   const semConta = sb && !S.sess;
-  return `<div class="page-h"><h1>Meus personagens</h1><a class="btn hope" href="#/nova">${icon("plus")} Novo personagem</a></div>
+  return `<div class="page-h"><h1>Meus personagens</h1><div class="acts" style="margin:0"><a class="btn" href="#/personagem-json">${icon("sparkle")} Criar por JSON</a><a class="btn hope" href="#/nova">${icon("plus")} Novo personagem</a></div></div>
   ${semConta ? `<div class="note info" style="margin-bottom:16px"><b>Entre na sua conta</b> para guardar suas fichas na nuvem, abrir no celular e no computador e participar da mesa do mestre. <a href="#/conta">Entrar ou criar conta</a></div>` : ""}
   ${S.sess && !S.tabelaOk ? `<div class="err" style="margin-bottom:16px">O banco de dados ainda não tem as tabelas de fichas. O mestre precisa rodar o arquivo <code>supabase-fichas.sql</code> no Supabase. Enquanto isso, tudo fica salvo neste aparelho.</div>` : ""}
   ${lista.length ? `<div class="pcs">${lista.map(f => cardPC(f)).join("")}</div>` :

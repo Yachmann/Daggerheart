@@ -22,6 +22,14 @@ Momentos de tensão que não são combate (perseguição, infiltração, ritual)
 
 Crie o personagem normalmente (marque “Estou criando para entregar a um jogador” no último passo) ou abra uma ficha existente → **Ajustes → Enviar para um jogador**. O site gera um link com a ficha comprimida dentro dele; o jogador abre, toca em **Receber** e ganha uma cópia só dele (o seu continua com você). Não precisa de conta nem de banco. Se a ficha está numa mesa sua, o link pode já colocar o jogador na mesa. Alternativa: baixar o arquivo `.json` e o jogador importa em Conta → Restaurar backup.
 
+## Criar personagens por JSON (one-shots com IA)
+
+Em **Fichas → Criar por JSON** (`#/personagem-json`) você cola a resposta do Claude e cada bloco JSON vira uma ficha de nível 1. O site valida as regras do assistente de criação (atributos +2/+1/+1/0/0/−1, 2 Experiências, 2 cartas de nível 1 dos domínios da classe, arma e armadura de Patamar 1, ancestralidade mista) e mostra a ficha calculada antes de criar; erros apontam o campo e o botão **Copiar pedido de correção** devolve o problema ao Claude. Aceita um objeto, uma lista ou `{"personagens": [...]}`, com nomes em inglês (ids do SRD) ou em português. Atributos, armas e armadura omitidos usam a sugestão da classe. A própria tela tem as **instruções para o projeto do Claude**, o **catálogo** com os nomes exatos e um exemplo. Só nível 1 por enquanto. Lógica em `js/personagem-json.js` (testada em `tests/`), tela em `js/views/personagemjson.js`.
+
+## Tokens de ação
+
+Os tokens (homebrew) **não voltam sozinhos** quando todos zeram: só quando o mestre aperta **Reiniciar tokens** (Mesas, ou Mestre → Tokens de ação) ou o jogador toca no **↺** da própria ficha.
+
 ## Batalha: faixa fixa e lembretes
 
 Na batalha, o Medo e as contagens regressivas ficam numa **faixa fixa no topo**, sempre visíveis enquanto você rola. Toque no nome de uma contagem para renomear, mudar as caixas, zerar ou excluir. O botão **Lembretes** (lateral esquerda, `Alt+L`) abre o painel “Não esquecer”, com lembretes do tipo *não pode esquecer*, *se acontecer…* e *geral*; um lembrete ligado a um adversário também aparece como selo no cartão dele. Ao iniciar a batalha, o painel abre sozinho se houver lembretes pendentes. O campo `lembretes` também vem no JSON da IA (batalha e cena).

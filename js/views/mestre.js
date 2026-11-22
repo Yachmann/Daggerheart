@@ -37,7 +37,6 @@ export function html(p, q) {
 
 // ---------- Tokens de ação [HOMEBREW] (controle da mesa inteira, fora de batalha) ----------
 const TK = () => (GM.tokens = Object.assign({ on: false, max: 3, aberto: true, jog: [] }, GM.tokens || {}));
-function tkResetaSeTodos(t) { if (t.jog.length && t.jog.every(j => j.gasto >= t.max)) t.jog.forEach(j => (j.gasto = 0)); }
 function painelTokens() {
   const t = TK();
   const jog = t.jog.map(j => {
@@ -46,7 +45,7 @@ function painelTokens() {
       <button class="btn sm hope" data-act="tkgasta" data-id="${j.id}" ${j.gasto >= t.max ? "disabled" : ""}>Gastar</button><button class="btn sm ghost" data-act="tkvolta" data-id="${j.id}" ${j.gasto ? "" : "disabled"}>Desfazer</button><button class="btn sm ghost danger" data-act="tkdel" data-id="${j.id}" aria-label="Remover">×</button></div>`;
   }).join("");
   return `<details class="track fold" style="margin-top:14px" data-tk ${t.aberto ? "open" : ""}><summary><h3>Tokens de ação <span class="tag">HB</span>${t.on ? ` <span class="muted small">${t.jog.filter(j => j.gasto < t.max).length}/${t.jog.length} com tokens</span>` : ""}</h3></summary>
-    <label class="switch"><input type="checkbox" data-ch="tkon" ${t.on ? "checked" : ""}><span class="t"><b>Usar tokens de ação</b><span>Cada jogador gasta 1 token por ação, em qualquer cena. Quando todos esgotam, todos voltam.</span></span></label>
+    <label class="switch"><input type="checkbox" data-ch="tkon" ${t.on ? "checked" : ""}><span class="t"><b>Usar tokens de ação</b><span>Cada jogador gasta 1 token por ação, em qualquer cena. Os tokens só voltam quando você aperta Reiniciar tokens.</span></span></label>
     ${t.on ? `${jog || `<p class="muted small">Adicione os jogadores da mesa.</p>`}
     <div class="row" style="margin-top:10px"><label class="f">Novo jogador<input type="text" id="tkn" placeholder="Nome"></label><label class="f" style="max-width:120px">Tokens<input type="number" min="1" max="9" value="${t.max}" data-ch="tkmax"></label></div>
     <div class="acts"><button class="btn" data-act="tkadd">Adicionar</button><button class="btn ghost" data-act="tkreset">Reiniciar tokens</button></div>` : ""}</details>`;
@@ -54,7 +53,7 @@ function painelTokens() {
 function tokensOn(a, el) {
   const t = TK(), j = t.jog.find(x => x.id === el.dataset.id);
   if (a === "tkadd") { const n = (document.getElementById("tkn").value || "").trim(); if (!n) return true; t.jog.push({ id: uid(), nome: n, gasto: 0 }); }
-  else if (a === "tkgasta" && j && j.gasto < t.max) { j.gasto++; tkResetaSeTodos(t); }
+  else if (a === "tkgasta" && j && j.gasto < t.max) j.gasto++;
   else if (a === "tkvolta" && j && j.gasto > 0) j.gasto--;
   else if (a === "tkdel") t.jog = t.jog.filter(x => x.id !== el.dataset.id);
   else if (a === "tkreset") t.jog.forEach(x => (x.gasto = 0));
@@ -291,7 +290,7 @@ export function change(k, el) {
   if (mod) return mod.change(k, el);
   if (Locais.change(k, el)) return;
   if (k === "tkon") { TK().on = el.checked; salvarGM(); app.render(true); return; }
-  if (k === "tkmax") { const t = TK(); t.max = Math.min(9, Math.max(1, parseInt(el.value, 10) || 3)); t.jog.forEach(j => (j.gasto = Math.min(j.gasto, t.max))); tkResetaSeTodos(t); salvarGM(); app.render(true); return; }
+  if (k === "tkmax") { const t = TK(); t.max = Math.min(9, Math.max(1, parseInt(el.value, 10) || 3)); t.jog.forEach(j => (j.gasto = Math.min(j.gasto, t.max))); salvarGM(); app.render(true); return; }
   if (k === "f") ui[el.dataset.f] = el.value;
   else if (k === "rc") ui.rc[el.dataset.f] = el.dataset.f === "tema" ? el.value : parseInt(el.value, 10);
   else if (k === "gt") ui.gt = el.value;

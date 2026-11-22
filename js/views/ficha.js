@@ -54,7 +54,7 @@ function tokensFlutuantes(f) {
   if (!tk) return "";
   let b = "";
   for (let k = 0; k < tk.max; k++) b += `<button class="tok${k < tk.resta ? " on" : ""}" data-act="tokgasta" ${k < tk.resta ? "" : "disabled"} aria-label="${k < tk.resta ? "Gastar token" : "Token gasto"}"></button>`;
-  return `<div class="tok-float" role="group" aria-label="Tokens de ação" title="${tk.resta ? "Toque numa bolinha para gastar um token" : "Sem tokens. Aguardando: " + esc(tk.esperando.join(", ") || "ninguém")}">${b}<button class="tok-reset" data-act="tokvolta" ${tk.gasto ? "" : "disabled"} aria-label="Reiniciar meus tokens" title="Reiniciar meus tokens">↺</button></div>`;
+  return `<div class="tok-float" role="group" aria-label="Tokens de ação" title="${tk.resta ? "Toque numa bolinha para gastar um token" : "Sem tokens. Toque em ↺ (ou o mestre reinicia) para recuperar" + (tk.esperando.length ? ". Ainda com tokens: " + esc(tk.esperando.join(", ")) : "")}">${b}<button class="tok-reset" data-act="tokvolta" ${tk.gasto ? "" : "disabled"} aria-label="Reiniciar meus tokens" title="Reiniciar meus tokens">↺</button></div>`;
 }
 
 // ---------- Jogo ----------
@@ -237,7 +237,7 @@ function abaAjustes(pc, d, ro, f) {
   const hbc = hbCfg(f), hp = pc.hb || {};
   const hbCard = `<div class="track"><h3 style="margin-bottom:4px">Homebrews <span class="tag">HB</span></h3>
     <label class="switch"><input type="checkbox" data-ch="hblimiar" ${hp.limiar ? "checked" : ""}><span class="t"><b>Limiar Ínfimo</b><span>⌊Maior ÷ 3⌋: dano até esse valor pode ser pago com 1 Esperança ou 1 Estresse.${hbc.mesa && hbc.limiar && !hp.limiar ? " Já ligado pelo mestre da mesa." : ""}</span></span></label>
-    <label class="switch"><input type="checkbox" data-ch="hbtokens" ${hp.tokens ? "checked" : ""}><span class="t"><b>Tokens de ação (só desta ficha)</b><span>${hbc.daMesa ? "O mestre da mesa já controla os tokens de todos; esta opção é ignorada." : "Cada ação gasta 1 token; ao esgotar, voltam todos. Em mesa, o mestre liga para todos os jogadores."}</span></span></label>
+    <label class="switch"><input type="checkbox" data-ch="hbtokens" ${hp.tokens ? "checked" : ""}><span class="t"><b>Tokens de ação (só desta ficha)</b><span>${hbc.daMesa ? "O mestre da mesa já controla os tokens de todos; esta opção é ignorada." : "Cada ação gasta 1 token; eles só voltam ao tocar em ↺. Em mesa, o mestre liga para todos os jogadores."}</span></span></label>
     ${hp.tokens && !hbc.daMesa ? `<label class="f">Tokens por rodada<input type="number" min="1" max="9" value="${hbc.max}" data-ch="hbmaxp"></label>` : ""}</div>`;
   const corCard = `<div class="track"><h3 style="margin-bottom:4px">Cor do tema</h3><p class="muted small" style="margin:0 0 8px">Troca a cor principal da ficha (a da classe é o padrão). Só aparece com o tema por classe ligado, em Conta → Aparência.</p>
     <div class="acts" style="margin-top:0;align-items:center"><input type="color" data-ch="cortema" value="${/^#[0-9a-f]{6}$/i.test(pc.cor || "") ? pc.cor : "#8059cc"}" aria-label="Cor do tema" style="width:56px;height:46px;padding:2px;border-radius:12px;cursor:pointer">${pc.cor ? `<button class="btn sm ghost" data-act="corpadrao">Voltar à cor da classe</button>` : `<span class="muted small">Usando a cor da classe</span>`}</div></div>`;

@@ -1,8 +1,8 @@
 // Homebrews opcionais da mesa [HOMEBREW]: (1) limiar Ínfimo, (2) tokens de ação por rodada.
 // A configuração fica em mesas.config.homebrew (só o mestre grava). Ficha sem mesa usa o interruptor pessoal pc.hb.
 // Tokens: cada ficha guarda só o próprio contador cumulativo (st.tokN) e a época (st.tokEp), então ninguém
-// precisa escrever na ficha dos outros. A rodada vigente é o menor "gastos ÷ máx" entre as fichas da mesa:
-// quando todos esgotam os tokens, todos voltam sozinhos. O mestre pode forçar o reinício (muda a época).
+// precisa escrever na ficha dos outros. Os tokens NÃO voltam sozinhos ao zerar: só quando o mestre
+// aperta "Reiniciar tokens" (muda a época) ou o jogador aperta o ↺ da própria ficha.
 import { S, fichasDaMesa } from "./store.js";
 
 export const TOK_PADRAO = 3;
@@ -24,13 +24,11 @@ const usados = (f, ep) => (f.data.st && f.data.st.tokEp === ep ? f.data.st.tokN 
 export function tokens(f) {
   const cfg = hbCfg(f);
   if (!cfg.tokens) return null;
+  // Sem reinício automático: os tokens só voltam quando o botão de reiniciar é usado (muda a época ou devolve os gastos).
   const todas = cfg.daMesa ? fichasDaMesa(cfg.mesa.id).filter(x => !x.removida) : [f];
-  const gastos = todas.map(x => usados(x, cfg.epoca));
-  const ciclo = todas.length ? Math.min(...gastos.map(g => Math.floor(g / cfg.max))) : 0;
-  const meus = usados(f, cfg.epoca) - ciclo * cfg.max;
-  const gasto = Math.max(0, Math.min(cfg.max, meus));
-  const esperando = todas.filter((x, i) => gastos[i] - ciclo * cfg.max < cfg.max).map(x => x.nome || "Sem nome");
-  return { max: cfg.max, resta: cfg.max - gasto, gasto, esperando, ciclo };
+  const gasto = Math.max(0, Math.min(cfg.max, usados(f, cfg.epoca)));
+  const esperando = todas.filter(x => usados(x, cfg.epoca) < cfg.max).map(x => x.nome || "Sem nome");
+  return { max: cfg.max, resta: cfg.max - gasto, gasto, esperando };
 }
 
 export function gastarToken(pc, cfg) {

@@ -6,6 +6,8 @@ import { novoPersonagem } from "../js/calc.js";
 import * as L from "../js/locais.js";
 import { aplicar } from "../js/views/dar.js";
 import { S as ST } from "../js/store.js";
+import { lerPersonagens, EXEMPLO_PERSONAGEM } from "../js/personagem-json.js";
+import { tokens as tokensDe, gastarToken, devolverToken } from "../js/homebrew.js";
 import { loadGM, lerResposta, montarDaIA, extrairBlocos, orcamento, EXEMPLO_JSON } from "../js/gm.js";
 
 const _bak = { f: localStorage.getItem("dh-fichas-v1"), m: localStorage.getItem("dh-mestre-v1") }; // os testes mexem em fichas: restauramos o que havia no fim
@@ -299,6 +301,36 @@ await teste("link adulterado ou desconhecido dá erro claro", async () => {
 });
 await teste("classe desconhecida é recusada", () => { let msg = ""; try { sanear({ ...pcExemplo(), classe: "Pirata" }); } catch (e) { msg = e.message; } ok(/classe/i.test(msg)); });
 await teste("campos com tipo errado não quebram a ficha", () => { const pc = sanear({ ...pcExemplo(), exp: "x", cartas: "y", st: 5, nivel: 99 }); ok(Array.isArray(pc.exp) && Array.isArray(pc.cartas.mao) && typeof pc.st === "object"); igual(pc.nivel, 10); });
+
+// ---------------------------------------------------------------------
+grupo("Personagem por JSON");
+const pj = mod => { const o = clone(EXEMPLO_PERSONAGEM); if (mod) mod(o); return lerPersonagens(JSON.stringify(o))[0]; };
+await teste("o exemplo é válido e vira ficha de nível 1 com cálculos", () => { const r = pj(); ok(r.ok, JSON.stringify(r.avisos)); igual(r.pc.cartas.mao, ["Pick and Pull", "Uncanny Disguise"]); igual(r.pc.exp.map(e => e.v), [2, 2]); igual(r.pc.st, { pv: 0, es: 0, esp: 2, arm: 0, cond: [] }); });
+await teste("nomes em português e ids em inglês funcionam", () => { const r = pj(o => { o.classe = "Ladino"; o.subclasse = "Andarilho Noturno"; o.ancestralidade = "Elfo"; }); ok(r.ok, JSON.stringify(r.avisos)); igual(r.pc.classe, "Rogue"); });
+await teste("atributos fora de +2,+1,+1,0,0,−1 são recusados", () => { const r = pj(o => { o.atributos.forca = 2; }); ok(!r.ok && r.avisos.some(a => a.campo === "atributos")); });
+await teste("carta de outro domínio, nível 2 ou repetida é recusada", () => {
+  ok(pj(o => { o.cartas = ["Rune Ward", "Pick and Pull"]; }).avisos.some(a => a.campo === "cartas[0]"));
+  ok(pj(o => { o.cartas = ["Pick and Pull", "Pick and Pull"]; }).avisos.some(a => a.campo === "cartas[1]"));
+  ok(!pj(o => { o.cartas = ["Pick and Pull"]; }).ok);
+});
+await teste("omitir atributos e equipamento usa a sugestão da classe", () => { const r = pj(o => { delete o.atributos; delete o.arma_primaria; delete o.arma_secundaria; delete o.armadura; }); ok(r.ok, JSON.stringify(r.avisos)); igual(r.pc.armas.p, "Dagger"); });
+await teste("arma de duas mãos não aceita secundária", () => { const r = pj(o => { o.arma_primaria = "Greatsword"; }); ok(!r.ok && r.avisos.some(a => a.campo === "arma_secundaria")); });
+await teste("ancestralidade mista e vários personagens por lista", () => {
+  const a = clone(EXEMPLO_PERSONAGEM); a.ancestralidade = { nome: "elfo-orc", primeira: "Elf", segunda: "Orc" };
+  const r = lerPersonagens(JSON.stringify({ personagens: [a, EXEMPLO_PERSONAGEM] })); igual(r.map(x => x.ok), [true, true]); igual(r[0].pc.anc.f, [{ anc: "Elf", i: 0 }, { anc: "Orc", i: 1 }]);
+});
+await teste("JSON dentro de resposta com texto e cercas é encontrado; JSON quebrado dá erro", () => {
+  const cerca = "```";
+  ok(lerPersonagens(["Aqui vai:", cerca + "json", JSON.stringify(EXEMPLO_PERSONAGEM), cerca, "Boa sorte!"].join("\n"))[0].ok);
+  ok(!lerPersonagens([cerca + "json", '{"nome": "x",', cerca].join("\n"))[0].ok);
+});
+await teste("nível acima de 1 é recusado com orientação", () => ok(pj(o => { o.nivel = 3; }).avisos.some(a => a.campo === "nivel")));
+
+// ---------------------------------------------------------------------
+grupo("Tokens de ação (sem reinício automático)");
+const fTok = () => ({ id: "t", nome: "T", data: { hb: { tokens: true, tokMax: 3 }, st: {} } });
+await teste("ao gastar todos, ficam em zero e não voltam sozinhos", () => { const f = fTok(); for (let i = 0; i < 3; i++) gastarToken(f.data, { epoca: 0 }); const t = tokensDe(f); igual([t.resta, t.gasto], [0, 3]); igual(tokensDe(f).resta, 0, "voltou sozinho"); });
+await teste("só o reinício devolve os tokens", () => { const f = fTok(); for (let i = 0; i < 3; i++) gastarToken(f.data, { epoca: 0 }); for (let i = 0; i < 3; i++) devolverToken(f.data, { epoca: 0 }); igual(tokensDe(f).resta, 3); });
 
 sum.className = "sum " + (falhas ? "bad" : "ok");
 sum.textContent = falhas ? `${falhas} de ${total} testes falharam` : `Todos os ${total} testes passaram`;

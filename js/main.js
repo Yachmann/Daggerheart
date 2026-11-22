@@ -12,13 +12,14 @@ import * as Mesas from "./views/mesas.js";
 import * as Conta from "./views/conta.js";
 import * as Mestre from "./views/mestre.js";
 import * as Receber from "./views/receber.js";
+import * as PersonagemJSON from "./views/personagemjson.js";
 import { iniciarPainel, atualizarPainel } from "./views/painel.js";
 import { iniciarLembretes, atualizarLembretes } from "./views/lembretes.js";
 import { loadGM } from "./gm.js";
 import { abrirRolador } from "./views/rolador.js";
 
 const NAV_BASE = [
-  { h: "#/", n: "Fichas", i: "user", m: ["", "ficha", "nova"] },
+  { h: "#/", n: "Fichas", i: "user", m: ["", "ficha", "nova", "personagem-json"] },
   { h: "#/mestre", n: "Mestre", i: "crown", m: ["mestre"], mestre: true },
   { h: "#/regras", n: "Regras", i: "book", m: ["regras"] },
   { h: "#/compendio", n: "Compêndio", i: "cards", m: ["compendio"] },
@@ -30,6 +31,7 @@ const mestreOn = () => cfg().mestre || /^#\/mestre/.test(location.hash) || S.mes
 const ROTAS = {
   mestre: Mestre,
   receber: Receber,
+  "personagem-json": PersonagemJSON,
   "": Fichas, nova: Criar, ficha: Ficha, regras: Regras, compendio: Compendio, mesas: Mesas, mesa: Mesas, conta: Conta,
 };
 
