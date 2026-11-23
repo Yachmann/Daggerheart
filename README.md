@@ -18,6 +18,10 @@ A URL e a chave pública do Supabase ficam no topo de `index.html` e `mestre.htm
 
 Momentos de tensão que não são combate (perseguição, infiltração, ritual) são movidos por Contadores em disputa e por uma tabela de resultados (Crítico, Sucesso/Falha com Esperança/Medo). O JSON usa `"formato": "daggerheart-batalha"`, `"versao": 2` e `"tipo": "cena"`; batalhas v1 (ou sem `tipo`) continuam iguais. O formato completo, com exemplo, está em **Mestre → Conectar IA → Cena complexa: o formato** e em `data/exemplo-cena.json`. A lógica fica em `js/cena.js` (sem tela), a tela em `js/views/cena.js`.
 
+### Pressão de Fim de Rodada (homebrew)
+
+Campo opcional `pressao` na cena. No fim de toda rodada, o PJ com o pior resultado (empate: o mestre escolhe) faz uma reação de `atributo` (padrão Agilidade) na `dificuldade` (omitida: usa `dificuldade_rolagem`). Falha: dano da faixa em que está o Contador do mestre (`contagem`, do lado “mestre”). Sucesso: marca 1 Estresse. Crítico: ignora. Não custa Medo e não altera Contadores. `faixas` (`de`, `ate`, `dano` em dados + “fís”/“mág”) são validadas; omitidas, são geradas por terços das caixas com o dano do Tier. Na tela da cena, o cartão mostra a faixa ativa e “Próxima rodada” abre o passo Aplicar Pressão (Falhou, Passou, Crítico ou Pular), que entra no log. Cenas já criadas ganham a Pressão (e editam “Como funciona a rodada”) em **Editar** ou em **Opções → Adicionar Pressão padrão do Tier**, sem perder o andamento.
+
 ## Enviar um personagem pronto (one-shots)
 
 Crie o personagem normalmente (marque “Estou criando para entregar a um jogador” no último passo) ou abra uma ficha existente → **Ajustes → Enviar para um jogador**. O site gera um link com a ficha comprimida dentro dele; o jogador abre, toca em **Receber** e ganha uma cópia só dele (o seu continua com você). Não precisa de conta nem de banco. Se a ficha está numa mesa sua, o link pode já colocar o jogador na mesa. Alternativa: baixar o arquivo `.json` e o jogador importa em Conta → Restaurar backup.

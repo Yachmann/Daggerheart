@@ -577,3 +577,16 @@ body.lm-open .topnav a span{display:none} body.lm-open .topnav a{padding:8px 10p
 .tok-float .tok-reset{width:30px; height:30px; border-radius:50%; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); font-size:1.1rem; padding:0; line-height:1}
 .tok-float .tok-reset:disabled{opacity:.35}
 @media (min-width:860px){ .tok-float{bottom:24px} }
+
+/* Pressão de Fim de Rodada */
+.pressao{border-color:color-mix(in srgb,var(--fear) 55%,var(--line))}
+.pr-faixas{display:grid; gap:6px; margin-top:10px}
+.pr-faixa{display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:12px; border:1px solid var(--line); background:var(--sunk); color:var(--muted)}
+.pr-faixa .pr-v{font-size:.85rem; flex:1} .pr-faixa b{font-size:1.05rem}
+.pr-faixa em{font-style:normal; font-size:.72rem; font-weight:750; text-transform:uppercase; letter-spacing:.05em}
+.pr-faixa.on{border:2px solid var(--blood); background:var(--blood-soft); color:var(--ink); padding:7px 11px} .pr-faixa.on b,.pr-faixa.on em{color:var(--blood)}
+.pr-btns{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:8px; margin:14px 0 8px}
+.pr-btns .btn{flex-direction:column; align-items:flex-start; text-align:left; gap:2px; min-height:64px; height:auto}
+.pr-btns .btn span{font-size:.8rem; font-weight:500; opacity:.85}
+.pe-row{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.pe-faixa{display:flex; align-items:flex-end; gap:8px; margin-top:8px} .pe-faixa label{display:flex; flex-direction:column; gap:3px; font-size:.8rem; color:var(--muted)} .pe-faixa label:not(.grow){width:64px} .pe-faixa .grow{flex:1}

@@ -1,7 +1,7 @@
 // Importar da IA: cola a resposta inteira; cada bloco JSON vira uma batalha ou uma cena, com validação e pré-visualização.
 import { esc, icon, toast, mdBlock, openSheet } from "../util.js";
 import { lerResposta, salvarBatalha, orcamento, CUSTO, mesaPadrao, mesasDoMestre } from "../gm.js";
-import { RESULTADOS } from "../cena.js";
+import { RESULTADOS, difPressao } from "../cena.js";
 import { S, user } from "../store.js";
 import { app } from "../main.js";
 import { statBlock, barraOrc, tipoTag } from "./mestre-ui.js";
@@ -32,9 +32,16 @@ export function html() {
     <div class="wiz-foot"><button class="btn" data-act="copiarerros" ${comAviso.length ? "" : "disabled"}>Copiar pedido de correção</button><button class="btn hope" data-act="criar" ${escolhidos.length ? "" : "disabled"}>${icon("sword")} Criar ${escolhidos.length > 1 ? escolhidos.length + " itens" : "selecionado"}</button></div>` : ""}`;
 }
 
+function resumoPressao(c) {
+  const p = c.pressao, dif = difPressao(c);
+  return `<div class="note" style="margin:0 0 8px"><b>Pressão de Fim de Rodada</b> · ${esc(p.atributo)}, Dificuldade ${dif ?? "?"}, medida por ${esc(p.contagem)}${p.faixasPadrao ? " (faixas geradas pelo Tier " + c.patamar + ")" : ""}
+    <div class="chips" style="margin:6px 0">${p.faixas.map(f => `<span class="tag" style="border:1px solid var(--line)">${esc(p.contagem)} ${f.de === f.ate ? f.de : f.de + "–" + f.ate}: ${esc(f.dano)}</span>`).join("")}</div>
+    <div class="muted small">Passou: ${esc(p.sucesso)} · Crítico: ${esc(p.critico)}${p.texto ? " · " + esc(p.texto) : ""}</div></div>`;
+}
 function resumoCena(c) {
   return `<div class="muted small"><b>Objetivo:</b> ${esc(c.objetivo)}</div>
     <div class="chips" style="margin:8px 0">${c.contagens.map(k => `<span class="tag" style="border:1px solid var(--line)">${esc(k.n)} · ${k.size} caixas · ${esc(k.lado)}</span>`).join("")}</div>
+    ${c.pressao ? resumoPressao(c) : ""}
     <div class="muted small">${RESULTADOS.length} resultados · ${c.medoJogadas.length} jogada${c.medoJogadas.length === 1 ? "" : "s"} de Medo · ${c.jogadoresUsos.length} uso${c.jogadoresUsos.length === 1 ? "" : "s"} dos jogadores · ${c.gatilhos.length} gatilho${c.gatilhos.length === 1 ? "" : "s"}${c.unidades.length ? ` · ${c.unidades.length} adversário${c.unidades.length === 1 ? "" : "s"}` : ""}${c.lembretes && c.lembretes.length ? ` · ${c.lembretes.length} lembrete${c.lembretes.length === 1 ? "" : "s"}` : ""}${c.ambiente ? ` · ambiente ${esc(c.ambiente.name)}` : ""}</div>`;
 }
 function resumoBatalha(b) {

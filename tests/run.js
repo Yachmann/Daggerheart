@@ -221,6 +221,126 @@ await teste("cada lembrete com adversário casa com uma unidade (aparece o selo 
   for (const l of b.lembretes.filter(x => x.adversario)) ok(b.unidades.some(u => C.casaLembrete(l.adversario, u)), "sem unidade para " + l.adversario);
 });
 
+grupo("Pressão de Fim de Rodada");
+const PR = () => ({ atributo: "Agilidade", dificuldade: 12, contagem: "Cerco", faixas: [{ de: 0, ate: 2, dano: "1d6+2 fís" }, { de: 3, ate: 5, dano: "1d8+3 fís" }, { de: 6, ate: 8, dano: "1d10+4 fís" }], sucesso: "Marca 1 Estresse.", critico: "Ignora o efeito." });
+const rawP = mod => { const r = clone(fixture); r.pressao = PR(); if (mod) mod(r.pressao, r); return r; };
+const novaP = mod => C.criarCena(rawP(mod));
+const campP = mod => campos(rawP(mod));
+const msgP = (mod, campo) => (C.validarCena(rawP(mod)).erros.find(e => e.campo === campo) || {}).msg || "";
+await teste("JSON antigo, sem pressao, continua válido e importa igual", async () => {
+  igual(C.validarCena(fixture).erros, [], "fixture antigo");
+  const c = C.criarCena(clone(fixture)); igual(c.pressao, null, "sem pressao => null");
+  const it = lerResposta("```json\n" + JSON.stringify(fixture) + "\n```")[0]; ok(it.ok && it.tipo === "cena", "importou"); igual(it.registro.pressao, null);
+  C.proximaRodada(c); igual(c.log.at(-1).rotulo, "Rodada 2", "próxima rodada sem Pressão é a de sempre"); ok(!c.log.at(-1).pressao);
+});
+await teste("JSON novo com pressao valida, importa e guarda a Pressão", () => {
+  igual(C.validarCena(rawP()).erros, [], "erros inesperados");
+  const it = lerResposta("```json\n" + JSON.stringify(rawP()) + "\n```")[0]; ok(it.ok, "importou");
+  const p = it.registro.pressao; igual([p.atributo, p.dificuldade, p.contagem, p.faixasPadrao], ["Agilidade", 12, "Cerco", false]);
+  igual(p.faixas, PR().faixas); igual([p.sucesso, p.critico], ["Marca 1 Estresse.", "Ignora o efeito."]);
+});
+await teste("dificuldade omitida usa dificuldade_rolagem da cena; sem nenhuma das duas é erro", () => {
+  const c = novaP(p => { delete p.dificuldade; }); igual(C.difPressao(c), 12); igual(c.pressao.dificuldade, null);
+  ok(campP((p, r) => { delete p.dificuldade; delete r.dificuldade_rolagem; }).includes("pressao.dificuldade"), "faltou erro");
+  ok(campP(p => { p.dificuldade = 0; }).includes("pressao.dificuldade") && campP(p => { p.dificuldade = 31; }).includes("pressao.dificuldade"), "fora de 1 a 30");
+});
+await teste("faixas omitidas: terços das caixas com o dano do Tier (8 caixas: 0–2, 3–5, 6–8)", () => {
+  const dano = { 1: ["1d6+2", "1d8+3", "1d10+4"], 2: ["2d6+3", "2d8+3", "2d10+4"], 3: ["3d8+3", "3d10+4", "3d12+5"], 4: ["4d8+10", "4d10+12", "4d12+15"] };
+  for (const t of [1, 2, 3, 4]) {
+    const c = novaP((p, r) => { delete p.faixas; r.patamar = t; });
+    igual(c.pressao.faixas, [{ de: 0, ate: 2, dano: dano[t][0] + " fís" }, { de: 3, ate: 5, dano: dano[t][1] + " fís" }, { de: 6, ate: 8, dano: dano[t][2] + " fís" }], "Tier " + t);
+    ok(c.pressao.faixasPadrao);
+  }
+  igual(C.faixasPadrao(10, 1).map(f => [f.de, f.ate]), [[0, 3], [4, 7], [8, 10]], "10 caixas cobrem 0–10 sem lacuna");
+  igual(C.faixasPadrao(1, 1).map(f => [f.de, f.ate, f.dano]), [[0, 0, "1d6+2 fís"], [1, 1, "1d10+4 fís"]], "1 caixa");
+});
+await teste("contagem inexistente, ausente ou do lado errado", () => {
+  ok(campP(p => { p.contagem = "Fantasma"; }).includes("pressao.contagem"), "inexistente");
+  ok(msgP(p => { p.contagem = "Fantasma"; }, "pressao.contagem").includes("não existe"));
+  ok(campP(p => { delete p.contagem; }).includes("pressao.contagem"), "ausente");
+  ok(msgP(p => { p.contagem = "Fuga"; }, "pressao.contagem").includes('"mestre"'), "Fuga é dos jogadores");
+  igual(novaP(p => { p.contagem = "cerco"; }).pressao.contagem, "Cerco", "nome canônico, sem diferenciar maiúsculas");
+});
+await teste("faixa fora do Contador, sobreposta ou invertida", () => {
+  ok(campP(p => { p.faixas[2].ate = 9; }).includes("pressao.faixas[2].ate"), "9 passa das 8 caixas");
+  ok(msgP(p => { p.faixas[2].ate = 9; }, "pressao.faixas[2].ate").includes("fora do Contador"));
+  ok(campP(p => { p.faixas[1].de = 2; }).includes("pressao.faixas[1]"), "sobreposição 0–2 com 2–5");
+  ok(campP(p => { p.faixas[0] = { de: 3, ate: 1, dano: "1d6+2 fís" }; }).includes("pressao.faixas[0].ate"), "ate < de");
+  ok(campP(p => { p.faixas[0].de = -1; }).includes("pressao.faixas[0].de") && campP(p => { p.faixas[0].de = 1.5; }).includes("pressao.faixas[0].de"), "de negativo ou fracionário");
+  ok(campP(p => { p.faixas = []; }).includes("pressao.faixas"), "lista vazia");
+});
+await teste("dano malformado é erro; 'fis' e 'mag' sem acento valem e são normalizados", () => {
+  for (const ruim of ["1d6+2", "1d6+2 gelo", "2d fís", "abc", "fís", "1d6+ fís", "5 fís", ""]) ok(campP(p => { p.faixas[0].dano = ruim; }).includes("pressao.faixas[0].dano"), `“${ruim}” deveria falhar`);
+  ok(campP(p => { p.faixas[0].dano = 5; }).includes("pressao.faixas[0].dano"), "número não é dano");
+  const c = novaP(p => { p.faixas[0].dano = "2d6 + 3 mag"; p.faixas[1].dano = "1D8+3  FIS"; p.faixas[2].dano = "1d10 mág"; });
+  igual(c.pressao.faixas.map(f => f.dano), ["2d6+3 mág", "1d8+3 fís", "1d10 mág"]);
+});
+await teste("faixas com lacuna só avisam (a Pressão não dói nesse ponto)", () => {
+  const r = rawP(p => { p.faixas = [{ de: 0, ate: 1, dano: "1d6+2 fís" }, { de: 5, ate: 8, dano: "1d10+4 fís" }]; });
+  const v = C.validarCena(r); igual(v.erros, []); ok(v.avisos.some(a => a.campo === "pressao.faixas" && a.msg.includes("2–4")), "aviso de lacuna 2–4");
+  const c = C.criarCena(r); C.ajustarContagem(c, C.achaContagem(c, "Cerco").id, 3); igual(C.faixaAtiva(c), null);
+});
+await teste("tipos errados: pressao não objeto, atributo, texto", () => {
+  const r = clone(fixture); r.pressao = "forte"; ok(campos(r).includes("pressao"));
+  ok(campP(p => { p.sucesso = 3; }).includes("pressao.sucesso"));
+  const v = C.validarCena(rawP(p => { p.atributo = "Sorte"; })); igual(v.erros, []); ok(v.avisos.some(a => a.campo === "pressao.atributo"), "atributo desconhecido só avisa");
+});
+await teste("a faixa ativa muda quando o Contador do mestre cruza 2→3 e 5→6 (8 caixas)", () => {
+  const c = novaP(); const k = C.achaContagem(c, "Cerco");
+  const dano = () => C.faixaAtiva(c).dano;
+  const v = {}; for (const n of [0, 2, 3, 5, 6, 8]) { C.ajustarContagem(c, k.id, n); v[n] = dano(); }
+  igual(v, { 0: "1d6+2 fís", 2: "1d6+2 fís", 3: "1d8+3 fís", 5: "1d8+3 fís", 6: "1d10+4 fís", 8: "1d10+4 fís" });
+  C.ajustarContagem(c, k.id, 5); C.aplicarResultado(c, "falha_esperanca"); igual([k.val, dano()], [6, "1d10+4 fís"], "uma falha leva o Cerco de 5 a 6 e muda a faixa");
+});
+await teste("Próxima rodada com Pressão: falha registra o dano da faixa atual no log", () => {
+  const c = novaP(); const k = C.achaContagem(c, "Cerco"); C.ajustarContagem(c, k.id, 4);
+  const r = C.proximaRodada(c, "falha"); const e = c.log.at(-1);
+  igual(c.rodada, 2); igual(e.rodada, 1, "a linha do log é da rodada que terminou");
+  igual(e.pressao, { resultado: "falha", dano: "1d8+3 fís", contagem: "Cerco", valor: 4 });
+  ok(e.rotulo.includes("Falhou") && e.rotulo.includes("1d8+3 fís") && e.rotulo.includes("Rodada 2"), e.rotulo);
+  ok(c.ultimo && c.ultimo.texto.includes("1d8+3 fís"), "última ação mostra o dano"); ok(r.ok !== false);
+});
+await teste("sucesso, crítico e pular entram no log; só a falha leva dano", () => {
+  const c = novaP();
+  C.proximaRodada(c, "sucesso"); igual(c.log.at(-1).pressao, { resultado: "sucesso", dano: null, contagem: "Cerco", valor: 0 }); ok(c.log.at(-1).rotulo.includes("Passou") && c.log.at(-1).rotulo.includes("Marca 1 Estresse."));
+  C.proximaRodada(c, "critico"); ok(c.log.at(-1).rotulo.includes("Crítico") && c.log.at(-1).rotulo.includes("Ignora o efeito."));
+  C.proximaRodada(c, "pular"); igual(c.log.at(-1).pressao.resultado, "pular"); ok(c.log.at(-1).rotulo.includes("Pulou")); igual(c.ultimo, null, "pular não mostra nada");
+  igual([c.rodada, c.log.length], [4, 3]);
+});
+await teste("a Pressão não consome Medo, não altera Contadores e não zera usos do Medo além do reset normal de rodada", () => {
+  const c = novaP(); c.medo = 5; C.ajustarContagem(c, C.achaContagem(c, "Cerco").id, 4); C.ajustarContagem(c, C.achaContagem(c, "Fuga").id, 2);
+  const antes = c.contagens.map(x => x.val);
+  for (const res of ["falha", "sucesso", "critico", "pular"]) C.proximaRodada(c, res);
+  igual(c.contagens.map(x => x.val), antes, "Contadores intactos"); igual(c.medo, 5, "Medo intacto"); igual(c.rodada, 5);
+});
+await teste("desfazer volta a rodada e a linha do log numa só ação", () => {
+  const c = novaP(); const n = c.log.length;
+  C.proximaRodada(c, "falha"); ok(C.desfazer(c)); igual([c.rodada, c.log.length], [1, n]);
+});
+await teste("cena sem Pressão ignora o argumento; resultado desconhecido não aplica Pressão", () => {
+  const c = nova(); C.proximaRodada(c, "falha"); igual(c.log.at(-1).rotulo, "Rodada 2"); ok(!c.log.at(-1).pressao);
+  const d = novaP(); C.proximaRodada(d, "talvez"); igual(d.log.at(-1).rotulo, "Rodada 2");
+});
+await teste("editar a Pressão e o ciclo numa cena em andamento não perde o andamento", () => {
+  const c = nova(); c.status = "ativa"; C.aplicarResultado(c, "falha_medo"); C.proximaRodada(c); C.aplicarResultado(c, "critico");
+  const foto = JSON.stringify({ v: c.contagens.map(x => x.val), m: c.medo, r: c.rodada, l: c.log.length, a: c.alertas, g: c.gatilhos.map(x => x.disparado), p: c.pilha.length });
+  const raw = { atributo: "Instinto", contagem: "cerco", sucesso: "Marca 1 Estresse." };
+  igual(C.validarPressaoCena(c, raw).erros.map(e => e.campo), ["pressao.dificuldade"].filter(() => !c.dificuldadeRolagem), "usa a dificuldade da cena");
+  c.ciclo = "Novo ciclo."; c.pressao = C.montarPressao(raw, c.contagens, c.patamar);
+  igual(JSON.stringify({ v: c.contagens.map(x => x.val), m: c.medo, r: c.rodada, l: c.log.length, a: c.alertas, g: c.gatilhos.map(x => x.disparado), p: c.pilha.length }), foto, "andamento intacto");
+  igual([c.pressao.atributo, c.pressao.contagem, c.pressao.faixasPadrao], ["Instinto", "Cerco", true]);
+  C.proximaRodada(c, "falha"); ok(c.log.at(-1).pressao.dano, "a Pressão nova já vale");
+  ok(C.validarPressaoCena(c, { contagem: "Fuga" }).erros.some(e => e.campo === "pressao.contagem"), "editor também exige lado mestre");
+});
+await teste("Pressão padrão do Tier: primeira contagem do mestre; sem ela, nada", () => {
+  const c = nova(); c.patamar = 3; const p = C.pressaoPadraoDe(c);
+  igual([p.atributo, p.contagem, p.faixasPadrao, p.faixas[0].dano, p.faixas[2].dano], ["Agilidade", "Cerco", true, "3d8+3 fís", "3d12+5 fís"]);
+  c.contagens.forEach(k => { k.lado = "jogadores"; }); igual(C.pressaoPadraoDe(c), null);
+});
+await teste("duplicar e reiniciar a cena mantêm a Pressão", () => {
+  const c = novaP(); const d = JSON.parse(JSON.stringify(c)); C.reiniciar(d); igual(d.pressao, c.pressao);
+});
+
 grupo("Locais e preços");
 await teste("preço formatado em baús, bolsas, punhados e moedas", () => {
   igual(L.fmtPreco(7), "7 moedas"); igual(L.fmtPreco(10), "1 punhado"); igual(L.fmtPreco(15), "1 punhado e 5 moedas"); igual(L.fmtPreco(300), "3 bolsas"); igual(L.fmtPreco(1500), "1 baú e 5 bolsas"); igual(L.fmtPreco(1), "1 moeda");

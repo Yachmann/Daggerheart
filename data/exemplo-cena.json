@@ -9,6 +9,19 @@
   "patamar": 1,
   "ciclo": "A cada rodada, cada PJ descreve como ajuda o grupo a avançar e rola Agilidade, Instinto ou Presença, conforme a ideia.",
   "dificuldade_rolagem": 12,
+  "pressao": {
+    "atributo": "Agilidade",
+    "dificuldade": 12,
+    "contagem": "Cerco",
+    "faixas": [
+      { "de": 0, "ate": 2, "dano": "1d6+2 fís" },
+      { "de": 3, "ate": 5, "dano": "1d8+3 fís" },
+      { "de": 6, "ate": 8, "dano": "1d10+4 fís" }
+    ],
+    "sucesso": "Marca 1 Estresse.",
+    "critico": "Ignora o efeito.",
+    "texto": "Setas, telhas soltas e tochas: quanto mais perto a Ordem chega, mais perigoso fica o terreno."
+  },
   "contagens": [
     { "nome": "Fuga", "caixas": 8, "lado": "jogadores" },
     { "nome": "Cerco", "caixas": 8, "lado": "mestre" }
