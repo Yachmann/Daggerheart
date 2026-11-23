@@ -1,0 +1,280 @@
+{
+  "formato": "daggerheart-mapa",
+  "versao": 1,
+  "nome": "Taverna do Corvo Torto",
+  "descricao": "Taverna de beira de estrada: salao com lareira, cozinha nos fundos e um quarto no andar de baixo. Noite chuvosa.",
+  "grade": [
+    28,
+    20
+  ],
+  "bioma": "planicie",
+  "seed": 7,
+  "luz": {
+    "clima": "noite",
+    "escuridao": 0.35
+  },
+  "regioes": [
+    {
+      "material": "terra",
+      "forma": "retangulo",
+      "x0": 0,
+      "y0": 15,
+      "x1": 28,
+      "y1": 20,
+      "irregularidade": 0.8
+    }
+  ],
+  "linhas": [
+    {
+      "tipo": "cerca",
+      "pontos": [
+        [
+          1,
+          15.5
+        ],
+        [
+          9,
+          15.5
+        ]
+      ]
+    },
+    {
+      "tipo": "cerca",
+      "pontos": [
+        [
+          19,
+          15.5
+        ],
+        [
+          27,
+          15.5
+        ]
+      ]
+    }
+  ],
+  "estruturas": [
+    {
+      "tipo": "sala",
+      "x0": 3,
+      "y0": 2,
+      "x1": 20,
+      "y1": 15,
+      "piso": "madeira",
+      "espessura": 0.4
+    },
+    {
+      "tipo": "sala",
+      "x0": 20,
+      "y0": 2,
+      "x1": 26,
+      "y1": 9,
+      "piso": "pedra",
+      "espessura": 0.4
+    },
+    {
+      "tipo": "sala",
+      "x0": 20,
+      "y0": 9,
+      "x1": 26,
+      "y1": 15,
+      "piso": "madeira",
+      "espessura": 0.4
+    },
+    {
+      "tipo": "porta",
+      "x": 11.5,
+      "y": 15,
+      "orientacao": "h",
+      "larg": 1.6,
+      "estilo": "fechada"
+    },
+    {
+      "tipo": "porta",
+      "x": 20,
+      "y": 6,
+      "orientacao": "v",
+      "larg": 1.2,
+      "estilo": "aberta"
+    },
+    {
+      "tipo": "porta",
+      "x": 20,
+      "y": 12,
+      "orientacao": "v",
+      "larg": 1.2,
+      "estilo": "aberta"
+    }
+  ],
+  "objetos": [
+    {
+      "tipo": "mesa",
+      "x": 7,
+      "y": 7,
+      "larg": 2.4,
+      "alt": 1.2
+    },
+    {
+      "tipo": "cadeira",
+      "x": 6,
+      "y": 5.9,
+      "rot": 0
+    },
+    {
+      "tipo": "cadeira",
+      "x": 8,
+      "y": 5.9,
+      "rot": 0
+    },
+    {
+      "tipo": "cadeira",
+      "x": 6,
+      "y": 8.1,
+      "rot": 180
+    },
+    {
+      "tipo": "cadeira",
+      "x": 8,
+      "y": 8.1,
+      "rot": 180
+    },
+    {
+      "tipo": "mesa",
+      "x": 14,
+      "y": 8,
+      "larg": 1.6,
+      "alt": 1.6,
+      "forma": "redonda"
+    },
+    {
+      "tipo": "banco",
+      "x": 14,
+      "y": 6.3,
+      "comp": 1.6
+    },
+    {
+      "tipo": "banco",
+      "x": 14,
+      "y": 9.7,
+      "comp": 1.6,
+      "rot": 180
+    },
+    {
+      "tipo": "mesa",
+      "x": 12,
+      "y": 4,
+      "larg": 5,
+      "alt": 0.9
+    },
+    {
+      "tipo": "barril",
+      "x": 4.3,
+      "y": 3.2
+    },
+    {
+      "tipo": "barril",
+      "x": 5.2,
+      "y": 3.2
+    },
+    {
+      "tipo": "caixote",
+      "x": 4.6,
+      "y": 4.2
+    },
+    {
+      "tipo": "fogueira",
+      "x": 18.6,
+      "y": 11
+    },
+    {
+      "tipo": "tocha",
+      "x": 8,
+      "y": 2.6
+    },
+    {
+      "tipo": "tocha",
+      "x": 16,
+      "y": 2.6
+    },
+    {
+      "tipo": "bau",
+      "x": 22,
+      "y": 3.2
+    },
+    {
+      "tipo": "mesa",
+      "x": 24,
+      "y": 6,
+      "larg": 2,
+      "alt": 1.4
+    },
+    {
+      "tipo": "pilar",
+      "x": 11,
+      "y": 11
+    },
+    {
+      "tipo": "pilar",
+      "x": 16,
+      "y": 11
+    },
+    {
+      "tipo": "cama",
+      "x": 21.9,
+      "y": 12,
+      "rot": 0
+    },
+    {
+      "tipo": "cama",
+      "x": 24.3,
+      "y": 12,
+      "rot": 0,
+      "cor": [
+        40,
+        70,
+        120
+      ]
+    },
+    {
+      "tipo": "bau",
+      "x": 24.8,
+      "y": 14
+    },
+    {
+      "tipo": "poco",
+      "x": 14,
+      "y": 17.5
+    },
+    {
+      "tipo": "carroca",
+      "x": 22,
+      "y": 17.5,
+      "rot": 8
+    },
+    {
+      "tipo": "arvore",
+      "x": 1.5,
+      "y": 3,
+      "r": 1.8
+    },
+    {
+      "tipo": "arvore",
+      "x": 27,
+      "y": 18,
+      "r": 1.6
+    },
+    {
+      "tipo": "arbusto",
+      "x": 2.5,
+      "y": 14,
+      "r": 0.7
+    }
+  ],
+  "px_por_quadrado": 100,
+  "cm_por_quadrado": 2.5,
+  "fases": [
+    {
+      "id": "1",
+      "nome": "Principal"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "mapas": [
+    {
+      "id": "emboscada-na-ponte-de-ferro",
+      "nome": "Emboscada na Ponte de Ferro",
+      "descricao": "Uma ponte de ferro enferrujada sobre um abismo com rio; os bandidos fecham a margem leste. Na fase 2 o meio da ponte desaba.",
+      "grade": [
+        30,
+        20
+      ],
+      "cm_por_quadrado": 2.5,
+      "fases": [
+        {
+          "id": "1",
+          "nome": "Ponte inteira",
+          "imagem": "mapas/emboscada-na-ponte-de-ferro/1.jpg"
+        },
+        {
+          "id": "2",
+          "nome": "Ponte desabada",
+          "imagem": "mapas/emboscada-na-ponte-de-ferro/2.jpg"
+        }
+      ],
+      "thumb": "mapas/emboscada-na-ponte-de-ferro/thumb.jpg",
+      "spec": "mapas/emboscada-na-ponte-de-ferro/spec.json",
+      "criado": "2026-11-23 14:36"
+    },
+    {
+      "id": "taverna-do-corvo-torto",
+      "nome": "Taverna do Corvo Torto",
+      "descricao": "Taverna de beira de estrada: salao com lareira, cozinha nos fundos e um quarto no andar de baixo. Noite chuvosa.",
+      "grade": [
+        28,
+        20
+      ],
+      "cm_por_quadrado": 2.5,
+      "fases": [
+        {
+          "id": "1",
+          "nome": "Principal",
+          "imagem": "mapas/taverna-do-corvo-torto/1.jpg"
+        }
+      ],
+      "thumb": "mapas/taverna-do-corvo-torto/thumb.jpg",
+      "spec": "mapas/taverna-do-corvo-torto/spec.json",
+      "criado": "2026-11-23 14:37"
+    },
+    {
+      "id": "cripta-esquecida",
+      "nome": "Cripta Esquecida",
+      "descricao": "Antecamara com altar, corredor de ossos e uma sala de piscina de lava ao fundo.",
+      "grade": [
+        30,
+        20
+      ],
+      "cm_por_quadrado": 2.5,
+      "fases": [
+        {
+          "id": "1",
+          "nome": "Principal",
+          "imagem": "mapas/cripta-esquecida/1.jpg"
+        }
+      ],
+      "thumb": "mapas/cripta-esquecida/thumb.jpg",
+      "spec": "mapas/cripta-esquecida/spec.json",
+      "criado": "2026-11-23 14:37"
+    }
+  ]
+}

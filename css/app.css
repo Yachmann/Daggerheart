@@ -590,3 +590,13 @@ body.lm-open .topnav a span{display:none} body.lm-open .topnav a{padding:8px 10p
 .pr-btns .btn span{font-size:.8rem; font-weight:500; opacity:.85}
 .pe-row{display:grid; grid-template-columns:1fr 1fr; gap:10px}
 .pe-faixa{display:flex; align-items:flex-end; gap:8px; margin-top:8px} .pe-faixa label{display:flex; flex-direction:column; gap:3px; font-size:.8rem; color:var(--muted)} .pe-faixa label:not(.grow){width:64px} .pe-faixa .grow{flex:1}
+
+/* ---- Mapas (battlemaps gerados) ---- */
+.mapa-lista{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px}
+.mapa-card{display:flex; flex-direction:column; text-align:left; padding:0; overflow:hidden; border:1px solid var(--line); border-radius:12px; background:var(--surface); color:inherit; cursor:pointer}
+.mapa-card img{width:100%; aspect-ratio:3/2; object-fit:cover; display:block; background:var(--line)}
+.mapa-card .mc-t{display:flex; flex-direction:column; gap:2px; padding:10px 12px} .mapa-card small{color:var(--muted)}
+.mapa-card:hover,.mapa-card:focus-visible{border-color:var(--ink)}
+.mapa-vista{overflow:auto; border:1px solid var(--line); border-radius:12px; max-height:78vh; background:#111}
+.mapa-img{position:relative; max-width:none} .mapa-img img{display:block; width:100%; height:auto}
+.mapa-gr{position:absolute; inset:0; pointer-events:none; background-image:linear-gradient(to right,rgba(0,0,0,.38) 1px,transparent 1px),linear-gradient(to bottom,rgba(0,0,0,.38) 1px,transparent 1px); box-shadow:inset 0 0 0 1px rgba(0,0,0,.38)}

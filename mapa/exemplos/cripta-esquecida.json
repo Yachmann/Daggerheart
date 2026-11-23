@@ -1,0 +1,29 @@
+{
+  "formato": "daggerheart-mapa",
+  "versao": 1,
+  "nome": "Cripta Esquecida",
+  "descricao": "Antecamara com altar, corredor de ossos e uma sala de piscina de lava ao fundo.",
+  "grade": [30, 20],
+  "bioma": "masmorra",
+  "seed": 21,
+  "estruturas": [
+    { "tipo": "sala", "x0": 2, "y0": 3, "x1": 12, "y1": 12, "piso": "pedra", "espessura": 0.45 },
+    { "tipo": "sala", "x0": 12, "y0": 6, "x1": 20, "y1": 9, "piso": "pedra", "espessura": 0.45 },
+    { "tipo": "sala", "x0": 20, "y0": 2, "x1": 28, "y1": 15, "piso": "pedra", "espessura": 0.45, "ruina": true },
+    { "tipo": "porta", "x": 12, "y": 7.5, "orientacao": "v", "larg": 1.2, "estilo": "arco" },
+    { "tipo": "porta", "x": 20, "y": 7.5, "orientacao": "v", "larg": 1.4, "estilo": "fechada" },
+    { "tipo": "porta", "x": 7, "y": 12, "orientacao": "h", "larg": 1.2, "estilo": "aberta" }
+  ],
+  "regioes": [
+    { "material": "lava", "forma": "elipse", "cx": 24.5, "cy": 9, "rx": 2.4, "ry": 3.2 }
+  ],
+  "objetos": [
+    { "tipo": "altar", "x": 7, "y": 5.2 },
+    { "tipo": "pilar", "x": 4.5, "y": 6 }, { "tipo": "pilar", "x": 9.5, "y": 6 }, { "tipo": "pilar", "x": 4.5, "y": 10 }, { "tipo": "pilar", "x": 9.5, "y": 10 },
+    { "tipo": "ossos", "x": 6, "y": 9, "rot": 30 }, { "tipo": "ossos", "x": 15, "y": 7.5, "rot": 100 },
+    { "tipo": "tocha", "x": 2.8, "y": 8 }, { "tipo": "tocha", "x": 15, "y": 6.5 },
+    { "tipo": "bau", "x": 26.3, "y": 4 }, { "tipo": "entulho", "x": 21.5, "y": 13, "r": 1.0 },
+    { "tipo": "escada", "x0": 9, "y0": 3.5, "x1": 11.5, "y1": 5.5, "direcao": "n" },
+    { "tipo": "forma", "pontos": [[16, 6.6], [18.5, 6.6], [18.5, 8.4], [16, 8.4]], "material": "tecido", "cor": [60, 40, 90] }
+  ]
+}

@@ -10,12 +10,13 @@ import * as Importar from "./importar.js";
 import * as Cena from "./cena.js";
 import { darItem } from "./dar.js";
 import * as Locais from "./locais.js";
+import * as Mapas from "./mapas.js";
 import { ordenarRegistros } from "../cena.js";
 import { statBlock, envBlock, tipoTag, fonteTag, escolherBatalha, barraOrc } from "./mestre-ui.js";
 import { expTag } from "./common.js";
 
 const ui = { aba: "batalhas", ft: "", bq: "", q: "", tipo: "", tier: "", cat: "", fonte: "", livro: "adv", gt: "Standard", gp: 1, gen: null, rc: { tema: "qualquer", tier: 1, jog: 4, adj: 0 }, rcRes: null, comp: "", compCat: "geral", it: null, itCat: "Arma", itTier: "" };
-const ABAS = [["batalhas", "Batalhas"], ["biblioteca", "Biblioteca"], ["geradores", "Geradores"], ["locais", "Locais"], ["notas", "Notas"], ["ia", "Conectar IA"]];
+const ABAS = [["batalhas", "Batalhas"], ["biblioteca", "Biblioteca"], ["geradores", "Geradores"], ["locais", "Locais"], ["mapas", "Mapas"], ["notas", "Notas"], ["ia", "Conectar IA"]];
 
 function sub(p) { return p[0] || ""; }
 function modulo(p) { const s = sub(p); return s === "batalha" ? Batalha : s === "adversario" ? Editor : s === "importar" ? Importar : s === "cena" ? Cena : null; }
@@ -27,7 +28,7 @@ export function html(p, q) {
   if (mod) return mod.html(p, q);
   if (q.aba && ABAS.some(a => a[0] === q.aba)) ui.aba = q.aba;
   if (!user() && sb) { /* funciona local; avisa */ }
-  const corpo = { batalhas: abaBatalhas, biblioteca: abaBiblioteca, geradores: abaGeradores, locais: Locais.aba, notas: abaNotas, ia: abaIA }[ui.aba]();
+  const corpo = { batalhas: abaBatalhas, biblioteca: abaBiblioteca, geradores: abaGeradores, locais: Locais.aba, mapas: Mapas.aba, notas: abaNotas, ia: abaIA }[ui.aba]();
   const st = !sb ? "" : !user() ? `<div class="note info" style="margin-bottom:14px">Sem conta, suas batalhas ficam só neste aparelho. <a href="#/conta">Entre</a> para guardá-las na nuvem e abrir no celular.</div>` : gmStatus.erro === "tabela" ? `<div class="err" style="margin-bottom:14px">As tabelas do mestre ainda não existem no banco: rode o arquivo <code>supabase-fichas.sql</code> (versão nova) no Supabase. Enquanto isso, tudo fica salvo neste aparelho.</div>` : "";
   return `<div class="page-h"><h1>Mestre</h1><div class="sub">Prepare batalhas, crie adversários e conduza a mesa.</div></div>
   ${barraMesa()}
@@ -258,6 +259,7 @@ export async function on(a, el, ev) {
   const id = el.dataset.id;
   if (a.startsWith("tk") && tokensOn(a, el)) return;
   if (a.startsWith("lc-")) { await Locais.on(a, el); return; }
+  if (a.startsWith("mp-")) { await Mapas.on(a, el); return; }
   switch (a) {
     case "aba": ui.aba = el.dataset.v; history.replaceState(null, "", "#/mestre?aba=" + ui.aba); if (ui.aba === "batalhas") lerAntigo().then(() => app.render(true)); app.render(true); return;
     case "nova": {

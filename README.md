@@ -102,3 +102,19 @@ Para rodar localmente: `python -m http.server 8765` nesta pasta e abra `http://l
 ## Licença
 
 Inclui materiais do Daggerheart System Reference Document 2.0, © Critical Role, LLC, sob a Darrington Press Community Gaming License (DPCGL). Tradução não oficial. Não afiliado à Critical Role ou à Darrington Press.
+
+
+## Mapas de batalha (gerador)
+
+A IA descreve o mapa em JSON e o gerador Python desenha, sempre no mesmo traço.
+
+```
+copie a resposta da IA  ->  gerar-mapa.cmd (duplo clique)  ->  aba Mestre > Mapas
+```
+
+- `python -m mapa gerar arquivo.json` (ou `--area-transferencia`, ou `-` para stdin). `--preview` desenha em baixa resolução em segundos.
+- `python -m mapa validar arquivo.json` confere sem desenhar; os erros vêm em português, todos de uma vez.
+- `python -m mapa catalogo --salvar` regrava `catalogo-mapas.md` (anexe ao Projeto da IA). O catálogo vem de `mapa/catalogo.py`.
+- Saídas: `mapas/` (JPG leve + `index.json`, vai para o site) e `mapas-hd/` (PNG de impressão, com e sem grade, no DPI do tamanho real; fora do git).
+- Exemplos em `mapa/exemplos/`. Dependências: `pip install numpy pillow scipy`.
+- Para ensinar um objeto novo: desenhe a função em `mapa/sprites.py`, registre em `mapa/catalogo.py` e rode `catalogo --salvar`.

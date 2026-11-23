@@ -1,0 +1,331 @@
+{
+  "formato": "daggerheart-mapa",
+  "versao": 1,
+  "nome": "Emboscada na Ponte de Ferro",
+  "descricao": "Uma ponte de ferro enferrujada sobre um abismo com rio; os bandidos fecham a margem leste. Na fase 2 o meio da ponte desaba.",
+  "grade": [
+    30,
+    20
+  ],
+  "bioma": "floresta",
+  "seed": 11,
+  "fases": [
+    {
+      "id": "1",
+      "nome": "Ponte inteira",
+      "luz": {
+        "nevoa": {
+          "sobre_abismo": 1.0,
+          "densidade": 0.08,
+          "focos": [
+            {
+              "x": 27,
+              "y": 10,
+              "rx": 6,
+              "ry": 14,
+              "densidade": 0.45
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "2",
+      "nome": "Ponte desabada",
+      "luz": {
+        "nevoa": {
+          "sobre_abismo": 0.6,
+          "densidade": 0.03,
+          "focos": [
+            {
+              "x": 27,
+              "y": 10,
+              "rx": 6,
+              "ry": 14,
+              "densidade": 0.08
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "regioes": [
+    {
+      "material": "abismo",
+      "forma": "retangulo",
+      "x0": 10,
+      "y0": -1,
+      "x1": 20,
+      "y1": 21,
+      "corrente": "vertical",
+      "pedras_na_borda": 34
+    }
+  ],
+  "linhas": [
+    {
+      "tipo": "estrada",
+      "pontos": [
+        [
+          -1,
+          10
+        ],
+        [
+          9,
+          10
+        ]
+      ],
+      "largura": 6
+    },
+    {
+      "tipo": "estrada",
+      "pontos": [
+        [
+          21,
+          10
+        ],
+        [
+          31,
+          10
+        ]
+      ],
+      "largura": 6
+    }
+  ],
+  "estruturas": [
+    {
+      "tipo": "ponte",
+      "x0": 9,
+      "y0": 7,
+      "x1": 21,
+      "y1": 13,
+      "material": "ferro",
+      "por_fase": {
+        "2": {
+          "buraco": {
+            "x0": 13,
+            "x1": 17
+          }
+        }
+      }
+    }
+  ],
+  "objetos": [
+    {
+      "tipo": "arvore",
+      "x": 2.2,
+      "y": 2.4,
+      "r": 2.0
+    },
+    {
+      "tipo": "arvore",
+      "x": 6.8,
+      "y": 1.2,
+      "r": 1.5
+    },
+    {
+      "tipo": "arvore",
+      "x": 1.6,
+      "y": 17.4,
+      "r": 2.1
+    },
+    {
+      "tipo": "arvore",
+      "x": 6.4,
+      "y": 18.6,
+      "r": 1.6
+    },
+    {
+      "tipo": "arvore",
+      "x": 27.8,
+      "y": 2.0,
+      "r": 2.1
+    },
+    {
+      "tipo": "arvore",
+      "x": 23.8,
+      "y": 1.0,
+      "r": 1.5
+    },
+    {
+      "tipo": "arvore",
+      "x": 27.6,
+      "y": 17.7,
+      "r": 2.2
+    },
+    {
+      "tipo": "arvore",
+      "x": 23.6,
+      "y": 18.7,
+      "r": 1.6
+    },
+    {
+      "tipo": "arbusto",
+      "x": 8.2,
+      "y": 5.2,
+      "r": 0.6
+    },
+    {
+      "tipo": "arbusto",
+      "x": 8.6,
+      "y": 15.0,
+      "r": 0.7
+    },
+    {
+      "tipo": "arbusto",
+      "x": 22.6,
+      "y": 5.0,
+      "r": 0.6
+    },
+    {
+      "tipo": "arbusto",
+      "x": 22.4,
+      "y": 15.2,
+      "r": 0.7
+    },
+    {
+      "tipo": "arbusto",
+      "x": 0.8,
+      "y": 6.0,
+      "r": 0.55
+    },
+    {
+      "tipo": "arbusto",
+      "x": 1.2,
+      "y": 14.2,
+      "r": 0.6
+    },
+    {
+      "tipo": "arbusto",
+      "x": 29.0,
+      "y": 6.0,
+      "r": 0.5
+    },
+    {
+      "tipo": "arbusto",
+      "x": 29.0,
+      "y": 14.5,
+      "r": 0.6
+    },
+    {
+      "tipo": "pedra",
+      "x": 8.0,
+      "y": 3.5,
+      "r": 0.6
+    },
+    {
+      "tipo": "pedra",
+      "x": 9.2,
+      "y": 16.5,
+      "r": 0.7
+    },
+    {
+      "tipo": "pedra",
+      "x": 21.2,
+      "y": 3.8,
+      "r": 0.6
+    },
+    {
+      "tipo": "pedra",
+      "x": 20.8,
+      "y": 16.2,
+      "r": 0.55
+    },
+    {
+      "tipo": "pedra",
+      "x": 5.0,
+      "y": 15.0,
+      "r": 0.5
+    },
+    {
+      "tipo": "pedra",
+      "x": 27.0,
+      "y": 4.5,
+      "r": 0.5
+    },
+    {
+      "tipo": "pedra",
+      "x": 3.5,
+      "y": 5.2,
+      "r": 0.45
+    },
+    {
+      "tipo": "carroca",
+      "x": 5.875,
+      "y": 10
+    },
+    {
+      "tipo": "lampiao",
+      "x": 6.8,
+      "y": 9.2
+    },
+    {
+      "tipo": "caixote",
+      "x": 3.3,
+      "y": 8.0
+    },
+    {
+      "tipo": "caixote",
+      "x": 26.6,
+      "y": 7.45
+    },
+    {
+      "tipo": "caixote",
+      "x": 26.9,
+      "y": 12.45
+    },
+    {
+      "tipo": "barril",
+      "x": 27.8,
+      "y": 8.0
+    },
+    {
+      "tipo": "barril",
+      "x": 27.6,
+      "y": 12.2
+    },
+    {
+      "tipo": "tronco",
+      "x0": 25.2,
+      "y0": 6.4,
+      "x1": 25.35,
+      "y1": 9.6,
+      "largura": 0.5
+    },
+    {
+      "tipo": "tronco",
+      "x0": 25.95,
+      "y0": 6.7,
+      "x1": 25.85,
+      "y1": 9.4,
+      "largura": 0.45
+    },
+    {
+      "tipo": "tronco",
+      "x0": 25.3,
+      "y0": 11.4,
+      "x1": 25.2,
+      "y1": 13.6,
+      "largura": 0.5
+    },
+    {
+      "tipo": "tronco",
+      "x0": 25.9,
+      "y0": 11.6,
+      "x1": 26.0,
+      "y1": 13.4,
+      "largura": 0.45
+    },
+    {
+      "tipo": "pano",
+      "x": 25.7,
+      "y": 9.6
+    },
+    {
+      "tipo": "pano",
+      "x": 25.75,
+      "y": 11.6
+    }
+  ],
+  "px_por_quadrado": 100,
+  "cm_por_quadrado": 2.5
+}
