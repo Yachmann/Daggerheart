@@ -64,6 +64,76 @@
       "thumb": "mapas/cripta-esquecida/thumb.jpg",
       "spec": "mapas/cripta-esquecida/spec.json",
       "criado": "2026-11-23 14:37"
+    },
+    {
+      "id": "one-shot-a-coroa-de-sal-o-ultimo-fogo",
+      "nome": "One-shot · A Coroa de Sal · O Último Fogo",
+      "descricao": "Farol da Viúva: torre de pedra com a porta virada para a duna, pátio murado com um portão, galpão do óleo e a praia de cascalho onde os onze barcos vão encostar.",
+      "grade": [
+        32,
+        22
+      ],
+      "cm_por_quadrado": 2.5,
+      "fases": [
+        {
+          "id": "1",
+          "nome": "Fase 1 · Farol apagado",
+          "imagem": "mapas/one-shot-a-coroa-de-sal-o-ultimo-fogo/1.jpg"
+        },
+        {
+          "id": "2",
+          "nome": "Fase 2 · Farol aceso",
+          "imagem": "mapas/one-shot-a-coroa-de-sal-o-ultimo-fogo/2.jpg"
+        }
+      ],
+      "thumb": "mapas/one-shot-a-coroa-de-sal-o-ultimo-fogo/thumb.jpg",
+      "spec": "mapas/one-shot-a-coroa-de-sal-o-ultimo-fogo/spec.json",
+      "criado": "2026-11-23 19:55"
+    },
+    {
+      "id": "one-shot-a-coroa-de-sal-cais-em-chamas",
+      "nome": "One-shot · A Coroa de Sal · Cais em Chamas",
+      "descricao": "Cais Vinte e Dois ao entardecer: galpão da Companhia à esquerda, barris de óleo espalhados, pilhas de caixas e duas embarcações atracadas.",
+      "grade": [
+        30,
+        20
+      ],
+      "cm_por_quadrado": 2.5,
+      "fases": [
+        {
+          "id": "1",
+          "nome": "Principal",
+          "imagem": "mapas/one-shot-a-coroa-de-sal-cais-em-chamas/1.jpg"
+        }
+      ],
+      "thumb": "mapas/one-shot-a-coroa-de-sal-cais-em-chamas/thumb.jpg",
+      "spec": "mapas/one-shot-a-coroa-de-sal-cais-em-chamas/spec.json",
+      "criado": "2026-11-23 19:56"
+    },
+    {
+      "id": "one-shot-a-coroa-de-sal-o-passo-da-mare",
+      "nome": "One-shot · A Coroa de Sal · O Passo da Maré",
+      "descricao": "Língua de pedra e areia entre os Baixios (salinas, a oeste) e a duna da costa (a leste). A maré cobre os dois lados do Passo; na fase 2 só resta uma faixa estreita no meio.",
+      "grade": [
+        32,
+        20
+      ],
+      "cm_por_quadrado": 2.5,
+      "fases": [
+        {
+          "id": "1",
+          "nome": "Maré baixa",
+          "imagem": "mapas/one-shot-a-coroa-de-sal-o-passo-da-mare/1.jpg"
+        },
+        {
+          "id": "2",
+          "nome": "Maré alta (Maré em 4 ou mais)",
+          "imagem": "mapas/one-shot-a-coroa-de-sal-o-passo-da-mare/2.jpg"
+        }
+      ],
+      "thumb": "mapas/one-shot-a-coroa-de-sal-o-passo-da-mare/thumb.jpg",
+      "spec": "mapas/one-shot-a-coroa-de-sal-o-passo-da-mare/spec.json",
+      "criado": "2026-11-23 19:57"
     }
   ]
 }

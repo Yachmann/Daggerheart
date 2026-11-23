@@ -1,0 +1,314 @@
+{
+  "formato": "daggerheart-mapa",
+  "versao": 1,
+  "nome": "One-shot · A Coroa de Sal · Cais em Chamas",
+  "descricao": "Cais Vinte e Dois ao entardecer: galpão da Companhia à esquerda, barris de óleo espalhados, pilhas de caixas e duas embarcações atracadas.",
+  "grade": [
+    30,
+    20
+  ],
+  "bioma": "cidade",
+  "seed": 22,
+  "luz": {
+    "clima": "entardecer"
+  },
+  "regioes": [
+    {
+      "material": "pedra",
+      "forma": "retangulo",
+      "x0": 0,
+      "y0": 0,
+      "x1": 30,
+      "y1": 10.5,
+      "borda": "reta"
+    },
+    {
+      "material": "madeira",
+      "forma": "retangulo",
+      "x0": 0,
+      "y0": 10.5,
+      "x1": 30,
+      "y1": 13.5,
+      "borda": "reta"
+    },
+    {
+      "material": "agua",
+      "forma": "retangulo",
+      "x0": -1,
+      "y0": 13.5,
+      "x1": 31,
+      "y1": 21,
+      "borda": "reta",
+      "corrente": "horizontal",
+      "pedras_na_borda": 0
+    }
+  ],
+  "estruturas": [
+    {
+      "tipo": "sala",
+      "x0": 1.5,
+      "y0": 1.5,
+      "x1": 11.5,
+      "y1": 9.5,
+      "piso": "madeira",
+      "espessura": 0.4
+    },
+    {
+      "tipo": "porta",
+      "x": 11.5,
+      "y": 5.5,
+      "orientacao": "v",
+      "larg": 1.6,
+      "estilo": "aberta"
+    },
+    {
+      "tipo": "porta",
+      "x": 6.5,
+      "y": 9.5,
+      "orientacao": "h",
+      "larg": 1.4,
+      "estilo": "aberta"
+    }
+  ],
+  "objetos": [
+    {
+      "tipo": "cama",
+      "x": 3.2,
+      "y": 4.2,
+      "rot": 90
+    },
+    {
+      "tipo": "mesa",
+      "x": 8,
+      "y": 3.5,
+      "larg": 2.4,
+      "alt": 1.1
+    },
+    {
+      "tipo": "caixote",
+      "x": 9.5,
+      "y": 8.2
+    },
+    {
+      "tipo": "caixote",
+      "x": 3,
+      "y": 8.3
+    },
+    {
+      "tipo": "bau",
+      "x": 13.2,
+      "y": 6.2,
+      "rot": 0
+    },
+    {
+      "tipo": "caixote",
+      "x": 14.2,
+      "y": 2.8
+    },
+    {
+      "tipo": "caixote",
+      "x": 15.2,
+      "y": 2.9,
+      "rot": 12
+    },
+    {
+      "tipo": "caixote",
+      "x": 14.7,
+      "y": 3.8,
+      "rot": -8
+    },
+    {
+      "tipo": "caixote",
+      "x": 26.2,
+      "y": 2.6
+    },
+    {
+      "tipo": "caixote",
+      "x": 27.2,
+      "y": 2.8,
+      "rot": 10
+    },
+    {
+      "tipo": "caixote",
+      "x": 26.7,
+      "y": 3.7
+    },
+    {
+      "tipo": "caixote",
+      "x": 21.5,
+      "y": 11.8,
+      "rot": 6
+    },
+    {
+      "tipo": "caixote",
+      "x": 22.5,
+      "y": 11.9
+    },
+    {
+      "tipo": "barril",
+      "x": 18.2,
+      "y": 4.6
+    },
+    {
+      "tipo": "barril",
+      "x": 19.0,
+      "y": 5.3
+    },
+    {
+      "tipo": "barril",
+      "x": 23.8,
+      "y": 9.2
+    },
+    {
+      "tipo": "barril",
+      "x": 24.7,
+      "y": 9.9
+    },
+    {
+      "tipo": "barril",
+      "x": 12.8,
+      "y": 12.0
+    },
+    {
+      "tipo": "barril",
+      "x": 13.7,
+      "y": 12.3
+    },
+    {
+      "tipo": "carroca",
+      "x": 17.5,
+      "y": 11.2,
+      "rot": 90
+    },
+    {
+      "tipo": "entulho",
+      "x": 20.2,
+      "y": 7.6,
+      "r": 0.5
+    },
+    {
+      "tipo": "lampiao",
+      "x": 1.2,
+      "y": 11.4
+    },
+    {
+      "tipo": "lampiao",
+      "x": 15.2,
+      "y": 10.9
+    },
+    {
+      "tipo": "lampiao",
+      "x": 28.6,
+      "y": 11.4
+    },
+    {
+      "tipo": "forma",
+      "pontos": [
+        [
+          3,
+          14.2
+        ],
+        [
+          11.5,
+          14.2
+        ],
+        [
+          12.4,
+          15.6
+        ],
+        [
+          11.5,
+          18.2
+        ],
+        [
+          3,
+          18.2
+        ],
+        [
+          2.1,
+          15.6
+        ]
+      ],
+      "material": "madeira"
+    },
+    {
+      "tipo": "caixote",
+      "x": 5,
+      "y": 15.6
+    },
+    {
+      "tipo": "caixote",
+      "x": 6.1,
+      "y": 15.9,
+      "rot": 10
+    },
+    {
+      "tipo": "caixote",
+      "x": 8.4,
+      "y": 16.4
+    },
+    {
+      "tipo": "forma",
+      "pontos": [
+        [
+          19.5,
+          14.2
+        ],
+        [
+          26.5,
+          14.2
+        ],
+        [
+          27.6,
+          15.9
+        ],
+        [
+          26.5,
+          18.4
+        ],
+        [
+          19.5,
+          18.4
+        ],
+        [
+          18.6,
+          15.9
+        ]
+      ],
+      "material": "madeira"
+    },
+    {
+      "tipo": "pilar",
+      "x": 23,
+      "y": 16.2,
+      "r": 0.35
+    },
+    {
+      "tipo": "barril",
+      "x": 20.8,
+      "y": 16.9
+    },
+    {
+      "tipo": "pano",
+      "x": 25.2,
+      "y": 16.4,
+      "rot": 20
+    },
+    {
+      "tipo": "tronco",
+      "x0": 2.6,
+      "y0": 13.9,
+      "x1": 12,
+      "y1": 13.9,
+      "largura": 0.25
+    }
+  ],
+  "px_por_quadrado": 100,
+  "cm_por_quadrado": 2.5,
+  "fases": [
+    {
+      "id": "1",
+      "nome": "Principal"
+    }
+  ]
+}
