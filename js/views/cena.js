@@ -1,7 +1,7 @@
 // Condução da cena complexa: Contadores em disputa, tabela de resultados, Medo do mestre, gatilhos, fim, log e desfazer.
 import { esc, mdBlock, md, icon, uid, toast, confirmar, openSheet, closeSheet } from "../util.js";
 import * as K from "../cena.js";
-import { GM, achaCena, salvarGM } from "../gm.js";
+import { GM, achaCena, salvarGM, mesasDoMestre, mesaDe } from "../gm.js";
 import { app } from "../main.js";
 import { envBlock, pipsU } from "./mestre-ui.js";
 import { voltar } from "./common.js";
@@ -120,10 +120,11 @@ function menu() {
   const c = C();
   const w = openSheet(`<label class="f">Nome<input type="text" id="mn" value="${esc(c.nome)}"></label>
     <label class="f" style="margin-top:10px">Objetivo<textarea id="mo" style="min-height:70px">${esc(c.objetivo)}</textarea></label>
+    <label class="f" style="margin-top:10px">Mesa<select id="mm"><option value="">Nenhuma</option>${mesasDoMestre().map(m => `<option value="${m.id}"${mesaDe(c) === m.id ? " selected" : ""}>${esc(m.nome)}</option>`).join("")}</select></label>
     <label class="switch"><input type="checkbox" id="ma" ${c.config.medoAuto ? "checked" : ""}><span class="t"><b>+1 de Medo nos resultados “com Medo”</b><span>O mestre ganha 1 de Medo quando a rolagem sai com Medo (sucesso ou falha). Desligue se preferir contar no papel.</span></span></label>
     <div class="acts"><button class="btn hope" id="msv">Salvar</button></div><div class="divider"></div>
     <div class="acts" style="margin-top:0"><button class="btn" id="mdup">Duplicar cena</button><button class="btn" id="mrs">Reiniciar a cena</button><button class="btn danger" id="mdel">${icon("trash")} Excluir</button></div>`, { title: "Opções da cena" });
-  w.querySelector("#msv").addEventListener("click", () => { edQuiet(x => { x.nome = w.querySelector("#mn").value.trim() || x.nome; x.objetivo = w.querySelector("#mo").value; x.config.medoAuto = w.querySelector("#ma").checked; }); closeSheet(); app.render(true); });
+  w.querySelector("#msv").addEventListener("click", () => { edQuiet(x => { x.nome = w.querySelector("#mn").value.trim() || x.nome; x.objetivo = w.querySelector("#mo").value; x.mesa = w.querySelector("#mm").value || null; x.config.medoAuto = w.querySelector("#ma").checked; }); closeSheet(); app.render(true); });
   w.querySelector("#mdup").addEventListener("click", () => { const d = JSON.parse(JSON.stringify(c)); d.id = uid(); d.nome += " (cópia)"; K.reiniciar(d); d.criadaEm = Date.now(); GM.batalhas.unshift(d); salvarGM(); closeSheet(); location.hash = "#/mestre/cena/" + d.id; });
   w.querySelector("#mrs").addEventListener("click", async () => { closeSheet(); if (await confirmar("Reiniciar a cena? Contadores, Medo, rodada, log e gatilhos voltam ao início.", { ok: "Reiniciar" })) { ed(x => K.reiniciar(x)); toast("Cena reiniciada"); } });
   w.querySelector("#mdel").addEventListener("click", async () => { closeSheet(); if (await confirmar("Excluir esta cena? Não dá para desfazer.", { ok: "Excluir", perigo: true })) { GM.batalhas = GM.batalhas.filter(x => x.id !== ID); salvarGM(); location.hash = "#/mestre"; } });

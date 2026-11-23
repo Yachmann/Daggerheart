@@ -1,56 +1,104 @@
 // Cartões de adversário e suas ações. Usado pela batalha e pela cena (ctx = { reg, ed, edQuiet }).
-import { esc, mdBlock, icon, uid, toast, confirmar, openSheet, closeSheet } from "../util.js";
+import { esc, mdBlock, icon, uid, toast, confirmar, openSheet, closeSheet, store } from "../util.js";
 import { T, dmgPT } from "../data.js";
 import { adversarios, pvPorDano, CONDICOES, TIPO_PT, adicionar } from "../gm.js";
 import { statBlock, pipsU, tipoTag, kindTag, fonteTag } from "./mestre-ui.js";
 import { condFx, condBanner } from "./common.js";
 import { casaLembrete } from "../cena.js";
+import { FIGURAS, POR_FIGURA, valido, rotulo, ocupados, proximo, atribuirFaltantes, definir } from "../marcadores.js";
+import { app } from "../main.js";
 
 const CONDCLS = { Vulnerável: "vuln", Contido: "restr", Oculto: "hide" };
+// Vista dos adversários: "lista" (uma linha por adversário, esticada para o lado) ou "grade" (cartões compactos lado a lado).
+let vista = store.get("dh-uvista", "lista"), mapaAberto = true;
+document.addEventListener("toggle", e => { if (e.target.matches && e.target.matches("details[data-mapa]")) mapaAberto = e.target.open; }, true);
 
 function seloLembrete(x, reg) {
   const l = ((reg && reg.lembretes) || []).filter(m => !m.feito && m.adversario && casaLembrete(m.adversario, x));
   if (!l.length) return "";
   return `<div class="lem-selos">${l.map(m => `<button class="lem-selo ${esc(m.tipo)}" data-lm="abrir" data-id="${esc(m.id)}" title="${esc(m.texto || m.titulo)}">⚑ ${esc(m.titulo)}</button>`).join("")}</div>`;
 }
+
+// Ficha visual do marcador físico: a figura do token com o número em cima, como na peça de verdade.
+export const tokenImg = (mk, cls = "") => (valido(mk)
+  ? `<span class="tk ${cls}" title="${esc(rotulo(mk))}"><img src="${FIGURAS[mk.f].img}" alt="${esc(FIGURAS[mk.f].n)}" draggable="false"><b>${mk.n}</b></span>`
+  : `<span class="tk vazio ${cls}"><b>+</b></span>`);
+
 export function cartaoUnidade(x, reg) {
   const morto = x.hp >= x.hpMax, minion = x.type === "Minion";
   const fx = condFx(x.cond);
-  return `<article class="ucard${morto ? " dead" : ""}${fx.cls} ty-${esc(x.type)}" style="${fx.style}">
-    <div class="uc-h">
-      <span class="numb" title="Mesmo número do marcador na mesa">${x.num}</span>
-      <div class="uc-id">
-        <input class="uc-name" data-in="uname" data-id="${x.id}" data-k="un${x.id}" value="${esc(x.name)}" aria-label="Nome">
-        <input class="uc-desc" data-in="udesc" data-id="${x.id}" data-k="ud${x.id}" value="${esc(x.desc || "")}" placeholder="Nota rápida (ex.: o do capuz vermelho)" aria-label="Nota rápida">
-      </div>
+  const ext = seloLembrete(x, reg) + condBanner(x.cond, "ele");
+  return `<article id="u-${x.id}" class="ucard${morto ? " dead" : ""}${fx.cls} ty-${esc(x.type)}" style="${fx.style}">
+    <button class="uc-tok" data-act="utok" data-id="${x.id}" title="${valido(x.mk) ? esc(rotulo(x.mk)) + ": toque para trocar o marcador" : "Escolher o marcador deste adversário"}" aria-label="Marcador: ${esc(rotulo(x.mk))}. Trocar">${tokenImg(x.mk)}</button>
+    <div class="uc-id">
+      <div class="uc-l1"><input class="uc-name" data-in="uname" data-id="${x.id}" data-k="un${x.id}" value="${esc(x.name)}" aria-label="Nome"><span class="tag">${esc(tipoTag(x))}</span>${morto ? `<span class="tag dead">Derrotado</span>` : ""}</div>
+      <input class="uc-desc" data-in="udesc" data-id="${x.id}" data-k="ud${x.id}" value="${esc(x.desc || "")}" placeholder="Nota rápida (ex.: o do capuz vermelho)" aria-label="Nota rápida">
+    </div>
+    <div class="uc-trk2">
+      <div class="uc-t"><span class="lb">PV</span><div class="pips pv">${pipsU(x.hpMax, x.hp, "uhp", x.id)}</div></div>
+      ${x.stMax ? `<div class="uc-t"><span class="lb">Est.</span><div class="pips es">${pipsU(x.stMax, x.st, "ust", x.id)}</div></div>` : ""}
+    </div>
+    <div class="cond-row">${CONDICOES.map(c => `<button class="chip ${CONDCLS[c]}${x.cond.includes(c) ? " on" : ""}" data-act="ucond" data-id="${x.id}" data-c="${c}" aria-pressed="${x.cond.includes(c)}">${c}</button>`).join("")}${x.cond.filter(c => !CONDICOES.includes(c)).map(c => `<button class="chip on" data-act="ucond" data-id="${x.id}" data-c="${esc(c)}">${esc(c)} ✕</button>`).join("")}</div>
+    <div class="uc-quick"><span>Dif <b>${esc(x.dif)}</b></span><span>Lim. <b>${x.maj ?? "–"}/${x.sev ?? "–"}</b></span><span>${esc(x.atk)} <b>${esc(x.wpn)}</b></span><span>${esc(T(x.rng))}</span><span><b>${esc(dmgPT(x.dmg))}</b></span></div>
+    <div class="uc-act">
+      ${minion ? `<button class="btn sm" data-act="udie" data-id="${x.id}">Derrotar</button>`
+        : `<div class="dmg-box"><input type="number" inputmode="numeric" min="0" placeholder="Dano" data-in="udmg" data-id="${x.id}" data-k="dm${x.id}" aria-label="Dano recebido"><button class="btn fear" data-act="udmg" data-id="${x.id}">Aplicar</button></div>`}
+      <button class="btn sm ghost" data-act="uhab" data-id="${x.id}" title="Habilidades, experiência, motivações e anotações">Habil. (${x.f.length})</button>
       <button class="icon-btn" data-act="umenu" data-id="${x.id}" aria-label="Mais opções">⋯</button>
     </div>
-    <div class="uc-tags"><span class="tag">${esc(tipoTag(x))}</span><span class="tag ${morto ? "dead" : "hope"}">${morto ? "Derrotado" : "Em combate"}</span></div>
-    ${seloLembrete(x, reg)}
-    ${condBanner(x.cond, "ele")}
-    <div class="uc-trk"><span class="lb">PV</span><div class="pips pv">${pipsU(x.hpMax, x.hp, "uhp", x.id)}</div></div>
-    ${x.stMax ? `<div class="uc-trk"><span class="lb">Estresse</span><div class="pips es">${pipsU(x.stMax, x.st, "ust", x.id)}</div></div>` : ""}
-    <div class="cond-row">${CONDICOES.map(c => `<button class="chip ${CONDCLS[c]}${x.cond.includes(c) ? " on" : ""}" data-act="ucond" data-id="${x.id}" data-c="${c}" aria-pressed="${x.cond.includes(c)}">${c}</button>`).join("")}${x.cond.filter(c => !CONDICOES.includes(c)).map(c => `<button class="chip on" data-act="ucond" data-id="${x.id}" data-c="${esc(c)}">${esc(c)} ✕</button>`).join("")}</div>
-    <div class="uc-quick"><span>Dif <b>${esc(x.dif)}</b></span><span>Limiares <b>${x.maj ?? "–"}/${x.sev ?? "–"}</b></span><span>${esc(x.atk)} <b>${esc(x.wpn)}</b></span><span>${esc(T(x.rng))}</span><span><b>${esc(dmgPT(x.dmg))}</b></span></div>
-    ${minion ? `<div class="acts" style="margin-top:8px"><button class="btn sm" data-act="udie" data-id="${x.id}">Derrotar (qualquer dano)</button></div>`
-      : `<div class="dmg-box"><input type="number" inputmode="numeric" min="0" placeholder="Dano recebido" data-in="udmg" data-id="${x.id}" data-k="dm${x.id}" aria-label="Dano recebido"><button class="btn fear" data-act="udmg" data-id="${x.id}">Aplicar</button></div>`}
-    <button class="more-btn" data-act="uopen" data-id="${x.id}" aria-expanded="${!!x.open}">${x.open ? "Ocultar" : "Habilidades"} (${x.f.length}) ${icon("chev", x.open ? "rot" : "")}</button>
-    ${x.open ? `<div class="uc-more">${x.xp ? `<p><b>Experiência:</b> ${esc(x.xp)}</p>` : ""}${x.mot ? `<p><b>Motivações:</b> ${esc(x.mot)}</p>` : ""}
-      ${x.f.map(f => `<div class="feat"><div class="feat-h"><b>${esc(f.n)}</b> ${kindTag(f.k)}</div><div class="tx">${mdBlock(f.t)}</div></div>`).join("")}
-      <label class="f" style="margin-top:8px">Anotações<textarea data-in="unotes" data-id="${x.id}" data-k="uo${x.id}">${esc(x.notes || "")}</textarea></label></div>` : ""}
+    ${ext ? `<div class="uc-ext">${ext}</div>` : ""}
   </article>`;
 }
 
+// Mapa dos marcadores: quando o jogador diz "vou atacar o encapuzado 3", é só olhar a linha da figura e o número.
+function mapaMarcadores(reg) {
+  const us = reg.unidades, oc = ocupados(reg), sem = us.filter(u => !valido(u.mk)).length;
+  if (!us.length) return "";
+  const linhas = FIGURAS.map((fg, f) => {
+    if (!us.some(u => valido(u.mk) && u.mk.f === f)) return "";
+    const cels = Array.from({ length: POR_FIGURA }, (_, i) => {
+      const n = i + 1, u = oc.get(f + ":" + n);
+      return u ? `<button class="mp-c${u.hp >= u.hpMax ? " dead" : ""}" data-act="uir" data-id="${u.id}" title="${esc(u.name)}: ir ao cartão"><b>${n}</b><span>${esc(u.name)}</span><i>${u.hpMax - u.hp}/${u.hpMax}</i></button>` : `<span class="mp-c vazio"><b>${n}</b></span>`;
+    }).join("");
+    return `<div class="mp-row"><img src="${fg.img}" alt="${esc(fg.n)}" title="${esc(fg.n)}" draggable="false"><div class="mp-cells">${cels}</div></div>`;
+  }).join("");
+  return `<details class="mapa" data-mapa ${mapaAberto ? "open" : ""}><summary><span>Marcadores na mesa</span><span class="muted small">${us.length - sem} de ${us.length} com marcador</span></summary>
+    ${linhas || `<p class="muted small" style="margin:6px 0">Nenhum adversário tem marcador ainda.</p>`}
+    ${sem ? `<div class="acts" style="margin-top:8px"><button class="btn sm hope" data-act="umkauto">Dar marcador a ${sem === 1 ? "1 adversário" : sem + " adversários"} sem marcador</button></div>` : ""}</details>`;
+}
+
 export function painelUnidades(reg, titulo = "Adversários") {
-  return `<div class="sec-line"><h2>${titulo}</h2><button class="btn sm" data-act="addadv">${icon("plus")} Adicionar</button></div>
-  ${reg.unidades.length ? `<div class="ucards">${reg.unidades.map(u => cartaoUnidade(u, reg)).join("")}</div>` : `<div class="empty"><h3>Ninguém aqui ainda</h3><p>Adicione adversários da biblioteca ou crie um do zero.</p><div class="acts" style="justify-content:center"><button class="btn hope" data-act="addadv">${icon("plus")} Adicionar adversário</button><a class="btn" href="#/mestre/adversario/novo">Criar do zero</a></div></div>`}`;
+  const vb = (v, n) => `<button class="chip${vista === v ? " on" : ""}" data-act="uvista" data-v="${v}" aria-pressed="${vista === v}">${n}</button>`;
+  return `<div class="sec-line"><h2>${titulo}</h2>${reg.unidades.length > 1 ? `<span class="vista-sw" role="group" aria-label="Forma de exibição">${vb("lista", "Lista")}${vb("grade", "Grade")}</span>` : ""}<button class="btn sm" data-act="addadv">${icon("plus")} Adicionar</button></div>
+  ${mapaMarcadores(reg)}
+  ${reg.unidades.length ? `<div class="ucards v-${vista}">${reg.unidades.map(u => cartaoUnidade(u, reg)).join("")}</div>` : `<div class="empty"><h3>Ninguém aqui ainda</h3><p>Adicione adversários da biblioteca ou crie um do zero.</p><div class="acts" style="justify-content:center"><button class="btn hope" data-act="addadv">${icon("plus")} Adicionar adversário</button><a class="btn" href="#/mestre/adversario/novo">Criar do zero</a></div></div>`}`;
+}
+
+// Pop-up com tudo o que não cabe no cartão: números, habilidades, experiência, motivações e anotações.
+function sheetHabilidades(id, ctx) {
+  const x = ctx.reg().unidades.find(u => u.id === id); if (!x) return;
+  openSheet(`<div class="hab-top">${tokenImg(x.mk, "grande")}<div class="muted small">${valido(x.mk) ? "Marcador: <b>" + esc(rotulo(x.mk)) + "</b>" : "Sem marcador"}${x.desc ? " · " + esc(x.desc) : ""}</div></div>
+    ${statBlock({ name: x.name, tier: x.tier, type: x.type, horde: x.horde, desc: "", dif: x.dif, th: `${x.maj ?? "None"}/${x.sev ?? ""}`, hp: x.hpMax, st: x.stMax, atk: x.atk, wpn: x.wpn, rng: x.rng, dmg: x.dmg, xp: x.xp, mot: x.mot, f: x.f })}
+    <label class="f" style="margin-top:12px">Anotações<textarea data-in="unotes" data-id="${x.id}" data-k="uo${x.id}">${esc(x.notes || "")}</textarea></label>`, { title: x.name, wide: true });
+}
+
+// Escolha do marcador: 5 figuras × 5 números. Os que já estão em uso mostram o adversário; tocar neles troca os dois de lugar.
+function sheetMarcador(id, ctx) {
+  const reg = ctx.reg(), u = reg.unidades.find(x => x.id === id); if (!u) return;
+  const oc = ocupados(reg, u);
+  const linhas = FIGURAS.map((fg, f) => `<div class="mk-row"><img src="${fg.img}" alt="${esc(fg.n)}" title="${esc(fg.n)}" draggable="false"><div class="mk-nums">${Array.from({ length: POR_FIGURA }, (_, i) => {
+    const n = i + 1, o = oc.get(f + ":" + n), eu = valido(u.mk) && u.mk.f === f && u.mk.n === n;
+    return `<button class="mk-n${eu ? " eu" : ""}${o ? " usado" : ""}" data-act="utokset" data-id="${id}" data-f="${f}" data-n="${n}" title="${o ? esc(o.name) + " usa este marcador: toque para trocar" : eu ? "Marcador atual" : "Livre"}"><b>${n}</b>${o ? `<small>${esc(o.name)}</small>` : eu ? `<small>este</small>` : ""}</button>`;
+  }).join("")}</div></div>`).join("");
+  openSheet(`<p class="muted small" style="margin-top:0">Qual marcador físico representa <b>${esc(u.name)}</b>? Os ocupados mostram o adversário; ao tocar, os dois trocam de lugar.</p>${linhas}
+    <div class="acts"><button class="btn" data-act="utokauto" data-id="${id}">Escolher automático</button><button class="btn ghost" data-act="utoknone" data-id="${id}">Sem marcador</button></div>`, { title: "Marcador: " + u.name, wide: true });
 }
 
 function menuUnidade(id, ctx) {
   const ed = ctx.ed, u = ctx.reg().unidades.find(x => x.id === id);
   const w = openSheet(`<div class="acts" style="margin-top:0"><button class="btn" id="ud">Duplicar</button><button class="btn" id="ur">Restaurar PV e Estresse</button><button class="btn" id="uc">Condição personalizada</button><button class="btn danger" id="ux">${icon("trash")} Remover</button></div>
     <div class="divider"></div>${statBlock({ name: u.name, tier: u.tier, type: u.type, horde: u.horde, desc: "", dif: u.dif, th: `${u.maj ?? "None"}/${u.sev ?? ""}`, hp: u.hpMax, st: u.stMax, atk: u.atk, wpn: u.wpn, rng: u.rng, dmg: u.dmg, xp: u.xp, mot: u.mot, f: u.f })}`, { title: u.name });
-  w.querySelector("#ud").addEventListener("click", () => { ed(b => { const c = JSON.parse(JSON.stringify(u)); c.id = uid(); c.num = b.proxNum++; c.hp = 0; c.st = 0; c.cond = []; c.name = u.name.replace(/ \d+$/, "") + " " + (b.unidades.filter(x => x.ref === u.ref).length + 1); b.unidades.splice(b.unidades.indexOf(u) + 1, 0, c); }); closeSheet(); toast("Duplicado"); });
+  w.querySelector("#ud").addEventListener("click", () => { ed(b => { const c = JSON.parse(JSON.stringify(u)); c.id = uid(); c.num = b.proxNum++; c.hp = 0; c.st = 0; c.cond = []; c.mk = proximo(b, u.ref); c.name = u.name.replace(/ \d+$/, "") + " " + (b.unidades.filter(x => x.ref === u.ref).length + 1); b.unidades.splice(b.unidades.indexOf(u) + 1, 0, c); }); closeSheet(); toast("Duplicado"); });
   w.querySelector("#ur").addEventListener("click", () => { ed(() => { u.hp = 0; u.st = 0; u.cond = []; }); closeSheet(); });
   w.querySelector("#uc").addEventListener("click", () => { closeSheet(); const w2 = openSheet(`<label class="f">Condição<input type="text" id="cn" placeholder="Ex.: Atordoado"></label><div class="acts"><button class="btn hope" id="cok">Adicionar</button></div>`, { title: "Nova condição" }); w2.querySelector("#cok").addEventListener("click", () => { const v = w2.querySelector("#cn").value.trim(); if (v) ed(() => u.cond.push(v)); closeSheet(); }); });
   w.querySelector("#ux").addEventListener("click", async () => { closeSheet(); if (await confirmar(`Remover ${u.name} da batalha?`, { ok: "Remover", perigo: true })) ed(b => { b.unidades = b.unidades.filter(x => x.id !== id); }); });
@@ -101,7 +149,14 @@ export function unidadeOn(a, el, ctx) {
       ed(() => { u.hp = Math.min(u.hpMax, u.hp + n); });
       toast(`${d} de dano: ${n} PV marcado${n !== 1 ? "s" : ""}${u.hp >= u.hpMax ? " · derrotado" : ""}`); return true;
     }
-    case "uopen": ed(() => { const u = U(id); u.open = !u.open; }); return true;
+    case "uopen": case "uhab": sheetHabilidades(id, ctx); return true;
+    case "utok": sheetMarcador(id, ctx); return true;
+    case "utokset": ed(() => { const r = ctx.reg(), u = U(id), o = definir(r, u, +el.dataset.f, +el.dataset.n); if (o) toast(`${o.name} trocou de marcador com ${u.name}`); }); closeSheet(); return true;
+    case "utokauto": ed(() => { const r = ctx.reg(), u = U(id); u.mk = null; u.mk = proximo(r, u.ref, u); }); closeSheet(); return true;
+    case "utoknone": ed(() => { U(id).mk = null; }); closeSheet(); return true;
+    case "umkauto": { let n = 0; ed(() => { n = atribuirFaltantes(ctx.reg()); }); toast(n ? `${n} marcador${n > 1 ? "es" : ""} atribuído${n > 1 ? "s" : ""}` : "Todos os 25 marcadores já estão em uso"); return true; }
+    case "uvista": vista = el.dataset.v === "grade" ? "grade" : "lista"; store.set("dh-uvista", vista); app.render(true); return true;
+    case "uir": { const c = document.getElementById("u-" + id); if (c) { c.scrollIntoView({ behavior: "smooth", block: "center" }); c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash"); } return true; }
     case "umenu": menuUnidade(id, ctx); return true;
     case "addadv": sheetAdicionar(ctx); return true;
   }

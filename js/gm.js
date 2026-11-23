@@ -3,6 +3,7 @@ import { store, uid, clone, norm, debounce } from "./util.js";
 import { sb, S, user, onChange } from "./store.js";
 import { hfOn, list, loc } from "./data.js";
 import { validarCena, criarCena, validarLembretes, criarLembretes, casaLembrete } from "./cena.js";
+import { proximo as proximoMarcador } from "./marcadores.js";
 
 // ---------- Constantes ----------
 export const TIPOS = ["Bruiser", "Horde", "Leader", "Minion", "Ranged", "Skulk", "Social", "Solo", "Standard", "Support"];
@@ -53,7 +54,7 @@ export const gmPronto = () => pronto;
 
 // ---------- Estado do mestre (local + nuvem) ----------
 const LK = "dh-mestre-v1";
-const vazio = () => ({ v: 1, ts: 0, batalhas: [], custom: [], notas: [], hooks: [], hooksUsados: {}, locais: [], migrado: false });
+const vazio = () => ({ v: 1, ts: 0, batalhas: [], custom: [], notas: [], hooks: [], hooksUsados: {}, locais: [], migrado: false, mesaAtiva: null });
 export const GM = Object.assign(vazio(), store.get(LK, {}));
 GM.batalhas = GM.batalhas || []; GM.custom = GM.custom || []; GM.notas = GM.notas || []; GM.hooks = GM.hooks || []; GM.hooksUsados = GM.hooksUsados || {}; GM.locais = GM.locais || [];
 export const gmStatus = { s: "local", erro: "" };
@@ -94,6 +95,17 @@ export async function puxarGM() {
 }
 onChange(m => { if (m === "auth" && user()) puxarGM(); });
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && user() && !pushT && !pushing) puxarGM(); });
+
+// ---------- Mesa ativa: o mestre escolhe em qual mesa está trabalhando e só vê batalhas e cenas dela ----------
+export const SEM_MESA = "sem";
+export const mesasDoMestre = () => S.mesas.filter(m => user() && m.mestre === user().id);
+// null = todas as mesas; SEM_MESA = só o que não tem mesa; senão o id de uma mesa que o mestre ainda tem.
+export function mesaAtiva() { const v = GM.mesaAtiva; if (!v) return null; if (v === SEM_MESA) return SEM_MESA; return mesasDoMestre().some(m => m.id === v) ? v : null; }
+export function setMesaAtiva(v) { GM.mesaAtiva = v || null; salvarGM(); }
+export const mesaPadrao = () => { const v = mesaAtiva(); return v && v !== SEM_MESA ? v : null; };
+// Mesa efetiva de um registro (um id de mesa que não existe mais conta como "sem mesa").
+export const mesaDe = r => (r && r.mesa && S.mesas.some(m => m.id === r.mesa) ? r.mesa : null);
+export const naMesaAtiva = r => { const v = mesaAtiva(); return !v || (v === SEM_MESA ? !mesaDe(r) : mesaDe(r) === v); };
 
 // ---------- Biblioteca ----------
 export function adversarios({ todos = false } = {}) {
@@ -142,13 +154,13 @@ export function trocaNome(text, al, name) {
 
 // ---------- Batalhas ----------
 export function novaBatalha(p = {}) {
-  return { id: uid(), nome: p.nome || "Nova batalha", cena: p.cena || "", status: "prep", mesa: p.mesa || null, jogadores: p.jogadores || 4, ajuste: p.ajuste || 0, medo: 0, proxNum: 1, unidades: [], contagens: [], ambiente: null, notas: p.notas || "", recompensas: p.recompensas || "", origem: p.origem || "manual", lembretes: [], criadaEm: Date.now() };
+  return { id: uid(), nome: p.nome || "Nova batalha", cena: p.cena || "", status: "prep", mesa: p.mesa !== undefined ? p.mesa || null : mesaPadrao(), jogadores: p.jogadores || 4, ajuste: p.ajuste || 0, medo: 0, proxNum: 1, unidades: [], contagens: [], ambiente: null, notas: p.notas || "", recompensas: p.recompensas || "", origem: p.origem || "manual", lembretes: [], criadaEm: Date.now() };
 }
 export function novaUnidade(b, a, { nome, desc = "", n = 1 } = {}) {
   const th = parseTh(a.th), num = b.proxNum++;
   const mesmos = b.unidades.filter(x => x.ref === a.name).length;
   const nm = nome || (n > 1 || mesmos ? `${a.name} ${mesmos + 1}` : a.name);
-  return { id: uid(), num, ref: a.name, name: nm, desc, type: a.type, tier: a.tier, horde: a.horde || "", dif: a.dif, maj: th.maj, sev: th.sev, hpMax: Math.max(1, +a.hp || 1), hp: 0, stMax: +a.st || 0, st: 0, atk: a.atk, wpn: a.wpn, rng: a.rng, dmg: a.dmg, xp: a.xp || "", mot: a.mot || "", f: (a.f || []).map(f => ({ n: f.n, k: f.k || "", t: trocaNome(f.t, a.al, nm) })), cond: [], notes: "", open: false };
+  return { id: uid(), num, ref: a.name, name: nm, desc, type: a.type, tier: a.tier, horde: a.horde || "", dif: a.dif, maj: th.maj, sev: th.sev, hpMax: Math.max(1, +a.hp || 1), hp: 0, stMax: +a.st || 0, st: 0, mk: proximoMarcador(b, a.name), atk: a.atk, wpn: a.wpn, rng: a.rng, dmg: a.dmg, xp: a.xp || "", mot: a.mot || "", f: (a.f || []).map(f => ({ n: f.n, k: f.k || "", t: trocaNome(f.t, a.al, nm) })), cond: [], notes: "", open: false };
 }
 export function adicionar(b, a, qtd = 1, extra = {}) {
   qtd = Math.max(1, Math.min(30, qtd | 0 || 1));
@@ -381,7 +393,7 @@ export function montarCena(obj) {
   const avisos = [...v.erros.map(e => ({ k: "erro", campo: e.campo, t: `${e.campo}: ${e.msg}` })), ...v.avisos.map(e => ({ k: "aviso", campo: e.campo, t: `${e.campo}: ${e.msg}` }))];
   const novos = [];
   if (v.erros.length) return { tipo: "cena", registro: null, novos, avisos, ok: false };
-  const c = criarCena(obj);
+  const c = criarCena(obj); c.mesa = mesaPadrao();
   const lista = g(obj, "adversarios", "adversaries", "inimigos", "enemies") || [];
   if (!Array.isArray(lista)) avisos.push({ k: "erro", campo: "adversarios", t: "adversarios: precisa ser uma lista." });
   else if (lista.length) resolverAdversarios(c, lista, avisos, novos);

@@ -8,7 +8,8 @@ import { aplicar } from "../js/views/dar.js";
 import { S as ST } from "../js/store.js";
 import { lerPersonagens, EXEMPLO_PERSONAGEM } from "../js/personagem-json.js";
 import { tokens as tokensDe, gastarToken, devolverToken } from "../js/homebrew.js";
-import { loadGM, lerResposta, montarDaIA, extrairBlocos, orcamento, EXEMPLO_JSON } from "../js/gm.js";
+import { loadGM, lerResposta, montarDaIA, extrairBlocos, orcamento, EXEMPLO_JSON, GM, adversarios, adicionar, novaBatalha, setMesaAtiva, mesaAtiva, naMesaAtiva, SEM_MESA } from "../js/gm.js";
+import * as MK from "../js/marcadores.js";
 
 const _bak = { f: localStorage.getItem("dh-fichas-v1"), m: localStorage.getItem("dh-mestre-v1") }; // os testes mexem em fichas: restauramos o que havia no fim
 const out = document.getElementById("out"), sum = document.getElementById("sum");
@@ -331,6 +332,34 @@ grupo("Tokens de ação (sem reinício automático)");
 const fTok = () => ({ id: "t", nome: "T", data: { hb: { tokens: true, tokMax: 3 }, st: {} } });
 await teste("ao gastar todos, ficam em zero e não voltam sozinhos", () => { const f = fTok(); for (let i = 0; i < 3; i++) gastarToken(f.data, { epoca: 0 }); const t = tokensDe(f); igual([t.resta, t.gasto], [0, 3]); igual(tokensDe(f).resta, 0, "voltou sozinho"); });
 await teste("só o reinício devolve os tokens", () => { const f = fTok(); for (let i = 0; i < 3; i++) gastarToken(f.data, { epoca: 0 }); for (let i = 0; i < 3; i++) devolverToken(f.data, { epoca: 0 }); igual(tokensDe(f).resta, 3); });
+
+// ---------------------------------------------------------------------
+grupo("Marcadores físicos (tokens)");
+const advP = t => adversarios().find(a => a.src === "base" && a.type === t && a.tier === 1);
+await teste("cada adversário recebe um marcador diferente", () => { const b = novaBatalha({ nome: "x" }); adicionar(b, advP("Minion"), 4); adicionar(b, advP("Leader"), 1); adicionar(b, advP("Bruiser"), 1); ok(b.unidades.every(u => MK.valido(u.mk))); igual(new Set(b.unidades.map(u => u.mk.f + ":" + u.mk.n)).size, b.unidades.length, "marcador repetido"); });
+await teste("o mesmo adversário fica na mesma figura, em números seguidos", () => { const b = novaBatalha({ nome: "x" }); adicionar(b, advP("Minion"), 4); igual(b.unidades.map(u => [u.mk.f, u.mk.n]), [[0, 1], [0, 2], [0, 3], [0, 4]]); adicionar(b, advP("Leader"), 1); igual(b.unidades[4].mk.f, 1, "outro adversário usa outra figura"); });
+await teste("são 25 marcadores no total; o 26º adversário fica sem", () => { const b = novaBatalha({ nome: "x" }); adicionar(b, advP("Minion"), 30); igual(b.unidades.filter(u => MK.valido(u.mk)).length, 25); igual(b.unidades.filter(u => !u.mk).length, 5); igual(new Set(b.unidades.filter(u => u.mk).map(u => u.mk.f + ":" + u.mk.n)).size, 25); });
+await teste("trocar para um marcador ocupado troca os dois de lugar", () => { const b = novaBatalha({ nome: "x" }); adicionar(b, advP("Minion"), 2); const [a, c] = b.unidades; const o = MK.definir(b, a, c.mk.f, c.mk.n); ok(o === c); igual([a.mk, c.mk], [{ f: 0, n: 2 }, { f: 0, n: 1 }]); });
+await teste("batalha antiga (sem marcador) ganha marcadores sem repetir", () => { const b = novaBatalha({ nome: "x" }); adicionar(b, advP("Minion"), 3); b.unidades[1].mk = undefined; const n = MK.atribuirFaltantes(b); igual(n, 1); igual(new Set(b.unidades.map(u => u.mk.f + ":" + u.mk.n)).size, 3); });
+await teste("a cena importada pela IA também recebe marcadores", () => { const r = lerResposta("```json\n" + JSON.stringify({ ...clone(fixture), adversarios: [{ ref: advP("Minion").name, quantidade: 3 }] }) + "\n```"); const c = r.find(x => x.tipo === "cena"); ok(c && c.ok, JSON.stringify(c && c.avisos)); ok(c.registro.unidades.every(u => MK.valido(u.mk))); });
+
+// ---------------------------------------------------------------------
+grupo("Mesa ativa");
+await teste("sem escolha, todas as batalhas aparecem; com escolha, só as da mesa", () => {
+  const bak = GM.batalhas, bakM = GM.mesaAtiva; ST.mesas = [{ id: "m1", nome: "A", mestre: "u" }, { id: "m2", nome: "B", mestre: "u" }]; ST.sess = { user: { id: "u" } };
+  try {
+    const a = { mesa: "m1" }, b = { mesa: "m2" }, c = { mesa: null }, d = { mesa: "apagada" };
+    setMesaAtiva(null); ok([a, b, c, d].every(naMesaAtiva));
+    setMesaAtiva("m1"); igual([a, b, c, d].map(naMesaAtiva), [true, false, false, false]);
+    setMesaAtiva(SEM_MESA); igual([a, b, c, d].map(naMesaAtiva), [false, false, true, true], "mesa apagada conta como sem mesa");
+    setMesaAtiva("m2"); ST.mesas = ST.mesas.filter(m => m.id !== "m2"); igual(mesaAtiva(), null, "mesa excluída volta para Todas");
+  } finally { GM.batalhas = bak; GM.mesaAtiva = bakM; ST.mesas = []; ST.sess = null; }
+});
+await teste("batalha nova nasce na mesa ativa", () => {
+  const bakM = GM.mesaAtiva; ST.mesas = [{ id: "m1", nome: "A", mestre: "u" }]; ST.sess = { user: { id: "u" } };
+  try { GM.mesaAtiva = "m1"; igual(novaBatalha({ nome: "x" }).mesa, "m1"); igual(novaBatalha({ nome: "x", mesa: null }).mesa, null, "mesa explícita vence"); GM.mesaAtiva = SEM_MESA; igual(novaBatalha({ nome: "x" }).mesa, null); }
+  finally { GM.mesaAtiva = bakM; ST.mesas = []; ST.sess = null; }
+});
 
 sum.className = "sum " + (falhas ? "bad" : "ok");
 sum.textContent = falhas ? `${falhas} de ${total} testes falharam` : `Todos os ${total} testes passaram`;

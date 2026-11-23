@@ -1,7 +1,7 @@
 // Mestre: central de batalhas, biblioteca, geradores, notas e conexão com a IA
 import { esc, md, mdBlock, icon, uid, toast, confirmar, openSheet, closeSheet, debounce, norm, store } from "../util.js";
 import { list, loc, hfOn, nome, T, dmgPT } from "../data.js";
-import { GM, gmStatus, salvarGM, adversarios, ambientes, achaBatalha, novaBatalha, salvarBatalha, orcamento, resumoBatalha, TIPOS, TIPO_PT, TIPO_DESC, CATS, COMPLICACOES, gerarAdversario, gerarBatalha, sortear, catalogoMD, instrucoesIA, EXEMPLO_JSON, EXEMPLO_CENA, soBatalhas, gmPronto } from "../gm.js";
+import { GM, gmStatus, salvarGM, adversarios, ambientes, achaBatalha, novaBatalha, salvarBatalha, orcamento, resumoBatalha, TIPOS, TIPO_PT, TIPO_DESC, CATS, COMPLICACOES, gerarAdversario, gerarBatalha, sortear, catalogoMD, instrucoesIA, EXEMPLO_JSON, EXEMPLO_CENA, soBatalhas, gmPronto, SEM_MESA, mesasDoMestre, mesaAtiva, setMesaAtiva, mesaPadrao, mesaDe, naMesaAtiva } from "../gm.js";
 import { S, user, sb, fichasDaMesa } from "../store.js";
 import { app } from "../main.js";
 import * as Batalha from "./batalha.js";
@@ -30,9 +30,23 @@ export function html(p, q) {
   const corpo = { batalhas: abaBatalhas, biblioteca: abaBiblioteca, geradores: abaGeradores, locais: Locais.aba, notas: abaNotas, ia: abaIA }[ui.aba]();
   const st = !sb ? "" : !user() ? `<div class="note info" style="margin-bottom:14px">Sem conta, suas batalhas ficam só neste aparelho. <a href="#/conta">Entre</a> para guardá-las na nuvem e abrir no celular.</div>` : gmStatus.erro === "tabela" ? `<div class="err" style="margin-bottom:14px">As tabelas do mestre ainda não existem no banco: rode o arquivo <code>supabase-fichas.sql</code> (versão nova) no Supabase. Enquanto isso, tudo fica salvo neste aparelho.</div>` : "";
   return `<div class="page-h"><h1>Mestre</h1><div class="sub">Prepare batalhas, crie adversários e conduza a mesa.</div></div>
+  ${barraMesa()}
   <div class="scroll-x" role="tablist">${ABAS.map(([k, n]) => `<button class="chip${ui.aba === k ? " on" : ""}" role="tab" aria-selected="${ui.aba === k}" data-act="aba" data-v="${k}">${n}</button>`).join("")}</div>
   ${painelTokens()}
   <div style="margin-top:14px">${st}${corpo}</div>`;
+}
+
+// ---------- Mesa ativa: batalhas e cenas só aparecem para a mesa escolhida ----------
+function barraMesa() {
+  const ms = mesasDoMestre(); if (!ms.length) return "";
+  const v = mesaAtiva(), n = f => GM.batalhas.filter(f).length, semMesa = n(r => !mesaDe(r));
+  const chip = (id, nome, q) => `<button class="chip${(v || "") === id ? " on" : ""}" data-act="mesaat" data-v="${esc(id)}" aria-pressed="${(v || "") === id}">${esc(nome)}${q != null ? ` <span class="mb-n">${q}</span>` : ""}</button>`;
+  return `<div class="mesa-bar" role="group" aria-label="Mesa ativa"><span class="mb-l">${icon("users")} Mesa ativa</span><div class="mb-chips">${chip("", "Todas", GM.batalhas.length)}${ms.map(m => chip(m.id, m.nome, n(r => mesaDe(r) === m.id))).join("")}${semMesa || v === SEM_MESA ? chip(SEM_MESA, "Sem mesa", semMesa) : ""}</div></div>`;
+}
+function moverRegistro(id) {
+  const r = GM.batalhas.find(x => x.id === id); if (!r) return;
+  const w = openSheet(`<p class="muted" style="margin-top:0">${esc(r.nome)}</p><label class="f">Mesa<select id="mvm"><option value="">Nenhuma</option>${mesasDoMestre().map(m => `<option value="${m.id}"${mesaDe(r) === m.id ? " selected" : ""}>${esc(m.nome)}</option>`).join("")}</select></label><div class="acts"><button class="btn hope" id="mvok">Mover</button></div>`, { title: r.tipo === "cena" ? "Mesa da cena" : "Mesa da batalha" });
+  w.querySelector("#mvok").addEventListener("click", () => { r.mesa = w.querySelector("#mvm").value || null; salvarGM(); closeSheet(); app.render(true); toast("Movida"); });
 }
 
 // ---------- Tokens de ação [HOMEBREW] (controle da mesa inteira, fora de batalha) ----------
@@ -65,33 +79,35 @@ export function mount(main, p, q) { const mod = modulo(p); if (mod && mod.mount)
 // ---------- Batalhas ----------
 const STATUS = { prep: ["Em preparação", ""], ativa: ["Em andamento", "hope"], fim: ["Encerrada", ""] };
 const ordenar = ordenarRegistros;
+const botaoMover = b => (mesasDoMestre().length ? `<button class="mv-btn" data-act="bmover" data-id="${b.id}" title="Mover para outra mesa" aria-label="Mover para outra mesa">${icon("users")}</button>` : "");
 function cartaoRegistro(b) {
-  const s = STATUS[b.status] || STATUS.prep, mesa = b.mesa && S.mesas.find(m => m.id === b.mesa);
+  const s = STATUS[b.status] || STATUS.prep, mesa = S.mesas.find(m => m.id === mesaDe(b));
   if (b.tipo === "cena") {
     const pend = b.alertas ? b.alertas.length : 0;
     return `<a class="pc-card" href="#/mestre/cena/${b.id}" style="--c1:var(--moss);--c2:var(--hope)"><span class="tag ${s[1]}" style="position:absolute;top:14px;right:14px">${s[0]}</span>
       <div class="eyebrow" style="margin-bottom:4px">Cena complexa</div><div class="nm" style="padding-right:110px">${esc(b.nome)}</div>
       <div class="meta">${b.contagens.map(k => `${esc(k.n)} ${k.val}/${k.size}`).join(" · ")}${b.status !== "prep" ? ` · rodada ${b.rodada}` : ""}</div>
       <div class="meta small">${b.origem === "ia" ? "Criada pela IA" : "Manual"}${pend ? ` · ${pend} gatilho${pend > 1 ? "s" : ""} pendente${pend > 1 ? "s" : ""}` : ""}</div>
-      ${b.objetivo ? `<div class="meta small" style="margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(b.objetivo)}</div>` : ""}</a>`;
+      ${b.objetivo ? `<div class="meta small" style="margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(b.objetivo)}</div>` : ""}${botaoMover(b)}</a>`;
   }
   const o = orcamento(b), r = resumoBatalha(b);
   return `<a class="pc-card" href="#/mestre/batalha/${b.id}" style="--c1:var(--blood);--c2:var(--fear)"><span class="tag ${s[1]}" style="position:absolute;top:14px;right:14px">${s[0]}</span>
     <div class="eyebrow" style="margin-bottom:4px">Batalha</div><div class="nm" style="padding-right:110px">${esc(b.nome)}</div><div class="meta">${b.unidades.length} adversário${b.unidades.length === 1 ? "" : "s"}${b.status !== "prep" ? ` · ${r.vivos} de pé` : ""} · ${o.custo}/${o.total} pt</div>
-    <div class="meta small">${b.origem === "ia" ? "Criada pela IA" : b.origem === "sorteio" ? "Sorteada" : "Manual"}${mesa ? " · " + esc(mesa.nome) : ""}</div>
-    ${b.cena ? `<div class="meta small" style="margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(b.cena.replace(/[*_#>]/g, ""))}</div>` : ""}</a>`;
+    <div class="meta small">${b.origem === "ia" ? "Criada pela IA" : b.origem === "sorteio" ? "Sorteada" : "Manual"}${mesa ? " · " + esc(mesa.nome) : " · sem mesa"}</div>
+    ${b.cena ? `<div class="meta small" style="margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(b.cena.replace(/[*_#>]/g, ""))}</div>` : ""}${botaoMover(b)}</a>`;
 }
 function listaRegistros() {
   const q = norm(ui.bq);
-  const l = ordenar(GM.batalhas.filter(x => (!ui.ft || (ui.ft === "cena" ? x.tipo === "cena" : x.tipo !== "cena")) && (!q || norm(x.nome + " " + (x.objetivo || "") + " " + (x.cena || "")).includes(q))));
+  const l = ordenar(GM.batalhas.filter(x => naMesaAtiva(x) && (!ui.ft || (ui.ft === "cena" ? x.tipo === "cena" : x.tipo !== "cena")) && (!q || norm(x.nome + " " + (x.objetivo || "") + " " + (x.cena || "")).includes(q))));
   return l.length ? `<div class="pcs">${l.map(cartaoRegistro).join("")}</div>` : `<div class="empty"><h3>Nada encontrado</h3><p>Ajuste a busca ou o filtro.</p></div>`;
 }
 function abaBatalhas() {
-  const nb = GM.batalhas.filter(x => x.tipo !== "cena").length, nc = GM.batalhas.length - nb;
+  const vis = GM.batalhas.filter(naMesaAtiva), nb = vis.filter(x => x.tipo !== "cena").length, nc = vis.length - nb;
   return `${antigoAviso()}<div class="acts" style="margin:0 0 14px"><button class="btn hope" data-act="nova">${icon("plus")} Nova batalha</button><a class="btn" href="#/mestre/importar">${icon("sparkle")} Importar da IA</a><a class="btn ghost" href="#/mestre/adversario/novo">Criar adversário</a></div>
-  ${GM.batalhas.length ? `<div class="search"><span>${icon("search")}</span><input type="search" data-in="bq" data-k="bq" value="${esc(ui.bq)}" placeholder="Buscar por nome (ex.: Sessão 3)…" autocomplete="off"></div>
-    <div class="chips" style="margin:10px 0 14px"><button class="chip${!ui.ft ? " on" : ""}" data-act="ftipo" data-v="">Tudo (${GM.batalhas.length})</button><button class="chip${ui.ft === "batalha" ? " on" : ""}" data-act="ftipo" data-v="batalha">Batalhas (${nb})</button><button class="chip${ui.ft === "cena" ? " on" : ""}" data-act="ftipo" data-v="cena">Cenas complexas (${nc})</button></div>
+  ${vis.length ? `<div class="search"><span>${icon("search")}</span><input type="search" data-in="bq" data-k="bq" value="${esc(ui.bq)}" placeholder="Buscar por nome (ex.: Sessão 3)…" autocomplete="off"></div>
+    <div class="chips" style="margin:10px 0 14px"><button class="chip${!ui.ft ? " on" : ""}" data-act="ftipo" data-v="">Tudo (${vis.length})</button><button class="chip${ui.ft === "batalha" ? " on" : ""}" data-act="ftipo" data-v="batalha">Batalhas (${nb})</button><button class="chip${ui.ft === "cena" ? " on" : ""}" data-act="ftipo" data-v="cena">Cenas complexas (${nc})</button></div>
     <div id="lreg">${listaRegistros()}</div>`
+    : GM.batalhas.length ? `<div class="empty"><h3>Nada nesta mesa ainda</h3><p>Esta mesa não tem batalhas nem cenas. Crie uma, importe da IA ou escolha “Todas” acima e use o botão no canto do cartão para mover algo para ela.</p><div class="acts" style="justify-content:center"><button class="btn hope" data-act="nova">Nova batalha</button><a class="btn" href="#/mestre/importar">${icon("sparkle")} Importar da IA</a></div></div>`
     : `<div class="empty"><h3>Nada preparado ainda</h3><p>Peça ao seu projeto do Claude uma batalha ou uma cena complexa e importe aqui, sorteie uma batalha na aba Geradores ou crie a sua do zero.</p><div class="acts" style="justify-content:center"><a class="btn hope" href="#/mestre/importar">${icon("sparkle")} Importar da IA</a><button class="btn" data-act="nova">Nova batalha</button></div></div>`}`;
 }
 
@@ -244,13 +260,15 @@ export async function on(a, el, ev) {
   switch (a) {
     case "aba": ui.aba = el.dataset.v; history.replaceState(null, "", "#/mestre?aba=" + ui.aba); if (ui.aba === "batalhas") lerAntigo().then(() => app.render(true)); app.render(true); return;
     case "nova": {
-      const mesas = S.mesas.filter(m => user() && m.mestre === user().id);
-      const w = openSheet(`<label class="f">Nome<input type="text" id="bn" placeholder="Ex.: Emboscada na ponte"></label><div class="grid2" style="margin-top:10px"><label class="f">Jogadores<input type="number" id="bj" min="1" max="8" value="4"></label><label class="f">Mesa<select id="bm"><option value="">Nenhuma</option>${mesas.map(m => `<option value="${m.id}">${esc(m.nome)}</option>`).join("")}</select></label></div><div class="acts"><button class="btn hope" id="bok">Criar e abrir</button></div>`, { title: "Nova batalha" });
+      const mesas = mesasDoMestre(), mp = mesaPadrao();
+      const w = openSheet(`<label class="f">Nome<input type="text" id="bn" placeholder="Ex.: Emboscada na ponte"></label><div class="grid2" style="margin-top:10px"><label class="f">Jogadores<input type="number" id="bj" min="1" max="8" value="${(mp && fichasDaMesa(mp).length) ? Math.min(8, fichasDaMesa(mp).length) : 4}"></label><label class="f">Mesa<select id="bm"><option value="">Nenhuma</option>${mesas.map(m => `<option value="${m.id}"${mp === m.id ? " selected" : ""}>${esc(m.nome)}</option>`).join("")}</select></label></div><div class="acts"><button class="btn hope" id="bok">Criar e abrir</button></div>`, { title: "Nova batalha" });
       w.querySelector("#bm").addEventListener("change", e => { if (e.target.value) { const n = fichasDaMesa(e.target.value).length; if (n) w.querySelector("#bj").value = Math.min(8, n); } });
       w.querySelector("#bok").addEventListener("click", () => { const b = novaBatalha({ nome: w.querySelector("#bn").value.trim() || "Nova batalha", jogadores: Math.max(1, parseInt(w.querySelector("#bj").value, 10) || 4), mesa: w.querySelector("#bm").value || null }); salvarBatalha(b); closeSheet(); location.hash = "#/mestre/batalha/" + b.id; });
       return;
     }
     case "ftipo": ui.ft = el.dataset.v; app.render(true); return;
+    case "mesaat": setMesaAtiva(el.dataset.v); app.render(true); return;
+    case "bmover": ev && ev.preventDefault(); moverRegistro(id); return;
     case "migrar": migrar(); return;
     case "ignorar": GM.migrado = true; salvarGM(); app.render(true); return;
     case "livro": ui.livro = el.dataset.v; ui.q = ""; app.render(true); return;

@@ -1,16 +1,17 @@
 // Importar da IA: cola a resposta inteira; cada bloco JSON vira uma batalha ou uma cena, com validação e pré-visualização.
 import { esc, icon, toast, mdBlock, openSheet } from "../util.js";
-import { lerResposta, salvarBatalha, orcamento, CUSTO } from "../gm.js";
+import { lerResposta, salvarBatalha, orcamento, CUSTO, mesaPadrao, mesasDoMestre } from "../gm.js";
 import { RESULTADOS } from "../cena.js";
 import { S, user } from "../store.js";
 import { app } from "../main.js";
 import { statBlock, barraOrc, tipoTag } from "./mestre-ui.js";
 import { voltar } from "./common.js";
 
-let texto = "", itens = [], erroLeitura = "", salvarNovos = true, mesa = "", sel = new Set();
+let texto = "", itens = [], erroLeitura = "", salvarNovos = true, mesa = null, sel = new Set(); // mesa null = ainda não escolhida: vale a mesa ativa do mestre
+const mesaEf = () => (mesa == null ? mesaPadrao() || "" : mesa);
 
 export function html() {
-  const mesas = S.mesas.filter(m => user() && m.mestre === user().id);
+  const mesas = mesasDoMestre();
   const prontos = itens.filter(i => i.ok);
   const escolhidos = itens.filter(i => i.ok && sel.has(i.indice));
   const comAviso = itens.filter(i => i.avisos.length);
@@ -25,7 +26,7 @@ export function html() {
   </section>
   ${erroLeitura ? `<div class="err" style="margin-top:12px">${esc(erroLeitura)}</div>` : ""}
   ${itens.length ? `<p class="muted" style="margin:14px 0 0">${itens.length} bloco${itens.length > 1 ? "s" : ""} encontrado${itens.length > 1 ? "s" : ""}: ${prontos.length} válido${prontos.length === 1 ? "" : "s"}${itens.length - prontos.length ? `, ${itens.length - prontos.length} com erro` : ""}.</p>
-    ${mesas.length ? `<label class="f" style="margin-top:8px;max-width:360px">Mesa das batalhas<select data-ch="mesa"><option value="">Nenhuma</option>${mesas.map(m => `<option value="${m.id}"${mesa === m.id ? " selected" : ""}>${esc(m.nome)}</option>`).join("")}</select></label>` : ""}
+    ${mesas.length ? `<label class="f" style="margin-top:8px;max-width:360px">Mesa das batalhas e cenas<select data-ch="mesa"><option value="">Nenhuma</option>${mesas.map(m => `<option value="${m.id}"${mesaEf() === m.id ? " selected" : ""}>${esc(m.nome)}</option>`).join("")}</select></label>` : ""}
     ${itens.map(card).join("")}
     ${itens.some(i => i.novos.length) ? `<label class="switch"><input type="checkbox" data-ch="novos" ${salvarNovos ? "checked" : ""}><span class="t"><b>Salvar os adversários novos na biblioteca</b><span>Para reutilizar em outras batalhas e cenas.</span></span></label>` : ""}
     <div class="wiz-foot"><button class="btn" data-act="copiarerros" ${comAviso.length ? "" : "disabled"}>Copiar pedido de correção</button><button class="btn hope" data-act="criar" ${escolhidos.length ? "" : "disabled"}>${icon("sword")} Criar ${escolhidos.length > 1 ? escolhidos.length + " itens" : "selecionado"}</button></div>` : ""}`;
@@ -61,7 +62,7 @@ function card(it) {
 
 function ler() {
   erroLeitura = ""; itens = []; sel = new Set();
-  try { itens = lerResposta(texto); itens.forEach(i => { if (i.ok) sel.add(i.indice); if (i.registro && i.tipo !== "cena") i.registro.mesa = mesa || null; }); }
+  try { itens = lerResposta(texto); itens.forEach(i => { if (i.ok) sel.add(i.indice); if (i.registro) i.registro.mesa = mesaEf() || null; }); }
   catch (e) { erroLeitura = e.message; }
 }
 export function preencher(t) { texto = t; ler(); }
@@ -99,7 +100,7 @@ export function input(k, el) {
   if (k === "jog") { const it = itens.find(x => x.indice === +el.dataset.i); if (it && it.registro) { it.registro.jogadores = Math.max(1, Math.min(8, parseInt(el.value, 10) || 1)); const o = el.closest("section").querySelector(".orc"); if (o) o.outerHTML = barraOrc(it.registro); } }
 }
 export function change(k, el) {
-  if (k === "mesa") { mesa = el.value; itens.forEach(i => { if (i.registro && i.tipo !== "cena") i.registro.mesa = mesa || null; }); }
+  if (k === "mesa") { mesa = el.value; itens.forEach(i => { if (i.registro) i.registro.mesa = mesa || null; }); }
   if (k === "novos") salvarNovos = el.checked;
   if (k === "sel") { const i = +el.dataset.i; el.checked ? sel.add(i) : sel.delete(i); app.render(true); }
   if (k === "arq") { const f = el.files[0]; if (!f) return; f.text().then(t => { texto = t; ler(); app.render(true); }); }
