@@ -116,5 +116,7 @@ copie a resposta da IA  ->  gerar-mapa.cmd (duplo clique)  ->  aba Mestre > Mapa
 - `python -m mapa validar arquivo.json` confere sem desenhar; os erros vêm em português, todos de uma vez.
 - `python -m mapa catalogo --salvar` regrava `catalogo-mapas.md` (anexe ao Projeto da IA). O catálogo vem de `mapa/catalogo.py`.
 - Saídas: `mapas/` (JPG leve + `index.json`, vai para o site) e `mapas-hd/` (PNG de impressão, com e sem grade, no DPI do tamanho real; fora do git).
-- Exemplos em `mapa/exemplos/`. Dependências: `pip install numpy pillow scipy`.
-- Para ensinar um objeto novo: desenhe a função em `mapa/sprites.py`, registre em `mapa/catalogo.py` e rode `catalogo --salvar`.
+- `python -m mapa galeria` gera `galeria/objetos.png` (todos os itens e variantes, com nome) e `galeria/terreno.png` (materiais, linhas, portas, janelas, salas): é o jeito mais rápido de escolher itens olhando. Também serve de autoteste do catálogo.
+- Catálogo: 64 objetos (interior, ofício, masmorra, rito, natureza, caverna, táticos), 15 materiais, 9 biomas, 9 tipos de linha, salas redondas, janelas, portas dupla/grade/quebrada e os geradores `fileira` e `espalhar` (bosques, colunatas, barricadas sem escrever item por item). O gerador avisa sala sem porta, porta/janela fora da parede, objeto duplicado e `espalhar` que não coube.
+- Exemplos em `mapa/exemplos/` (`acampamento-na-clareira.json` mostra os geradores). Dependências: `pip install numpy pillow scipy`.
+- Para ensinar um objeto novo: desenhe a função em `mapa/sprites_casa.py` (interior/masmorra) ou `mapa/sprites_fora.py` (natureza/táticos), exporte em `DESENHOS`/`TAMANHOS`/`LUZES`, registre em `mapa/catalogo.py` (a camada vem de lá) e rode `catalogo --salvar` e `galeria`.

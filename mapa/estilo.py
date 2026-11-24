@@ -7,9 +7,13 @@ MATERIAIS = {
     "areia": dict(a=(206, 176, 112), b=(234, 208, 150), p=(190, 150, 96), pk=0.30, g=26),
     "neve": dict(a=(210, 220, 234), b=(248, 251, 255), p=(172, 192, 220), pk=0.35, g=14),
     "lama": dict(a=(70, 58, 40), b=(108, 92, 60), p=(44, 50, 34), pk=0.50, g=26),
+    "cascalho": dict(a=(128, 122, 112), b=(170, 162, 150), p=(98, 92, 84), pk=0.35, g=46),
+    "musgo": dict(a=(40, 62, 36), b=(80, 110, 50), p=(28, 42, 26), pk=0.50, g=30),
+    "cinzas": dict(a=(52, 50, 50), b=(90, 86, 84), p=(28, 26, 26), pk=0.40, g=24),
+    "gelo": dict(a=(170, 204, 224), b=(226, 243, 252), p=(126, 172, 204), pk=0.40, g=16),
 }
 # materiais com textura propria (nao usam a rampa acima)
-MATERIAIS_ESPECIAIS = ["pedra", "madeira", "agua", "abismo", "lava"]
+MATERIAIS_ESPECIAIS = ["pedra", "madeira", "marmore", "agua", "abismo", "lava"]
 TODOS_MATERIAIS = list(MATERIAIS) + MATERIAIS_ESPECIAIS
 
 BIOMAS = {
@@ -29,6 +33,8 @@ BIOMAS = {
                      parede=(78, 80, 92), lajes=(70, 112), copa=((28, 56, 32), (92, 128, 60)), arbusto=((34, 62, 34), (100, 134, 64))),
     "cidade": dict(chao=dict(a=(116, 100, 78), b=(156, 138, 106), p=(100, 86, 64), pk=0.30, g=24), clima="dia",
                    parede=(158, 142, 118), lajes=(130, 176), copa=((40, 78, 38), (118, 158, 72)), arbusto=((52, 88, 40), (126, 160, 76))),
+    "vulcanico": dict(chao=dict(a=(40, 34, 34), b=(80, 68, 62), p=(24, 20, 20), pk=0.45, g=26), clima="entardecer",
+                      parede=(72, 62, 60), lajes=(60, 104), copa=((44, 38, 28), (100, 88, 54)), arbusto=((48, 42, 30), (104, 90, 56))),
 }
 
 # tint multiplica a cor final; escuridao (0..1) escurece o que nao esta perto de uma fonte de luz
@@ -39,10 +45,13 @@ CLIMAS = {
     "subterraneo": dict(tint=(0.90, 0.92, 1.0), escuridao=0.45),
 }
 
-PISO_PADRAO = {"masmorra": "pedra", "caverna": "pedra", "cidade": "madeira"}
+PISO_PADRAO = {"masmorra": "pedra", "caverna": "pedra", "cidade": "madeira", "vulcanico": "pedra"}
 
 # cores de 'forma' livre: (claro, escuro)
 FORMAS = {
     "pedra": (122, 118, 112), "madeira": (118, 82, 50), "metal": (96, 100, 108),
     "tecido": (168, 36, 36), "terra": (126, 102, 72),
 }
+
+# pisos aceitos em sala (superficies que fazem sentido como piso interno)
+PISOS = ["pedra", "madeira", "marmore", "terra", "areia", "grama", "lama", "neve", "cascalho", "musgo", "cinzas", "gelo"]

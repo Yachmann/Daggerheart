@@ -12,6 +12,7 @@ Sempre que uma cena de combate (ou qualquer cena com local físico importante) a
 - Os objetos usam o CENTRO (x, y); salas usam o retângulo externo; portas ficam sobre a parede da sala. Toda sala precisa de pelo menos uma porta.
 - Se a cena tem fases (a ponte desaba, o prédio pega fogo), faça UM mapa com "fases" (ex.: "1" Ponte inteira, "2" Ponte desabada) e use "fases"/"por_fase" nos elementos. As fases do mapa correspondem às batalhas "· Fase 1", "· Fase 2"; o nome do mapa é o da cena, sem o sufixo de fase.
 - Luz e clima contam a história: noite, névoa, tochas, escuridão em masmorra. Use "luz", não adjetivos.
+- Para bosques, colunatas, fileiras de barricadas e afins, use os geradores `fileira` e `espalhar` (ver catálogo) em vez de listar item por item; consulte as "Receitas por cena" do catálogo.
 - "seed": escolha um número qualquer; o mesmo seed gera o mesmo mapa.
 
 ### Entrega

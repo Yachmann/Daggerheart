@@ -1,6 +1,7 @@
 """Leitura e validacao do JSON do mapa. Erros em portugues, com o caminho do problema."""
 import difflib
 import json
+import math
 import re
 
 from . import catalogo as C
@@ -189,8 +190,12 @@ def validar(s):
 
     def objeto(e, c):
         t = e.get("tipo") if isinstance(e, dict) else None
+        if t in C.GERADORES:
+            _valida_gerador(e, t, c, erros)
+            return
         if t not in C.OBJETOS:
-            erros.append(f"{c}: tipo \"{t}\" invalido{_talvez(str(t), C.OBJETOS)}. Tipos: {', '.join(C.OBJETOS)}")
+            todos = list(C.OBJETOS) + list(C.GERADORES)
+            erros.append(f"{c}: tipo \"{t}\" invalido{_talvez(str(t), todos)}. Tipos: {', '.join(todos)}")
             return
         _checa_elemento(e, C.OBJETOS[t], c + f" ({t})", erros, extras_ok=("tipo",))
 
@@ -206,11 +211,9 @@ def validar(s):
         if isinstance(f, dict) and f.get("luz") is not None:
             _valida_luz(f["luz"], f"fases[{i}].luz", erros)
 
-    # sala sem porta: aviso (nao bloqueia)
-    salas = [e for e in s.get("estruturas", []) if isinstance(e, dict) and e.get("tipo") == "sala"]
-    portas = [e for e in s.get("estruturas", []) if isinstance(e, dict) and e.get("tipo") == "porta"]
-    if salas and not portas:
-        avisos.append("ha salas mas nenhuma porta: o ambiente fica fechado")
+    # avisos de composicao (nao bloqueiam): salas fechadas, portas/janelas soltas, itens duplicados
+    if not erros:
+        _avisos_composicao(s, avisos)
 
     # fora da grade (aviso)
     if isinstance(g, list) and len(g) == 2 and not erros:
@@ -230,6 +233,78 @@ def validar(s):
     out["fases"] = fases
     out["_avisos"] = avisos
     return out
+
+
+def _valida_gerador(e, t, c, erros):
+    _checa_elemento(e, C.GERADORES[t], c + f" ({t})", erros, extras_ok=("tipo",))
+    if not isinstance(e, dict):
+        return
+    if t == "espalhar":
+        if e.get("forma") in C.GERADOR_FORMA_REQ:
+            for k in C.GERADOR_FORMA_REQ[e["forma"]]:
+                if k not in e:
+                    erros.append(f"{c}: forma \"{e['forma']}\" precisa de \"{k}\"")
+        q = e.get("quantidade")
+        if isinstance(q, int) and not isinstance(q, bool) and not 1 <= q <= 300:
+            erros.append(f"{c}.quantidade: use de 1 a 300")
+    op = e.get("opcoes")
+    if isinstance(op, dict) and e.get("item") in C.ITENS_PONTUAIS:
+        campos = {k: dict(v, o=False) for k, v in C.OBJETOS[e["item"]].items() if k not in ("camada", "x", "y")}
+        _checa_elemento(op, campos, f"{c}.opcoes", erros)
+
+
+def _dist_seg(px, py, ax, ay, bx, by):
+    dx, dy = bx - ax, by - ay
+    L2 = dx * dx + dy * dy
+    t = 0.0 if L2 == 0 else max(0.0, min(1.0, ((px - ax) * dx + (py - ay) * dy) / L2))
+    return math.hypot(px - (ax + t * dx), py - (ay + t * dy))
+
+
+def _dist_sala(s, x, y):
+    """Distancia do ponto a parede da sala (borda do retangulo ou da elipse)."""
+    x0, y0, x1, y1 = min(s["x0"], s["x1"]), min(s["y0"], s["y1"]), max(s["x0"], s["x1"]), max(s["y0"], s["y1"])
+    if s.get("forma") == "redonda":
+        rx, ry = (x1 - x0) / 2 or 1e-9, (y1 - y0) / 2 or 1e-9
+        return abs(math.hypot((x - (x0 + x1) / 2) / rx, (y - (y0 + y1) / 2) / ry) - 1) * min(rx, ry)
+    return min(_dist_seg(x, y, x0, y0, x1, y0), _dist_seg(x, y, x1, y0, x1, y1), _dist_seg(x, y, x1, y1, x0, y1), _dist_seg(x, y, x0, y1, x0, y0))
+
+
+def _dist_parede(e, x, y):
+    return _dist_seg(x, y, e["x0"], e["y0"], e["x1"], e["y1"])
+
+
+def _dist_muro(lin, x, y):
+    p = lin["pontos"]
+    return min((_dist_seg(x, y, *p[i], *p[i + 1]) for i in range(len(p) - 1)), default=9e9)
+
+
+def _avisos_composicao(s, avisos):
+    est = [e for e in s.get("estruturas", []) if isinstance(e, dict)]
+    salas = [e for e in est if e.get("tipo") == "sala"]
+    paredes = [e for e in est if e.get("tipo") == "parede"]
+    portas = [e for e in est if e.get("tipo") == "porta"]
+    janelas = [e for e in est if e.get("tipo") == "janela"]
+    muros = [e for e in s.get("linhas", []) if isinstance(e, dict) and e.get("tipo") == "muro"]
+
+    def perto(x, y, tol=0.75):
+        return (any(_dist_sala(r, x, y) <= tol for r in salas) or any(_dist_parede(r, x, y) <= tol for r in paredes)
+                or any(_dist_muro(m, x, y) <= tol for m in muros))
+
+    for i, r in enumerate(salas):
+        if not any(_dist_sala(r, q["x"], q["y"]) <= 0.75 for q in portas):
+            avisos.append(f"sala em ({r['x0']},{r['y0']})-({r['x1']},{r['y1']}) sem porta: o ambiente fica fechado")
+    for lista, nome in ((portas, "porta"), (janelas, "janela")):
+        for q in lista:
+            if (salas or paredes or muros) and not perto(q["x"], q["y"]):
+                avisos.append(f"{nome} em ({q['x']},{q['y']}) nao esta sobre nenhuma parede, muro ou borda de sala")
+    vistos = {}
+    for i, o in enumerate(s.get("objetos", [])):
+        if isinstance(o, dict) and "x" in o and "y" in o and o.get("tipo") not in C.GERADORES:
+            chave = (o.get("tipo"), round(o["x"], 1), round(o["y"], 1), tuple(o.get("fases") or ()))
+            if chave in vistos:
+                avisos.append(f"objetos[{i}] ({o.get('tipo')}) repete a posicao de objetos[{vistos[chave]}]")
+            else:
+                vistos[chave] = i
 
 
 def _valida_luz(luz, c, erros):

@@ -1,0 +1,36 @@
+{
+  "formato": "daggerheart-mapa",
+  "versao": 1,
+  "nome": "Acampamento na Clareira",
+  "descricao": "Acampamento de bandidos num bosque de pinheiros, com barricada de troncos, tendas, caldeirão e um riacho ao sul. Vitrine dos geradores fileira e espalhar.",
+  "grade": [32, 22],
+  "bioma": "floresta",
+  "seed": 17,
+  "luz": { "clima": "noite", "escuridao": 0.5 },
+  "regioes": [
+    { "material": "terra", "forma": "elipse", "cx": 16, "cy": 10, "rx": 8.5, "ry": 5.5 },
+    { "material": "musgo", "forma": "elipse", "cx": 4, "cy": 17, "rx": 4, "ry": 3 }
+  ],
+  "linhas": [
+    { "tipo": "riacho", "pontos": [[0, 20], [10, 19], [20, 20.5], [32, 19]] },
+    { "tipo": "trilha", "pontos": [[16, 22], [16, 15]] }
+  ],
+  "objetos": [
+    { "tipo": "espalhar", "item": "pinheiro", "quantidade": 22, "forma": "retangulo", "x0": 0, "y0": 0, "x1": 32, "y1": 17, "distancia_min": 2.6, "r_min": 1.1, "r_max": 1.7, "evitar": ["terra", "agua", "musgo"] },
+    { "tipo": "espalhar", "item": "capim", "quantidade": 14, "forma": "retangulo", "x0": 0, "y0": 0, "x1": 32, "y1": 18, "distancia_min": 1.5 },
+    { "tipo": "espalhar", "item": "lirio", "quantidade": 5, "forma": "retangulo", "x0": 2, "y0": 18, "x1": 30, "y1": 21, "so_em": ["agua"], "distancia_min": 2 },
+    { "tipo": "fileira", "item": "barricada", "x0": 11, "y0": 15.2, "x1": 14.5, "y1": 15.2, "passo": 3.5, "girar": true, "opcoes": { "comp": 3 } },
+    { "tipo": "fileira", "item": "barricada", "x0": 17.5, "y0": 15.2, "x1": 21, "y1": 15.2, "passo": 3.5, "girar": true, "opcoes": { "comp": 3, "estilo": "sacos" } },
+    { "tipo": "fogueira", "x": 16, "y": 9.5 },
+    { "tipo": "fileira", "item": "banco", "x0": 13.2, "y0": 9.5, "x1": 18.8, "y1": 9.5, "passo": 6, "opcoes": { "rot": 90, "comp": 1.4 } },
+    { "tipo": "tenda", "x": 10.5, "y": 6, "r": 1.6 },
+    { "tipo": "tenda", "x": 22, "y": 6.5, "r": 1.6 },
+    { "tipo": "caldeirao", "x": 19.5, "y": 11.8, "r": 0.6 },
+    { "tipo": "mancha", "x": 12.5, "y": 12.5, "r": 0.7, "estilo": "sangue" },
+    { "tipo": "caixote", "x": 8.8, "y": 8.2 }, { "tipo": "barril", "x": 9.8, "y": 8.4 }, { "tipo": "barril", "x": 24, "y": 8.8 },
+    { "tipo": "bau", "x": 23.4, "y": 5.6, "rot": 20 },
+    { "tipo": "barco", "x": 6, "y": 20, "rot": 80 },
+    { "tipo": "cogumelos", "x": 27, "y": 13.5, "r": 0.7 },
+    { "tipo": "toco", "x": 7, "y": 11 }, { "tipo": "tronco", "x0": 24, "y0": 13, "x1": 27, "y1": 14.5 }
+  ]
+}

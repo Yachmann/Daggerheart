@@ -12,6 +12,7 @@ from . import sprites
 from .camadas import nova, sombra, colocar
 from .estilo import BIOMAS, CLIMAS, FORMAS
 from .estruturas import desenhar_ponte
+from .geradores import expandir
 from .ruido import Campos
 from . import terreno as T
 
@@ -33,6 +34,7 @@ class Mapa:
         self.campos = Campos(self.W, self.H, self.S, spec["seed"])
         self._cache = {}
         self.bio = BIOMAS[spec["bioma"]]
+        self.avisos = []   # problemas notados ao desenhar (ex.: gerador que nao coube); a saida os mostra
 
     def rnd(self, *partes):
         return random.Random(f"{self.spec['seed']}|" + "|".join(map(str, partes)))
@@ -111,9 +113,9 @@ class Mapa:
     # ---------- objetos ----------
     def _objetos(self, R, terr):
         S, k = self.S, self.k
-        cam = {"chao": nova(self.W, self.H), "alto1": None, "alto2": None}
+        cam = {"piso": None, "chao": nova(self.W, self.H), "alto1": None, "alto2": None}
         fontes = []
-        itens = [(o["tipo"], o, o["_i"]) for o in R["objetos"]] + [(t, p, 10000 + i) for i, (t, p) in enumerate(terr.extras)]
+        itens = expandir(self, R, terr) + [(t, p, 10000 + i) for i, (t, p) in enumerate(terr.extras)]
         for tipo, o, idx in itens:
             camada = C.OBJETOS[tipo]["camada"]
             if cam.get(camada) is None:
@@ -163,6 +165,8 @@ class Mapa:
         cam, fontes = self._objetos(R, terr)
         for f in luz.get("fontes", []):
             fontes.append((f["x"] * S, f["y"] * S, tuple(f.get("cor") or (255, 196, 108)), f["raio"], f.get("intensidade", 0.6)))
+        if cam["piso"] is not None:      # decalques rentes ao chao: tapetes, manchas, circulos; sem sombra
+            img = Image.alpha_composite(img, cam["piso"])
         img = sombra(img, cam["chao"], 6, 9, 5, 0.5, k)
         img = Image.alpha_composite(img, cam["chao"])
         if fontes:

@@ -62,3 +62,22 @@ def tabuas(h, w, rnd, S, base=(118, 82, 50)):
             x += L
         y += pw
     return np.asarray(img, np.float32)
+
+
+def marmore(c, sl, S):
+    """Ladrilhos de marmore de 1 quadrado, em xadrez suave, com veios. Alinhados a grade do mapa (usa coordenadas globais)."""
+    k = S / 100.0
+    h, w = sl[0].stop - sl[0].start, sl[1].stop - sl[1].start
+    ys = (np.arange(h) + sl[0].start)[:, None]
+    xs = (np.arange(w) + sl[1].start)[None, :]
+    par = ((ys // S + xs // S) % 2).astype(np.float32)[..., None]
+    col = lerp(A(212, 208, 204), A(168, 166, 170), par)
+    mid = c.mid[sl]
+    veio = np.clip(1 - np.abs(np.sin(mid * 16 + c.big[sl] * 5)) * 7, 0, 1)[..., None]
+    col = col * (1 - 0.22 * veio) + c.fine[sl][..., None] * 16
+    g = max(1, int(round(2.5 * k)))
+    junta = ((ys % S) < g) | ((xs % S) < g)
+    col[junta] = (70, 68, 72)
+    brilho = ((ys % S) >= g) & ((ys % S) < 2 * g) | ((xs % S) >= g) & ((xs % S) < 2 * g)
+    col[brilho & ~junta] = np.minimum(col[brilho & ~junta] + 18, 255)
+    return col.astype(np.float32)

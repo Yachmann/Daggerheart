@@ -42,6 +42,9 @@ def gerar(spec_bruto, px=None, preview=False, site=True, log=print):
     for f in spec["fases"]:
         log(f"  desenhando fase \"{f['id']}\"" + (f" ({f['nome']})" if f.get("nome") else "") + "...")
         im = mapa.render(f["id"])
+        for a in dict.fromkeys(mapa.avisos):
+            log(f"  aviso: {a}")
+        mapa.avisos.clear()
         if preview:
             p = hd_dir / f"preview_{f['id']}.jpg"
             im.save(p, quality=88)

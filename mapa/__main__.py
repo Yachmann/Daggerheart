@@ -1,6 +1,7 @@
 """CLI:  python -m mapa gerar <arquivo.json | -> [--area-transferencia] [--preview] [--px N] [--sem-site]
        python -m mapa validar <arquivo.json | ->
-       python -m mapa catalogo [--salvar]"""
+       python -m mapa catalogo [--salvar]
+       python -m mapa galeria [--px N]      (folhas visuais com todos os itens do catalogo, em galeria/)"""
 import argparse
 import json
 import subprocess
@@ -52,7 +53,19 @@ def main():
             p.add_argument("--sem-site", action="store_true", help="nao grava em mapas/ (so a versao de impressao)")
     c = sub.add_parser("catalogo")
     c.add_argument("--salvar", action="store_true", help="grava catalogo-mapas.md na raiz do projeto")
+    g = sub.add_parser("galeria")
+    g.add_argument("--px", type=int, default=0, help="pixels por quadrado (padrao 56 nos objetos, 50 no terreno)")
     args = ap.parse_args()
+
+    if args.cmd == "galeria":
+        from . import galeria
+        t = time.time()
+        print("Galeria de objetos...")
+        galeria.objetos(px=args.px or 56)
+        print("Galeria de terreno...")
+        galeria.terreno(px=args.px or 50)
+        print(f"pronto em {time.time() - t:.0f}s")
+        return 0
 
     if args.cmd == "catalogo":
         md = catalogo.markdown()

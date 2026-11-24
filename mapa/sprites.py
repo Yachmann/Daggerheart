@@ -4,6 +4,7 @@ import math
 import numpy as np
 from PIL import Image, ImageDraw
 from .ruido import RES
+from . import sprites_casa, sprites_fora
 
 W_ = lambda n, k: max(1, int(round(n * k)))
 
@@ -295,6 +296,8 @@ def d_escada(d, cx, cy, S, k, rnd, p):
 # tipo -> (funcao, largura, altura em quadrados para o canvas, luzes [(dx, dy, cor, raio, intensidade)])
 def _tam(tipo, p):
     g = p.get
+    if tipo in TAMANHOS_EXTRA:
+        return TAMANHOS_EXTRA[tipo](p)
     return {
         "pedra": (2 * g("r", .5), 2 * g("r", .5)), "entulho": (2 * g("r", 1) + .8, 2 * g("r", 1) + .8),
         "arvore": (2 * g("r", 1.8), 2 * g("r", 1.8)), "arbusto": (2 * g("r", .6), 2 * g("r", .6)),
@@ -314,12 +317,19 @@ DESENHOS = {
     "pano": d_pano, "tenda": d_tenda, "poco": d_poco, "fogueira": d_fogueira, "tocha": d_tocha,
     "lampiao": d_lampiao, "escada": d_escada,
 }
+TAMANHOS_EXTRA = {}
+for _m in (sprites_casa, sprites_fora):
+    DESENHOS.update(_m.DESENHOS)
+    TAMANHOS_EXTRA.update(_m.TAMANHOS)
+
 LUZES = {
     "fogueira": [(0, 0, (255, 170, 80), 4.0, 1.0)],
     "tocha": [(0, 0, (255, 176, 90), 3.5, 0.9)],
     "lampiao": [(0, 0, (255, 196, 108), 2.0, 0.55)],
     "altar": [(-.72, 0, (255, 190, 100), 2.2, .6), (.72, 0, (255, 190, 100), 2.2, .6)],
 }
+for _m in (sprites_casa, sprites_fora):
+    LUZES.update(_m.LUZES)
 
 
 def construir(tipo, p, S, rnd):
@@ -339,7 +349,10 @@ def construir(tipo, p, S, rnd):
     DESENHOS[tipo](d, pw / 2, ph / 2, S, k, rnd, p)
     rot = p.get("rot") or 0
     luces = []
-    for dx, dy, cor, raio, inten in LUZES.get(tipo, []):
+    lz = LUZES.get(tipo, [])
+    if callable(lz):
+        lz = lz(p)
+    for dx, dy, cor, raio, inten in lz:
         a = math.radians(rot)
         luces.append((dx * S * math.cos(a) - dy * S * math.sin(a), dx * S * math.sin(a) + dy * S * math.cos(a), cor, raio, inten))
     if rot:
