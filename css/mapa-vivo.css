@@ -1,0 +1,15 @@
+/* Camadas ao vivo do mapa (névoa e marcadores): usado pela aba Mapas e pelo projetor */
+.nv{position:absolute; inset:0; width:100%; height:100%; pointer-events:none}
+.marcs{position:absolute; inset:0; pointer-events:none; overflow:hidden}
+.mv{position:absolute; height:auto; transform:translate(-50%,-50%); user-select:none; pointer-events:none}
+.mv.fogo{animation:dh-fogo 1.3s ease-in-out infinite alternate}
+.mv.tocha{animation:dh-fogo 1.9s ease-in-out infinite alternate}
+.mv.fumaca{opacity:.9; animation:dh-fumaca 4s ease-in-out infinite alternate}
+@keyframes dh-fogo{from{transform:translate(-50%,-50%) scale(.97) rotate(-2deg); filter:brightness(.95)} to{transform:translate(-50%,-50%) scale(1.04) rotate(2deg); filter:brightness(1.12)}}
+@keyframes dh-fumaca{from{transform:translate(-50%,-50%) scale(.96) rotate(0deg)} to{transform:translate(-50%,-50%) scale(1.06) rotate(6deg)}}
+@media (prefers-reduced-motion:reduce){.mv{animation:none !important}}
+.mi{vertical-align:middle; object-fit:contain; background:rgba(122,100,70,.55); border-radius:6px}
+.mapa-img[data-ferr="rev"],.mapa-img[data-ferr="esc"],.mapa-img[data-ferr="marc"],.mapa-img[data-ferr="apagar"]{cursor:crosshair; touch-action:none; user-select:none}
+.mapa-img[data-ferr="apagar"]{cursor:not-allowed}
+.sala-dica{position:absolute; border:3px solid #ffd54a; background:rgba(255,213,74,.15); pointer-events:none; box-sizing:border-box}
+.sala-dica[hidden]{display:none}
