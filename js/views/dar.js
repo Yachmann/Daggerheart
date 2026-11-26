@@ -1,7 +1,7 @@
 // Adicionar um item (arma, armadura, consumível ou item) à ficha de um jogador. Vale para o mestre (fichas das suas mesas) e para o dono da ficha.
 // A alteração é salva na hora e chega ao celular do jogador em tempo real (Supabase).
-import { esc, icon, toast, openSheet } from "../util.js";
-import { S, user, editar } from "../store.js";
+import { esc, icon, toast, openSheet, closeSheet } from "../util.js";
+import { S, user, editar, sb, entregarItem } from "../store.js";
 import { get, loc, nome as nomeDe } from "../data.js";
 import { tierOf } from "../calc.js";
 
@@ -71,5 +71,66 @@ export function darItem(kind, id) {
     const f = S.fichas[fid];
     toast(`${o.n}: ${msg} (${f ? f.nome : "ficha"})`);
     const ok = row.querySelector(".dar-ok"); ok.hidden = false; ok.textContent = "✓ " + msg;
+  });
+}
+
+// ---------- Passar um item da minha ficha para outro jogador da mesa ----------
+// tipo 'inv': item do inventário (índice i) · tipo 'res': arma/armadura guardada (índice i)
+export function colegasDaMesa(fichaId) {
+  const f = S.fichas[fichaId];
+  if (!f || !f.mesa_id) return [];
+  return Object.values(S.fichas).filter(x => x.id !== fichaId && !x.removida && x.data && x.mesa_id === f.mesa_id)
+    .sort((a, b) => (a.nome || "").localeCompare(b.nome || "", "pt"));
+}
+export const podePassar = fichaId => !!(sb && user() && colegasDaMesa(fichaId).length);
+
+export function passarItem(fichaId, tipo, i) {
+  const f = S.fichas[fichaId]; if (!f) return;
+  const pc = f.data;
+  // tipo 'eq': arma/armadura equipada (i = "p" | "s" | "a"); no destino ela vai para as guardadas
+  const orig = tipo === "inv" ? (pc.inventario || [])[i]
+    : tipo === "eq" ? (i === "a" ? (pc.armadura ? { k: "armor", id: pc.armadura } : null) : (pc.armas && pc.armas[i] ? { k: "weapons", id: pc.armas[i] } : null))
+    : (pc.reserva || [])[i];
+  if (!orig) return;
+  const o = tipo === "inv" ? null : loc(orig.k === "armor" ? "armor" : "weapons", orig.id);
+  const nomeItem = tipo === "inv" ? orig.n : (o ? o.n : orig.id);
+  const qMax = tipo === "inv" ? Math.max(1, orig.q ?? 1) : 1;
+  const colegas = colegasDaMesa(fichaId);
+  if (!colegas.length) { toast("Não há outro personagem na sua mesa"); return; }
+  const mesa = S.mesas.find(m => m.id === f.mesa_id);
+  const w = openSheet(`<p class="muted" style="margin-top:0">Passar <b>${esc(nomeItem)}</b>${mesa ? ` · mesa <b>${esc(mesa.nome)}</b>` : ""}</p>
+    ${qMax > 1 ? `<label class="f" style="max-width:140px;margin-bottom:10px">Quantidade<input type="number" id="pq" min="1" max="${qMax}" value="1"></label>` : ""}
+    ${colegas.map(c => `<div class="inv-row"><div class="grow"><b>${esc(c.nome || "Sem nome")}</b><div class="muted small">${esc(nomeDe("classes", c.data.classe))} · nível ${c.data.nivel}</div></div>
+      <button class="btn sm hope" data-p="${esc(c.id)}">Passar</button></div>`).join("")}
+    <p class="muted small" style="margin-top:12px">O item sai da sua ficha e aparece na do outro jogador na hora.</p>`, { title: "Dar a outro jogador" });
+  w.addEventListener("click", async e => {
+    const b = e.target.closest("[data-p]"); if (!b || b.disabled) return;
+    const destino = S.fichas[b.dataset.p];
+    const q = qMax > 1 ? Math.min(qMax, Math.max(1, parseInt(w.querySelector("#pq").value, 10) || 1)) : 1;
+    w.querySelectorAll("[data-p]").forEach(x => (x.disabled = true));
+    try {
+      const pacote = tipo === "inv" ? { n: orig.n, q, ref: orig.ref, k: orig.k, nota: orig.nota } : { k: orig.k === "armor" ? "armor" : "weapons", id: orig.id };
+      await entregarItem(b.dataset.p, tipo === "eq" ? "res" : tipo, pacote);
+      // só tira da minha ficha depois que o banco confirmou
+      editar(fichaId, p => {
+        if (tipo === "inv") {
+          const k = (p.inventario || []).findIndex(x => x.n === orig.n && x.ref === orig.ref);
+          if (k < 0) return;
+          p.inventario[k].q = (p.inventario[k].q ?? 1) - q;
+          if (p.inventario[k].q <= 0) p.inventario.splice(k, 1);
+        } else if (tipo === "eq") {
+          if (i === "a") { if (p.armadura === orig.id) { p.armadura = ""; p.st.arm = 0; } }
+          else if (p.armas && p.armas[i] === orig.id) p.armas[i] = "";
+        } else {
+          const k = (p.reserva || []).findIndex(x => x.k === orig.k && x.id === orig.id);
+          if (k >= 0) p.reserva.splice(k, 1);
+        }
+      }, { imediato: true });
+      closeSheet();
+      toast(`${q > 1 ? q + "× " : ""}${nomeItem} foi para ${destino ? destino.nome : "o outro jogador"}`);
+    } catch (err) {
+      w.querySelectorAll("[data-p]").forEach(x => (x.disabled = false));
+      toast(err.message || "Não consegui passar o item", "err");
+    }
   });
 }

@@ -126,3 +126,52 @@ drop policy if exists "mestre: criar" on public.mestre_dados;
 create policy "mestre: criar" on public.mestre_dados for insert to authenticated with check ((select auth.uid()) = user_id);
 drop policy if exists "mestre: atualizar" on public.mestre_dados;
 create policy "mestre: atualizar" on public.mestre_dados for update to authenticated using ((select auth.uid()) = user_id) with check ((select auth.uid()) = user_id);
+
+
+-- ---------- Passar item entre jogadores ----------
+-- A política de edição só deixa o dono ou o mestre mexer numa ficha. Esta função é a única porta
+-- para um jogador colocar UM item na ficha de outro jogador da mesma mesa (sem poder alterar mais nada).
+--   tipo 'inv' : item do inventário  -> item = {n, q, ref?, k?, nota?}
+--   tipo 'res' : arma/armadura guardada -> item = {k: 'weapons'|'armor', id}
+create or replace function public.entregar_item(destino uuid, tipo text, item jsonb)
+returns void language plpgsql security definer set search_path = public as $$
+declare
+  d      public.personagens;
+  el     jsonb;
+  novo   jsonb := '[]'::jsonb;
+  achou  boolean := false;
+  qtd    int;
+  limpo  jsonb;
+begin
+  if auth.uid() is null then raise exception 'precisa estar logado'; end if;
+  select * into d from public.personagens where id = destino for update;
+  if d.id is null or d.mesa_id is null or not public.eh_membro(d.mesa_id) then
+    raise exception 'destino invalido';
+  end if;
+
+  if tipo = 'inv' then
+    qtd := greatest(1, least(99, coalesce((item->>'q')::int, 1)));
+    limpo := jsonb_strip_nulls(jsonb_build_object(
+      'n', left(coalesce(item->>'n', 'Item'), 120), 'q', qtd,
+      'ref', left(item->>'ref', 80), 'k', left(item->>'k', 20), 'nota', left(item->>'nota', 300)));
+    for el in select value from jsonb_array_elements(coalesce(d.data->'inventario', '[]'::jsonb)) loop
+      if not achou and limpo ? 'ref' and el->>'ref' = limpo->>'ref' then
+        el := jsonb_set(el, '{q}', to_jsonb(coalesce((el->>'q')::int, 1) + qtd));
+        achou := true;
+      end if;
+      novo := novo || jsonb_build_array(el);
+    end loop;
+    if not achou then novo := novo || jsonb_build_array(limpo); end if;
+    update public.personagens set data = jsonb_set(data, '{inventario}', novo) where id = destino;
+
+  elsif tipo = 'res' then
+    if coalesce(item->>'k', '') not in ('weapons', 'armor') or coalesce(item->>'id', '') = '' then raise exception 'item invalido'; end if;
+    limpo := jsonb_build_object('k', item->>'k', 'id', left(item->>'id', 80));
+    update public.personagens
+       set data = jsonb_set(data, '{reserva}', coalesce(data->'reserva', '[]'::jsonb) || jsonb_build_array(limpo))
+     where id = destino;
+  else
+    raise exception 'tipo invalido';
+  end if;
+end; $$;
+grant execute on function public.entregar_item(uuid, text, jsonb) to authenticated;

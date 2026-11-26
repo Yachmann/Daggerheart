@@ -82,6 +82,17 @@ export function editar(id, fn, { imediato = false } = {}) {
   agendarEnvio(id, imediato);
 }
 
+// Coloca um item na ficha de outro jogador da mesma mesa (função segura no banco: o jogador não edita a ficha alheia).
+export async function entregarItem(destinoId, tipo, item) {
+  if (!sb || !S.sess) throw new Error("Entre na sua conta para passar itens a outros jogadores.");
+  const { error } = await sb.rpc("entregar_item", { destino: destinoId, tipo, item });
+  if (error) {
+    if (/entregar_item|schema cache/i.test(error.message || "")) throw new Error("O banco ainda não tem a função de passar itens. Rode o supabase-fichas.sql de novo no Supabase.");
+    if (/destino invalido/.test(error.message || "")) throw new Error("Esse personagem não está na sua mesa.");
+    throw error;
+  }
+}
+
 export async function excluirFicha(id) {
   const f = S.fichas[id];
   if (!f) return;
