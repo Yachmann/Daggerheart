@@ -616,6 +616,31 @@ body.lm-open .topnav a span{display:none} body.lm-open .topnav a{padding:8px 10p
 .vr .pips.es .pip{clip-path:polygon(25% 4%,75% 4%,100% 50%,75% 96%,25% 96%,0 50%)}
 .vr .pips.arm .pip{clip-path:polygon(0 0,100% 0,100% 55%,50% 100%,0 55%)}
 .vr .pip.scar{background:repeating-linear-gradient(45deg,var(--line) 0 3px,transparent 3px 7px); opacity:.6}
-.cola-l{margin:0; padding-left:18px; display:grid; gap:8px}
-details.cola{margin-bottom:10px} details.cola>summary{font-weight:800}
-.cola-b{padding-top:8px}
+
+/* Resumo de jogo: cards temáticos por classe */
+.rj:not([data-classe]){--ka:var(--hope); --kb:var(--fear); --kt:var(--ink); --k-rs:14px; --k-badge:14px; --k-bw:1px; --k-bs:solid; --k-band:4px; --k-fs:normal; --k-orn:none; --k-glow:0 0 0 transparent}
+.rj{display:grid; gap:20px; padding-top:6px}
+.rj-sec>h4{margin:0 0 10px; display:flex; align-items:center; gap:10px; font-size:.8rem; font-weight:800; letter-spacing:.09em; text-transform:uppercase; color:var(--kt)}
+.rj-sec>h4::after{content:""; flex:1; height:2px; background:linear-gradient(90deg,var(--ka),transparent)}
+.rj-grid{display:grid; gap:10px}
+.rj-card{position:relative; overflow:hidden; border:var(--k-bw) var(--k-bs) color-mix(in srgb,var(--ka) 45%,var(--line)); border-radius:var(--k-rs); background:linear-gradient(150deg,color-mix(in srgb,var(--ka) 11%,var(--surface)),var(--surface) 62%); padding:16px 14px 12px; box-shadow:var(--k-glow)}
+.rj-card::before{content:""; position:absolute; inset:0 0 auto; height:var(--k-band); background:linear-gradient(90deg,var(--ka),var(--kb))}
+.rj-card::after{content:""; position:absolute; inset:0; background:var(--k-orn); opacity:.5; pointer-events:none; -webkit-mask-image:linear-gradient(225deg,#000,transparent 55%); mask-image:linear-gradient(225deg,#000,transparent 55%)}
+.rj-card>*{position:relative; z-index:1}
+.rj-card .feat{border:0; padding:0} .rj-card .feat-h b{font-style:var(--k-fs)}
+.rj-weap{padding:18px 16px 14px}
+.rj-arma{display:grid; grid-template-columns:1fr auto; gap:8px 12px; align-items:center}
+.rj-papel{font-size:.7rem; font-weight:800; letter-spacing:.09em; text-transform:uppercase; color:var(--kt)}
+.rj-nome{font-family:var(--display); font-size:1.5rem; font-weight:700; font-style:var(--k-fs); line-height:1.1}
+.rj-dano{min-width:84px; text-align:center; padding:8px 12px; border-radius:var(--k-badge); background:linear-gradient(135deg,var(--ka),var(--kb)); color:#fff; font-weight:800; font-size:1.3rem; line-height:1.15; text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.rj-dano small{display:block; font-size:.62rem; letter-spacing:.09em; text-transform:uppercase; opacity:.92}
+.rj-chips{grid-column:1/-1; display:flex; flex-wrap:wrap; gap:6px}
+.rj-chip{padding:3px 11px; border-radius:999px; font-size:.78rem; background:color-mix(in srgb,var(--ka) 16%,var(--surface-2)); border:1px solid color-mix(in srgb,var(--ka) 35%,var(--line))}
+.rj-tx{grid-column:1/-1; font-size:.92rem} .rj-tx p{margin:6px 0 0}
+.rj-exp,.rj-item-h{display:flex; align-items:center; justify-content:space-between; gap:10px}
+.rj-exp b,.rj-item-h b{font-family:var(--display); font-size:1.15rem}
+.rj-mod,.rj-qty{flex:none; min-width:42px; text-align:center; padding:4px 10px; border-radius:var(--k-badge); font-weight:800; background:linear-gradient(135deg,var(--ka),var(--kb)); color:#fff}
+.rj-esp{display:flex; gap:12px; align-items:flex-start}
+.rj-esp b{font-family:var(--display); font-size:1.12rem}
+.rj-esp .rj-tx{margin-top:2px; color:var(--muted)}
+.rj-cost{flex:none; width:40px; height:40px; display:grid; place-items:center; border-radius:var(--k-badge); font-weight:800; font-size:1.05rem; color:#fff; background:linear-gradient(135deg,var(--hope),var(--ka)); text-shadow:0 1px 2px rgba(0,0,0,.35)}
