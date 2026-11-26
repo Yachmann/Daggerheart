@@ -603,3 +603,19 @@ body.lm-open .topnav a span{display:none} body.lm-open .topnav a{padding:8px 10p
 .mapa-vista{overflow:auto; border:1px solid var(--line); border-radius:12px; max-height:78vh; background:#111}
 .mapa-img{position:relative; max-width:none} .mapa-img img{display:block; width:100%; height:auto}
 .mapa-gr{position:absolute; inset:0; pointer-events:none; background-image:linear-gradient(to right,rgba(0,0,0,.38) 1px,transparent 1px),linear-gradient(to bottom,rgba(0,0,0,.38) 1px,transparent 1px); box-shadow:inset 0 0 0 1px rgba(0,0,0,.38)}
+
+/* Ficha: trilhas compactas (só formas e cores) */
+.vitals{margin-top:14px; display:grid; gap:10px; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:12px}
+.vr{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+.vr .vl{flex:none; width:78px; font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--cc)}
+.vr .pips{gap:6px; flex:1}
+.vr .pip{width:30px; height:30px; margin:0; border:0; border-radius:0; transform:none; background:color-mix(in srgb,var(--cc) 20%,var(--surface-2))}
+.vr .pip.on{background:var(--cc)}
+.vr .pips.esp .pip{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.vr .pips.pv .pip{border-radius:50%}
+.vr .pips.es .pip{clip-path:polygon(25% 4%,75% 4%,100% 50%,75% 96%,25% 96%,0 50%)}
+.vr .pips.arm .pip{clip-path:polygon(0 0,100% 0,100% 55%,50% 100%,0 55%)}
+.vr .pip.scar{background:repeating-linear-gradient(45deg,var(--line) 0 3px,transparent 3px 7px); opacity:.6}
+.cola-l{margin:0; padding-left:18px; display:grid; gap:8px}
+details.cola{margin-bottom:10px} details.cola>summary{font-weight:800}
+.cola-b{padding-top:8px}

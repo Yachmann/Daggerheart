@@ -7,6 +7,7 @@ import { app } from "../main.js";
 import { glifo, dado6 } from "../simbolos.js";
 import { hbCfg, infimo, tokens as tokensDe, gastarToken, devolverToken } from "../homebrew.js";
 import { montarLink, paraEntrega } from "../entrega.js";
+import { passarItem, podePassar } from "./dar.js";
 import { condFx, condBanner, COND_CLS, dcard, feat, armaHtml, armaduraHtml, coresClasse, temaAttr, temaVars, temaEmblema, classeSub, origemTxt, expTag, verCarta, enName, voltar, corDom } from "./common.js";
 
 const ABAS = [["jogo", "Jogo"], ["cartas", "Cartas"], ["habil", "Habilidades"], ["inv", "Inventário"], ["hist", "História"], ["ajustes", "Ajustes"]];
@@ -45,7 +46,7 @@ export function html(p, q) {
   </section>
   <div class="tabs" role="tablist">${ABAS.map(([k, n]) => `<button role="tab" aria-selected="${aba === k}" data-act="aba" data-v="${k}">${n}</button>`).join("")}</div>
   <div class="${ro ? "ro" : ""}">${corpo(pc, d, ro, f)}</div>
-  <button class="fab" data-act="rolar" data-pc="${esc(ID)}" aria-label="Rolar Dados de Dualidade">${icon("dice")}</button>${ro ? "" : tokensFlutuantes(f)}</div>`;
+  <button class="fab" data-act="cola" aria-label="Cola: o que posso fazer" title="Cola: o que posso fazer">${icon("book")}</button>${ro ? "" : tokensFlutuantes(f)}</div>`;
 }
 
 // Tokens de ação [HB]: bolinhas flutuantes no canto inferior esquerdo, em todas as abas.
@@ -61,7 +62,7 @@ function tokensFlutuantes(f) {
 function pips(cls, n, marcados, act, extra = "") {
   let h = "";
   for (let i = 0; i < n; i++) h += `<button class="pip${i < marcados ? " on" : ""}" data-act="${act}" data-i="${i}" aria-label="${i + 1}" aria-pressed="${i < marcados}"></button>`;
-  return `<div class="pips ${cls}">${h}${extra}</div>`;
+  return h + extra;
 }
 function abaJogo(pc, d, ro) {
   const st = pc.st;
@@ -71,28 +72,15 @@ function abaJogo(pc, d, ro) {
   const f = F(), cfg = hbCfg(f), tk = tokensDe(f);
   const tokUI = "";
   const pessoal = "";
+  const linha = (cls, nomeL, cor, corpo, extra = "") => `<div class="vr ${cls}" style="--cc:${cor}"><span class="vl">${nomeL}</span><div class="pips ${cls}">${corpo}</div>${extra}</div>`;
   return `${tokUI}
-  <div class="track"><div class="track-h"><h3 style="color:var(--hope)">Esperança</h3><span class="cnt">${st.esp}<small>/${d.espMax}</small></span>
-    <div class="step-btns"><button class="btn sm" data-act="espd" data-v="-1" aria-label="Gastar Esperança">${icon("minus")}</button><button class="btn sm" data-act="espd" data-v="1" aria-label="Ganhar Esperança">${icon("plus")}</button></div></div>
-    <div class="pips esp">${esp}</div>
-    ${scars ? `<p class="muted small">${scars} cicatriz${scars > 1 ? "es" : ""}: espaços de Esperança perdidos.</p>` : ""}</div>
-
-  <div class="track"><div class="track-h"><h3 style="color:var(--blood)">Pontos de Vida</h3><span class="cnt">${d.pvMax - st.pv}<small>/${d.pvMax} restantes</small></span>
-    <div class="step-btns"><button class="btn sm" data-act="pvd" data-v="-1" aria-label="Recuperar PV">${icon("minus")}</button><button class="btn sm" data-act="pvd" data-v="1" aria-label="Marcar PV">${icon("plus")}</button></div></div>
-    ${pips("pv", d.pvMax, st.pv, "pv")}
+  <div class="vitals">
+    ${linha("esp", "Esperança", "var(--hope)", esp)}
+    ${linha("pv", "Vida", "var(--blood)", pips("pv", d.pvMax, st.pv, "pv"))}
+    ${linha("es", "Estresse", "var(--fear)", pips("es", d.esMax, st.es, "es"))}
+    ${linha("arm", "Armadura", "var(--steel)", d.armMax ? pips("arm", d.armMax, st.arm, "arm") : `<span class="muted small">sem armadura</span>`)}
     ${st.pv >= d.pvMax ? `<div class="err" style="margin-top:10px">Último PV marcado: escolha um <a href="#/regras/morte">movimento de morte</a>.</div>` : ""}
-    <div class="dmg-box"><input type="number" inputmode="numeric" min="0" placeholder="Dano recebido" id="dmgIn" aria-label="Dano recebido"><button class="btn fear" data-act="dano">Calcular</button></div>
-    <p class="muted small" style="margin:6px 0 0">${cfg.limiar && infimo(d.lim[0]) ? `Até ${infimo(d.lim[0])} [HB]: pague 1 Esperança ou 1 Estresse · ` : ""}Abaixo de ${d.lim[0]}: 1 PV · de ${d.lim[0]} a ${d.lim[1] - 1}: 2 PV · ${d.lim[1]} ou mais: 3 PV</p>${pessoal}</div>
-
-  <div class="track"><div class="track-h"><h3 style="color:var(--fear)">Estresse</h3><span class="cnt">${st.es}<small>/${d.esMax}</small></span>
-    <div class="step-btns"><button class="btn sm" data-act="esd" data-v="-1" aria-label="Recuperar Estresse">${icon("minus")}</button><button class="btn sm" data-act="esd" data-v="1" aria-label="Marcar Estresse">${icon("plus")}</button></div></div>
-    ${pips("es", d.esMax, st.es, "es")}
-    ${st.es >= d.esMax ? `<p class="muted small" style="margin:8px 0 0">Estresse cheio: você fica <b>Vulnerável</b> até recuperar ao menos 1. Se precisar marcar mais Estresse, marque 1 PV no lugar.</p>` : ""}</div>
-
-  <div class="track"><div class="track-h"><h3 style="color:var(--steel)">Espaços de Armadura</h3><span class="cnt">${d.armMax - st.arm}<small>/${d.armMax} livres</small></span>
-    <div class="step-btns"><button class="btn sm" data-act="armd" data-v="-1" aria-label="Reparar">${icon("minus")}</button><button class="btn sm" data-act="armd" data-v="1" aria-label="Usar">${icon("plus")}</button></div></div>
-    ${d.armMax ? pips("arm", d.armMax, st.arm, "arm") : `<p class="muted small">Sem armadura equipada.</p>`}
-    <p class="muted small" style="margin:6px 0 0">Marque 1 espaço para reduzir a gravidade do dano em um limiar.</p></div>
+  </div>
 
   <div class="track"><div class="track-h"><h3>Condições</h3></div>
     <div class="cond-row">${CONDS.map(([c, t]) => `<button class="chip ${COND_CLS[c]}${st.cond.includes(c) ? " on" : ""}" data-act="cond" data-v="${c}" title="${t}">${c}</button>`).join("")}
@@ -100,15 +88,6 @@ function abaJogo(pc, d, ro) {
     <button class="chip" data-act="condnova">${icon("plus")} Outra</button></div></div>
 
   ${recursosHtml(pc)}
-
-  <div class="track"><div class="track-h"><h3>Armas</h3></div>
-    ${d.p ? armaHtml(d.p.w, d.p, "Primária") : `<p class="muted">Nenhuma arma primária.</p>`}
-    ${d.s ? `<div class="divider"></div>${armaHtml(d.s.w, d.s, "Secundária")}` : ""}
-    <div class="acts">${d.p ? `<button class="btn sm" data-act="rolar" data-mod="${d.p.bonus ?? 0}" data-rot="Ataque: ${esc(nome("weapons", d.p.w))}" data-pc="${esc(ID)}">${icon("dice")} Atacar</button><button class="btn sm ghost" data-act="rolardano" data-v="${esc(d.p.dano)}">Rolar dano</button>` : ""}</div></div>
-
-  <div class="track"><div class="track-h"><h3>Experiências</h3></div>
-    ${pc.exp.filter(e => e.n).map(e => `<div class="inv-row"><div class="grow"><b>${esc(e.n)}</b></div><span class="tag hope">+${e.v}</span></div>`).join("") || `<p class="muted">Nenhuma.</p>`}
-    <p class="muted small">Gaste 1 de Esperança para somar uma Experiência a um teste.</p></div>
 
   <div class="acts"><button class="btn" data-act="descanso" data-v="curto">${icon("bed")} Descanso curto</button><button class="btn" data-act="descanso" data-v="longo">${icon("moon")} Descanso longo</button></div>
   ${pc.forma ? `<div class="note" style="margin-top:12px">Em Forma Bestial: <b>${esc(pc.forma)}</b>. <button class="btn sm ghost" data-act="forma" data-v="">Sair da forma</button></div>` : ""}`;
@@ -119,6 +98,35 @@ function recursosHtml(pc) {
   return `<div class="track"><div class="track-h"><h3>Contadores</h3><button class="btn sm ghost" data-act="recnovo">${icon("plus")} Adicionar</button></div>
     ${r.map((x, i) => `<div class="inv-row"><div class="grow"><b>${esc(x.n)}</b>${x.max ? ` <span class="muted small">máx. ${x.max}</span>` : ""}</div>
       <div class="q"><button class="btn sm" data-act="rec" data-i="${i}" data-v="-1">${icon("minus")}</button><b>${x.v}</b><button class="btn sm" data-act="rec" data-i="${i}" data-v="1">${icon("plus")}</button><button class="icon-btn" data-act="recdel" data-i="${i}" aria-label="Remover">${icon("trash")}</button></div></div>`).join("") || `<p class="muted small">Use para Dados de Inspiração, Dados de Oração, marcadores de cartas, munição…</p>`}</div>`;
+}
+
+// ---------- Cola: tudo o que o jogador precisa na hora de agir (as cartas ficam na mesa, em carta de verdade) ----------
+function abrirCola() {
+  const f = F(); if (!f) return;
+  const pc = f.data, d = deriv(pc);
+  const c = loc("classes", pc.classe);
+  const sec = (t, corpo, aberto = false) => corpo ? `<details class="more cola"${aberto ? " open" : ""}><summary>${t}</summary><div class="cola-b">${corpo}</div></details>` : "";
+  const feats = arr => (arr || []).map(x => feat(x)).join("");
+  const esperanca = `<ul class="cola-l">
+    <li><b>1 Esperança · Usar uma Experiência:</b> some o bônus da Experiência à rolagem (declare antes de rolar).</li>
+    <li><b>1 Esperança · Ajudar um aliado:</b> descreva como ajuda e dê a ele um d6 de vantagem na rolagem.</li>
+    <li><b>3 Esperança · Habilidade de Esperança</b> da sua classe (logo abaixo).</li>
+    <li><b>3 Esperança · Tag Team Roll:</b> você e um aliado agem juntos numa só rolagem. Uma vez por sessão para cada jogador.</li>
+    <li><b>Ganhar Esperança:</b> sempre que a rolagem sair com Esperança. Falhou com Medo: o mestre ganha Medo.</li></ul>`;
+  const inv = (pc.inventario || []).map(it => { const o = it.ref && (loc("consumables", it.ref) || loc("items", it.ref)); return `<div class="inv-row"><div class="grow"><b>${esc(it.n)}</b>${it.nota ? `<div class="muted small">${esc(it.nota)}</div>` : ""}${o && o.x ? `<div class="muted small">${md(o.x)}</div>` : ""}</div><b>×${it.q ?? 1}</b></div>`; }).join("");
+  const armas = (d.p ? armaHtml(d.p.w, d.p, "Primária") : "") + (d.s ? `<div class="divider"></div>${armaHtml(d.s.w, d.s, "Secundária")}` : "") + `<div class="divider"></div>${armaduraHtml(d.arm)}`;
+  const exps = pc.exp.filter(e => e.n).map(e => `<div class="inv-row"><div class="grow"><b>${esc(e.n)}</b></div><span class="tag hope">+${e.v}</span></div>`).join("");
+  const dano = `<p>Dano abaixo de <b>${d.lim[0]}</b>: marque <b>1 PV</b> · de ${d.lim[0]} a ${d.lim[1] - 1}: <b>2 PV</b> · ${d.lim[1]} ou mais: <b>3 PV</b>.</p>
+    <p>Marcar <b>1 espaço de Armadura</b> reduz a gravidade do dano em um limiar.</p>
+    <p>Estresse cheio: você fica <b>Vulnerável</b>. Para marcar mais Estresse, marque 1 PV. Último PV marcado: movimento de morte.</p>`;
+  const html = sec("O que fazer com Esperança", esperanca, true)
+    + sec(`Habilidade de Esperança ${c ? `<span class="tag hope">3 Esperança</span>` : ""}`, c ? feats([c.hope]) : "", true)
+    + sec(c ? "Habilidades de " + esc(c.n) : "Classe", c ? feats(c.feats) : "", true)
+    + sec("Armas e armadura", armas, true)
+    + sec(`Itens${(pc.inventario || []).length ? ` <span class="tag">${pc.inventario.length}</span>` : ""}`, inv || `<p class="muted">Inventário vazio.</p>`, true)
+    + sec("Experiências", exps || `<p class="muted">Nenhuma.</p>`)
+    + sec("Dano e armadura", dano);
+  openSheet(html, { title: "Cola", wide: true });
 }
 
 // ---------- Cartas ----------
@@ -202,18 +210,20 @@ function companheiroHtml(pc) {
 
 // ---------- Inventário ----------
 function abaInv(pc, d, ro) {
+  const passa = !ro && podePassar(ID);
   return `<div class="track"><div class="track-h"><h3>Equipado</h3>${ro ? "" : `<button class="btn sm ghost" data-act="trocareq">${icon("edit")} Trocar</button>`}</div>
     ${d.p ? armaHtml(d.p.w, d.p, "Arma primária") : `<p class="muted">Sem arma primária.</p>`}
     ${d.s ? `<div class="divider"></div>${armaHtml(d.s.w, d.s, "Arma secundária")}` : ""}
-    <div class="divider"></div>${armaduraHtml(d.arm)}</div>
+    <div class="divider"></div>${armaduraHtml(d.arm)}
+    ${passa ? `<div class="acts" style="margin-top:10px">${[["p", pc.armas && pc.armas.p, "weapons"], ["s", pc.armas && pc.armas.s, "weapons"], ["a", pc.armadura, "armor"]].filter(x => x[1] && loc(x[2], x[1])).map(x => `<button class="btn sm ghost" data-act="passar" data-t="eq" data-s="${x[0]}">${icon("link")} Dar ${esc(loc(x[2], x[1]).n)}</button>`).join("")}</div>` : ""}</div>
   <div class="track"><div class="track-h"><h3>Ouro</h3><span class="muted small">${esc(fmtOuro(pc.ouro))}</span></div>
     <div class="gold">${[["p", "Punhados"], ["b", "Bolsas"], ["c", "Baús"]].map(([k, n]) => `<div class="g"><b>${pc.ouro[k] || 0}</b><span>${n}</span><div class="step-btns"><button class="btn sm" data-act="ouro" data-k="${k}" data-v="-1" aria-label="Menos">${icon("minus")}</button><button class="btn sm" data-act="ouro" data-k="${k}" data-v="1" aria-label="Mais">${icon("plus")}</button></div></div>`).join("")}</div>
     <p class="muted small" style="margin:8px 0 0">10 punhados = 1 bolsa · 10 bolsas = 1 baú</p></div>
   <div class="track"><div class="track-h"><h3>Itens</h3>${ro ? "" : `<button class="btn sm ghost" data-act="itemnovo">${icon("plus")} Item</button>`}</div>
     ${pc.inventario.map((it, i) => `<div class="inv-row"><div class="grow"><b>${esc(it.n)}</b>${it.nota ? `<div class="muted small">${esc(it.nota)}</div>` : ""}${it.ref && loc("consumables", it.ref) ? `<div class="muted small">${md(loc("consumables", it.ref).x)}</div>` : it.ref && loc("items", it.ref) ? `<div class="muted small">${md(loc("items", it.ref).x)}</div>` : ""}</div>
-      <div class="q"><button class="btn sm" data-act="itq" data-i="${i}" data-v="-1" aria-label="Menos">${icon("minus")}</button><b>${it.q ?? 1}</b><button class="btn sm" data-act="itq" data-i="${i}" data-v="1" aria-label="Mais">${icon("plus")}</button></div></div>`).join("") || `<p class="muted">Inventário vazio.</p>`}
+      <div class="q">${passa ? `<button class="btn sm ghost" data-act="passar" data-t="inv" data-i="${i}" title="Dar a outro jogador">${icon("link")} Dar</button>` : ""}<button class="btn sm" data-act="itq" data-i="${i}" data-v="-1" aria-label="Menos">${icon("minus")}</button><b>${it.q ?? 1}</b><button class="btn sm" data-act="itq" data-i="${i}" data-v="1" aria-label="Mais">${icon("plus")}</button></div></div>`).join("") || `<p class="muted">Inventário vazio.</p>`}
   </div>
-  ${(pc.reserva || []).length ? `<div class="track"><div class="track-h"><h3>Armas e armaduras guardadas</h3></div>${pc.reserva.map((r, i) => { const k = r.k === "armor" ? "armor" : "weapons"; const o = loc(k, r.id); return o ? `<div class="inv-row"><div class="grow"><b>${esc(o.n)}</b> <span class="muted small">${k === "armor" ? "Armadura" : "Arma"} · P${o.t}</span></div><button class="icon-btn" data-act="resdel" data-i="${i}" aria-label="Descartar">${icon("trash")}</button></div>` : ""; }).join("")}</div>` : ""}`;
+  ${(pc.reserva || []).length ? `<div class="track"><div class="track-h"><h3>Armas e armaduras guardadas</h3></div>${pc.reserva.map((r, i) => { const k = r.k === "armor" ? "armor" : "weapons"; const o = loc(k, r.id); return o ? `<div class="inv-row"><div class="grow"><b>${esc(o.n)}</b> <span class="muted small">${k === "armor" ? "Armadura" : "Arma"} · P${o.t}</span></div>${passa ? `<button class="btn sm ghost" data-act="passar" data-t="res" data-i="${i}" title="Dar a outro jogador">${icon("link")} Dar</button>` : ""}<button class="icon-btn" data-act="resdel" data-i="${i}" aria-label="Descartar">${icon("trash")}</button></div>` : ""; }).join("")}</div>` : ""}`;
 }
 
 // ---------- História ----------
@@ -418,7 +428,9 @@ export function on(a, el) {
     case "ouro": ed(pc => { const k = el.dataset.k; pc.ouro[k] = Math.max(0, (pc.ouro[k] || 0) + v); if (pc.ouro.p >= 10) { pc.ouro.p -= 10; pc.ouro.b++; } if (pc.ouro.b >= 10) { pc.ouro.b -= 10; pc.ouro.c++; } }); return;
     case "itq": ed(pc => { const it = pc.inventario[i]; it.q = (it.q ?? 1) + v; if (it.q <= 0) pc.inventario.splice(i, 1); }); return;
     case "itemnovo": abrirNovoItem(); return;
-    case "resdel": ed(pc => pc.reserva.splice(i, 1)); return;
+    case "cola": abrirCola(); return;
+    case "passar": passarItem(ID, el.dataset.t, el.dataset.t === "eq" ? el.dataset.s : i); return;
+    case "resdel":ed(pc => pc.reserva.splice(i, 1)); return;
     case "expnova": ed(pc => pc.exp.push({ n: "", v: 2 })); return;
     case "desfazernivel": desfazerNivel(); return;
     case "enviar": abrirEnvio(); return;
