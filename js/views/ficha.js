@@ -46,7 +46,7 @@ export function html(p, q) {
   </section>
   <div class="tabs" role="tablist">${ABAS.map(([k, n]) => `<button role="tab" aria-selected="${aba === k}" data-act="aba" data-v="${k}">${n}</button>`).join("")}</div>
   <div class="${ro ? "ro" : ""}">${corpo(pc, d, ro, f)}</div>
-  <button class="fab" data-act="cola" aria-label="Cola: o que posso fazer" title="Cola: o que posso fazer">${icon("book")}</button>${ro ? "" : tokensFlutuantes(f)}</div>`;
+  <button class="fab" data-act="cola" aria-label="Resumo de jogo" title="Resumo de jogo">${icon("book")}</button>${ro ? "" : tokensFlutuantes(f)}</div>`;
 }
 
 // Tokens de ação [HB]: bolinhas flutuantes no canto inferior esquerdo, em todas as abas.
@@ -100,33 +100,39 @@ function recursosHtml(pc) {
       <div class="q"><button class="btn sm" data-act="rec" data-i="${i}" data-v="-1">${icon("minus")}</button><b>${x.v}</b><button class="btn sm" data-act="rec" data-i="${i}" data-v="1">${icon("plus")}</button><button class="icon-btn" data-act="recdel" data-i="${i}" aria-label="Remover">${icon("trash")}</button></div></div>`).join("") || `<p class="muted small">Use para Dados de Inspiração, Dados de Oração, marcadores de cartas, munição…</p>`}</div>`;
 }
 
-// ---------- Cola: tudo o que o jogador precisa na hora de agir (as cartas ficam na mesa, em carta de verdade) ----------
+// ---------- Resumo de jogo: o que o jogador precisa na hora de agir, em cards temáticos (as cartas ficam na mesa, em carta de verdade) ----------
 function abrirCola() {
   const f = F(); if (!f) return;
   const pc = f.data, d = deriv(pc);
   const c = loc("classes", pc.classe);
-  const sec = (t, corpo, aberto = false) => corpo ? `<details class="more cola"${aberto ? " open" : ""}><summary>${t}</summary><div class="cola-b">${corpo}</div></details>` : "";
-  const feats = arr => (arr || []).map(x => feat(x)).join("");
-  const esperanca = `<ul class="cola-l">
-    <li><b>1 Esperança · Usar uma Experiência:</b> some o bônus da Experiência à rolagem (declare antes de rolar).</li>
-    <li><b>1 Esperança · Ajudar um aliado:</b> descreva como ajuda e dê a ele um d6 de vantagem na rolagem.</li>
-    <li><b>3 Esperança · Habilidade de Esperança</b> da sua classe (logo abaixo).</li>
-    <li><b>3 Esperança · Tag Team Roll:</b> você e um aliado agem juntos numa só rolagem. Uma vez por sessão para cada jogador.</li>
-    <li><b>Ganhar Esperança:</b> sempre que a rolagem sair com Esperança. Falhou com Medo: o mestre ganha Medo.</li></ul>`;
-  const inv = (pc.inventario || []).map(it => { const o = it.ref && (loc("consumables", it.ref) || loc("items", it.ref)); return `<div class="inv-row"><div class="grow"><b>${esc(it.n)}</b>${it.nota ? `<div class="muted small">${esc(it.nota)}</div>` : ""}${o && o.x ? `<div class="muted small">${md(o.x)}</div>` : ""}</div><b>×${it.q ?? 1}</b></div>`; }).join("");
-  const armas = (d.p ? armaHtml(d.p.w, d.p, "Primária") : "") + (d.s ? `<div class="divider"></div>${armaHtml(d.s.w, d.s, "Secundária")}` : "") + `<div class="divider"></div>${armaduraHtml(d.arm)}`;
-  const exps = pc.exp.filter(e => e.n).map(e => `<div class="inv-row"><div class="grow"><b>${esc(e.n)}</b></div><span class="tag hope">+${e.v}</span></div>`).join("");
-  const dano = `<p>Dano abaixo de <b>${d.lim[0]}</b>: marque <b>1 PV</b> · de ${d.lim[0]} a ${d.lim[1] - 1}: <b>2 PV</b> · ${d.lim[1]} ou mais: <b>3 PV</b>.</p>
-    <p>Marcar <b>1 espaço de Armadura</b> reduz a gravidade do dano em um limiar.</p>
-    <p>Estresse cheio: você fica <b>Vulnerável</b>. Para marcar mais Estresse, marque 1 PV. Último PV marcado: movimento de morte.</p>`;
-  const html = sec("O que fazer com Esperança", esperanca, true)
-    + sec(`Habilidade de Esperança ${c ? `<span class="tag hope">3 Esperança</span>` : ""}`, c ? feats([c.hope]) : "", true)
-    + sec(c ? "Habilidades de " + esc(c.n) : "Classe", c ? feats(c.feats) : "", true)
-    + sec("Armas e armadura", armas, true)
-    + sec(`Itens${(pc.inventario || []).length ? ` <span class="tag">${pc.inventario.length}</span>` : ""}`, inv || `<p class="muted">Inventário vazio.</p>`, true)
-    + sec("Experiências", exps || `<p class="muted">Nenhuma.</p>`)
-    + sec("Dano e armadura", dano);
-  openSheet(html, { title: "Cola", wide: true });
+  const secao = (t, corpo) => corpo ? `<section class="rj-sec"><h4>${t}</h4><div class="rj-grid">${corpo}</div></section>` : "";
+  const card = (corpo, cls = "") => `<article class="rj-card ${cls}">${corpo}</article>`;
+  const arma = (w, x, papel) => {
+    const o = loc("weapons", w); if (!o) return "";
+    return card(`<div class="rj-arma"><div><div class="rj-papel">${papel}</div><div class="rj-nome">${esc(o.n)}</div></div>
+      <div class="rj-dano"><small>Dano</small>${esc(dmgPT(x.dano + " " + x.tipo))}</div>
+      <div class="rj-chips"><span class="rj-chip"><b>${esc(traitPT(o.tr))}</b>${x.bonus != null ? " " + sgn(x.bonus) : ""}</span><span class="rj-chip">${esc(T(o.rng))}</span><span class="rj-chip">${esc(T(o.bur))}</span><span class="rj-chip">Patamar ${o.t}</span></div>
+      ${o.f && o.f.length ? `<div class="rj-tx">${o.f.map(g => `<p><b>${esc(g.n)}:</b> ${md(g.t)}</p>`).join("")}</div>` : ""}</div>`, "rj-weap");
+  };
+  const armas = (d.p ? arma(d.p.w, d.p, "Arma primária") : "") + (d.s ? arma(d.s.w, d.s, "Arma secundária") : "");
+  const featCards = (arr, extra) => (arr || []).map(x => card(feat(x, extra))).join("");
+  const exps = pc.exp.filter(e => e.n).map(e => card(`<div class="rj-exp"><b>${esc(e.n)}</b><span class="rj-mod">+${e.v}</span></div>`)).join("");
+  const itens = (pc.inventario || []).map(it => { const o = it.ref && (loc("consumables", it.ref) || loc("items", it.ref)); return card(`<div class="rj-item-h"><b>${esc(it.n)}</b><span class="rj-qty">×${it.q ?? 1}</span></div>${it.nota ? `<div class="muted small">${esc(it.nota)}</div>` : ""}${o && o.x ? `<div class="rj-tx">${mdBlock(o.x)}</div>` : ""}`); }).join("");
+  const custo = (n, t, x) => card(`<div class="rj-esp"><span class="rj-cost">${n}</span><div><b>${t}</b><div class="rj-tx">${x}</div></div></div>`);
+  const esperanca = custo("1", "Usar uma Experiência", "Some o bônus da Experiência à rolagem. Declare antes de rolar.")
+    + custo("1", "Ajudar um aliado", "Descreva como ajuda e dê a ele um d6 de vantagem na rolagem.")
+    + custo("3", "Habilidade de Esperança", "Use a habilidade de Esperança da sua classe.")
+    + custo("3", "Tag Team Roll", "Você e um aliado agem juntos numa só rolagem. Uma vez por sessão para cada jogador.")
+    + custo("+1", "Ganhar Esperança", "Sempre que a rolagem sair com Esperança. Falhou com Medo: o mestre ganha Medo.");
+  const html = `<div class="ficha-tema rj"${temaAttr(pc)} style="${temaVars(pc)}">`
+    + secao("Armas", armas || card(`<p class="muted" style="margin:0">Nenhuma arma equipada.</p>`))
+    + (c ? secao("Habilidade de Esperança", featCards([c.hope], `<span class="tag hope">3 Esperança</span>`)) : "")
+    + (c ? secao("Habilidades de " + esc(c.n), featCards(c.feats)) : "")
+    + secao("Experiências", exps || card(`<p class="muted" style="margin:0">Nenhuma Experiência.</p>`))
+    + secao("Itens", itens || card(`<p class="muted" style="margin:0">Inventário vazio.</p>`))
+    + secao("O que fazer com Esperança", esperanca)
+    + `</div>`;
+  openSheet(html, { title: "Resumo de jogo", wide: true });
 }
 
 // ---------- Cartas ----------
