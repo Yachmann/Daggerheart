@@ -43,9 +43,10 @@ export async function loadGM() {
   if (pronto) return;
   const v = "?v=" + (window.APP_VERSION || "1");
   const j = u => fetch(u + v, { cache: "no-cache" }).then(r => (r.ok ? r.json() : null)).catch(() => null);
-  const [b, e, ec] = await Promise.all([j("data/adversarios.json"), j("data/exp-adv.json"), j("data/exemplo-cena.json")]);
+  const [b, e, ec, pt] = await Promise.all([j("data/adversarios.json"), j("data/exp-adv.json"), j("data/exemplo-cena.json"), j("data/pt/adversarios.json")]);
   EXEMPLO_CENA = ec;
-  BASE = (b && b.adv) || [];
+  // Tradução em `pt` (por id): a ficha segue em inglês para a lógica (ref, apelidos, geradores); o português só é usado ao exibir.
+  BASE = ((b && b.adv) || []).map(a => (pt && pt[a.id] ? { ...a, pt: pt[a.id] } : a));
   EXPADV = (e && e.adv || []).map(a => ({ ...a, id: a.id || a.name }));
   EXPENV = (e && e.env) || [];
   pronto = true;
@@ -119,9 +120,15 @@ export function ambientes() {
   const hf = hfOn();
   return EXPENV.filter(e => e.src !== "hf" || hf).map(e => ({ ...e, id: e.name }));
 }
+// Cópia da ficha com os textos em português (se houver tradução), só para exibir; a original não muda.
+export const emPT = a => {
+  const p = a && a.pt;
+  if (!p) return a;
+  return { ...a, name: p.name || a.name, desc: p.desc || a.desc, mot: p.mot || a.mot, wpn: p.wpn || a.wpn, xp: p.xp ?? a.xp, f: (a.f || []).map((f, i) => (p.f && p.f[i] ? { ...f, n: p.f[i].n || f.n, t: p.f[i].t || f.t } : f)) };
+};
 export const achaAdv = nome => {
   const n = norm(nome), todos = adversarios({ todos: true });
-  return todos.find(a => norm(a.name) === n) || null;
+  return todos.find(a => norm(a.name) === n) || todos.find(a => a.pt && norm(a.pt.name) === n) || null;
 };
 // Apelidos (ex.: "Bandit" para "Jagged Knife Bandit") só valem se forem únicos, e o importador avisa.
 export const achaPorApelido = nome => {
@@ -159,8 +166,9 @@ export function novaBatalha(p = {}) {
 export function novaUnidade(b, a, { nome, desc = "", n = 1 } = {}) {
   const th = parseTh(a.th), num = b.proxNum++;
   const mesmos = b.unidades.filter(x => x.ref === a.name).length;
+  const orig = a, ap = emPT(a); a = ap; // exibição em português; ref e marcadores seguem o nome original
   const nm = nome || (n > 1 || mesmos ? `${a.name} ${mesmos + 1}` : a.name);
-  return { id: uid(), num, ref: a.name, name: nm, desc, type: a.type, tier: a.tier, horde: a.horde || "", dif: a.dif, maj: th.maj, sev: th.sev, hpMax: Math.max(1, +a.hp || 1), hp: 0, stMax: +a.st || 0, st: 0, mk: proximoMarcador(b, a.name), atk: a.atk, wpn: a.wpn, rng: a.rng, dmg: a.dmg, xp: a.xp || "", mot: a.mot || "", f: (a.f || []).map(f => ({ n: f.n, k: f.k || "", t: trocaNome(f.t, a.al, nm) })), cond: [], notes: "", open: false };
+  return { id: uid(), num, ref: orig.name, name: nm, desc, type: a.type, tier: a.tier, horde: a.horde || "", dif: a.dif, maj: th.maj, sev: th.sev, hpMax: Math.max(1, +a.hp || 1), hp: 0, stMax: +a.st || 0, st: 0, mk: proximoMarcador(b, orig.name), atk: a.atk, wpn: a.wpn, rng: a.rng, dmg: a.dmg, xp: a.xp || "", mot: a.mot || "", f: (a.f || []).map(f => ({ n: f.n, k: f.k || "", t: trocaNome(f.t, a.al, nm) })), cond: [], notes: "", open: false };
 }
 export function adicionar(b, a, qtd = 1, extra = {}) {
   qtd = Math.max(1, Math.min(30, qtd | 0 || 1));
@@ -193,25 +201,56 @@ const pick = a => a[Math.floor(Math.random() * a.length)];
 export const NOMES = { Bruiser: ["Brutamontes", "Colosso", "Quebra-Ossos", "Esmagador", "Gigante"], Horde: ["Enxame", "Matilha", "Turba", "Revoada", "Ninhada"], Leader: ["Capitão", "Senhor da Guerra", "Matriarca", "Comandante", "Arauto"], Minion: ["Lacaio", "Capanga", "Rastejante", "Recruta", "Cria"], Ranged: ["Arqueiro", "Atirador", "Lançador", "Caçador", "Fundibulário"], Skulk: ["Espreitador", "Sombra", "Assassino", "Rastejador", "Emboscador"], Social: ["Cortesã", "Mercador", "Diplomata", "Intrigante", "Emissário"], Solo: ["Fera Ancestral", "Terror", "Devorador", "Guardião Antigo", "Flagelo"], Standard: ["Soldado", "Guerreiro", "Sentinela", "Cultista", "Saqueador"], Support: ["Xamã", "Oráculo", "Feiticeiro", "Alquimista", "Bardo Sombrio"] };
 export const EPITETOS = ["das Cinzas", "de Ferro", "do Pântano", "da Névoa", "das Profundezas", "do Espinheiro", "da Lua Partida", "de Ossos", "do Vale Rubro", "da Tempestade", "do Eco", "sem Nome"];
 const FIXAS = /^(Minion|Horde|Relentless)\b/;
-function poolHab(type, tier) {
-  const out = [], srd = adversarios({ todos: false }).filter(a => a.src !== "custom");
-  const add = tr => srd.filter(a => a.type === type && a.tier === tr).forEach(a => a.f.forEach(f => { if (!FIXAS.test(f.n)) out.push({ n: f.n, k: f.k, t: f.t, from: a.name, ft: a.tier, al: a.al }); }));
-  add(tier);
-  if (out.length < 5) for (const d of [1, -1, 2, -2, 3, -3]) { const tr = tier + d; if (tr >= 1 && tr <= 4) add(tr); if (out.length >= 8) break; }
+
+// Estilo de combate: o que um adversário faz de verdade. Habilidade sorteada só vem de adversário do mesmo estilo,
+// então um arqueiro não ganha habilidade de corpo a corpo (nem um brutamontes, uma de atirar de longe).
+//   arco  = ataque físico à distância (arqueiros, atiradores, arremesso)
+//   magia = conjurador (ataque mágico à distância)
+//   corpo = corpo a corpo
+export const ESTILO_PT = { arco: "À distância (arqueiro, atirador)", magia: "Conjurador (magia)", corpo: "Corpo a corpo" };
+const ARREMESSO = /bow|sling|javelin|throw|dart/i, CONJURO = /\b(staff|wand|rod|blast|bolt|psychic|spark)\b/i;
+export function estiloAdv(a) {
+  const r = String(a.rng || "").toLowerCase(), mag = /m[aá]g/i.test(a.dmg || "") || CONJURO.test(a.wpn || "");
+  if (/far|longe/.test(r)) return mag ? "magia" : "arco";
+  if (r === "close" || r === "perto") return mag ? "magia" : ARREMESSO.test(a.wpn || "") ? "arco" : "corpo";
+  return "corpo";
+}
+// O texto da habilidade exige corpo a corpo ("Melee") ou ataque longe ("Far")? null = serve para qualquer um.
+function exigeAlcance(t) {
+  const corpo = /\bMelee\b/.test(t), longe = /\bFar\b/.test(t);
+  return corpo && !longe ? "corpo" : longe && !corpo ? "longe" : null;
+}
+const casaEstilo = (estilo, t) => { const e = exigeAlcance(t); return !e || (estilo === "corpo" ? e === "corpo" : e === "longe"); };
+const PESO_TIER = [1, 0.35, 0.12, 0.05];
+// Todas as habilidades compatíveis com o perfil { estilo, cat }. Cada uma leva um peso: mesmo tipo, mesmo tema e mesmo patamar sorteiam mais.
+function poolHab(type, tier, perfil) {
+  const out = [];
+  adversarios({ todos: false }).filter(a => a.src !== "custom" && estiloAdv(a) === perfil.estilo && Math.abs(a.tier - tier) <= 3).forEach(a => {
+    const w = PESO_TIER[Math.abs(a.tier - tier)] * (a.type === type ? 3 : 1) * (perfil.cat && a.cat === perfil.cat ? 8 : 1);
+    a.f.forEach(f => { if (!FIXAS.test(f.n) && casaEstilo(perfil.estilo, f.t)) out.push({ n: f.n, k: f.k, t: f.t, from: a.name, ft: a.tier, al: a.al, w }); });
+  });
   return out;
 }
-export function sortearHabilidade(type, tier, tomadas = []) { const p = poolHab(type, tier).filter(f => !tomadas.includes(f.n)); return p.length ? clone(pick(p)) : null; }
+function pickPeso(l) { let r = Math.random() * l.reduce((s, x) => s + x.w, 0); for (const x of l) { r -= x.w; if (r <= 0) return x; } return l[l.length - 1]; }
+export function sortearHabilidade(type, tier, tomadas = [], perfil = { estilo: "corpo", cat: "" }) {
+  const p = poolHab(type, tier, perfil).filter(f => !tomadas.includes(f.n));
+  if (!p.length) return null;
+  const { w, ...f } = pickPeso(p);
+  return clone(f);
+}
+// Nomes para conjuradores (a lista padrão do tipo serve para arqueiros e guerreiros)
+const NOMES_MAGIA = { Ranged: ["Feiticeiro de Guerra", "Conjurador", "Arcanista", "Bruxo", "Lançador de Feitiços"], Standard: ["Acólito", "Cultista", "Aprendiz Arcano", "Mago de Batalha", "Invocador"], Skulk: ["Ilusionista", "Bruxo das Sombras", "Maldizente", "Fantasma Conjurador", "Feiticeiro Furtivo"], Leader: ["Arquimago", "Sumo Sacerdote", "Mestre de Rituais", "Líder do Culto", "Oráculo"], Solo: ["Arquimago", "Lich", "Conjurador Ancestral", "Oráculo Sombrio", "Tirano Arcano"] };
 export function gerarAdversario(type, tier) {
   const srd = adversarios().filter(a => a.src !== "custom");
   let bases = srd.filter(a => a.type === type && a.tier === tier), baseTier = tier;
   if (!bases.length) for (const d of [-1, 1, -2, 2, -3, 3]) { bases = srd.filter(a => a.type === type && a.tier === tier + d); if (bases.length) { baseTier = tier + d; break; } }
-  const b = pick(bases);
-  const name = `${pick(NOMES[type])} ${pick(EPITETOS)}`;
-  const g = { id: uid(), name, tier, type, horde: b.horde || "", desc: "", mot: b.mot || "", dif: b.dif, th: b.th, hp: b.hp, st: b.st, atk: b.atk, wpn: b.wpn, rng: b.rng, dmg: b.dmg, xp: "", al: [], f: [], baseTier };
+  const b = pick(bases), perfil = { estilo: estiloAdv(b), cat: b.cat || "" };
+  const name = `${pick((perfil.estilo === "magia" && NOMES_MAGIA[type]) || NOMES[type])} ${pick(EPITETOS)}`;
+  const g = { id: uid(), name, tier, type, horde: b.horde || "", desc: "", mot: b.mot || "", dif: b.dif, th: b.th, hp: b.hp, st: b.st, atk: b.atk, wpn: b.wpn, rng: b.rng, dmg: b.dmg, xp: "", al: [], f: [], cat: perfil.cat, baseTier };
   b.f.filter(f => FIXAS.test(f.n)).forEach(f => g.f.push({ n: f.n, k: f.k, t: trocaNome(f.t, b.al, name) }));
   const alvo = Math.max(2, Math.min(4, b.f.length));
   let guard = 0;
-  while (g.f.length < alvo && guard++ < 20) { const f = sortearHabilidade(type, tier, g.f.map(x => x.n)); if (!f) break; g.f.push({ n: f.n, k: f.k, t: trocaNome(f.t, f.al, name) }); }
+  while (g.f.length < alvo && guard++ < 20) { const f = sortearHabilidade(type, tier, g.f.map(x => x.n), perfil); if (!f) break; g.f.push({ n: f.n, k: f.k, t: trocaNome(f.t, f.al, name) }); }
   return g;
 }
 export function gerarBatalha({ tema = "qualquer", tier = 1, jogadores = 4, ajuste = 0 }) {

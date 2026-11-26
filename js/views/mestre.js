@@ -1,7 +1,7 @@
 // Mestre: central de batalhas, biblioteca, geradores, notas e conexão com a IA
 import { esc, md, mdBlock, icon, uid, toast, confirmar, openSheet, closeSheet, debounce, norm, store } from "../util.js";
 import { list, loc, hfOn, nome, T, dmgPT } from "../data.js";
-import { GM, gmStatus, salvarGM, adversarios, ambientes, achaBatalha, novaBatalha, salvarBatalha, orcamento, resumoBatalha, TIPOS, TIPO_PT, TIPO_DESC, CATS, COMPLICACOES, gerarAdversario, gerarBatalha, sortear, catalogoMD, instrucoesIA, EXEMPLO_JSON, EXEMPLO_CENA, soBatalhas, gmPronto, SEM_MESA, mesasDoMestre, mesaAtiva, setMesaAtiva, mesaPadrao, mesaDe, naMesaAtiva } from "../gm.js";
+import { GM, gmStatus, salvarGM, emPT, adversarios, ambientes, achaBatalha, novaBatalha, salvarBatalha, orcamento, resumoBatalha, TIPOS, TIPO_PT, TIPO_DESC, CATS, COMPLICACOES, gerarAdversario, gerarBatalha, estiloAdv, ESTILO_PT, sortear, catalogoMD, instrucoesIA, EXEMPLO_JSON, EXEMPLO_CENA, soBatalhas, gmPronto, SEM_MESA, mesasDoMestre, mesaAtiva, setMesaAtiva, mesaPadrao, mesaDe, naMesaAtiva } from "../gm.js";
 import { S, user, sb, fichasDaMesa } from "../store.js";
 import { app } from "../main.js";
 import * as Batalha from "./batalha.js";
@@ -130,12 +130,13 @@ function listaBib() {
     const l = ambientes().filter(e => !q || norm(e.name + " " + (e.desc || "") + " " + (e.adv || "")).includes(q)).sort((a, b) => a.tier - b.tier || a.name.localeCompare(b.name));
     return `<p class="muted small">${l.length} ambiente${l.length === 1 ? "" : "s"}</p><div class="grid3">${l.map(e => `<button class="res" style="margin:0" data-act="verenv" data-n="${esc(e.name)}"><div class="k">Patamar ${e.tier} · ${esc(e.type || "")} ${e.src === "hf" ? `<span class="tag exp">H&F</span>` : ""}</div><div class="t">${esc(e.name)}</div><div class="s">${esc(e.desc || "")}</div></button>`).join("")}</div>`;
   }
-  const l = adversarios().filter(a => (!ui.tipo || a.type === ui.tipo) && (!ui.tier || a.tier === +ui.tier) && (!ui.cat || a.cat === ui.cat) && (!ui.fonte || a.src === ui.fonte) && (!q || norm(a.name + " " + (a.mot || "") + " " + (a.desc || "") + " " + (a.f || []).map(f => f.n).join(" ")).includes(q))).sort((a, b) => a.tier - b.tier || a.type.localeCompare(b.type) || a.name.localeCompare(b.name));
-  return `<p class="muted small">${l.length} adversário${l.length === 1 ? "" : "s"}</p><div class="grid3">${l.slice(0, 150).map(a => `<button class="res" style="margin:0" data-act="verladv" data-n="${esc(a.name)}" data-s="${a.src}"><div class="k">${esc(tipoTag(a))} ${fonteTag(a)}</div><div class="t">${esc(a.name)}</div><div class="s">Dif ${esc(a.dif)} · PV ${esc(a.hp)} · ${esc(a.wpn)} ${esc(dmgPT(a.dmg))}</div></button>`).join("")}</div>${l.length > 150 ? `<p class="muted">Mostrando 150. Use os filtros.</p>` : ""}`;
+  const txt = a => { const p = emPT(a); return norm(a.name + " " + (a.mot || "") + " " + (a.desc || "") + " " + (a.f || []).map(f => f.n).join(" ") + " " + (p !== a ? p.name + " " + p.mot + " " + p.desc + " " + p.f.map(f => f.n).join(" ") : "")); };
+  const l = adversarios().filter(a => (!ui.tipo || a.type === ui.tipo) && (!ui.tier || a.tier === +ui.tier) && (!ui.cat || a.cat === ui.cat) && (!ui.fonte || a.src === ui.fonte) && (!q || txt(a).includes(q))).sort((a, b) => a.tier - b.tier || a.type.localeCompare(b.type) || emPT(a).name.localeCompare(emPT(b).name));
+  return `<p class="muted small">${l.length} adversário${l.length === 1 ? "" : "s"}</p><div class="grid3">${l.slice(0, 150).map(a => { const p = emPT(a); return `<button class="res" style="margin:0" data-act="verladv" data-n="${esc(a.name)}" data-s="${a.src}"><div class="k">${esc(tipoTag(a))} ${fonteTag(a)}</div><div class="t">${esc(p.name)}</div><div class="s">Dif ${esc(a.dif)} · PV ${esc(a.hp)} · ${esc(p.wpn)} ${esc(dmgPT(a.dmg))}</div></button>`; }).join("")}</div>${l.length > 150 ? `<p class="muted">Mostrando 150. Use os filtros.</p>` : ""}`;
 }
 function verAdv(a) {
   const custom = a.src === "custom";
-  const w = openSheet(statBlock(a, { acts: `<div class="acts"><button class="btn hope" data-x="add">${icon("plus")} Adicionar à batalha</button>${custom ? `<a class="btn" href="#/mestre/adversario/${a.id}" data-close>Editar</a>` : `<a class="btn" href="#/mestre/adversario/novo?base=${encodeURIComponent(a.name)}" data-close>Criar variação</a>`}</div>` }), { title: a.name, wide: true });
+  const w = openSheet(statBlock(emPT(a), { acts: `<div class="acts"><button class="btn hope" data-x="add">${icon("plus")} Adicionar à batalha</button>${custom ? `<a class="btn" href="#/mestre/adversario/${a.id}" data-close>Editar</a>` : `<a class="btn" href="#/mestre/adversario/novo?base=${encodeURIComponent(a.name)}" data-close>Criar variação</a>`}</div>` }), { title: emPT(a).name, wide: true });
   w.querySelector('[data-x="add"]').addEventListener("click", () => { closeSheet(); escolherBatalha(a); });
 }
 
@@ -153,9 +154,9 @@ function abaGeradores() {
     ${ui.rcRes ? `<div style="margin-top:12px">${barraOrc(ui.rcRes)}${agrupar(ui.rcRes).map(([n, k, u]) => `<div class="inv-row"><div class="grow"><b>${k > 1 ? k + "× " : ""}${esc(u.ref)}</b><div class="muted small">${esc(tipoTag(u))} · Dif ${esc(u.dif)} · PV ${u.hpMax}</div></div></div>`).join("")}
       <div class="acts"><button class="btn" data-act="rcgen">Sortear outra</button><button class="btn hope" data-act="rcuse">${icon("sword")} Criar esta batalha</button></div></div>` : ""}</section>
 
-  <section class="card"><h3>Adversário aleatório</h3><p class="muted small" style="margin:2px 0 10px">Números de um adversário do SRD do mesmo tipo e patamar, habilidades sorteadas do mesmo grupo.</p>
+  <section class="card"><h3>Adversário aleatório</h3><p class="muted small" style="margin:2px 0 10px">Números de um adversário do SRD do mesmo tipo e patamar, habilidades sorteadas só do mesmo estilo de combate (arqueiro recebe habilidade de arqueiro, não de corpo a corpo).</p>
     <div class="row"><label class="f">Tipo<select data-ch="gt">${TIPOS.map(t => `<option value="${t}"${t === ui.gt ? " selected" : ""}>${TIPO_PT[t]}</option>`).join("")}</select></label><label class="f">Patamar<select data-ch="gp">${[1, 2, 3, 4].map(t => `<option${t === ui.gp ? " selected" : ""}>${t}</option>`).join("")}</select></label><button class="btn hope" data-act="gen" style="align-self:end">Gerar</button></div>
-    ${g ? `<div style="margin-top:12px">${statBlock({ ...g, src: "custom" }, { acts: `<div class="acts"><button class="btn hope" data-act="gsave">${icon("plus")} Salvar e editar</button><button class="btn" data-act="gadd">Adicionar a uma batalha</button></div>` })}</div>` : ""}</section>
+    ${g ? `<div style="margin-top:12px"><p class="muted small" style="margin:0 0 8px">Estilo: <b>${ESTILO_PT[estiloAdv(g)]}</b></p>${statBlock({ ...g, src: "custom" }, { acts: `<div class="acts"><button class="btn hope" data-act="gsave">${icon("plus")} Salvar e editar</button><button class="btn" data-act="gadd">Adicionar a uma batalha</button></div>` })}</div>` : ""}</section>
 
   <section class="card"><h3>Complicação</h3><div class="row"><label class="f">Tema<select data-ch="cc">${[["geral", "Geral"], ...CATS].map(([k, n]) => `<option value="${k}"${k === ui.compCat ? " selected" : ""}>${n}</option>`).join("")}</select></label><button class="btn hope" data-act="comp" style="align-self:end">Sortear</button></div>
     ${ui.comp ? `<div class="note" style="margin-top:10px">${esc(ui.comp)}</div>` : ""}</section>

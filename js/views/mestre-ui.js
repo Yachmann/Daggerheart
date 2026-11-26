@@ -1,7 +1,7 @@
 // Componentes visuais do mestre: ficha de adversário, pips, seleção de batalha
 import { esc, md, mdBlock, icon, openSheet, closeSheet, toast } from "../util.js";
 import { T, dmgPT } from "../data.js";
-import { TIPO_PT, KIND_PT, parseTh, GM, adicionar, salvarGM, novaBatalha, salvarBatalha, orcamento, naMesaAtiva } from "../gm.js";
+import { TIPO_PT, KIND_PT, emPT, parseTh, GM, adicionar, salvarGM, novaBatalha, salvarBatalha, orcamento, naMesaAtiva } from "../gm.js";
 
 export const tipoTag = a => `${a.tier ? "P" + a.tier + " · " : ""}${TIPO_PT[a.type] || a.type}${a.horde ? " (" + a.horde + ")" : ""}`;
 export const fonteTag = a => (a.src === "hf" ? `<span class="tag exp" title="Expansão Hope & Fear">H&F</span>` : a.src === "custom" ? `<span class="tag hope">${a.ia ? "IA" : "Meu"}</span>` : "");
@@ -47,7 +47,7 @@ export function pipsU(n, on, act, id) {
 export function escolherBatalha(a, qtdPadrao = 1, aposAdicionar) {
   const abertas = GM.batalhas.filter(b => b.tipo !== "cena" && b.status !== "fim" && naMesaAtiva(b));
   const qtd0 = a.type === "Minion" ? 4 : qtdPadrao;
-  const w = openSheet(`<p class="muted" style="margin-top:0">${esc(a.name)} · ${esc(tipoTag(a))}</p>
+  const w = openSheet(`<p class="muted" style="margin-top:0">${esc(emPT(a).name)} · ${esc(tipoTag(a))}</p>
     <label class="f">Quantos<input type="number" id="eqtd" min="1" max="30" value="${qtd0}"></label>
     <div class="eyebrow" style="margin:14px 0 6px">Adicionar a</div>
     ${abertas.length ? `<div class="opts" style="grid-template-columns:1fr">${abertas.map(b => `<button class="opt" data-b="${b.id}"><span class="t" style="font-size:1.1rem">${esc(b.nome)}</span><span class="s">${b.unidades.length} adversário(s) · ${b.status === "ativa" ? "em andamento" : "em preparação"}</span></button>`).join("")}</div>` : `<p class="muted small">Nenhuma batalha aberta nesta mesa.</p>`}

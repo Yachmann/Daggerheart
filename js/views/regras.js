@@ -1,16 +1,25 @@
-// Regras: guia rápido em português + busca unificada (guia, cartas, habilidades, equipamento e SRD completo em inglês)
+// Regras: guia rápido em português + busca unificada (guia, cartas, habilidades, equipamento e SRD completo em português, com o original em inglês)
 import { esc, md, mdBlock, icon, norm, debounce } from "../util.js";
 import { guia, list, loc, domPT, nome, traitPT } from "../data.js";
 import { app } from "../main.js";
 import { dcard, feat, voltar, verCarta, expTag } from "./common.js";
 
-let Q = "", SRD = null, SYN = {}, carregando = false;
+// Nomes dos grupos do SRD em português (os capítulos já vêm em português no arquivo original)
+const GRP_PT = { "Additional GM Guidance": "Orientações adicionais ao Mestre", "Additional Rules": "Regras adicionais", "Adversaries And Environments": "Adversários e ambientes", Ancestries: "Ancestralidades", Armor: "Armaduras", Attacking: "Ataque", Bard: "Bardo", Classes: "Classes", Combat: "Combate", "Combat Wheelchair": "Cadeira de rodas de combate", Communities: "Comunidades", Conditions: "Condições", Consumables: "Consumíveis", "Core GM Mechanics": "Mecânicas centrais do Mestre", "Core Gameplay Loop": "Ciclo central de jogo", Death: "Morte", Domains: "Domínios", Downtime: "Tempo livre", Druid: "Druida", Equipment: "Equipamento", "Flow Of The Game": "Fluxo do jogo", "GM Guidance": "Orientações ao Mestre", Gold: "Ouro", Guardian: "Guardião", Introduction: "Introdução", "Leveling Up": "Subir de nível", Loot: "Espólio", "Making Moves & Taking Action": "Fazer movimentos e agir", "Maps, Range, And Movement": "Mapas, alcance e movimento", Multiclassing: "Multiclasse", Ranger: "Patrulheiro", Rogue: "Ladino", Seraph: "Serafim", Sorcerer: "Feiticeiro", Stress: "Estresse", "The Basics": "O básico", "The Spotlight": "O holofote", "The Witherwild": "A Murchaselva", "Turn Order & Action Economy": "Ordem de turnos e economia de ações", "Using Environments": "Usando ambientes", Warrior: "Guerreiro", Weapons: "Armas", "What Is This?": "O que é isto?", Wizard: "Mago" };
+const grpPT = g => GRP_PT[g] || g;
+
+let Q = "", SRD = null, SYN = {}, carregando = false, TEM_PT = false;
 async function carregarSRD() {
   if (SRD || carregando) return;
   carregando = true;
   try {
-    const [r, s] = await Promise.all([fetch("data/regras-en.json").then(x => x.json()), fetch("data/sinonimos.json").then(x => x.json()).catch(() => ({}))]);
-    SRD = r.map((x, i) => ({ i, cap: x[0], grp: x[1], t: x[2], x: x[3], nt: norm(x[2]), nb: norm(x[3]) }));
+    const [r, p, s] = await Promise.all([fetch("data/regras-en.json").then(x => x.json()), fetch("data/pt/regras.json").then(x => x.ok ? x.json() : {}).catch(() => ({})), fetch("data/sinonimos.json").then(x => x.json()).catch(() => ({}))]);
+    // Cada entrada guarda o original (t, x) e a tradução (tp, xp, quando existir); a busca varre as duas línguas.
+    SRD = r.map((x, i) => {
+      const pt = p[i], tp = pt && pt.t ? pt.t : "", xp = pt && pt.x ? pt.x : "";
+      return { i, cap: x[0], grp: x[1], t: x[2], x: x[3], tp, xp, nt: norm(tp + " " + x[2]), nb: norm(xp + " " + x[3]) };
+    });
+    TEM_PT = SRD.some(e => e.xp);
     SYN = s;
   } catch { SRD = []; }
   carregando = false;
@@ -46,7 +55,7 @@ function buscar(q) {
   for (const c of list("subclasses")) { const o = loc("subclasses", c); for (const f of [...o.f, ...o.s, ...o.m]) { const s = pontua(norm(f.t), norm(f.n + " " + (f.en || "")), ws); if (s) res.push({ s, k: "Subclasse · " + o.n, t: f.n, sn: trecho(f.t, ws), h: "#/compendio?aba=classes&id=" + encodeURIComponent(c.cls), exp: c }); } }
   for (const [k, lab] of [["ancestries", "Ancestralidade"], ["communities", "Comunidade"]]) for (const c of list(k)) { const o = loc(k, c); const fs = Array.isArray(o.f) ? o.f : [o.f]; for (const f of fs) { const s = pontua(norm(f.t), norm(f.n + " " + o.n), ws); if (s) res.push({ s, k: lab + " · " + o.n, t: f.n, sn: trecho(f.t, ws), h: `#/compendio?aba=${k === "ancestries" ? "ancestralidades" : "comunidades"}&id=${encodeURIComponent(c.id)}`, exp: c }); } }
   for (const [k, lab] of [["consumables", "Consumível"], ["items", "Item"]]) for (const c of list(k)) { const o = loc(k, c); const s = pontua(norm(o.x), norm(o.n + " " + c.n), ws); if (s) res.push({ s: s - 1, k: lab, t: o.n, sn: trecho(o.x, ws), h: "#/compendio?aba=itens&q=" + encodeURIComponent(o.n), exp: c }); }
-  if (SRD) for (const r of SRD) { const s = pontua(r.nb, r.nt, ws); if (s) res.push({ s: s - 2, k: "SRD (inglês) · " + (r.grp || r.cap), t: r.t, sn: trecho(r.x, ws), h: "#/regras/srd/" + r.i }); }
+  if (SRD) for (const r of SRD) { const s = pontua(r.nb, r.nt, ws); if (s) res.push({ s: s - 2, k: "SRD" + (r.xp ? "" : " (inglês)") + " · " + (grpPT(r.grp) || r.cap), t: r.tp || r.t, sn: trecho(r.xp || r.x, ws), h: "#/regras/srd/" + r.i }); }
   return res.sort((a, b) => b.s - a.s).slice(0, 60);
 }
 
@@ -64,9 +73,10 @@ function srdSecao(i) {
   if (!r) return `<div class="empty">Seção não encontrada.</div>`;
   const viz = SRD.filter(x => x.grp === r.grp && x.cap === r.cap && x.i !== r.i);
   return `<div style="margin-bottom:10px">${voltar("#/regras?srd=1", "Regras")}</div>
-  <article class="card"><div class="eyebrow">${esc(r.cap)}${r.grp ? " · " + esc(r.grp) : ""} · texto original em inglês</div><h1 style="margin:4px 0 10px">${esc(r.t)}</h1><div class="tx">${mdBlock(r.x)}</div>
-  <div class="acts">${SRD[r.i - 1] ? `<a class="btn sm" href="#/regras/srd/${r.i - 1}">${icon("back")} ${esc(SRD[r.i - 1].t)}</a>` : ""}${SRD[r.i + 1] ? `<a class="btn sm" href="#/regras/srd/${r.i + 1}">${esc(SRD[r.i + 1].t)} ${icon("chev")}</a>` : ""}</div></article>
-  ${viz.length ? `<section class="sec"><h2>Nesta parte</h2><div class="guide-grid">${viz.map(x => `<a class="gtile" href="#/regras/srd/${x.i}"><b>${esc(x.t)}</b><span>${esc(x.grp || x.cap)}</span></a>`).join("")}</div></section>` : ""}`;
+  <article class="card"><div class="eyebrow">${esc(r.cap)}${r.grp ? " · " + esc(grpPT(r.grp)) : ""}${r.xp ? "" : " · texto original em inglês"}</div><h1 style="margin:4px 0 10px">${esc(r.tp || r.t)}</h1><div class="tx">${mdBlock(r.xp || r.x)}</div>
+  ${r.xp ? `<details class="more" style="margin-top:12px"><summary>Ver original (inglês)</summary><div class="tx" style="margin-top:8px"><h3 style="margin:0 0 6px">${esc(r.t)}</h3>${mdBlock(r.x)}</div></details>` : ""}
+  <div class="acts">${SRD[r.i - 1] ? `<a class="btn sm" href="#/regras/srd/${r.i - 1}">${icon("back")} ${esc(SRD[r.i - 1].tp || SRD[r.i - 1].t)}</a>` : ""}${SRD[r.i + 1] ? `<a class="btn sm" href="#/regras/srd/${r.i + 1}">${esc(SRD[r.i + 1].tp || SRD[r.i + 1].t)} ${icon("chev")}</a>` : ""}</div></article>
+  ${viz.length ? `<section class="sec"><h2>Nesta parte</h2><div class="guide-grid">${viz.map(x => `<a class="gtile" href="#/regras/srd/${x.i}"><b>${esc(x.tp || x.t)}</b><span>${esc(grpPT(x.grp) || x.cap)}</span></a>`).join("")}</div></section>` : ""}`;
 }
 
 const ATALHOS = [["dano", "Dano e limiares"], ["descanso", "Descanso"], ["morte", "Morte"], ["condicoes", "Condições"], ["esperanca", "Esperança"], ["vantagem", "Vantagem"], ["alcance", "Alcance"], ["recordar carta", "Recordar carta"], ["multiclasse", "Multiclasse"], ["critico", "Crítico"]];
@@ -92,8 +102,8 @@ function resultados(res) {
 function inicio(caps, q) {
   const srdCaps = SRD ? [...new Set(SRD.map(r => r.cap))] : [];
   return `${caps.map(c => `<section class="sec"><h2>${esc(c)}</h2><div class="guide-grid">${guia().filter(g => g.cap === c).map(g => `<a class="gtile" href="#/regras/${g.id}"><b>${esc(g.t)}</b><span>${esc(g.tags.slice(0, 3).join(", "))}</span></a>`).join("")}</div></section>`).join("")}
-  <section class="sec"><h2>SRD completo <span class="tag">inglês</span></h2><p class="muted" style="margin-top:-4px">O documento oficial inteiro. A busca acima também procura aqui, aceitando palavras em português.</p>
-  ${SRD ? srdCaps.map(c => `<details class="more"><summary>${esc(c)}</summary><div class="guide-grid" style="margin:6px 0 12px">${SRD.filter(r => r.cap === c).map(r => `<a class="gtile" href="#/regras/srd/${r.i}"><b>${esc(r.t)}</b><span>${esc(r.grp || c)}</span></a>`).join("")}</div></details>`).join("") : `<div class="loading" style="min-height:80px"><div class="spin"></div></div>`}</section>`;
+  <section class="sec"><h2>SRD completo ${TEM_PT ? "" : `<span class="tag">inglês</span>`}</h2><p class="muted" style="margin-top:-4px">O documento oficial inteiro${TEM_PT ? ", em português, com o original em inglês em cada seção" : ""}. A busca acima procura aqui nas duas línguas.</p>
+  ${SRD ? srdCaps.map(c => `<details class="more"><summary>${esc(c)}</summary><div class="guide-grid" style="margin:6px 0 12px">${SRD.filter(r => r.cap === c).map(r => `<a class="gtile" href="#/regras/srd/${r.i}"><b>${esc(r.tp || r.t)}</b><span>${esc(grpPT(r.grp) || c)}</span></a>`).join("")}</div></details>`).join("") : `<div class="loading" style="min-height:80px"><div class="spin"></div></div>`}</section>`;
 }
 
 const atualizar = debounce(() => { const el = document.getElementById("rres"); if (!el) return; el.innerHTML = Q ? resultados(buscar(Q)) : inicio([...new Set(guia().map(g => g.cap))]); }, 160);
