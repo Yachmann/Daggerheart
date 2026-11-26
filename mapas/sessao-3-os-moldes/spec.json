@@ -1,0 +1,367 @@
+{
+  "formato": "daggerheart-mapa",
+  "versao": 1,
+  "nome": "Sessão 3 · Os Moldes",
+  "descricao": "O galpão da Fundição Velha Brasa: três fornalhas, moldes de sino enterrados na areia e passarelas a quatro metros do chão.",
+  "grade": [
+    56,
+    36
+  ],
+  "bioma": "cidade",
+  "seed": 303,
+  "regioes": [
+    {
+      "material": "pedra",
+      "forma": "retangulo",
+      "x0": 0,
+      "y0": 0,
+      "x1": 56,
+      "y1": 36
+    },
+    {
+      "material": "areia",
+      "forma": "retangulo",
+      "x0": 15,
+      "y0": 11,
+      "x1": 37,
+      "y1": 26,
+      "borda": "reta"
+    },
+    {
+      "material": "agua",
+      "forma": "retangulo",
+      "x0": 5,
+      "y0": 25,
+      "x1": 10,
+      "y1": 30,
+      "borda": "reta"
+    }
+  ],
+  "linhas": [
+    {
+      "tipo": "calcada",
+      "pontos": [
+        [
+          26,
+          36
+        ],
+        [
+          26,
+          31
+        ]
+      ],
+      "largura": 4
+    }
+  ],
+  "estruturas": [
+    {
+      "tipo": "sala",
+      "x0": 3,
+      "y0": 3,
+      "x1": 47,
+      "y1": 31,
+      "piso": "pedra"
+    },
+    {
+      "tipo": "porta",
+      "x": 26,
+      "y": 31,
+      "orientacao": "h",
+      "larg": 4,
+      "estilo": "dupla"
+    },
+    {
+      "tipo": "porta",
+      "x": 3,
+      "y": 15,
+      "orientacao": "v",
+      "larg": 1.5,
+      "estilo": "fechada"
+    },
+    {
+      "tipo": "janela",
+      "x": 14,
+      "y": 3,
+      "orientacao": "h",
+      "estilo": "grade"
+    },
+    {
+      "tipo": "janela",
+      "x": 38,
+      "y": 3,
+      "orientacao": "h",
+      "estilo": "grade"
+    },
+    {
+      "tipo": "sala",
+      "x0": 46,
+      "y0": 12,
+      "x1": 55,
+      "y1": 21,
+      "piso": "pedra",
+      "forma": "redonda"
+    },
+    {
+      "tipo": "porta",
+      "x": 46,
+      "y": 16.5,
+      "orientacao": "v",
+      "larg": 1.5,
+      "estilo": "arco"
+    }
+  ],
+  "objetos": [
+    {
+      "tipo": "forja",
+      "x": 12,
+      "y": 5.5
+    },
+    {
+      "tipo": "forja",
+      "x": 24,
+      "y": 5.5
+    },
+    {
+      "tipo": "forja",
+      "x": 36,
+      "y": 5.5
+    },
+    {
+      "tipo": "bigorna",
+      "x": 12,
+      "y": 8.5,
+      "rot": 10
+    },
+    {
+      "tipo": "bigorna",
+      "x": 24,
+      "y": 8.5
+    },
+    {
+      "tipo": "bigorna",
+      "x": 36,
+      "y": 8.5,
+      "rot": -10
+    },
+    {
+      "tipo": "poco",
+      "x": 26,
+      "y": 18.5,
+      "r": 3.2
+    },
+    {
+      "tipo": "poco",
+      "x": 19,
+      "y": 14,
+      "r": 1.4
+    },
+    {
+      "tipo": "poco",
+      "x": 33,
+      "y": 14,
+      "r": 1.6
+    },
+    {
+      "tipo": "poco",
+      "x": 19,
+      "y": 23,
+      "r": 1.2
+    },
+    {
+      "tipo": "poco",
+      "x": 33,
+      "y": 23,
+      "r": 1.5
+    },
+    {
+      "tipo": "forma",
+      "pontos": [
+        [
+          4,
+          10
+        ],
+        [
+          14,
+          10
+        ],
+        [
+          14,
+          12
+        ],
+        [
+          4,
+          12
+        ]
+      ],
+      "material": "madeira"
+    },
+    {
+      "tipo": "forma",
+      "pontos": [
+        [
+          38,
+          10
+        ],
+        [
+          46,
+          10
+        ],
+        [
+          46,
+          12
+        ],
+        [
+          38,
+          12
+        ]
+      ],
+      "material": "madeira"
+    },
+    {
+      "tipo": "forma",
+      "pontos": [
+        [
+          4,
+          27.5
+        ],
+        [
+          22,
+          27.5
+        ],
+        [
+          22,
+          29.5
+        ],
+        [
+          4,
+          29.5
+        ]
+      ],
+      "material": "madeira"
+    },
+    {
+      "tipo": "escada",
+      "x0": 14,
+      "y0": 10,
+      "x1": 16,
+      "y1": 12,
+      "direcao": "o"
+    },
+    {
+      "tipo": "escada",
+      "x0": 36,
+      "y0": 10,
+      "x1": 38,
+      "y1": 12,
+      "direcao": "l"
+    },
+    {
+      "tipo": "escada",
+      "x0": 22,
+      "y0": 27.5,
+      "x1": 24,
+      "y1": 29.5,
+      "direcao": "o"
+    },
+    {
+      "tipo": "fileira",
+      "item": "barril",
+      "x0": 42,
+      "y0": 24,
+      "x1": 42,
+      "y1": 30,
+      "passo": 1.2
+    },
+    {
+      "tipo": "espalhar",
+      "item": "caixote",
+      "quantidade": 8,
+      "forma": "retangulo",
+      "x0": 38,
+      "y0": 25,
+      "x1": 46,
+      "y1": 30,
+      "distancia_min": 1.1
+    },
+    {
+      "tipo": "armario",
+      "x": 5,
+      "y": 20,
+      "rot": 90
+    },
+    {
+      "tipo": "balcao",
+      "x": 5,
+      "y": 8,
+      "rot": 90,
+      "larg": 3
+    },
+    {
+      "tipo": "braseiro",
+      "x": 26,
+      "y": 28
+    },
+    {
+      "tipo": "caldeirao",
+      "x": 40,
+      "y": 17,
+      "r": 0.8,
+      "cor": [
+        230,
+        120,
+        40
+      ]
+    },
+    {
+      "tipo": "mancha",
+      "x": 29,
+      "y": 21,
+      "r": 1.2,
+      "estilo": "queimado"
+    },
+    {
+      "tipo": "pilar",
+      "x": 15,
+      "y": 16,
+      "r": 0.5
+    },
+    {
+      "tipo": "pilar",
+      "x": 37,
+      "y": 16,
+      "r": 0.5
+    },
+    {
+      "tipo": "pilar",
+      "x": 15,
+      "y": 22,
+      "r": 0.5
+    },
+    {
+      "tipo": "pilar",
+      "x": 37,
+      "y": 22,
+      "r": 0.5
+    },
+    {
+      "tipo": "escada",
+      "x0": 49.5,
+      "y0": 15,
+      "x1": 51.5,
+      "y1": 18,
+      "direcao": "n"
+    }
+  ],
+  "luz": {
+    "clima": "noite",
+    "escuridao": 0.3
+  },
+  "px_por_quadrado": 100,
+  "cm_por_quadrado": 2.5,
+  "fases": [
+    {
+      "id": "1",
+      "nome": "Principal"
+    }
+  ]
+}

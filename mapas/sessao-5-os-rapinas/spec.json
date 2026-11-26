@@ -1,0 +1,437 @@
+{
+  "formato": "daggerheart-mapa",
+  "versao": 1,
+  "nome": "Sessão 5 · Os Rapinas",
+  "descricao": "O Reservatório sob Vauclar: passarelas de pedra sobre água escura, colunas, rodas de bomba e o sino Afogado no poço central.",
+  "grade": [
+    60,
+    40
+  ],
+  "bioma": "masmorra",
+  "seed": 505,
+  "regioes": [
+    {
+      "material": "agua",
+      "forma": "retangulo",
+      "x0": 2,
+      "y0": 2,
+      "x1": 58,
+      "y1": 38,
+      "borda": "reta"
+    },
+    {
+      "material": "pedra",
+      "forma": "retangulo",
+      "x0": 2,
+      "y0": 2,
+      "x1": 58,
+      "y1": 6
+    },
+    {
+      "material": "pedra",
+      "forma": "retangulo",
+      "x0": 27,
+      "y0": 6,
+      "x1": 33,
+      "y1": 38
+    },
+    {
+      "material": "pedra",
+      "forma": "retangulo",
+      "x0": 2,
+      "y0": 18,
+      "x1": 58,
+      "y1": 22
+    },
+    {
+      "material": "pedra",
+      "forma": "retangulo",
+      "x0": 8,
+      "y0": 6,
+      "x1": 12,
+      "y1": 18
+    },
+    {
+      "material": "pedra",
+      "forma": "retangulo",
+      "x0": 48,
+      "y0": 22,
+      "x1": 52,
+      "y1": 38
+    },
+    {
+      "material": "pedra",
+      "forma": "elipse",
+      "cx": 30,
+      "cy": 20,
+      "rx": 8,
+      "ry": 6
+    },
+    {
+      "material": "agua",
+      "forma": "elipse",
+      "cx": 30,
+      "cy": 20,
+      "rx": 3.5,
+      "ry": 3,
+      "corrente": "vertical"
+    }
+  ],
+  "linhas": [],
+  "estruturas": [
+    {
+      "tipo": "sala",
+      "x0": 0,
+      "y0": 0,
+      "x1": 60,
+      "y1": 40,
+      "piso": "pedra",
+      "espessura": 0.8
+    },
+    {
+      "tipo": "porta",
+      "x": 30,
+      "y": 0,
+      "orientacao": "h",
+      "larg": 3,
+      "estilo": "arco"
+    },
+    {
+      "tipo": "porta",
+      "x": 0,
+      "y": 20,
+      "orientacao": "v",
+      "larg": 2,
+      "estilo": "grade"
+    },
+    {
+      "tipo": "porta",
+      "x": 60,
+      "y": 20,
+      "orientacao": "v",
+      "larg": 2,
+      "estilo": "quebrada"
+    },
+    {
+      "tipo": "porta",
+      "x": 50,
+      "y": 40,
+      "orientacao": "h",
+      "larg": 2,
+      "estilo": "arco"
+    }
+  ],
+  "objetos": [
+    {
+      "tipo": "escada",
+      "x0": 28,
+      "y0": 1,
+      "x1": 32,
+      "y1": 5,
+      "direcao": "n"
+    },
+    {
+      "tipo": "fileira",
+      "item": "pilar",
+      "x0": 6,
+      "y0": 10,
+      "x1": 6,
+      "y1": 34,
+      "passo": 6,
+      "opcoes": {
+        "r": 0.7
+      }
+    },
+    {
+      "tipo": "fileira",
+      "item": "pilar",
+      "x0": 18,
+      "y0": 10,
+      "x1": 18,
+      "y1": 34,
+      "passo": 6,
+      "opcoes": {
+        "r": 0.7
+      }
+    },
+    {
+      "tipo": "fileira",
+      "item": "pilar",
+      "x0": 42,
+      "y0": 10,
+      "x1": 42,
+      "y1": 34,
+      "passo": 6,
+      "opcoes": {
+        "r": 0.7
+      }
+    },
+    {
+      "tipo": "fileira",
+      "item": "pilar",
+      "x0": 54,
+      "y0": 10,
+      "x1": 54,
+      "y1": 34,
+      "passo": 6,
+      "opcoes": {
+        "r": 0.7
+      }
+    },
+    {
+      "tipo": "forma",
+      "pontos": [
+        [
+          6.8,
+          4.0
+        ],
+        [
+          6.27,
+          5.27
+        ],
+        [
+          5.0,
+          5.8
+        ],
+        [
+          3.73,
+          5.27
+        ],
+        [
+          3.2,
+          4.0
+        ],
+        [
+          3.73,
+          2.73
+        ],
+        [
+          5.0,
+          2.2
+        ],
+        [
+          6.27,
+          2.73
+        ]
+      ],
+      "material": "metal"
+    },
+    {
+      "tipo": "forma",
+      "pontos": [
+        [
+          56.8,
+          4.0
+        ],
+        [
+          56.27,
+          5.27
+        ],
+        [
+          55.0,
+          5.8
+        ],
+        [
+          53.73,
+          5.27
+        ],
+        [
+          53.2,
+          4.0
+        ],
+        [
+          53.73,
+          2.73
+        ],
+        [
+          55.0,
+          2.2
+        ],
+        [
+          56.27,
+          2.73
+        ]
+      ],
+      "material": "metal"
+    },
+    {
+      "tipo": "forma",
+      "pontos": [
+        [
+          6.8,
+          36.0
+        ],
+        [
+          6.27,
+          37.27
+        ],
+        [
+          5.0,
+          37.8
+        ],
+        [
+          3.73,
+          37.27
+        ],
+        [
+          3.2,
+          36.0
+        ],
+        [
+          3.73,
+          34.73
+        ],
+        [
+          5.0,
+          34.2
+        ],
+        [
+          6.27,
+          34.73
+        ]
+      ],
+      "material": "metal"
+    },
+    {
+      "tipo": "forma",
+      "pontos": [
+        [
+          36,
+          8
+        ],
+        [
+          46,
+          8
+        ],
+        [
+          46,
+          10
+        ],
+        [
+          36,
+          10
+        ]
+      ],
+      "material": "madeira"
+    },
+    {
+      "tipo": "escada",
+      "x0": 46,
+      "y0": 8,
+      "x1": 48,
+      "y1": 12,
+      "direcao": "n"
+    },
+    {
+      "tipo": "forma",
+      "pontos": [
+        [
+          31.6,
+          20.0
+        ],
+        [
+          31.13,
+          21.13
+        ],
+        [
+          30.0,
+          21.6
+        ],
+        [
+          28.87,
+          21.13
+        ],
+        [
+          28.4,
+          20.0
+        ],
+        [
+          28.87,
+          18.87
+        ],
+        [
+          30.0,
+          18.4
+        ],
+        [
+          31.13,
+          18.87
+        ]
+      ],
+      "material": "metal"
+    },
+    {
+      "tipo": "fileira",
+      "item": "lampiao",
+      "x0": 4,
+      "y0": 20,
+      "x1": 56,
+      "y1": 20,
+      "passo": 9
+    },
+    {
+      "tipo": "braseiro",
+      "x": 40,
+      "y": 4
+    },
+    {
+      "tipo": "espalhar",
+      "item": "caixote",
+      "quantidade": 7,
+      "forma": "retangulo",
+      "x0": 49,
+      "y0": 24,
+      "x1": 51.5,
+      "y1": 36,
+      "distancia_min": 1.1
+    },
+    {
+      "tipo": "fileira",
+      "item": "barril",
+      "x0": 34,
+      "y0": 3.2,
+      "x1": 40,
+      "y1": 3.2,
+      "passo": 1.2
+    },
+    {
+      "tipo": "barco",
+      "x": 20,
+      "y": 30,
+      "rot": 15
+    },
+    {
+      "tipo": "barco",
+      "x": 38,
+      "y": 12,
+      "rot": -30
+    },
+    {
+      "tipo": "ossos",
+      "x": 10,
+      "y": 4
+    },
+    {
+      "tipo": "mancha",
+      "x": 9,
+      "y": 20,
+      "r": 1,
+      "estilo": "limo"
+    }
+  ],
+  "luz": {
+    "clima": "subterraneo",
+    "escuridao": 0.5,
+    "nevoa": {
+      "densidade": 0.2
+    }
+  },
+  "px_por_quadrado": 100,
+  "cm_por_quadrado": 2.5,
+  "fases": [
+    {
+      "id": "1",
+      "nome": "Principal"
+    }
+  ]
+}

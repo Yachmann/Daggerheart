@@ -1,0 +1,539 @@
+{
+  "formato": "daggerheart-mapa",
+  "versao": 1,
+  "nome": "Sessão 6 · A Família de Retalhos",
+  "descricao": "A Casa de Retalhos: a sala de jantar posta para nove (Fase 1) e o quarto de menina forrado de potes (Fase 2).",
+  "grade": [
+    52,
+    36
+  ],
+  "bioma": "cidade",
+  "seed": 606,
+  "fases": [
+    {
+      "id": "1",
+      "nome": "Sala de jantar"
+    },
+    {
+      "id": "2",
+      "nome": "Quarto de cima",
+      "luz": {
+        "clima": "noite",
+        "escuridao": 0.5,
+        "fontes": [
+          {
+            "x": 26,
+            "y": 18,
+            "raio": 12,
+            "cor": [
+              170,
+              200,
+              255
+            ],
+            "intensidade": 0.6
+          }
+        ]
+      }
+    }
+  ],
+  "regioes": [],
+  "linhas": [],
+  "estruturas": [
+    {
+      "tipo": "sala",
+      "x0": 4,
+      "y0": 4,
+      "x1": 32,
+      "y1": 30,
+      "piso": "madeira",
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "porta",
+      "x": 18,
+      "y": 30,
+      "orientacao": "h",
+      "larg": 2,
+      "estilo": "dupla",
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "janela",
+      "x": 4,
+      "y": 12,
+      "orientacao": "v",
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "janela",
+      "x": 4,
+      "y": 22,
+      "orientacao": "v",
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "sala",
+      "x0": 32,
+      "y0": 4,
+      "x1": 48,
+      "y1": 18,
+      "piso": "pedra",
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "porta",
+      "x": 32,
+      "y": 11,
+      "orientacao": "v",
+      "larg": 2,
+      "estilo": "aberta",
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "sala",
+      "x0": 32,
+      "y0": 18,
+      "x1": 48,
+      "y1": 30,
+      "piso": "madeira",
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "porta",
+      "x": 32,
+      "y": 24,
+      "orientacao": "v",
+      "larg": 2,
+      "estilo": "arco",
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "porta",
+      "x": 40,
+      "y": 18,
+      "orientacao": "h",
+      "larg": 1.5,
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "sala",
+      "x0": 6,
+      "y0": 4,
+      "x1": 46,
+      "y1": 32,
+      "piso": "madeira",
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "porta",
+      "x": 26,
+      "y": 32,
+      "orientacao": "h",
+      "larg": 1.5,
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "janela",
+      "x": 6,
+      "y": 18,
+      "orientacao": "v",
+      "estilo": "aberta",
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "janela",
+      "x": 46,
+      "y": 18,
+      "orientacao": "v",
+      "fases": [
+        "2"
+      ]
+    }
+  ],
+  "objetos": [
+    {
+      "tipo": "tapete",
+      "x": 18,
+      "y": 17,
+      "larg": 18,
+      "alt": 8,
+      "cor": [
+        110,
+        40,
+        50
+      ],
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "mesa",
+      "x": 18,
+      "y": 17,
+      "larg": 14,
+      "alt": 3,
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "fileira",
+      "item": "cadeira",
+      "x0": 13,
+      "y0": 14.6,
+      "x1": 23,
+      "y1": 14.6,
+      "passo": 3.3,
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "fileira",
+      "item": "cadeira",
+      "x0": 13,
+      "y0": 19.4,
+      "x1": 23,
+      "y1": 19.4,
+      "passo": 3.3,
+      "opcoes": {
+        "rot": 180
+      },
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "cadeira",
+      "x": 10,
+      "y": 17,
+      "rot": 270,
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "trono",
+      "x": 26,
+      "y": 17,
+      "rot": 90,
+      "cor": [
+        150,
+        40,
+        60
+      ],
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "lareira",
+      "x": 18,
+      "y": 5,
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "fileira",
+      "item": "estante",
+      "x0": 6,
+      "y0": 27,
+      "x1": 30,
+      "y1": 27,
+      "passo": 3,
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "fileira",
+      "item": "vaso",
+      "x0": 8,
+      "y0": 7,
+      "x1": 14,
+      "y1": 7,
+      "passo": 1,
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "balcao",
+      "x": 40,
+      "y": 5.5,
+      "larg": 12,
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "forja",
+      "x": 45,
+      "y": 12,
+      "rot": 270,
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "mesa",
+      "x": 40,
+      "y": 12,
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "barril",
+      "x": 34,
+      "y": 16,
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "escada",
+      "x0": 42,
+      "y0": 20,
+      "x1": 47,
+      "y1": 28,
+      "direcao": "n",
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "cadeira",
+      "x": 44.5,
+      "y": 19.5,
+      "rot": 180,
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "fileira",
+      "item": "vaso",
+      "x0": 34,
+      "y0": 28,
+      "x1": 40,
+      "y1": 28,
+      "passo": 1,
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "candelabro",
+      "x": 8,
+      "y": 8,
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "candelabro",
+      "x": 28,
+      "y": 26,
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "tapete",
+      "x": 26,
+      "y": 18,
+      "forma": "redonda",
+      "larg": 10,
+      "alt": 10,
+      "cor": [
+        200,
+        150,
+        170
+      ],
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "cama",
+      "x": 26,
+      "y": 8,
+      "cor": [
+        220,
+        170,
+        190
+      ],
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "bau",
+      "x": 30,
+      "y": 6.5,
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "armario",
+      "x": 21,
+      "y": 6,
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "fileira",
+      "item": "estante",
+      "x0": 8,
+      "y0": 6,
+      "x1": 8,
+      "y1": 30,
+      "passo": 3,
+      "opcoes": {
+        "rot": 90
+      },
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "fileira",
+      "item": "estante",
+      "x0": 44,
+      "y0": 6,
+      "x1": 44,
+      "y1": 30,
+      "passo": 3,
+      "opcoes": {
+        "rot": 90
+      },
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "fileira",
+      "item": "vaso",
+      "x0": 11,
+      "y0": 30,
+      "x1": 41,
+      "y1": 30,
+      "passo": 1.5,
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "fileira",
+      "item": "vaso",
+      "x0": 11,
+      "y0": 6,
+      "x1": 17,
+      "y1": 6,
+      "passo": 1.2,
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "fileira",
+      "item": "vaso",
+      "x0": 35,
+      "y0": 6,
+      "x1": 41,
+      "y1": 6,
+      "passo": 1.2,
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "teia",
+      "x": 10,
+      "y": 10,
+      "r": 1.5,
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "teia",
+      "x": 42,
+      "y": 28,
+      "r": 1.5,
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "pano",
+      "x": 26,
+      "y": 22,
+      "cor": [
+        90,
+        140,
+        200
+      ],
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "espalhar",
+      "item": "cristal",
+      "quantidade": 8,
+      "forma": "elipse",
+      "cx": 26,
+      "cy": 19,
+      "rx": 15,
+      "ry": 10,
+      "distancia_min": 4,
+      "em_salas": true,
+      "opcoes": {
+        "r": 0.35,
+        "cor": [
+          180,
+          210,
+          255
+        ]
+      },
+      "fases": [
+        "2"
+      ]
+    }
+  ],
+  "luz": {
+    "clima": "noite",
+    "escuridao": 0.3
+  },
+  "px_por_quadrado": 100,
+  "cm_por_quadrado": 2.5
+}

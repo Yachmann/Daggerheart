@@ -1,0 +1,435 @@
+{
+  "formato": "daggerheart-mapa",
+  "versao": 1,
+  "nome": "Sessão 4 · O Sino do Mercado",
+  "descricao": "A Praça do Pregão: um mar de adormecidos de pé entre as bancas, a torre do sino no centro e casas baixas em volta.",
+  "grade": [
+    60,
+    40
+  ],
+  "bioma": "cidade",
+  "seed": 404,
+  "regioes": [
+    {
+      "material": "pedra",
+      "forma": "elipse",
+      "cx": 30,
+      "cy": 20,
+      "rx": 22,
+      "ry": 13,
+      "borda": "reta"
+    }
+  ],
+  "linhas": [
+    {
+      "tipo": "calcada",
+      "pontos": [
+        [
+          30,
+          0
+        ],
+        [
+          30,
+          8
+        ]
+      ],
+      "largura": 4
+    },
+    {
+      "tipo": "calcada",
+      "pontos": [
+        [
+          30,
+          32
+        ],
+        [
+          30,
+          40
+        ]
+      ],
+      "largura": 4
+    },
+    {
+      "tipo": "calcada",
+      "pontos": [
+        [
+          0,
+          20
+        ],
+        [
+          8,
+          20
+        ]
+      ],
+      "largura": 4
+    },
+    {
+      "tipo": "calcada",
+      "pontos": [
+        [
+          52,
+          20
+        ],
+        [
+          60,
+          20
+        ]
+      ],
+      "largura": 4
+    },
+    {
+      "tipo": "cerca",
+      "pontos": [
+        [
+          11,
+          5
+        ],
+        [
+          13,
+          5
+        ]
+      ]
+    },
+    {
+      "tipo": "cerca",
+      "pontos": [
+        [
+          46,
+          5
+        ],
+        [
+          48,
+          5
+        ]
+      ]
+    }
+  ],
+  "estruturas": [
+    {
+      "tipo": "sala",
+      "x0": 1,
+      "y0": 1,
+      "x1": 11,
+      "y1": 9,
+      "piso": "madeira"
+    },
+    {
+      "tipo": "porta",
+      "x": 6,
+      "y": 9,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "sala",
+      "x0": 13,
+      "y0": 1,
+      "x1": 23,
+      "y1": 7,
+      "piso": "madeira"
+    },
+    {
+      "tipo": "porta",
+      "x": 18,
+      "y": 7,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "sala",
+      "x0": 36,
+      "y0": 1,
+      "x1": 46,
+      "y1": 7,
+      "piso": "madeira"
+    },
+    {
+      "tipo": "porta",
+      "x": 41,
+      "y": 7,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "sala",
+      "x0": 48,
+      "y0": 1,
+      "x1": 59,
+      "y1": 9,
+      "piso": "madeira"
+    },
+    {
+      "tipo": "porta",
+      "x": 53,
+      "y": 9,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "sala",
+      "x0": 1,
+      "y0": 31,
+      "x1": 11,
+      "y1": 39,
+      "piso": "madeira"
+    },
+    {
+      "tipo": "porta",
+      "x": 6,
+      "y": 31,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "sala",
+      "x0": 13,
+      "y0": 33,
+      "x1": 23,
+      "y1": 39,
+      "piso": "madeira"
+    },
+    {
+      "tipo": "porta",
+      "x": 18,
+      "y": 33,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "sala",
+      "x0": 36,
+      "y0": 33,
+      "x1": 46,
+      "y1": 39,
+      "piso": "madeira"
+    },
+    {
+      "tipo": "porta",
+      "x": 41,
+      "y": 33,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "sala",
+      "x0": 48,
+      "y0": 31,
+      "x1": 59,
+      "y1": 39,
+      "piso": "madeira"
+    },
+    {
+      "tipo": "porta",
+      "x": 53,
+      "y": 31,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "sala",
+      "x0": 26,
+      "y0": 16,
+      "x1": 34,
+      "y1": 24,
+      "piso": "pedra",
+      "forma": "redonda"
+    },
+    {
+      "tipo": "porta",
+      "x": 30,
+      "y": 24,
+      "orientacao": "h",
+      "larg": 1.5,
+      "estilo": "arco"
+    }
+  ],
+  "objetos": [
+    {
+      "tipo": "escada",
+      "x0": 28.8,
+      "y0": 17.5,
+      "x1": 31.2,
+      "y1": 20,
+      "direcao": "n"
+    },
+    {
+      "tipo": "fileira",
+      "item": "barraca",
+      "x0": 14,
+      "y0": 11,
+      "x1": 22,
+      "y1": 9,
+      "passo": 4,
+      "opcoes": {
+        "cor": [
+          170,
+          60,
+          50
+        ]
+      }
+    },
+    {
+      "tipo": "fileira",
+      "item": "barraca",
+      "x0": 38,
+      "y0": 9,
+      "x1": 46,
+      "y1": 11,
+      "passo": 4,
+      "opcoes": {
+        "cor": [
+          60,
+          110,
+          160
+        ]
+      }
+    },
+    {
+      "tipo": "fileira",
+      "item": "barraca",
+      "x0": 14,
+      "y0": 29,
+      "x1": 22,
+      "y1": 31,
+      "passo": 4,
+      "opcoes": {
+        "cor": [
+          200,
+          160,
+          60
+        ]
+      }
+    },
+    {
+      "tipo": "fileira",
+      "item": "barraca",
+      "x0": 38,
+      "y0": 31,
+      "x1": 46,
+      "y1": 29,
+      "passo": 4,
+      "opcoes": {
+        "cor": [
+          90,
+          140,
+          80
+        ]
+      }
+    },
+    {
+      "tipo": "barraca",
+      "x": 11,
+      "y": 20,
+      "rot": 90,
+      "cor": [
+        150,
+        80,
+        150
+      ]
+    },
+    {
+      "tipo": "barraca",
+      "x": 49,
+      "y": 20,
+      "rot": -90,
+      "cor": [
+        180,
+        110,
+        60
+      ]
+    },
+    {
+      "tipo": "espalhar",
+      "item": "estatua",
+      "quantidade": 34,
+      "forma": "elipse",
+      "cx": 30,
+      "cy": 20,
+      "rx": 19,
+      "ry": 11,
+      "distancia_min": 2.1,
+      "opcoes": {
+        "r": 0.4
+      }
+    },
+    {
+      "tipo": "carroca",
+      "x": 17,
+      "y": 20,
+      "rot": 95
+    },
+    {
+      "tipo": "feno",
+      "x": 15,
+      "y": 22.5
+    },
+    {
+      "tipo": "feno",
+      "x": 15.5,
+      "y": 17.5
+    },
+    {
+      "tipo": "espalhar",
+      "item": "caixote",
+      "quantidade": 8,
+      "forma": "elipse",
+      "cx": 43,
+      "cy": 20,
+      "rx": 4,
+      "ry": 4,
+      "distancia_min": 1.1
+    },
+    {
+      "tipo": "poco",
+      "x": 40,
+      "y": 26,
+      "r": 1
+    },
+    {
+      "tipo": "lampiao",
+      "x": 24,
+      "y": 13
+    },
+    {
+      "tipo": "lampiao",
+      "x": 36,
+      "y": 27
+    },
+    {
+      "tipo": "lampiao",
+      "x": 24,
+      "y": 27
+    },
+    {
+      "tipo": "lampiao",
+      "x": 36,
+      "y": 13
+    },
+    {
+      "tipo": "espalhar",
+      "item": "vaso",
+      "quantidade": 10,
+      "forma": "retangulo",
+      "x0": 1,
+      "y0": 10,
+      "x1": 59,
+      "y1": 12,
+      "distancia_min": 3
+    }
+  ],
+  "luz": {
+    "clima": "entardecer",
+    "nevoa": {
+      "densidade": 0.15,
+      "focos": [
+        {
+          "x": 30,
+          "y": 12,
+          "rx": 10,
+          "ry": 5,
+          "densidade": 0.35
+        }
+      ]
+    }
+  },
+  "px_por_quadrado": 100,
+  "cm_por_quadrado": 2.5,
+  "fases": [
+    {
+      "id": "1",
+      "nome": "Principal"
+    }
+  ]
+}

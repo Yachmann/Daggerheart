@@ -1,0 +1,252 @@
+{
+  "formato": "daggerheart-mapa",
+  "versao": 1,
+  "nome": "Sessão 7 · Os Tangedores que Sonham",
+  "descricao": "O topo do Campanário: a Primeira Voz no centro, o órgão de sinos e vinte Tangedores adormecidos puxando cordas.",
+  "grade": [
+    48,
+    48
+  ],
+  "bioma": "masmorra",
+  "seed": 707,
+  "regioes": [],
+  "linhas": [],
+  "estruturas": [
+    {
+      "tipo": "sala",
+      "x0": 2,
+      "y0": 2,
+      "x1": 46,
+      "y1": 46,
+      "piso": "pedra",
+      "forma": "redonda",
+      "espessura": 0.8
+    },
+    {
+      "tipo": "porta",
+      "x": 24,
+      "y": 46,
+      "orientacao": "h",
+      "larg": 2,
+      "estilo": "arco"
+    },
+    {
+      "tipo": "janela",
+      "x": 24,
+      "y": 2,
+      "orientacao": "h",
+      "estilo": "aberta",
+      "larg": 2
+    },
+    {
+      "tipo": "janela",
+      "x": 2,
+      "y": 24,
+      "orientacao": "v",
+      "estilo": "aberta",
+      "larg": 2
+    },
+    {
+      "tipo": "janela",
+      "x": 46,
+      "y": 24,
+      "orientacao": "v",
+      "estilo": "aberta",
+      "larg": 2
+    }
+  ],
+  "objetos": [
+    {
+      "tipo": "forma",
+      "pontos": [
+        [
+          27.2,
+          24.0
+        ],
+        [
+          26.77,
+          25.6
+        ],
+        [
+          25.6,
+          26.77
+        ],
+        [
+          24.0,
+          27.2
+        ],
+        [
+          22.4,
+          26.77
+        ],
+        [
+          21.23,
+          25.6
+        ],
+        [
+          20.8,
+          24.0
+        ],
+        [
+          21.23,
+          22.4
+        ],
+        [
+          22.4,
+          21.23
+        ],
+        [
+          24.0,
+          20.8
+        ],
+        [
+          25.6,
+          21.23
+        ],
+        [
+          26.77,
+          22.4
+        ]
+      ],
+      "material": "metal",
+      "cor": [
+        150,
+        120,
+        70
+      ]
+    },
+    {
+      "tipo": "circulo_ritual",
+      "x": 24,
+      "y": 24,
+      "r": 5,
+      "cor": [
+        200,
+        170,
+        90
+      ]
+    },
+    {
+      "tipo": "espalhar",
+      "item": "estatua",
+      "quantidade": 20,
+      "forma": "elipse",
+      "cx": 24,
+      "cy": 24,
+      "rx": 13,
+      "ry": 13,
+      "distancia_min": 3.2,
+      "em_salas": true,
+      "opcoes": {
+        "r": 0.4
+      }
+    },
+    {
+      "tipo": "forma",
+      "pontos": [
+        [
+          14,
+          6
+        ],
+        [
+          34,
+          6
+        ],
+        [
+          36,
+          9
+        ],
+        [
+          12,
+          9
+        ]
+      ],
+      "material": "madeira"
+    },
+    {
+      "tipo": "fileira",
+      "item": "candelabro",
+      "x0": 14,
+      "y0": 7.5,
+      "x1": 34,
+      "y1": 7.5,
+      "passo": 2
+    },
+    {
+      "tipo": "fileira",
+      "item": "banco",
+      "x0": 16,
+      "y0": 10.5,
+      "x1": 32,
+      "y1": 10.5,
+      "passo": 4,
+      "girar": true
+    },
+    {
+      "tipo": "alcapao",
+      "x": 24,
+      "y": 41,
+      "rot": 0
+    },
+    {
+      "tipo": "escada",
+      "x0": 22,
+      "y0": 42,
+      "x1": 26,
+      "y1": 45,
+      "direcao": "n"
+    },
+    {
+      "tipo": "braseiro",
+      "x": 10,
+      "y": 24
+    },
+    {
+      "tipo": "braseiro",
+      "x": 38,
+      "y": 24
+    },
+    {
+      "tipo": "braseiro",
+      "x": 24,
+      "y": 36
+    },
+    {
+      "tipo": "espalhar",
+      "item": "ossos",
+      "quantidade": 3,
+      "forma": "elipse",
+      "cx": 24,
+      "cy": 30,
+      "rx": 10,
+      "ry": 6,
+      "distancia_min": 4,
+      "em_salas": true
+    },
+    {
+      "tipo": "pano",
+      "x": 16,
+      "y": 34,
+      "cor": [
+        120,
+        120,
+        130
+      ]
+    }
+  ],
+  "luz": {
+    "clima": "noite",
+    "escuridao": 0.3,
+    "nevoa": {
+      "densidade": 0.2
+    }
+  },
+  "px_por_quadrado": 100,
+  "cm_por_quadrado": 2.5,
+  "fases": [
+    {
+      "id": "1",
+      "nome": "Principal"
+    }
+  ]
+}

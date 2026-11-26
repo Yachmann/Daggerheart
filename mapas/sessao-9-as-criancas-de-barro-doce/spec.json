@@ -1,0 +1,435 @@
+{
+  "formato": "daggerheart-mapa",
+  "versao": 1,
+  "nome": "Sessão 9 · As Crianças de Barro-Doce",
+  "descricao": "Barro-Doce de quinze anos atrás, num fim de tarde que nunca acaba: casas de barro, o rio, o forno e uma torre de sino que nunca existiu.",
+  "grade": [
+    58,
+    40
+  ],
+  "bioma": "planicie",
+  "seed": 909,
+  "regioes": [
+    {
+      "material": "terra",
+      "forma": "elipse",
+      "cx": 29,
+      "cy": 17,
+      "rx": 16,
+      "ry": 8
+    },
+    {
+      "material": "terra",
+      "forma": "retangulo",
+      "x0": 24,
+      "y0": 0,
+      "x1": 34,
+      "y1": 40
+    },
+    {
+      "material": "grama",
+      "forma": "elipse",
+      "cx": 16,
+      "cy": 33,
+      "rx": 9,
+      "ry": 4
+    }
+  ],
+  "linhas": [
+    {
+      "tipo": "rio",
+      "pontos": [
+        [
+          0,
+          36
+        ],
+        [
+          20,
+          37
+        ],
+        [
+          40,
+          35
+        ],
+        [
+          58,
+          37
+        ]
+      ],
+      "largura": 4
+    },
+    {
+      "tipo": "trilha",
+      "pontos": [
+        [
+          7,
+          9
+        ],
+        [
+          7,
+          14
+        ],
+        [
+          25,
+          16
+        ]
+      ]
+    },
+    {
+      "tipo": "cerca",
+      "pontos": [
+        [
+          36,
+          24
+        ],
+        [
+          44,
+          24
+        ],
+        [
+          44,
+          31
+        ],
+        [
+          36,
+          31
+        ]
+      ]
+    },
+    {
+      "tipo": "sebe",
+      "pontos": [
+        [
+          14,
+          12
+        ],
+        [
+          20,
+          12
+        ]
+      ]
+    }
+  ],
+  "estruturas": [
+    {
+      "tipo": "sala",
+      "x0": 3,
+      "y0": 3,
+      "x1": 11,
+      "y1": 9,
+      "piso": "terra"
+    },
+    {
+      "tipo": "porta",
+      "x": 7,
+      "y": 9,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "sala",
+      "x0": 14,
+      "y0": 3,
+      "x1": 22,
+      "y1": 9,
+      "piso": "terra"
+    },
+    {
+      "tipo": "porta",
+      "x": 18,
+      "y": 9,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "sala",
+      "x0": 36,
+      "y0": 3,
+      "x1": 44,
+      "y1": 9,
+      "piso": "terra"
+    },
+    {
+      "tipo": "porta",
+      "x": 40,
+      "y": 9,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "sala",
+      "x0": 47,
+      "y0": 3,
+      "x1": 56,
+      "y1": 10,
+      "piso": "terra"
+    },
+    {
+      "tipo": "porta",
+      "x": 51,
+      "y": 10,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "sala",
+      "x0": 3,
+      "y0": 22,
+      "x1": 11,
+      "y1": 28,
+      "piso": "terra"
+    },
+    {
+      "tipo": "porta",
+      "x": 7,
+      "y": 22,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "sala",
+      "x0": 45,
+      "y0": 22,
+      "x1": 54,
+      "y1": 28,
+      "piso": "terra"
+    },
+    {
+      "tipo": "porta",
+      "x": 49,
+      "y": 22,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "sala",
+      "x0": 36,
+      "y0": 24,
+      "x1": 44,
+      "y1": 31,
+      "piso": "terra"
+    },
+    {
+      "tipo": "porta",
+      "x": 40,
+      "y": 24,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "janela",
+      "x": 44,
+      "y": 27.5,
+      "orientacao": "v",
+      "estilo": "aberta"
+    },
+    {
+      "tipo": "sala",
+      "x0": 26,
+      "y0": 13,
+      "x1": 32,
+      "y1": 19,
+      "piso": "pedra",
+      "forma": "redonda"
+    },
+    {
+      "tipo": "porta",
+      "x": 29,
+      "y": 19,
+      "orientacao": "h",
+      "estilo": "arco"
+    }
+  ],
+  "objetos": [
+    {
+      "tipo": "forja",
+      "x": 16,
+      "y": 17,
+      "rot": 0
+    },
+    {
+      "tipo": "forma",
+      "pontos": [
+        [
+          18.6,
+          17.0
+        ],
+        [
+          18.1,
+          18.53
+        ],
+        [
+          16.8,
+          19.47
+        ],
+        [
+          15.2,
+          19.47
+        ],
+        [
+          13.9,
+          18.53
+        ],
+        [
+          13.4,
+          17.0
+        ],
+        [
+          13.9,
+          15.47
+        ],
+        [
+          15.2,
+          14.53
+        ],
+        [
+          16.8,
+          14.53
+        ],
+        [
+          18.1,
+          15.47
+        ]
+      ],
+      "material": "terra"
+    },
+    {
+      "tipo": "espalhar",
+      "item": "vaso",
+      "quantidade": 6,
+      "forma": "elipse",
+      "cx": 16,
+      "cy": 17,
+      "rx": 4,
+      "ry": 3,
+      "distancia_min": 1.2
+    },
+    {
+      "tipo": "flores",
+      "x": 34,
+      "y": 27,
+      "r": 1.5
+    },
+    {
+      "tipo": "flores",
+      "x": 46,
+      "y": 31,
+      "r": 1.2
+    },
+    {
+      "tipo": "mesa",
+      "x": 40,
+      "y": 27
+    },
+    {
+      "tipo": "cadeira",
+      "x": 40,
+      "y": 28.2,
+      "rot": 180
+    },
+    {
+      "tipo": "cadeira",
+      "x": 40,
+      "y": 25.8
+    },
+    {
+      "tipo": "lareira",
+      "x": 42.5,
+      "y": 25,
+      "rot": 0
+    },
+    {
+      "tipo": "bau",
+      "x": 37.5,
+      "y": 29.5
+    },
+    {
+      "tipo": "cama",
+      "x": 38,
+      "y": 26.2,
+      "rot": 90
+    },
+    {
+      "tipo": "poco",
+      "x": 36,
+      "y": 15,
+      "r": 1
+    },
+    {
+      "tipo": "feno",
+      "x": 12,
+      "y": 13
+    },
+    {
+      "tipo": "carroca",
+      "x": 45,
+      "y": 15,
+      "rot": 20
+    },
+    {
+      "tipo": "arvore",
+      "x": 52,
+      "y": 16,
+      "r": 2.6
+    },
+    {
+      "tipo": "arvore",
+      "x": 3,
+      "y": 16,
+      "r": 2.2
+    },
+    {
+      "tipo": "arvore",
+      "x": 21,
+      "y": 30,
+      "r": 2
+    },
+    {
+      "tipo": "espalhar",
+      "item": "capim",
+      "quantidade": 10,
+      "forma": "retangulo",
+      "x0": 0,
+      "y0": 29,
+      "x1": 58,
+      "y1": 33,
+      "distancia_min": 3
+    },
+    {
+      "tipo": "barco",
+      "x": 10,
+      "y": 33,
+      "rot": 80
+    },
+    {
+      "tipo": "junco",
+      "x": 30,
+      "y": 34.5
+    },
+    {
+      "tipo": "tocha",
+      "x": 27,
+      "y": 20
+    },
+    {
+      "tipo": "tocha",
+      "x": 31,
+      "y": 20
+    },
+    {
+      "tipo": "escada",
+      "x0": 28,
+      "y0": 14.3,
+      "x1": 30,
+      "y1": 16.5,
+      "direcao": "n"
+    }
+  ],
+  "luz": {
+    "clima": "entardecer",
+    "nevoa": {
+      "densidade": 0.2
+    }
+  },
+  "px_por_quadrado": 100,
+  "cm_por_quadrado": 2.5,
+  "fases": [
+    {
+      "id": "1",
+      "nome": "Principal"
+    }
+  ]
+}

@@ -1,0 +1,314 @@
+{
+  "formato": "daggerheart-mapa",
+  "versao": 1,
+  "nome": "Sessão 8 · Os que Cavam Dormindo",
+  "descricao": "Uma galeria de ferro-de-vigília que brilha quando alguém fala; mineiros antigos cavando dormindo e a água subindo.",
+  "grade": [
+    60,
+    34
+  ],
+  "bioma": "caverna",
+  "seed": 808,
+  "regioes": [
+    {
+      "material": "pedra",
+      "forma": "poligono",
+      "pontos": [
+        [
+          0,
+          10
+        ],
+        [
+          14,
+          8
+        ],
+        [
+          28,
+          11
+        ],
+        [
+          44,
+          8
+        ],
+        [
+          60,
+          10
+        ],
+        [
+          60,
+          26
+        ],
+        [
+          46,
+          28
+        ],
+        [
+          30,
+          24
+        ],
+        [
+          16,
+          27
+        ],
+        [
+          0,
+          24
+        ]
+      ],
+      "borda": "organica",
+      "irregularidade": 1.5
+    },
+    {
+      "material": "lama",
+      "forma": "elipse",
+      "cx": 22,
+      "cy": 22,
+      "rx": 10,
+      "ry": 4,
+      "irregularidade": 1.5
+    },
+    {
+      "material": "lama",
+      "forma": "elipse",
+      "cx": 40,
+      "cy": 20,
+      "rx": 8,
+      "ry": 4,
+      "irregularidade": 1.5
+    },
+    {
+      "material": "agua",
+      "forma": "elipse",
+      "cx": 48,
+      "cy": 17,
+      "rx": 4,
+      "ry": 3,
+      "borda": "rochosa",
+      "pedras_na_borda": 8
+    },
+    {
+      "material": "pedra",
+      "forma": "retangulo",
+      "x0": 54,
+      "y0": 13,
+      "x1": 60,
+      "y1": 21,
+      "borda": "reta"
+    }
+  ],
+  "linhas": [
+    {
+      "tipo": "trilho",
+      "pontos": [
+        [
+          0,
+          17
+        ],
+        [
+          16,
+          17
+        ],
+        [
+          30,
+          15
+        ],
+        [
+          44,
+          16
+        ],
+        [
+          52,
+          17
+        ]
+      ]
+    },
+    {
+      "tipo": "riacho",
+      "pontos": [
+        [
+          6,
+          24
+        ],
+        [
+          20,
+          24
+        ],
+        [
+          34,
+          23
+        ],
+        [
+          44,
+          20
+        ]
+      ],
+      "largura": 1.2
+    }
+  ],
+  "estruturas": [
+    {
+      "tipo": "sala",
+      "x0": 54,
+      "y0": 13,
+      "x1": 60,
+      "y1": 21,
+      "piso": "pedra"
+    },
+    {
+      "tipo": "porta",
+      "x": 54,
+      "y": 17,
+      "orientacao": "v",
+      "larg": 2,
+      "estilo": "grade"
+    }
+  ],
+  "objetos": [
+    {
+      "tipo": "escada",
+      "x0": 55.5,
+      "y0": 15,
+      "x1": 59,
+      "y1": 19,
+      "direcao": "l"
+    },
+    {
+      "tipo": "espalhar",
+      "item": "estalagmite",
+      "quantidade": 22,
+      "forma": "retangulo",
+      "x0": 0,
+      "y0": 0,
+      "x1": 60,
+      "y1": 34,
+      "distancia_min": 1.8,
+      "r_min": 0.4,
+      "r_max": 0.9,
+      "evitar": [
+        "pedra",
+        "lama",
+        "agua"
+      ]
+    },
+    {
+      "tipo": "espalhar",
+      "item": "cristal",
+      "quantidade": 14,
+      "forma": "retangulo",
+      "x0": 0,
+      "y0": 8,
+      "x1": 54,
+      "y1": 28,
+      "distancia_min": 4,
+      "opcoes": {
+        "r": 0.35,
+        "cor": [
+          170,
+          200,
+          230
+        ]
+      }
+    },
+    {
+      "tipo": "carroca",
+      "x": 12,
+      "y": 17,
+      "rot": 0
+    },
+    {
+      "tipo": "carroca",
+      "x": 36,
+      "y": 15.5,
+      "rot": -5
+    },
+    {
+      "tipo": "espalhar",
+      "item": "entulho",
+      "quantidade": 6,
+      "forma": "retangulo",
+      "x0": 4,
+      "y0": 10,
+      "x1": 50,
+      "y1": 26,
+      "distancia_min": 6,
+      "opcoes": {
+        "r": 1.2
+      }
+    },
+    {
+      "tipo": "rochedo",
+      "x": 26,
+      "y": 12,
+      "r": 1.4
+    },
+    {
+      "tipo": "rochedo",
+      "x": 30,
+      "y": 21,
+      "r": 1.2
+    },
+    {
+      "tipo": "rochedo",
+      "x": 44,
+      "y": 24,
+      "r": 1.3
+    },
+    {
+      "tipo": "fileira",
+      "item": "pilar",
+      "x0": 8,
+      "y0": 12,
+      "x1": 50,
+      "y1": 12,
+      "passo": 10,
+      "opcoes": {
+        "r": 0.5
+      }
+    },
+    {
+      "tipo": "fileira",
+      "item": "lampiao",
+      "x0": 6,
+      "y0": 20,
+      "x1": 46,
+      "y1": 20,
+      "passo": 10
+    },
+    {
+      "tipo": "caixote",
+      "x": 20,
+      "y": 13
+    },
+    {
+      "tipo": "caixote",
+      "x": 21,
+      "y": 13.8,
+      "rot": 20
+    },
+    {
+      "tipo": "barril",
+      "x": 8,
+      "y": 21
+    },
+    {
+      "tipo": "ossos",
+      "x": 33,
+      "y": 24
+    }
+  ],
+  "luz": {
+    "clima": "subterraneo",
+    "escuridao": 0.55,
+    "nevoa": {
+      "densidade": 0.15
+    }
+  },
+  "px_por_quadrado": 100,
+  "cm_por_quadrado": 2.5,
+  "fases": [
+    {
+      "id": "1",
+      "nome": "Principal"
+    }
+  ]
+}

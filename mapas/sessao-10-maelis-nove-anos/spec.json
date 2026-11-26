@@ -1,0 +1,420 @@
+{
+  "formato": "daggerheart-mapa",
+  "versao": 1,
+  "nome": "Sessão 10 · Maelis, Nove Anos",
+  "descricao": "A praça de Barro-Doce do sonho com a torre de sino no lugar do sinete; na Fase 2, a torre racha e a escuridão do Sonhador entra.",
+  "grade": [
+    52,
+    38
+  ],
+  "bioma": "planicie",
+  "seed": 1010,
+  "fases": [
+    {
+      "id": "1",
+      "nome": "Torre inteira"
+    },
+    {
+      "id": "2",
+      "nome": "A torre racha",
+      "luz": {
+        "clima": "noite",
+        "escuridao": 0.5,
+        "nevoa": {
+          "sobre_abismo": 0.8,
+          "densidade": 0.35
+        }
+      }
+    }
+  ],
+  "regioes": [
+    {
+      "material": "terra",
+      "forma": "elipse",
+      "cx": 26,
+      "cy": 19,
+      "rx": 22,
+      "ry": 15
+    },
+    {
+      "material": "abismo",
+      "forma": "poligono",
+      "pontos": [
+        [
+          8,
+          30
+        ],
+        [
+          16,
+          26
+        ],
+        [
+          22,
+          24
+        ],
+        [
+          26,
+          21
+        ],
+        [
+          30,
+          17
+        ],
+        [
+          36,
+          13
+        ],
+        [
+          44,
+          8
+        ],
+        [
+          45,
+          10
+        ],
+        [
+          37,
+          16
+        ],
+        [
+          31,
+          21
+        ],
+        [
+          27,
+          25
+        ],
+        [
+          21,
+          28
+        ],
+        [
+          14,
+          31
+        ],
+        [
+          8,
+          32
+        ]
+      ],
+      "borda": "rochosa",
+      "irregularidade": 2,
+      "pedras_na_borda": 10,
+      "fases": [
+        "2"
+      ]
+    }
+  ],
+  "linhas": [
+    {
+      "tipo": "trilha",
+      "pontos": [
+        [
+          26,
+          38
+        ],
+        [
+          26,
+          27
+        ]
+      ],
+      "largura": 2
+    }
+  ],
+  "estruturas": [
+    {
+      "tipo": "sala",
+      "x0": 20,
+      "y0": 11,
+      "x1": 32,
+      "y1": 25,
+      "piso": "pedra",
+      "forma": "redonda",
+      "espessura": 0.6,
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "porta",
+      "x": 26,
+      "y": 25,
+      "orientacao": "h",
+      "larg": 2,
+      "estilo": "arco",
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "sala",
+      "x0": 20,
+      "y0": 11,
+      "x1": 32,
+      "y1": 25,
+      "piso": "pedra",
+      "forma": "redonda",
+      "espessura": 0.6,
+      "ruina": true,
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "porta",
+      "x": 26,
+      "y": 25,
+      "orientacao": "h",
+      "larg": 2,
+      "estilo": "quebrada",
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "sala",
+      "x0": 2,
+      "y0": 2,
+      "x1": 10,
+      "y1": 9,
+      "piso": "terra"
+    },
+    {
+      "tipo": "porta",
+      "x": 6,
+      "y": 9,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "sala",
+      "x0": 42,
+      "y0": 2,
+      "x1": 50,
+      "y1": 9,
+      "piso": "terra"
+    },
+    {
+      "tipo": "porta",
+      "x": 46,
+      "y": 9,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "sala",
+      "x0": 2,
+      "y0": 28,
+      "x1": 10,
+      "y1": 35,
+      "piso": "terra"
+    },
+    {
+      "tipo": "porta",
+      "x": 6,
+      "y": 28,
+      "orientacao": "h"
+    },
+    {
+      "tipo": "sala",
+      "x0": 42,
+      "y0": 28,
+      "x1": 50,
+      "y1": 35,
+      "piso": "terra"
+    },
+    {
+      "tipo": "porta",
+      "x": 46,
+      "y": 28,
+      "orientacao": "h"
+    }
+  ],
+  "objetos": [
+    {
+      "tipo": "escada",
+      "x0": 24.5,
+      "y0": 13,
+      "x1": 27.5,
+      "y1": 17,
+      "direcao": "n"
+    },
+    {
+      "tipo": "circulo_ritual",
+      "x": 26,
+      "y": 19,
+      "r": 3.5,
+      "cor": [
+        230,
+        190,
+        120
+      ],
+      "fases": [
+        "1"
+      ]
+    },
+    {
+      "tipo": "circulo_ritual",
+      "x": 26,
+      "y": 19,
+      "r": 4.5,
+      "cor": [
+        120,
+        70,
+        170
+      ],
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "forma",
+      "pontos": [
+        [
+          27.5,
+          14.5
+        ],
+        [
+          27.21,
+          15.38
+        ],
+        [
+          26.46,
+          15.93
+        ],
+        [
+          25.54,
+          15.93
+        ],
+        [
+          24.79,
+          15.38
+        ],
+        [
+          24.5,
+          14.5
+        ],
+        [
+          24.79,
+          13.62
+        ],
+        [
+          25.54,
+          13.07
+        ],
+        [
+          26.46,
+          13.07
+        ],
+        [
+          27.21,
+          13.62
+        ]
+      ],
+      "material": "metal",
+      "cor": [
+        160,
+        130,
+        80
+      ]
+    },
+    {
+      "tipo": "poco",
+      "x": 14,
+      "y": 19,
+      "r": 1
+    },
+    {
+      "tipo": "flores",
+      "x": 38,
+      "y": 22,
+      "r": 1.4
+    },
+    {
+      "tipo": "flores",
+      "x": 14,
+      "y": 12,
+      "r": 1.2
+    },
+    {
+      "tipo": "mesa",
+      "x": 37,
+      "y": 16,
+      "forma": "redonda",
+      "larg": 1.5,
+      "alt": 1.5
+    },
+    {
+      "tipo": "cadeira",
+      "x": 38.2,
+      "y": 16
+    },
+    {
+      "tipo": "arvore",
+      "x": 4,
+      "y": 19,
+      "r": 2.4
+    },
+    {
+      "tipo": "arvore",
+      "x": 48,
+      "y": 19,
+      "r": 2.4
+    },
+    {
+      "tipo": "tocha",
+      "x": 23,
+      "y": 27
+    },
+    {
+      "tipo": "tocha",
+      "x": 29,
+      "y": 27
+    },
+    {
+      "tipo": "espalhar",
+      "item": "entulho",
+      "quantidade": 6,
+      "forma": "elipse",
+      "cx": 26,
+      "cy": 19,
+      "rx": 9,
+      "ry": 8,
+      "distancia_min": 3,
+      "opcoes": {
+        "r": 1
+      },
+      "fases": [
+        "2"
+      ]
+    },
+    {
+      "tipo": "espalhar",
+      "item": "cristal",
+      "quantidade": 6,
+      "forma": "elipse",
+      "cx": 26,
+      "cy": 20,
+      "rx": 12,
+      "ry": 9,
+      "distancia_min": 3,
+      "opcoes": {
+        "r": 0.4,
+        "cor": [
+          140,
+          80,
+          200
+        ]
+      },
+      "fases": [
+        "2"
+      ]
+    }
+  ],
+  "luz": {
+    "clima": "entardecer",
+    "nevoa": {
+      "densidade": 0.25
+    }
+  },
+  "px_por_quadrado": 100,
+  "cm_por_quadrado": 2.5
+}
