@@ -227,10 +227,28 @@ function poolHab(type, tier, perfil) {
   const out = [];
   adversarios({ todos: false }).filter(a => a.src !== "custom" && estiloAdv(a) === perfil.estilo && Math.abs(a.tier - tier) <= 3).forEach(a => {
     const w = PESO_TIER[Math.abs(a.tier - tier)] * (a.type === type ? 3 : 1) * (perfil.cat && a.cat === perfil.cat ? 8 : 1);
-    a.f.forEach(f => { if (!FIXAS.test(f.n) && casaEstilo(perfil.estilo, f.t)) out.push({ n: f.n, k: f.k, t: f.t, from: a.name, ft: a.tier, al: a.al, w }); });
+    a.f.forEach((f, i) => { if (!FIXAS.test(f.n) && casaEstilo(perfil.estilo, f.t)) out.push({ ...habPT(a, i), from: a.name, ft: a.tier, w }); });
   });
   return out;
 }
+// Habilidade i do adversário a, em português quando há tradução (a classificação por estilo continua no texto em inglês).
+const PT_STOP = new Set(["de", "da", "do", "das", "dos", "com", "sem", "e"]);
+function habPT(a, i) {
+  const f = a.f[i], p = a.pt && a.pt.f && a.pt.f[i], nm = (a.pt && a.pt.name) || "";
+  const pt = !!(p && p.t);
+  return { n: (p && p.n) || f.n, k: f.k, t: pt ? p.t : f.t, pt, al: a.al, ptal: pt && nm ? [nm, ...nm.split(/[\s-]+/).filter(w => w.length >= 4 && !PT_STOP.has(w.toLowerCase()))] : [] };
+}
+// Troca, no texto em português, a menção ao adversário de origem ("o Arqueiro", "o Lobo Atroz") pelo nome novo, com o artigo certo.
+const FEM_INI = /^(Matilha|Turba|Revoada|Ninhada|Cria|Matriarca|Cortesã|Sentinela|Fera)\b/;
+const esc_re = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+export function trocaNomePT(text, aliases, name) {
+  const art = FEM_INI.test(name) ? "a" : "o";
+  let t = String(text || "");
+  [...aliases].sort((x, y) => y.length - x.length).forEach(al => { t = t.replace(new RegExp("(?<![\\wÀ-ÿ])([OoAa])s?\\s+" + esc_re(al) + "(?![\\wÀ-ÿ])", "g"), (m, A) => (A === A.toUpperCase() ? art.toUpperCase() : art) + " " + name); });
+  if (aliases[0]) t = t.replace(new RegExp("(?<![\\wÀ-ÿ])" + esc_re(aliases[0]) + "(?![\\wÀ-ÿ])", "g"), name);
+  return t;
+}
+export const textoHab = (f, name) => (f.pt ? trocaNomePT(f.t, f.ptal, name) : trocaNome(f.t, f.al, name));
 function pickPeso(l) { let r = Math.random() * l.reduce((s, x) => s + x.w, 0); for (const x of l) { r -= x.w; if (r <= 0) return x; } return l[l.length - 1]; }
 export function sortearHabilidade(type, tier, tomadas = [], perfil = { estilo: "corpo", cat: "" }) {
   const p = poolHab(type, tier, perfil).filter(f => !tomadas.includes(f.n));
@@ -247,10 +265,10 @@ export function gerarAdversario(type, tier) {
   const b = pick(bases), perfil = { estilo: estiloAdv(b), cat: b.cat || "" };
   const name = `${pick((perfil.estilo === "magia" && NOMES_MAGIA[type]) || NOMES[type])} ${pick(EPITETOS)}`;
   const g = { id: uid(), name, tier, type, horde: b.horde || "", desc: "", mot: b.mot || "", dif: b.dif, th: b.th, hp: b.hp, st: b.st, atk: b.atk, wpn: b.wpn, rng: b.rng, dmg: b.dmg, xp: "", al: [], f: [], cat: perfil.cat, baseTier };
-  b.f.filter(f => FIXAS.test(f.n)).forEach(f => g.f.push({ n: f.n, k: f.k, t: trocaNome(f.t, b.al, name) }));
+  b.f.forEach((f0, i) => { if (FIXAS.test(f0.n)) { const f = habPT(b, i); g.f.push({ n: f.n, k: f.k, t: textoHab(f, name) }); } });
   const alvo = Math.max(2, Math.min(4, b.f.length));
   let guard = 0;
-  while (g.f.length < alvo && guard++ < 20) { const f = sortearHabilidade(type, tier, g.f.map(x => x.n), perfil); if (!f) break; g.f.push({ n: f.n, k: f.k, t: trocaNome(f.t, f.al, name) }); }
+  while (g.f.length < alvo && guard++ < 20) { const f = sortearHabilidade(type, tier, g.f.map(x => x.n), perfil); if (!f) break; g.f.push({ n: f.n, k: f.k, t: textoHab(f, name) }); }
   return g;
 }
 export function gerarBatalha({ tema = "qualquer", tier = 1, jogadores = 4, ajuste = 0 }) {

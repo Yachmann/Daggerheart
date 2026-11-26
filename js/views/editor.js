@@ -1,6 +1,6 @@
 // Criar ou editar adversário do zero (ou a partir de um existente)
 import { esc, icon, uid, toast, confirmar, openSheet, clone, mdBlock } from "../util.js";
-import { GM, salvarGM, adversarios, achaAdv, TIPOS, TIPO_PT, BENCH, PASSIVAS, KIND_PT, gerarAdversario, sortearHabilidade, estiloAdv, trocaNome } from "../gm.js";
+import { GM, salvarGM, adversarios, achaAdv, TIPOS, TIPO_PT, BENCH, PASSIVAS, KIND_PT, gerarAdversario, sortearHabilidade, estiloAdv, textoHab } from "../gm.js";
 import { app } from "../main.js";
 import { statBlock, escolherBatalha } from "./mestre-ui.js";
 import { voltar } from "./common.js";
@@ -90,7 +90,7 @@ export function on(a, el) {
       w.querySelectorAll("[data-k]").forEach(b => b.addEventListener("click", () => { D.f.unshift(clone(PASSIVAS[+b.dataset.k])); document.querySelector(".sheet-wrap [data-close]").click(); app.render(true); }));
       return;
     }
-    case "fsort": { const f = sortearHabilidade(D.type, D.tier, D.f.map(x => x.n), { estilo: estiloAdv(D), cat: D.cat }); if (f) D.f.push({ n: f.n, k: f.k, t: trocaNome(f.t, f.al, D.name || "o adversário") }); else toast("Sem habilidades diferentes para este estilo de combate"); break; }
+    case "fsort": { const f = sortearHabilidade(D.type, D.tier, D.f.map(x => x.n), { estilo: estiloAdv(D), cat: D.cat }); if (f) D.f.push({ n: f.n, k: f.k, t: textoHab(f, D.name || "o adversário") }); else toast("Sem habilidades diferentes para este estilo de combate"); break; }
     case "frm": D.f.splice(i, 1); break;
     case "fup": [D.f[i - 1], D.f[i]] = [D.f[i], D.f[i - 1]]; break;
     case "fdn": [D.f[i + 1], D.f[i]] = [D.f[i], D.f[i + 1]]; break;

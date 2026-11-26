@@ -50,7 +50,7 @@ Preços: armas e armaduras seguem a tabela *Average Costs* do SRD (faixa por pat
 
 ## Painel de emergência (mestre)
 
-Na aba Mestre há um botão flutuante (`Alt+H`) que abre uma lateral com hooks narrativos para improvisar (mundo vivo, fora da rota, encontro rápido, complicação, puxar de volta, respiro, clima, perguntas ao grupo), nomes de NPC e hooks próprios. Os hooks de partida estão em `js/hooks.js`.
+Na aba Mestre há um botão flutuante (`Alt+H`) que abre uma lateral de **sorteio rápido**: nomes femininos, nomes masculinos (com ou sem sobrenome), nomes de lugar (povoado, natureza ou construção, incluindo tavernas e estalagens) e descrição de lugar (vila ou cidade, taverna, natureza ou ruína, com quatro frases: o que se vê, o que se sente, quem está ali e um detalhe estranho). Trocar de aba já sorteia; tocar num resultado copia. As listas ficam em `js/nomes.js` (reaproveita os nomes de `js/hooks.js`, que ainda guarda o banco antigo de hooks narrativos, hoje sem tela).
 
 ## Testes
 

@@ -8,7 +8,8 @@ import { aplicar } from "../js/views/dar.js";
 import { S as ST } from "../js/store.js";
 import { lerPersonagens, EXEMPLO_PERSONAGEM } from "../js/personagem-json.js";
 import { tokens as tokensDe, gastarToken, devolverToken } from "../js/homebrew.js";
-import { loadGM, lerResposta, montarDaIA, extrairBlocos, orcamento, EXEMPLO_JSON, GM, adversarios, adicionar, novaBatalha, setMesaAtiva, mesaAtiva, naMesaAtiva, SEM_MESA } from "../js/gm.js";
+import { loadGM, lerResposta, montarDaIA, extrairBlocos, orcamento, EXEMPLO_JSON, GM, adversarios, adicionar, novaBatalha, setMesaAtiva, mesaAtiva, naMesaAtiva, SEM_MESA, estiloAdv, gerarAdversario, sortearHabilidade, TIPOS, CATS } from "../js/gm.js";
+import { sortearNomes, sortearLugares, sortearDescricao, TIPOS_LUGAR, TIPOS_DESC } from "../js/nomes.js";
 import * as MK from "../js/marcadores.js";
 
 const _bak = { f: localStorage.getItem("dh-fichas-v1"), m: localStorage.getItem("dh-mestre-v1") }; // os testes mexem em fichas: restauramos o que havia no fim
@@ -479,6 +480,60 @@ await teste("batalha nova nasce na mesa ativa", () => {
   const bakM = GM.mesaAtiva; ST.mesas = [{ id: "m1", nome: "A", mestre: "u" }]; ST.sess = { user: { id: "u" } };
   try { GM.mesaAtiva = "m1"; igual(novaBatalha({ nome: "x" }).mesa, "m1"); igual(novaBatalha({ nome: "x", mesa: null }).mesa, null, "mesa explícita vence"); GM.mesaAtiva = SEM_MESA; igual(novaBatalha({ nome: "x" }).mesa, null); }
   finally { GM.mesaAtiva = bakM; ST.mesas = []; ST.sess = null; }
+});
+
+// ---------------------------------------------------------------------
+grupo("Adversário aleatório: habilidades do mesmo estilo de combate");
+const exigeAlc = t => { const c = /\bMelee\b|Corpo a Corpo/.test(t), l = /\bFar\b|\bLonge\b/.test(t); return c && !l ? "corpo" : l && !c ? "longe" : null; };
+const srdAdv = n => adversarios({ todos: true }).find(a => a.name === n);
+await teste("o estilo vem do alcance, da arma e do tipo de dano", () => {
+  igual([srdAdv("Archer Guard"), srdAdv("War Wizard"), srdAdv("Dire Wolf"), srdAdv("Chaos Skull")].map(estiloAdv), ["arco", "magia", "corpo", "magia"]);
+});
+await teste("atirador à distância nunca recebe habilidade que exige corpo a corpo", () => {
+  for (const tier of [1, 2, 3, 4]) for (let i = 0; i < 40; i++) {
+    const g = gerarAdversario("Ranged", tier);
+    ok(estiloAdv(g) !== "corpo", `${g.name} (${g.wpn}, ${g.rng}) devia ser à distância`);
+    g.f.filter(f => !/^(Minion|Horde|Relentless)\b/.test(f.n)).forEach(f => ok(exigeAlc(f.t) !== "corpo", `${g.name} recebeu “${f.n}”, que exige corpo a corpo`));
+  }
+});
+await teste("adversário corpo a corpo nunca recebe habilidade que exige atacar de longe", () => {
+  for (const tipo of ["Bruiser", "Standard", "Skulk", "Leader", "Solo", "Horde", "Minion"]) for (const tier of [1, 2, 3, 4]) for (let i = 0; i < 15; i++) {
+    const g = gerarAdversario(tipo, tier);
+    if (estiloAdv(g) !== "corpo") continue;
+    g.f.filter(f => !/^(Minion|Horde|Relentless)\b/.test(f.n)).forEach(f => ok(exigeAlc(f.t) !== "longe", `${g.name} recebeu “${f.n}”, que exige atacar de longe`));
+  }
+});
+await teste("todo adversário sorteado vem com habilidades e com o tema da base", () => {
+  for (const tipo of TIPOS) { const g = gerarAdversario(tipo, 2); ok(g.f.length >= 1, `${tipo} sem habilidades`); ok(CATS.some(c => c[0] === g.cat), `${tipo}: tema ${g.cat}`); }
+});
+await teste("as habilidades sorteadas saem em português e citam o nome novo, não o do adversário de origem", () => {
+  const ingles = /\b(the|The|Make a|within|range|Spend a Fear|Mark a Stress)\b/;
+  for (const tipo of TIPOS) for (let i = 0; i < 10; i++) {
+    const g = gerarAdversario(tipo, 1 + (i % 4));
+    g.f.forEach(f => { ok(!ingles.test(f.t) && !ingles.test(f.n), `${g.name}: “${f.n}” ainda em inglês: ${f.t.slice(0, 80)}`); });
+  }
+  const g = gerarAdversario("Ranged", 1); ok(g.f.some(f => f.t.includes(g.name)) || g.f.every(f => !/\b[Oo] (Arqueiro|Atirador|Esqueleto)\b/.test(f.t)), "sobrou o nome do adversário de origem");
+});
+await teste("sortearHabilidade respeita o estilo pedido e não repete nome", () => {
+  const f = sortearHabilidade("Ranged", 1, [], { estilo: "arco", cat: "humanoides" }); ok(f && exigeAlc(f.t) !== "corpo");
+  const nomes = new Set(); for (let i = 0; i < 6; i++) { const x = sortearHabilidade("Ranged", 1, [...nomes], { estilo: "arco", cat: "" }); ok(x, "acabou cedo demais"); ok(!nomes.has(x.n), "repetiu " + x.n); nomes.add(x.n); }
+});
+
+// ---------------------------------------------------------------------
+grupo("Sorteio rápido (painel de emergência)");
+await teste("nomes: a quantidade pedida, sem repetir, com e sem sobrenome", () => {
+  for (const g of ["f", "m"]) { const a = sortearNomes(g, 8, true); igual(a.length, 8); igual(new Set(a.map(x => x.n)).size, 8); ok(a.every(x => /\S+ \S+/.test(x.n)), "faltou sobrenome"); const b = sortearNomes(g, 8, false); igual(b.length, 8); ok(b.every(x => x.n && !/ /.test(x.n) && !/undefined/.test(x.n)), "sem sobrenome deve ser uma palavra só"); }
+});
+await teste("nomes femininos e masculinos vêm de listas diferentes", () => {
+  const fem = new Set(sortearNomes("f", 40, false).map(x => x.n)), masc = new Set(sortearNomes("m", 40, false).map(x => x.n));
+  ok([...fem].every(n => !masc.has(n)), "um nome apareceu nas duas listas");
+});
+await teste("nomes de lugar saem bem formados em todos os tipos", () => {
+  for (const t of TIPOS_LUGAR.map(x => x[0])) for (let i = 0; i < 100; i++) sortearLugares(t, 6).forEach(r => ok(r.n && !/undefined|NaN|\s{2}|^\s|\s$/.test(r.n), `nome ruim: “${r.n}”`));
+});
+await teste("descrição de lugar junta quatro frases e respeita o tipo", () => {
+  for (const [k, rot] of TIPOS_DESC.filter(x => x[0] !== "qualquer")) { const d = sortearDescricao(k); igual(d.t, rot); ok((d.n.match(/\./g) || []).length >= 4, "menos de quatro frases"); }
+  ok(sortearDescricao("qualquer").n.length > 80);
 });
 
 sum.className = "sum " + (falhas ? "bad" : "ok");
