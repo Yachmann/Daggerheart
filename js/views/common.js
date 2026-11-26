@@ -72,7 +72,21 @@ export { icon };
 // ---------- Destaque visual por condição ----------
 export const COND_COR = { "Vulnerável": "var(--blood)", "Contido": "var(--hope)", "Oculto": "var(--fear)" };
 export const COND_CLS = { "Vulnerável": "vuln", "Contido": "restr", "Oculto": "hide" };
-const COND_REGRA = { "Vulnerável": "testes contra {x} têm vantagem", "Contido": "{x} não pode se mover, mas pode agir", "Oculto": "ataques contra {x} têm desvantagem" };
+const COND_REGRA = { "Vulnerável": "testes contra {x} têm vantagem", "Contido": "{x} não pode se mover, mas pode agir", "Oculto": "ataques contra {x} têm desvantagem",
+  "Em Chamas": "{x} deve rolar um d4 sempre que fizer uma rolagem de ação",
+  "Aflito": "{x} não pode limpar Pontos de Vida (PV) nem Estresse",
+  "Adormecido": "permanece dormindo até sofrer dano",
+  "Sintonizado": "{x} tem Vantagem em rolagens de Conjuração dentro do ambiente sintonizado",
+  "Enfeitiçado": "{x} vê a fonte da condição como aliada e não pode atacá-la",
+  "Marcado a Ferro": "a fonte da condição sempre sabe em qual direção {x} está",
+  "Quebrado": "{x} não pode usar ações nem reações até limpar a condição",
+  "Coberto de Aranhas": "{x} deve rolar um d6 sempre que fizer uma rolagem de ação",
+  "Cristalizando": "ativa uma contagem regressiva de Cristal (1) ao receber a condição",
+  "Amaldiçoado": "as rolagens de {x} com Esperança passam a contar como rolagens com Medo",
+  "Atordoado": "{x} não pode usar uma de suas ações, mas ganha imunidade a dano mágico",
+  "Preso à Morte": "a fonte da condição causa dano direto ao atacar {x}",
+  "Transe Profundo": "{x} não pode agir, exceto para tentar acordar",
+  "Destruído": "{x} não pode mais usar nenhuma de suas características" };
 // Uma condição: a ficha ganha essa cor. Duas ou mais: borda e brilho em degradê com as duas primeiras cores.
 export function condFx(conds) {
   const cs = [...new Set((conds || []).map(c => COND_COR[c] || "var(--steel)"))];

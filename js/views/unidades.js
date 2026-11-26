@@ -1,7 +1,7 @@
 // Cartões de adversário e suas ações. Usado pela batalha e pela cena (ctx = { reg, ed, edQuiet }).
 import { esc, mdBlock, icon, uid, toast, confirmar, openSheet, closeSheet, store } from "../util.js";
 import { T, dmgPT } from "../data.js";
-import { adversarios, pvPorDano, CONDICOES, TIPO_PT, adicionar } from "../gm.js";
+import { adversarios, pvPorDano, CONDICOES, CONDICOES_EXTRA, TIPO_PT, adicionar } from "../gm.js";
 import { statBlock, pipsU, tipoTag, kindTag, fonteTag } from "./mestre-ui.js";
 import { condFx, condBanner } from "./common.js";
 import { casaLembrete } from "../cena.js";
@@ -9,6 +9,8 @@ import { FIGURAS, POR_FIGURA, valido, rotulo, ocupados, proximo, atribuirFaltant
 import { app } from "../main.js";
 
 const CONDCLS = { Vulnerável: "vuln", Contido: "restr", Oculto: "hide" };
+// Cartões com a aba "Mais condições" aberta (sobrevive aos redesenhos da tela).
+const condAbertas = new Set();
 // Vista dos adversários: "lista" (uma linha por adversário, esticada para o lado) ou "grade" (cartões compactos lado a lado).
 let vista = store.get("dh-uvista", "lista"), mapaAberto = true;
 document.addEventListener("toggle", e => { if (e.target.matches && e.target.matches("details[data-mapa]")) mapaAberto = e.target.open; }, true);
@@ -27,7 +29,9 @@ export const tokenImg = (mk, cls = "") => (valido(mk)
 export function cartaoUnidade(x, reg) {
   const morto = x.hp >= x.hpMax, minion = x.type === "Minion";
   const fx = condFx(x.cond);
-  const ext = seloLembrete(x, reg) + condBanner(x.cond, "ele");
+  const nExtra = x.cond.filter(c => !CONDICOES.includes(c)).length, aberta = condAbertas.has(x.id);
+  const painelMais = aberta ? `<div class="cond-more" role="group" aria-label="Mais condições">${CONDICOES_EXTRA.map(([c, en]) => `<button class="chip${x.cond.includes(c) ? " on" : ""}" data-act="ucond" data-id="${x.id}" data-c="${esc(c)}" aria-pressed="${x.cond.includes(c)}" title="${esc(en)}">${esc(c)}</button>`).join("")}</div>` : "";
+  const ext = seloLembrete(x, reg) + painelMais + condBanner(x.cond, "ele");
   return `<article id="u-${x.id}" class="ucard${morto ? " dead" : ""}${fx.cls} ty-${esc(x.type)}" style="${fx.style}">
     <button class="uc-tok" data-act="utok" data-id="${x.id}" title="${valido(x.mk) ? esc(rotulo(x.mk)) + ": toque para trocar o marcador" : "Escolher o marcador deste adversário"}" aria-label="Marcador: ${esc(rotulo(x.mk))}. Trocar">${tokenImg(x.mk)}</button>
     <div class="uc-id">
@@ -38,11 +42,9 @@ export function cartaoUnidade(x, reg) {
       <div class="uc-t"><span class="lb">PV</span><div class="pips pv">${pipsU(x.hpMax, x.hp, "uhp", x.id)}</div></div>
       ${x.stMax ? `<div class="uc-t"><span class="lb">Est.</span><div class="pips es">${pipsU(x.stMax, x.st, "ust", x.id)}</div></div>` : ""}
     </div>
-    <div class="cond-row">${CONDICOES.map(c => `<button class="chip ${CONDCLS[c]}${x.cond.includes(c) ? " on" : ""}" data-act="ucond" data-id="${x.id}" data-c="${c}" aria-pressed="${x.cond.includes(c)}">${c}</button>`).join("")}${x.cond.filter(c => !CONDICOES.includes(c)).map(c => `<button class="chip on" data-act="ucond" data-id="${x.id}" data-c="${esc(c)}">${esc(c)} ✕</button>`).join("")}</div>
+    <div class="cond-row">${CONDICOES.map(c => `<button class="chip ${CONDCLS[c]}${x.cond.includes(c) ? " on" : ""}" data-act="ucond" data-id="${x.id}" data-c="${c}" aria-pressed="${x.cond.includes(c)}">${c}</button>`).join("")}${x.cond.filter(c => !CONDICOES.includes(c)).map(c => `<button class="chip on" data-act="ucond" data-id="${x.id}" data-c="${esc(c)}">${esc(c)} ✕</button>`).join("")}<button class="chip more${aberta ? " open" : ""}" data-act="ucondmais" data-id="${x.id}" aria-expanded="${aberta}" title="Mostrar ou esconder as outras condições">${aberta ? "▾" : "▸"} Mais${nExtra ? ` (${nExtra})` : ""}</button></div>
     <div class="uc-quick"><span>Dif <b>${esc(x.dif)}</b></span><span>Lim. <b>${x.maj ?? "–"}/${x.sev ?? "–"}</b></span><span>${esc(x.atk)} <b>${esc(x.wpn)}</b></span><span>${esc(T(x.rng))}</span><span><b>${esc(dmgPT(x.dmg))}</b></span></div>
     <div class="uc-act">
-      ${minion ? `<button class="btn sm" data-act="udie" data-id="${x.id}">Derrotar</button>`
-        : `<div class="dmg-box"><input type="number" inputmode="numeric" min="0" placeholder="Dano" data-in="udmg" data-id="${x.id}" data-k="dm${x.id}" aria-label="Dano recebido"><button class="btn fear" data-act="udmg" data-id="${x.id}">Aplicar</button></div>`}
       <button class="btn sm ghost" data-act="uhab" data-id="${x.id}" title="Habilidades, experiência, motivações e anotações">Habil. (${x.f.length})</button>
       <button class="icon-btn" data-act="umenu" data-id="${x.id}" aria-label="Mais opções">⋯</button>
     </div>
@@ -141,6 +143,7 @@ export function unidadeOn(a, el, ctx) {
     case "uhp": ed(() => { const u = U(id); u.hp = u.hp === i + 1 ? i : i + 1; }); return true;
     case "ust": ed(() => { const u = U(id); u.st = u.st === i + 1 ? i : i + 1; }); return true;
     case "ucond": ed(() => { const u = U(id), c = el.dataset.c, k = u.cond.indexOf(c); k >= 0 ? u.cond.splice(k, 1) : u.cond.push(c); }); return true;
+    case "ucondmais": condAbertas.has(id) ? condAbertas.delete(id) : condAbertas.add(id); app.render(true); return true;
     case "udie": ed(() => { const u = U(id); u.hp = u.hpMax; }); return true;
     case "udmg": {
       const inp = document.querySelector(`[data-k="dm${id}"]`), d = parseInt(inp && inp.value, 10);

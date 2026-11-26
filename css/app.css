@@ -392,7 +392,10 @@ ol.steps{padding-left:1.3em; margin:8px 0} ol.steps li{margin:8px 0}
 .uc-quick b{color:var(--ink)}
 .uc-act{display:flex; align-items:center; gap:6px; flex:0 0 auto; margin-left:auto}
 .uc-act .btn{white-space:nowrap} .uc-act .dmg-box{margin:0; gap:6px} .uc-act .dmg-box input{width:76px; flex:none; min-height:36px; padding:4px 8px} .uc-act .btn{min-height:36px} .uc-act .icon-btn{width:36px; height:36px}
-.uc-ext{flex:1 1 100%; order:10} .uc-ext .cond-banner{margin:2px 0 0} .uc-ext .lem-selos{margin:0 0 4px}
+.chip.more{border-style:dashed; color:var(--muted)} .chip.more.open{color:var(--ink); border-style:solid}
+.cond-more{display:flex; flex-wrap:wrap; gap:4px; margin:4px 0 2px; padding:8px; border:1px dashed var(--line); border-radius:12px; background:var(--surface-2)} .cond-more .chip{min-height:28px; padding:2px 10px; font-size:.74rem}
+.cond-more .chip.on{background:var(--steel); border-color:var(--steel); color:#fff}
+.uc-ext{flex:1 1 100%; order:10}.uc-ext .cond-banner{margin:2px 0 0} .uc-ext .lem-selos{margin:0 0 4px}
 .hab-top{display:flex; align-items:center; gap:16px; margin:0 0 14px}
 /* lista (telas largas): duas linhas fixas por adversário. 1ª: nome, PV/Estresse, condições. 2ª: números e dano/ações */
 @media (min-width:701px){

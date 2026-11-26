@@ -35,6 +35,13 @@ export const AMBIENTE_ACOES = [
   { n: "Ameaça emergente", c: [1, 2], ef: "Um novo problema entra em cena", op: ["Uma criatura menor aparece", "Um enxame de insetos", "Espíritos menores", "Guardas chegam"] },
 ];
 export const CONDICOES = ["Vulnerável", "Contido", "Oculto"];
+// Condições extras (aba "Mais condições" do cartão de adversário). [nome em português, nome original]
+export const CONDICOES_EXTRA = [
+  ["Em Chamas", "Ablaze"], ["Aflito", "Afflicted"], ["Adormecido", "Asleep"], ["Sintonizado", "Attuned"],
+  ["Enfeitiçado", "Beguiled"], ["Marcado a Ferro", "Branded"], ["Quebrado", "Broken"], ["Coberto de Aranhas", "Covered in Spiders"],
+  ["Cristalizando", "Crystallizing"], ["Amaldiçoado", "Cursed"], ["Atordoado", "Dazed"], ["Preso à Morte", "Deathlocked"],
+  ["Transe Profundo", "Deep Trance"], ["Destruído", "Destroyed"],
+];
 
 // ---------- Carregamento ----------
 let BASE = [], EXPADV = [], EXPENV = [], pronto = false;
