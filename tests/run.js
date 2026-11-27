@@ -529,7 +529,7 @@ await teste("nomes femininos e masculinos vêm de listas diferentes", () => {
   ok([...fem].every(n => !masc.has(n)), "um nome apareceu nas duas listas");
 });
 await teste("especiais: classes com regra própria e H&F mostram o botão; Guerreiro não", async () => {
-  const { quantosEspeciais, especiais, contadorFaltando } = await import("../js/views/especiais.js");
+  const { quantosEspeciais, especiais } = await import("../js/views/especiais.js");
   const mk = x => ({ ...novoPersonagem(), ...x });
   for (const c of ["Bard", "Druid", "Guardian", "Ranger", "Rogue", "Seraph", "Sorcerer", "Wizard", "Assassin", "Brawler", "Warlock", "Witch"]) ok(quantosEspeciais(mk({ classe: c })) > 0, `${c} sem especiais`);
   igual(quantosEspeciais(mk({ classe: "Warrior" })), 0);
@@ -537,8 +537,32 @@ await teste("especiais: classes com regra própria e H&F mostram o botão; Guerr
   ok(quantosEspeciais(mk({ classe: "Ranger", subclasse: "Beastbound" })) > quantosEspeciais(mk({ classe: "Ranger" })), "companheiro não apareceu");
   ok(especiais(mk({ classe: "Witch" })).some(s => s.t === "Expansão Hope & Fear") === false, "classe H&F fica em 'Da sua classe'");
   ok(especiais(mk({ classe: "Warrior", comunidade: "Reborne" })).some(s => s.t === "Expansão Hope & Fear"), "comunidade H&F não apareceu");
-  igual(contadorFaltando(mk({ classe: "Seraph" })).n, "Dados de Oração");
-  igual(contadorFaltando(mk({ classe: "Seraph", recursos: [{ n: "Dados de Oração", v: 0, max: 4 }] })), null);
+});
+await teste("Forma Bestial: transformar muda Evasão e atributo; sair desfaz; custos e Evolução", async () => {
+  const { assumir, sairForma, podeAssumir, formaAtiva } = await import("../js/forma.js");
+  const { deriv } = await import("../js/calc.js");
+  const pc = { ...novoPersonagem(), classe: "Druid", nivel: 5, atr: { agi: 1, for: 0, acu: 0, ins: 0, pre: 0, con: 0 } };
+  const antes = deriv(pc);
+  ok(!podeAssumir(pc, antes, "Agile Scout", "estresse"), "deveria poder");
+  assumir(pc, "Agile Scout", "estresse");
+  igual(pc.st.es, 1);
+  const em = deriv(pc);
+  igual(em.ev, antes.ev + 2); igual(em.atr.agi, antes.atr.agi + 1); ok(em.forma && em.forma.n === "Batedor Ágil");
+  ok(podeAssumir(pc, em, "Pack Predator", "estresse"), "já transformado deve recusar");
+  sairForma(pc);
+  const fora = deriv(pc);
+  igual(fora.ev, antes.ev); igual(fora.atr.agi, antes.atr.agi); igual(fora.forma, null);
+  // Evolução: 3 Esperança, sem Estresse, +1 no atributo escolhido
+  pc.st.esp = 3;
+  assumir(pc, "Pack Predator", "evolucao", { evo: "ins" });
+  igual(pc.st.esp, 0); igual(pc.st.es, 1); igual(deriv(pc).atr.ins, antes.atr.ins + 1); igual(deriv(pc).atr.for, antes.atr.for + 2);
+  sairForma(pc);
+  // Forma de patamar maior que o do personagem é recusada
+  ok(podeAssumir(pc, antes, "Massive Behemoth", "estresse"), "patamar 4 num personagem de nível 5 deve recusar");
+  // Evoluída (Fera Lendária) soma bônus à forma de base
+  const lv = { ...pc, nivel: 5, bf: { id: "Legendary Beast", base: "Agile Scout" } };
+  const fa = formaAtiva(lv);
+  igual(fa.ev, 2 + 2); igual(fa.tb, 1 + 1); igual(fa.dn.flat, 6);
 });
 await teste("batalha sorteada: nome e descrição para cada adversário, sem equipamento", async () => {
   const { nomearBatalha, GRUPOS } = await import("../js/batalha-nomes.js");

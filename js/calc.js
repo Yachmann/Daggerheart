@@ -1,5 +1,6 @@
 // Regras de ficha: estatísticas derivadas e progressão de nível (SRD Daggerheart)
 import { get, loc, TRAITS, TRAIT_EN } from "./data.js";
+import { efeitosForma } from "./forma.js";
 
 export const tierOf = l => (l <= 1 ? 1 : l <= 4 ? 2 : l <= 7 ? 3 : 4);
 export const MAX_SLOTS = 12;
@@ -77,7 +78,10 @@ export function deriv(pc) {
   const prof = 1 + b.pf + (mod.prof || 0);
   const atr = {};
   for (const t of TRAITS) atr[t.k] = (pc.atr[t.k] || 0) + (b.tr[t.pt] || b.tr[t.k] || 0) + (eq.tr[t.k] || 0);
-  const ev = (cls ? cls.ev : 10) + b.ev + eq.ev + (af.includes("Nimble") ? 1 : 0) + (mod.ev || 0);
+  // Forma Bestial: bônus de atributo e de Evasão da forma; Esquiva do Ladino: +2 de Evasão até o próximo descanso (ou até um ataque acertar)
+  const fx = efeitosForma(pc);
+  if (fx) for (const k in fx.tr) atr[k] = (atr[k] || 0) + fx.tr[k];
+  const ev = (cls ? cls.ev : 10) + b.ev + eq.ev + (af.includes("Nimble") ? 1 : 0) + (mod.ev || 0) + (fx ? fx.ev : 0) + (pc.x && pc.x.esquiva ? 2 : 0);
   const pvMax = Math.min(MAX_SLOTS, (cls ? cls.hp : 6) + b.hp + (af.includes("Endurance") ? 1 : 0) + (mod.pv || 0));
   const esMax = Math.min(MAX_SLOTS, 6 + b.st + (af.includes("High Stamina") ? 1 : 0) + (mod.es || 0));
   const espMax = Math.max(0, 6 - (pc.cicatrizes || 0));
@@ -99,7 +103,7 @@ export function deriv(pc) {
   };
   return {
     cls, sub, arm, prof, atr, ev, pvMax, esMax, espMax, armMax, lim, conj, doms, tier: tierOf(nivel),
-    p: arma(wp), s: arma(ws), eq,
+    p: arma(wp), s: arma(ws), eq, forma: fx ? fx.forma : null,
   };
 }
 

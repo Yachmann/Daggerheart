@@ -7,7 +7,9 @@ import { app } from "../main.js";
 import { glifo, dado6 } from "../simbolos.js";
 import { hbCfg, infimo, tokens as tokensDe, gastarToken, devolverToken } from "../homebrew.js";
 import { montarLink, paraEntrega } from "../entrega.js";
-import { especiais, quantosEspeciais, htmlEspeciais, contadorFaltando } from "./especiais.js";
+import { especiais, quantosEspeciais, htmlEspeciais, abriu as espAbriu, reinicia as espReinicia, acao as espAcao, entrada as espEntrada, descansoEspeciais } from "./especiais.js";
+import { sairForma, formaAtiva } from "../forma.js";
+import { ilustracao } from "../ilustracoes.js";
 import { emblema } from "../emblemas.js";
 import { passarItem, podePassar } from "./dar.js";
 import { condFx, condBanner, COND_CLS, dcard, feat, armaHtml, armaduraHtml, coresClasse, temaAttr, temaVars, temaEmblema, classeSub, origemTxt, expTag, verCarta, enName, voltar, corDom } from "./common.js";
@@ -19,7 +21,11 @@ let ID = null, aba = "jogo", busca = "", mostrarTodas = false;
 export const ouve = m => m === "ficha:" + ID;
 const F = () => ficha(ID);
 const podeEditar = f => !f.dono || !user() || f.dono === user().id || S.mesas.some(m => m.id === f.mesa_id && m.mestre === user().id);
-const ed = (fn, op) => { const f = F(); if (!f || !podeEditar(f)) { toast("Você só pode ver esta ficha"); return; } editar(ID, fn, op); };
+// Toda edição passa por aqui. Se o último PV for marcado em Forma Bestial, o personagem sai da forma (regra do Druida).
+const ed = (fn, op) => {
+  const f = F(); if (!f || !podeEditar(f)) { toast("Você só pode ver esta ficha"); return; }
+  editar(ID, pc => { fn(pc); if (pc.bf && pc.st.pv >= deriv(pc).pvMax) { sairForma(pc); toast("Último PV marcado: você saiu da Forma Bestial"); } }, op);
+};
 
 export function html(p, q) {
   ID = p[0];
@@ -38,6 +44,7 @@ export function html(p, q) {
       <div class="meta small">${esc(origemTxt(pc))}${pc.pronomes ? " · " + esc(pc.pronomes) : ""}${mesa ? ` · <span class="tag">${icon("users")} ${esc(mesa.nome)}</span>` : ""}</div></div>
       <div class="lvl-badge"><span>Nível</span><b>${pc.nivel}</b></div></div>
     ${condBanner(pc.st.cond, "você")}
+    ${d.forma ? formaFaixa(d.forma, ro) : ""}
     <div class="core">
       <div class="stat"><i class="gl">${glifo("evasao")}</i><b>${d.ev}</b><span>Evasão</span></div>
       ${(() => { const inf = hbCfg(f).limiar ? infimo(d.lim[0]) : 0; return `<div class="stat th${inf ? " has-inf" : ""}" role="group" aria-label="Limiares de dano: Maior ${d.lim[0]}, Grave ${d.lim[1]}" title="Limiares de dano: Maior ${d.lim[0]} · Grave ${d.lim[1]}"><i class="gl">${glifo("limiares")}</i><b>${inf ? `<span class="inf-dot" role="img" aria-label="Limiar ínfimo, homebrew: ${inf}" title="Homebrew: dano até ${inf} pode ser pago com 1 Esperança ou 1 Estresse">${inf}</span>` : ""}${d.lim[0]}<i class="sep">/</i>${d.lim[1]}</b><span>Limiares</span></div>`; })()}
@@ -49,6 +56,13 @@ export function html(p, q) {
   <div class="tabs" role="tablist">${ABAS.map(([k, n]) => `<button role="tab" aria-selected="${aba === k}" data-act="aba" data-v="${k}">${n}</button>`).join("")}</div>
   <div class="${ro ? "ro" : ""}">${corpo(pc, d, ro, f)}</div>
   ${botaoEspeciais(pc)}<button class="fab" data-act="cola" aria-label="Resumo de jogo" title="Resumo de jogo">${icon("book")}</button>${ro ? "" : tokensFlutuantes(f)}</div>`;
+}
+
+// Faixa no topo da ficha enquanto o Druida está em Forma Bestial: mostra a forma e o botão para sair
+function formaFaixa(f, ro) {
+  return `<div class="forma-faixa"><div class="forma-ilu mini">${ilustracao(f.ilu)}</div>
+    <div class="grow"><b>Forma Bestial: ${esc(f.n)}</b><div class="muted small">${f.trait ? esc(f.trait) + " " + sgn(f.tb) + " · " : ""}Evasão ${sgn(f.ev)}${f.dn ? " · dano " + esc(f.dn.n ? "d" + f.dn.n + (f.dn.flat ? sgn(f.dn.flat) : "") : "") : ""}</div></div>
+    ${ro ? "" : `<button class="btn sm" data-act="especiais">Detalhes</button><button class="btn sm fear" data-act="x-forma-sair">Sair da forma</button>`}</div>`;
 }
 
 // Botão dos especiais: fica acima do Resumo de jogo e só existe quando há algo diferente no personagem.
@@ -100,7 +114,7 @@ function abaJogo(pc, d, ro) {
   ${recursosHtml(pc)}
 
   <div class="acts"><button class="btn" data-act="descanso" data-v="curto">${icon("bed")} Descanso curto</button><button class="btn" data-act="descanso" data-v="longo">${icon("moon")} Descanso longo</button></div>
-  ${pc.forma ? `<div class="note" style="margin-top:12px">Em Forma Bestial: <b>${esc(pc.forma)}</b>. <button class="btn sm ghost" data-act="forma" data-v="">Sair da forma</button></div>` : ""}`;
+  ${d.forma ? `<div class="note" style="margin-top:12px">Em Forma Bestial: <b>${esc(d.forma.n)}</b>. Evasão, atributo e ataque já estão aplicados na ficha. <button class="btn sm ghost" data-act="x-forma-sair">Sair da forma</button></div>` : ""}`;
 }
 
 function recursosHtml(pc) {
@@ -124,7 +138,11 @@ function abrirCola() {
       <div class="rj-chips"><span class="rj-chip"><b>${esc(traitPT(o.tr))}</b>${x.bonus != null ? " " + sgn(x.bonus) : ""}</span><span class="rj-chip">${esc(T(o.rng))}</span><span class="rj-chip">${esc(T(o.bur))}</span><span class="rj-chip">Patamar ${o.t}</span></div>
       ${o.f && o.f.length ? `<div class="rj-tx">${o.f.map(g => `<p><b>${esc(g.n)}:</b> ${md(g.t)}</p>`).join("")}</div>` : ""}</div>`, "rj-weap");
   };
-  const armas = (d.p ? arma(d.p.w, d.p, "Arma primária") : "") + (d.s ? arma(d.s.w, d.s, "Arma secundária") : "");
+  // Em Forma Bestial não se usa arma: o ataque é o da forma
+  const ataqueForma = f => card(`<div class="rj-arma"><div><div class="rj-papel">Ataque da forma</div><div class="rj-nome">${esc(f.n)}</div></div>
+    <div class="rj-dano"><small>Dano</small>${f.dn ? esc(`${d.prof}d${f.dn.n}${f.dn.flat ? sgn(f.dn.flat) : ""} ${f.tipoDano}`) : "—"}</div>
+    <div class="rj-chips">${f.trait ? `<span class="rj-chip"><b>${esc(f.trait)}</b> ${sgn(d.atr[f.tk])}</span>` : ""}<span class="rj-chip">${esc(f.atk || "")}</span></div></div>`, "rj-weap");
+  const armas = d.forma ? ataqueForma(d.forma) : (d.p ? arma(d.p.w, d.p, "Arma primária") : "") + (d.s ? arma(d.s.w, d.s, "Arma secundária") : "");
   const featCards = (arr, extra) => (arr || []).map(x => card(feat(x, extra))).join("");
   const exps = pc.exp.filter(e => e.n).map(e => card(`<div class="rj-exp"><b>${esc(e.n)}</b><span class="rj-mod">+${e.v}</span></div>`)).join("");
   const itens = (pc.inventario || []).map(it => { const o = it.ref && (loc("consumables", it.ref) || loc("items", it.ref)); return card(`<div class="rj-item-h"><b>${esc(it.n)}</b><span class="rj-qty">×${it.q ?? 1}</span></div>${it.nota ? `<div class="muted small">${esc(it.nota)}</div>` : ""}${o && o.x ? `<div class="rj-tx">${mdBlock(o.x)}</div>` : ""}`); }).join("");
@@ -214,7 +232,7 @@ function formasHtml(pc, d) {
     <p class="muted small">Marque 1 de Estresse para se transformar. Você soma o bônus de Evasão da forma e usa o atributo dela para atacar.</p>
     ${l.map(b => `<details class="more"><summary>${esc(b.n)} <span class="muted small" style="margin-left:6px">P${b.tier}${b.trait ? " · " + esc(b.trait) + " " + sgn(b.tb || 0) : ""}${b.ev ? " · Evasão " + sgn(b.ev) : ""}</span></summary>
       <div class="tx">${b.ex ? `<p class="muted"><i>${esc(b.ex)}</i></p>` : ""}${b.atk ? `<p><b>Ataque:</b> ${esc(b.atk)} · ${esc(b.dmg || "")}</p>` : ""}${b.adv ? `<p><b>Vantagem em:</b> ${esc(b.adv)}</p>` : ""}${(b.f || []).map(f => `<p><b>${esc(f.n)}:</b> ${md(f.t)}</p>`).join("")}</div>
-      <button class="btn sm" data-act="forma" data-v="${esc(b.n)}">Assumir esta forma</button></details>`).join("")}</div>`;
+      <button class="btn sm" data-act="especiais">Transformar pelo painel de Especiais</button></details>`).join("")}</div>`;
 }
 function companheiroHtml(pc) {
   const B = beast(), comp = pc.comp || {};
@@ -316,6 +334,7 @@ function abrirDescanso(tipo) {
       const grupo = body.querySelector("#grupo").checked, log = [];
       const r = () => 1 + Math.floor(Math.random() * 4) + t;
       ed(pc => {
+        descansoEspeciais(pc, curto);
         for (const k of sel) {
           if (k === "fer") { if (curto) { const v = r(); pc.st.pv = Math.max(0, pc.st.pv - v); log.push(`Tratar ferimentos: 1d4+${t} = ${v} PV`); } else { pc.st.pv = 0; log.push("Todos os PV recuperados"); } }
           if (k === "est") { if (curto) { const v = r(); pc.st.es = Math.max(0, pc.st.es - v); log.push(`Aliviar o Estresse: ${v}`); } else { pc.st.es = 0; log.push("Todo o Estresse recuperado"); } }
@@ -351,9 +370,15 @@ function abrirDano() {
       closeSheet(); toast(k === "esp" ? "Dano ínfimo evitado: 1 Esperança gasta" : "Dano ínfimo evitado: 1 Estresse marcado"); return;
     }
     const arm = k === "arm", n = Math.max(0, Math.min(sev, 3) - (arm ? 1 : 0));
-    ed(pc => { pc.st.pv = Math.min(d.pvMax, pc.st.pv + n); if (arm) pc.st.arm = Math.min(d.armMax, pc.st.arm + 1); }, { imediato: true });
+    let frágil = false;
+    ed(pc => {
+      pc.st.pv = Math.min(d.pvMax, pc.st.pv + n); if (arm) pc.st.arm = Math.min(d.armMax, pc.st.arm + 1);
+      // Forma Bestial "Frágil": dano Maior ou superior faz o Druida sair da forma
+      const fa = formaAtiva(pc);
+      if (fa && sev - (arm ? 1 : 0) >= 2 && fa.feats.some(x => x.n === "Frágil")) { sairForma(pc); frágil = true; }
+    }, { imediato: true });
     if ($("#dmgIn")) $("#dmgIn").value = "";
-    closeSheet(); toast(`${n} PV marcado${n !== 1 ? "s" : ""}${arm ? " e 1 Armadura" : ""}`);
+    closeSheet(); toast(`${n} PV marcado${n !== 1 ? "s" : ""}${arm ? " e 1 Armadura" : ""}${frágil ? ". Forma Frágil: você saiu da Forma Bestial" : ""}`);
   }));
 }
 
@@ -396,6 +421,7 @@ export function on(a, el) {
   const f = F(); if (!f) return;
   const pc = f.data, d = deriv(pc), i = +el.dataset.i, v = +el.dataset.v, id = el.dataset.id;
   const set = (k, n, max) => ed(pc => { pc.st[k] = clamp(n, 0, max); });
+  if (a.startsWith("x-") && espAcao(a, el, { pc, d, ed, toast, F })) return;
   switch (a) {
     case "aba": aba = el.dataset.v; history.replaceState(null, "", "#/ficha/" + encodeURIComponent(ID) + "?aba=" + aba); app.render(true); window.scrollTo({ top: Math.min(scrollY, $(".tabs").offsetTop - 60) }); return;
     case "pv": set("pv", pc.st.pv === i + 1 ? i : i + 1, d.pvMax); return;
@@ -436,17 +462,12 @@ export function on(a, el) {
     }
     case "addcarta": busca = ""; abrirPicker(); return;
     case "addc": ed(pc => { if (pc.cartas.mao.length < 5) pc.cartas.mao.push(id); else pc.cartas.cofre.push(id); }); closeSheet(); toast("Carta adicionada"); return;
-    case "forma":
-      if (el.dataset.v && !pc.forma) { if (pc.st.es >= d.esMax) { toast("Sem Estresse livre para se transformar"); return; } ed(pc => { pc.forma = el.dataset.v; pc.st.es += 1; }); toast("Transformado: 1 Estresse marcado"); }
-      else ed(pc => { pc.forma = el.dataset.v; });
-      return;
     case "trocareq": trocarEquip(); return;
     case "ouro": ed(pc => { const k = el.dataset.k; pc.ouro[k] = Math.max(0, (pc.ouro[k] || 0) + v); if (pc.ouro.p >= 10) { pc.ouro.p -= 10; pc.ouro.b++; } if (pc.ouro.b >= 10) { pc.ouro.b -= 10; pc.ouro.c++; } }); return;
     case "itq": ed(pc => { const it = pc.inventario[i]; it.q = (it.q ?? 1) + v; if (it.q <= 0) pc.inventario.splice(i, 1); }); return;
     case "itemnovo": abrirNovoItem(); return;
     case "cola": abrirCola(); return;
-    case "especiais": openSheet(htmlEspeciais(pc), { title: "Especiais do personagem", wide: true }); return;
-    case "espcont": { const r = contadorFaltando(pc); if (!r) return; ed(pc => (pc.recursos = pc.recursos || []).push({ n: r.n, v: 0, max: r.max })); closeSheet(); toast(`Contador criado na aba Jogo: ${r.n}`); return; }
+    case "especiais": espReinicia(); espAbriu(openSheet(htmlEspeciais(pc, d), { title: "Especiais do personagem", wide: true })); return;
     case "passar": passarItem(ID, el.dataset.t, el.dataset.t === "eq" ? el.dataset.s : i); return;
     case "resdel":ed(pc => pc.reserva.splice(i, 1)); return;
     case "expnova": ed(pc => pc.exp.push({ n: "", v: 2 })); return;
@@ -498,6 +519,7 @@ export function input(k, el) {
   const i = +el.dataset.i, fld = el.dataset.f, v = el.value;
   const f = F(); if (!f || !podeEditar(f)) return;
   editar(ID, pc => {
+    if (k.startsWith("x-")) { espEntrada(k, el, pc); return; }
     switch (k) {
       case "expn": pc.exp[i].n = v; break;
       case "expv": pc.exp[i].v = parseInt(v, 10) || 0; break;
