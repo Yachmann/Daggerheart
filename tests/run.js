@@ -564,6 +564,18 @@ await teste("Forma Bestial: transformar muda Evasão e atributo; sair desfaz; cu
   const fa = formaAtiva(lv);
   igual(fa.ev, 2 + 2); igual(fa.tb, 1 + 1); igual(fa.dn.flat, 6);
 });
+await teste("especiais: dados são só lembrete; nada é rolado no código dos painéis", async () => {
+  const src = await (await fetch("../js/views/especiais.js")).text();
+  ok(!/Math\.random/.test(src), "especiais.js não deve rolar dados");
+  const { dadosEmJogo } = await import("../js/views/especiais.js");
+  const { deriv } = await import("../js/calc.js");
+  const base = { ...novoPersonagem(), nivel: 5 };
+  const bardo = { ...base, classe: "Bard", x: { rally: { u: true, d: true } } };
+  igual(dadosEmJogo(bardo, deriv(bardo)).length, 1);
+  const serafim = { ...base, classe: "Seraph", x: { prece: [{ v: 3, u: false }, { v: 2, u: true }, { v: 0, u: false }] } };
+  igual(dadosEmJogo(serafim, deriv(serafim)).length, 1);   // só o dado anotado e ainda não gasto
+  igual(dadosEmJogo({ ...base, classe: "Warrior" }, deriv({ ...base, classe: "Warrior" })).length, 0);
+});
 await teste("batalha sorteada: nome e descrição para cada adversário, sem equipamento", async () => {
   const { nomearBatalha, GRUPOS } = await import("../js/batalha-nomes.js");
   const { gerarBatalha } = await import("../js/gm.js");

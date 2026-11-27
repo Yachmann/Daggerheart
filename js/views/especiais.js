@@ -10,7 +10,6 @@ import { feat, expTag, temaAttr, temaVars } from "./common.js";
 import { ilustracao } from "../ilustracoes.js";
 import { formaAtiva, formasDisponiveis, basesEvoluida, origensHibrida, formaPorId, ehEvoluida, ehHibrida, HIB, EVO, podeAssumir, assumir, sairForma, custoEstresse, fmtDano } from "../forma.js";
 
-const rnd = n => 1 + Math.floor(Math.random() * n);
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
 // ---------- Quais classes têm regra própria ----------
@@ -32,8 +31,6 @@ function featsDaClasse(id) {
 // ---------- Estado de interface (vive só enquanto a folha está aberta) ----------
 const UI = { esc: null, res: null };
 let corpo = null;
-const rolls = (n, f) => Array.from({ length: n }, f);
-const soma = a => a.reduce((s, x) => s + x, 0);
 const X = pc => (pc.x = pc.x || {});
 const conjVal = (pc, d) => (d.conj ? Math.max(1, d.atr[d.conj.k]) : 1);
 const dadoNivel = (pc, a, b) => (pc.nivel >= 5 ? b : a); // d6 → d8 no nível 5 (Inspirar, Dado do Patrono)
@@ -48,20 +45,35 @@ const nota = t => `<p class="esp-onde">${t}</p>`;
 const regra = f => `<details class="more esp-regra"><summary>Texto da regra</summary>${feat(f)}</details>`;
 const ctrl = (corpoHtml) => `<div class="esp-ctrl">${corpoHtml}</div>`;
 
+// ---------- Dados: só lembrete visual. Nada é rolado no site: a pessoa rola na mesa e aqui marca/anota ----------
+const FORMA_DADO = {
+  4: `<polygon points="24,5 44,40 4,40"/>`,
+  6: `<rect x="6" y="6" width="36" height="36" rx="8"/>`,
+  8: `<polygon points="24,3 44,24 24,45 4,24"/>`,
+  10: `<polygon points="24,3 43,18 24,45 5,18"/>`,
+  12: `<polygon points="24,3 44,18 36,43 12,43 4,18"/>`,
+  20: `<polygon points="24,3 43,14 43,34 24,45 5,34 5,14"/>`,
+};
+// Um dado desenhado. texto: o que aparece dentro (valor anotado ou "d6"); estado: on (em jogo), off (gasto), vazio (falta anotar)
+export const dado = (faces, texto, estado = "on") => `<span class="dd ${estado}" title="d${faces}"><svg viewBox="0 0 48 48" aria-hidden="true">${FORMA_DADO[faces] || FORMA_DADO[6]}<text x="24" y="${faces === 4 ? 33 : 29}" text-anchor="middle">${esc(texto ?? "d" + faces)}</text></svg></span>`;
+// Vários dados iguais num bloco com legenda: "3× d6 · Ataque Furtivo"
+const dadosBloco = (qtd, faces, legenda, estado = "on") => `<div class="dd-bloco"><div class="dd-fila">${Array.from({ length: Math.min(qtd, 8) }, () => dado(faces, "d" + faces, estado)).join("")}</div><div class="dd-leg"><b>${qtd}× d${faces}</b> ${legenda}</div></div>`;
+const lembrete = t => `<p class="esp-rola">🎲 ${t}</p>`;
+
 // ---------- Painéis por especial ----------
 // Cada painel devolve HTML interativo. As ações (data-act="x-…") são tratadas em acao() mais abaixo.
 function painelBardo(pc) {
   const x = X(pc), r = x.rally || {}, tam = dadoNivel(pc, 6, 8);
-  return ctrl(`<p class="esp-linha">Dado de Inspiração: <b>d${tam}</b> ${r.u ? `<span class="tag">Inspirar usado nesta sessão</span>` : ""}</p>
-    <div class="acts">${!r.u ? btn("x-rally-usar", "Inspirar o grupo (1× por sessão)", "", "btn sm hope") : ""}${r.d ? btn("x-rally-rolar", `Gastar meu d${tam}: somar ao teste`, 'data-m="soma"') + btn("x-rally-rolar", `Gastar meu d${tam}: curar Estresse`, 'data-m="est"') : r.u ? `<span class="muted small">Seu dado já foi gasto.</span>` : ""}</div>
-    ${r.d ? `<p class="muted small">Você tem um Dado de Inspiração guardado. Cada aliado recebe o seu também (marque na ficha dele).</p>` : ""}`);
+  const estado = r.d ? "on" : r.u ? "off" : "vazio";
+  return ctrl(`<div class="dd-bloco"><div class="dd-fila">${dado(tam, "d" + tam, estado)}</div><div class="dd-leg"><b>Dado de Inspiração d${tam}</b> ${r.d ? "· você tem este dado" : r.u ? "· já gasto nesta sessão" : "· ainda não inspirou o grupo"}</div></div>
+    <div class="acts">${!r.u ? btn("x-rally-usar", "Inspirar o grupo (1× por sessão)", "", "btn sm hope") : ""}${r.d ? btn("x-rally-gasto", "Gastei meu dado", "", "btn sm fear") : ""}</div>
+    ${lembrete(`Role o d${tam} na mesa quando gastar: some ao teste de ação, de reação, ao dano, ou recupere Estresse igual ao resultado. Cada aliado recebe o seu dado também (marque na ficha dele).`)}`);
 }
 
 function painelGuardiao(pc) {
   const x = X(pc), im = x.imp || {}, max = dadoNivel(pc, 4, 6);
-  return ctrl(`<p class="esp-linha">Dado Imparável: <b>d${max}</b> · ${im.v ? `<b>Imparável agora</b>` : im.u ? "já usado neste descanso" : "disponível"}</p>
-    ${im.v ? `<div class="esp-dado-grande">${dadoBox(im.v, "on")}<span class="muted small">de ${max}</span></div>
-      <div class="acts">${btn("x-imp-sobe", "Causei PV de dano: subir o dado", "", "btn sm hope")}${btn("x-imp-fim", "Fim da cena: encerrar")}</div>
+  return ctrl(`<div class="dd-bloco"><div class="dd-fila">${dado(max, im.v ? String(im.v) : "d" + max, im.v ? "on" : im.u ? "off" : "vazio")}</div><div class="dd-leg"><b>Dado Imparável d${max}</b> ${im.v ? `· valor atual <b>${im.v}</b>` : im.u ? "· já usado neste descanso" : "· disponível"}</div></div>
+    ${im.v ? `<div class="acts">${btn("x-imp-sobe", "Causei PV de dano: subir o dado", "", "btn sm hope")}${btn("x-imp-fim", "Fim da cena: encerrar")}</div>
       <ul class="esp-lista"><li>Reduz a gravidade do dano físico em um limiar.</li><li>Soma o valor do dado (<b>+${im.v}</b>) à rolagem de dano.</li><li>Não pode ficar Contido nem Vulnerável.</li></ul>`
       : `<div class="acts">${btn("x-imp-ini", "Ficar Imparável (1× por descanso longo)", im.u ? "disabled" : "", "btn sm hope")}</div>`}`);
 }
@@ -74,32 +86,35 @@ function painelPatrulheiro(pc, d) {
 }
 
 function painelCompanheiro(pc, d) {
-  const c = pc.comp = pc.comp || {}, max = c.max || 3, es = clamp(c.es || 0, 0, max), dado = c.dado || 6, fora = !!c.fora;
+  const c = pc.comp = pc.comp || {}, max = c.max || 3, es = clamp(c.es || 0, 0, max), dd = c.dado || 6, fora = !!c.fora;
   const pips = Array.from({ length: max }, (_, i) => `<button class="pip${i < es ? " on" : ""}" data-act="x-comp-pip" data-i="${i}" aria-label="Estresse ${i + 1}"></button>`).join("");
   return ctrl(`<div class="esp-form"><label class="f">Nome<input type="text" data-in="comp" data-f="nome" data-k="xcn" value="${esc(c.nome || "")}"></label><label class="f">Espécie<input type="text" data-in="comp" data-f="esp" data-k="xce" value="${esc(c.esp || "")}"></label></div>
     ${fora ? `<div class="err" style="margin:8px 0">${esc(c.nome || "O companheiro")} saiu da cena e volta no próximo descanso longo.</div>` : ""}
     <div class="esp-pips"><span class="vl">Estresse</span><div class="pips es">${pips}</div>${btn("x-comp-slot", "−", 'data-v="-1"')}${btn("x-comp-slot", "+", 'data-v="1"')}</div>
-    <div class="acts">${btn("x-comp-dano", "Sofreu dano: marcar 1 Estresse", fora ? "disabled" : "", "btn sm fear")}${btn("x-comp-curar", "Recuperar 1 Estresse")}${btn("x-comp-ataque", `Atacar: ${pc.nivel ? "" : ""}${d.prof}d${dado}`, fora ? "disabled" : "", "btn sm hope")}</div>
-    <div class="chips" style="margin-top:8px"><span class="muted small">Dado de dano:</span>${[6, 8, 10, 12].map(n => chip(dado === n, "x-comp-dado", `d${n}`, `data-v="${n}"`)).join("")}</div>
+    <div class="acts">${btn("x-comp-dano", "Sofreu dano: marcar 1 Estresse", fora ? "disabled" : "", "btn sm fear")}${btn("x-comp-curar", "Recuperar 1 Estresse")}</div>
+    ${dadosBloco(d.prof, dd, "dano do companheiro (usa a sua Proficiência)")}
+    <div class="chips"><span class="muted small">Dado de dano:</span>${[6, 8, 10, 12].map(n => chip(dd === n, "x-comp-dado", `d${n}`, `data-v="${n}"`)).join("")}</div>
     <p class="muted small">Ajuste os espaços de Estresse e o dado conforme a sua ficha de companheiro e os avanços escolhidos. Companheiro sem Estresse sai da cena e volta com 1 Estresse recuperado no próximo descanso longo.</p>`);
 }
 
 function painelLadino(pc, d) {
   const x = X(pc), enc = pc.st.cond.includes("Encoberto"), t = tierOf(pc.nivel);
   return ctrl(`<div class="acts">${chip(enc, "x-enc", enc ? "Encoberto ✓" : "Ficar Encoberto")}${chip(!!x.esquiva, "x-esquiva", x.esquiva ? "Esquiva ativa (+2 Evasão)" : "Esquiva do Ladino (3 Esperança)")}</div>
-    <p class="esp-linha">Ataque Furtivo: <b>${t}d6</b> de dano extra se estiver Encoberto ou com um aliado em Corpo a Corpo do alvo.</p>
-    <div class="acts">${btn("x-furtivo", `Rolar Ataque Furtivo (${t}d6)`, "", "btn sm hope")}</div>
-    <p class="muted small">Encoberto vale como Oculto e termina após um ataque ou ao terminar um movimento à vista de um adversário. A Esquiva dura até um ataque acertar você ou até o próximo descanso.</p>`);
+    ${dadosBloco(t, 6, `de Ataque Furtivo${enc ? " · você está Encoberto: some ao dano!" : ""}`, enc ? "on" : "vazio")}
+    <p class="muted small">Some esses dados ao dano se acertar estando Encoberto ou com um aliado em Corpo a Corpo do alvo (role na mesa). Encoberto vale como Oculto e termina após um ataque ou ao terminar um movimento à vista de um adversário. A Esquiva dura até um ataque acertar você ou até o próximo descanso.</p>`);
 }
 
 function painelSerafim(pc, d) {
   const x = X(pc), pr = x.prece || [], n = conjVal(pc, d);
-  const dados = pr.map((p, i) => `<div class="esp-prece${p.u ? " usado" : ""}">${dadoBox(p.v, p.u ? "off" : "on")}<div class="esp-prece-b">${btn("x-prece", "Usar", `data-i="${i}" ${p.u ? "disabled" : ""}`)}${btn("x-prece-esp", `+${p.v} Esp.`, `data-i="${i}" ${p.u ? "disabled" : ""}`, "btn sm hope")}</div></div>`).join("");
-  const vivos = pr.filter(p => !p.u);
-  return ctrl(`<p class="esp-linha">Dados de Prece: <b>${vivos.length}</b> de ${pr.length || n} (d4)</p>
-    <div class="esp-pracas">${dados || `<span class="muted small">Role no início da sessão.</span>`}</div>
-    <div class="acts">${btn("x-prece-rolar", `Rolar ${n}d4 (início da sessão)`, "", "btn sm hope")}${pr.length ? btn("x-prece-limpar", "Descartar (fim da sessão)") : ""}</div>
-    <p class="muted small">Cada dado gasto reduz dano recebido, soma ao resultado de uma rolagem de você ou de um aliado a alcance Longe (depois de rolada), ou vira Esperança igual ao valor.</p>`);
+  const slots = pr.map((p, i) => {
+    if (!p.v) return `<div class="esp-prece vazio">${dado(4, "?", "vazio")}<div class="esp-prece-b">${[1, 2, 3, 4].map(k => btn("x-prece-val", String(k), `data-i="${i}" data-v="${k}"`)).join("")}</div><span class="muted small">anote o valor</span></div>`;
+    return `<div class="esp-prece${p.u ? " usado" : ""}">${dado(4, String(p.v), p.u ? "off" : "on")}<div class="esp-prece-b">${btn("x-prece", p.u ? "Gasto" : "Gastar", `data-i="${i}" ${p.u ? "disabled" : ""}`)}${btn("x-prece-esp", `+${p.v} Esp.`, `data-i="${i}" ${p.u ? "disabled" : ""}`, "btn sm hope")}${btn("x-prece-edita", "✎", `data-i="${i}" title="Corrigir o valor" ${p.u ? "disabled" : ""}`)}</div></div>`;
+  }).join("");
+  const vivos = pr.filter(p => p.v && !p.u).length;
+  return ctrl(`<div class="dd-bloco"><div class="dd-leg"><b>Dados de Prece</b> · ${pr.length ? `<b>${vivos}</b> disponíve${vivos === 1 ? "l" : "is"} de ${pr.length}` : `${n}× d4 por sessão`}</div></div>
+    ${slots ? `<div class="esp-pracas">${slots}</div>` : ""}
+    <div class="acts">${!pr.length ? btn("x-prece-prep", `Começar sessão: anotar ${n} dados`, "", "btn sm hope") : btn("x-prece-limpar", "Descartar (fim da sessão)")}</div>
+    ${lembrete(`Role ${n}d4 na mesa no início da sessão e anote aqui o valor de cada dado. Cada dado gasto reduz dano recebido, soma ao resultado de uma rolagem sua ou de um aliado a alcance Longe (depois de rolada), ou vira Esperança igual ao valor.`)}`);
 }
 
 function painelFeiticeiro(pc, d) {
@@ -111,9 +126,9 @@ function painelFeiticeiro(pc, d) {
 
 function painelMago(pc) {
   const x = X(pc), n = x.padrao || 0;
-  return ctrl(`<p class="esp-linha">Seu número: <b>${n || "—"}</b></p>
+  return ctrl(`<div class="dd-bloco"><div class="dd-fila">${dado(12, n ? String(n) : "?", n ? "on" : "vazio")}</div><div class="dd-leg"><b>Seu número dos Padrões Estranhos:</b> ${n || "ainda não escolhido"}</div></div>
     <div class="chips">${Array.from({ length: 12 }, (_, i) => chip(n === i + 1, "x-padrao", String(i + 1), `data-v="${i + 1}"`)).join("")}</div>
-    ${n ? `<div class="acts">${btn("x-padrao-hit", "Rolei meu número: +1 Esperança", 'data-m="esp"', "btn sm hope")}${btn("x-padrao-hit", "Rolei meu número: −1 Estresse", 'data-m="est"')}</div>` : ""}
+    ${n ? `<div class="acts">${btn("x-padrao-hit", "Saiu meu número: +1 Esperança", 'data-m="esp"', "btn sm hope")}${btn("x-padrao-hit", "Saiu meu número: −1 Estresse", 'data-m="est"')}</div>` : ""}
     <p class="muted small">Quando um Dado de Dualidade mostrar o seu número, ganhe 1 de Esperança ou recupere 1 de Estresse. Você pode trocar o número ao fazer um descanso longo.</p>`);
 }
 
@@ -121,9 +136,10 @@ function painelBruxo(pc, d) {
   const x = X(pc), p = x.pat = x.pat || {}, favor = clamp(p.favor ?? 3, 0, 6), dp = dadoNivel(pc, 6, 8), n = conjVal(pc, d);
   const pips = Array.from({ length: 6 }, (_, i) => `<button class="pip${i < favor ? " on" : ""}" data-act="x-favor-pip" data-i="${i}" aria-label="Favor ${i + 1}"></button>`).join("");
   return ctrl(`<div class="esp-form"><label class="f">Patrono<input type="text" data-in="x-pat" data-f="nome" data-k="xpn" value="${esc(p.nome || "")}"></label><label class="f">Esfera de influência<input type="text" data-in="x-pat" data-f="esfera" data-k="xpe" value="${esc(p.esfera || "")}"></label></div>
+    <div class="dd-bloco"><div class="dd-fila">${dado(dp, "d" + dp, favor ? "on" : "off")}</div><div class="dd-leg"><b>Dado do Patrono d${dp}</b> · ${favor ? "role ao gastar 1 Favor" : "sem Favor para invocar"}</div></div>
     <div class="esp-pips"><span class="vl">Favor</span><div class="pips hope">${pips}</div><b>${favor}/6</b></div>
-    <div class="acts">${btn("x-favor-usar", `Invocar o patrono: −1 Favor, rolar d${dp}`, favor < 1 ? "disabled" : "", "btn sm hope")}${btn("x-favor-tributo", `Tributo (descanso): +${n} Favor`)}${btn("x-favor-ganha", "Sucesso com Esperança: +1 Favor")}</div>
-    <p class="muted small">Antes de um teste ligado à esfera do patrono, gaste 1 de Favor, role o Dado do Patrono (d${dp}) e some ao total. O máximo é 6 de Favor.</p>`);
+    <div class="acts">${btn("x-favor-usar", "Gastei 1 Favor (invoquei o patrono)", favor < 1 ? "disabled" : "", "btn sm hope")}${btn("x-favor-tributo", `Tributo (descanso): +${n} Favor`)}${btn("x-favor-ganha", "Sucesso com Esperança: +1 Favor")}</div>
+    <p class="muted small">Antes de um teste ligado à esfera do patrono, gaste 1 de Favor, role o Dado do Patrono na mesa e some ao total. O máximo é 6 de Favor.</p>`);
 }
 
 function painelBruxa(pc, d) {
@@ -131,23 +147,26 @@ function painelBruxa(pc, d) {
   return ctrl(`<p class="esp-linha">Amaldiçoados: <b>${m.length}/${lim}</b> · penalidade <b>−${t}</b> no dano e na Dificuldade deles</p>
     <div class="chips">${m.map((nm, i) => `<button class="chip on" data-act="x-mald-tira" data-i="${i}">${esc(nm)} ✕</button>`).join("") || `<span class="muted small">Ninguém amaldiçoado.</span>`}</div>
     <div class="esp-form"><input type="text" id="x-mald-in" placeholder="Alvo a amaldiçoar">${btn("x-mald-poe", "Amaldiçoar (marcar 1 Estresse)", m.length >= lim ? "disabled" : "", "btn sm fear")}</div>
-    <div class="acts">${btn("x-comungar", `Comungar: rolar ${lim}d6 ${x.comung ? "(já usado)" : "(1× por descanso longo)"}`, x.comung ? "disabled" : "", "btn sm hope")}</div>`);
+    ${dadosBloco(lim, 6, `de Comunhão ${x.comung ? "· já usada neste descanso longo" : "· 1× por descanso longo"}`, x.comung ? "off" : "on")}
+    <div class="acts">${btn("x-comungar", x.comung ? "Comunhão usada" : "Comunguei (marcar como usada)", x.comung ? "disabled" : "", "btn sm hope")}${x.comung ? btn("x-comungar-volta", "Desfazer") : ""}</div>
+    ${lembrete("Role os d6 na mesa e escolha um resultado: 1–3 sabor, cheiro ou sensação · 4–5 sons ou visão · 6 vivência psíquica da cena.")}`);
 }
 
 function painelAssassino(pc) {
   const x = X(pc), t = tierOf(pc.nivel), alvo = x.alvo || "";
-  return ctrl(`<p class="esp-linha">Marcado para Morrer: <b>${alvo ? esc(alvo) : "ninguém"}</b> · dano extra <b>${t}d4</b></p>
-    <div class="esp-form"><input type="text" id="x-alvo-in" placeholder="Alvo do ataque bem-sucedido" value="${esc(alvo)}">${btn("x-alvo-marca", "Marcar (1 Estresse)", "", "btn sm fear")}</div>
-    <div class="acts">${alvo ? btn("x-alvo-rolar", `Rolar dano extra (${t}d4)`, "", "btn sm hope") + btn("x-alvo-fim", "Encerrar (alvo derrotado ou descanso)") : ""}</div>
-    <p class="muted small">Só um adversário por vez. Termina num descanso, quando o alvo for derrotado, ou quando o Mestre gastar ${t} de Medo.</p>`);
+  return ctrl(`<p class="esp-linha">Marcado para Morrer: <b>${alvo ? esc(alvo) : "ninguém"}</b></p>
+    ${dadosBloco(t, 4, `de dano extra contra o alvo marcado`, alvo ? "on" : "vazio")}
+    <div class="esp-form"><input type="text" id="x-alvo-in" placeholder="Alvo do ataque bem-sucedido" value="${esc(alvo)}">${btn("x-alvo-marca", "Marcar (1 Estresse)", "", "btn sm fear")}${alvo ? btn("x-alvo-fim", "Encerrar") : ""}</div>
+    <p class="muted small">Só um adversário por vez. Termina num descanso, quando o alvo for derrotado, ou quando o Mestre gastar ${t} de Medo. Role os dados na mesa ao causar dano nele.</p>`);
 }
 
 function painelBrigao(pc, d) {
   const x = X(pc), dc = x.combo || 4;
-  return ctrl(`<p class="esp-linha">Dado de Combo: <b>d${dc}</b></p>
+  return ctrl(`<div class="dd-bloco"><div class="dd-fila">${dado(dc, "d" + dc, "on")}</div><div class="dd-leg"><b>Dado de Combo d${dc}</b></div></div>
     <div class="chips">${[4, 6, 8, 10, 12].map(n => chip(dc === n, "x-combo-tam", `d${n}`, `data-v="${n}"`)).join("")}</div>
-    <div class="acts">${btn("x-combo", "Golpe Combinado (marcar 1 Estresse)", "", "btn sm hope")}${btn("x-golpe", `Dano do Golpe do Lutador (${d.prof}d8+${d.prof}d6)`)}</div>
-    <p class="muted small">Role o Dado de Combo; continue rolando enquanto o resultado novo não for menor que o anterior. O dano extra é a soma de todos os resultados. Aumente o dado de Combo aqui quando escolher esse avanço de nível.</p>`);
+    <div class="acts">${btn("x-combo", "Iniciei um Golpe Combinado (marcar 1 Estresse)", "", "btn sm hope")}</div>
+    ${dadosBloco(d.prof, 8, "do Golpe do Lutador")}${dadosBloco(d.prof, 6, "do Golpe do Lutador (junto com os d8)")}
+    ${lembrete("Golpe Combinado: role o Dado de Combo na mesa e continue rolando enquanto o resultado novo não for menor que o anterior. O dano extra é a soma de todos. Aumente o dado de Combo aqui quando escolher esse avanço de nível.")}`);
 }
 
 // Formas Bestiais (Druida)
@@ -163,13 +182,15 @@ const chipsForma = f => {
 function formaAtivaHtml(pc, d) {
   const f = d.forma;
   const evT = f.evo ? TRAITS.find(t => t.k === f.evo) : null;
-  const dn = f.dn ? fmtDano(f.dn, d.prof) : "";
+  const dn = f.dn;
   return `<div class="forma-ativa">
     <div class="forma-topo"><div class="forma-ilu grande">${ilustracao(f.ilu)}</div>
       <div class="forma-id"><span class="esp-cab">Você está transformado</span><div class="esp-tit">${esc(f.n)}</div><div class="muted small">${esc(f.ex)}</div>
-        <div class="rj-chips">${f.trait ? `<span class="rj-chip"><b>${esc(f.trait)}</b> ${sgn(f.tb)}${evT ? ` +1 (Evolução)` : ""}</span>` : ""}<span class="rj-chip">Evasão ${sgn(f.ev)}${""}</span>${f.atk ? `<span class="rj-chip">${esc(f.atk)}</span>` : ""}${dn ? `<span class="rj-chip"><b>${dn} ${esc(f.tipoDano)}</b></span>` : ""}</div></div></div>
+        <div class="rj-chips">${f.trait ? `<span class="rj-chip"><b>${esc(f.trait)}</b> ${sgn(f.tb)}${evT ? ` +1 (Evolução)` : ""}</span>` : ""}<span class="rj-chip">Evasão ${sgn(f.ev)}</span>${f.atk ? `<span class="rj-chip">${esc(f.atk)}</span>` : ""}</div></div></div>
     ${evT && evT.k !== f.tk ? `<p class="muted small">Evolução: +1 em ${esc(evT.pt)} até sair da forma.</p>` : ""}
-    <div class="acts">${f.tk ? btn("x-forma-ataque", `Rolar ataque (${esc(f.trait)} ${sgn(d.atr[f.tk])})`, "", "btn sm hope") : ""}${dn ? btn("x-forma-dano", `Rolar dano (${dn})`) : ""}${btn("x-forma-sair", "Sair da forma", "", "btn sm fear")}</div>
+    ${f.tk ? `<p class="esp-linha">Ataque com <b>${esc(f.trait)} ${sgn(d.atr[f.tk])}</b> (já somado na ficha)</p>` : ""}
+    ${dn ? dadosBloco(d.prof, dn.n, `de dano${dn.flat ? ` ${sgn(dn.flat)}` : ""} ${esc(f.tipoDano)}`) : ""}
+    <div class="acts">${btn("x-forma-sair", "Sair da forma", "", "btn sm fear")}</div>
     ${f.adv.length ? `<div class="chips" style="margin-top:8px"><span class="muted small">Vantagem em:</span>${f.adv.map(a => `<span class="rj-chip">${esc(a)}</span>`).join("")}</div>` : ""}
     ${f.feats.map(x => feat(x)).join("")}
     <p class="esp-onde">Em forma você não usa armas nem conjura magias de cartas de domínio, mas mantém suas outras habilidades. Sua armadura vira parte do corpo. Se marcar o último PV, você sai da forma.</p></div>`;
@@ -319,7 +340,6 @@ export function entrada(k, el, pc) {
 export function acao(a, el, ctx) {
   if (!a.startsWith("x-")) return false;
   const { ed, toast } = ctx, d = ctx.d, i = +el.dataset.i, v = el.dataset.v, mf = el.dataset.m;
-  const dual = (mod, rot) => { const h = rnd(12), m = rnd(12), t = h + m + mod; return { h, m, t, tipo: h === m ? "Sucesso crítico" : h > m ? "com Esperança" : "com Medo", rot, mod }; };
   const mostra = (t, h) => { UI.res = { t, h }; };
   const fim = () => { const p = ctx.F().data; refresca(p, deriv(p)); };
   const mutar = fn => { ed(fn); fim(); };
@@ -354,11 +374,8 @@ export function acao(a, el, ctx) {
       UI.esc = null; mutar(pc => assumir(pc, e.id, e.modo, { base: e.base, evo: e.evo, hib: e.hib })); topo(); toast("Transformado: " + formaAtiva(ctx.F().data).n); return true;
     }
     case "x-forma-sair": mutar(pc => sairForma(pc)); topo(); toast("Você saiu da Forma Bestial"); return true;
-    case "x-forma-ataque": { const f = d.forma, r = dual(d.atr[f.tk], `Ataque: ${f.n}`); mostra(`Ataque de ${f.n}`, `<b class="esp-total">${r.t}</b> (${r.h} + ${r.m} ${sgn(r.mod)}) · ${r.tipo}${r.h === r.m ? "<br>Dano crítico." : ""}<br><span class="muted small">Sucesso com Esperança: +1 Esperança · com Medo: o Mestre ganha Medo.</span>`); break; }
-    case "x-forma-dano": { const f = d.forma, ro = rolls(d.prof, () => rnd(f.dn.n)), s = soma(ro) + f.dn.flat; mostra(`Dano de ${f.n}`, `<b class="esp-total">${s}</b> (${d.prof}d${f.dn.n}: ${ro.join(" + ")}${f.dn.flat ? ` ${sgn(f.dn.flat)}` : ""}) ${esc(f.tipoDano)}<br><span class="muted small">Num crítico, some o valor máximo dos dados.</span>`); break; }
     // ----- Bardo -----
     case "x-rally-usar": mutar(pc => { X(pc).rally = { u: true, d: true }; }); return true;
-    case "x-rally-rolar": { const tam = dadoNivel(ctx.pc, 6, 8), r = rnd(tam); mutar(pc => { X(pc).rally.d = false; if (mf === "est") pc.st.es = Math.max(0, pc.st.es - r); }); mostra("Dado de Inspiração", `<b class="esp-total">${r}</b> (d${tam}) · ${mf === "est" ? `${r} de Estresse recuperado.` : "Some ao teste de ação, de reação ou ao dano."}`); fim(); return true; }
     // ----- Guardião -----
     case "x-imp-ini": mutar(pc => { X(pc).imp = { u: true, v: 1 }; }); return true;
     case "x-imp-sobe": { const max = dadoNivel(ctx.pc, 4, 6); let fimIm = false; mutar(pc => { const im = X(pc).imp; if (im.v + 1 > max) { im.v = 0; fimIm = true; } else im.v++; }); if (fimIm) toast("O dado passou do máximo: você deixou de estar Imparável"); return true; }
@@ -376,7 +393,6 @@ export function acao(a, el, ctx) {
     case "x-comp-dano": mutar(pc => { const c = pc.comp, max = c.max || 3; c.es = Math.min(max, (c.es || 0) + 1); c.fora = c.es >= max; }); return true;
     case "x-comp-curar": mutar(pc => { const c = pc.comp; c.es = Math.max(0, (c.es || 0) - 1); c.fora = false; }); return true;
     case "x-comp-dado": mutar(pc => { pc.comp.dado = +v; }); return true;
-    case "x-comp-ataque": { const n = ctx.pc.comp.dado || 6, ro = rolls(d.prof, () => rnd(n)); mostra("Ataque do companheiro", `<b class="esp-total">${soma(ro)}</b> (${d.prof}d${n}: ${ro.join(" + ")}) · usa a sua Proficiência`); break; }
     // ----- Ladino -----
     case "x-enc": mutar(pc => { const k = pc.st.cond.indexOf("Encoberto"); k >= 0 ? pc.st.cond.splice(k, 1) : pc.st.cond.push("Encoberto"); }); return true;
     case "x-esquiva": {
@@ -384,12 +400,7 @@ export function acao(a, el, ctx) {
       if (!on && ctx.pc.st.esp < 3) { toast("Esquiva custa 3 de Esperança"); break; }
       mutar(pc => { const x = X(pc); if (x.esquiva) x.esquiva = false; else { x.esquiva = true; pc.st.esp -= 3; } }); return true;
     }
-    case "x-furtivo": { const t = tierOf(ctx.pc.nivel), ro = rolls(t, () => rnd(6)); mostra("Ataque Furtivo", `<b class="esp-total">+${soma(ro)}</b> de dano (${t}d6: ${ro.join(" + ")})`); break; }
     // ----- Serafim -----
-    case "x-prece-rolar": { const n = conjVal(ctx.pc, d), ro = rolls(n, () => rnd(4)); mutar(pc => { X(pc).prece = ro.map(v => ({ v, u: false })); }); return true; }
-    case "x-prece": mutar(pc => { X(pc).prece[i].u = true; }); return true;
-    case "x-prece-esp": { const p = ctx.pc.x.prece[i]; mutar(pc => { X(pc).prece[i].u = true; pc.st.esp = Math.min(d.espMax, pc.st.esp + p.v); }); toast(`+${p.v} Esperança`); return true; }
-    case "x-prece-limpar": mutar(pc => { X(pc).prece = []; }); return true;
     // ----- Feiticeiro -----
     case "x-canal": {
       const c = get("cards", el.dataset.id); if (!c) break;
@@ -402,7 +413,6 @@ export function acao(a, el, ctx) {
     case "x-padrao-hit": mutar(pc => { if (mf === "esp") pc.st.esp = Math.min(d.espMax, pc.st.esp + 1); else pc.st.es = Math.max(0, pc.st.es - 1); }); return true;
     // ----- Bruxo -----
     case "x-favor-pip": mutar(pc => { const p = X(pc).pat = X(pc).pat || {}; const f = p.favor ?? 3; p.favor = f === i + 1 ? i : i + 1; }); return true;
-    case "x-favor-usar": { const dp = dadoNivel(ctx.pc, 6, 8), r = rnd(dp); mutar(pc => { const p = X(pc).pat = X(pc).pat || {}; p.favor = Math.max(0, (p.favor ?? 3) - 1); }); mostra("Dado do Patrono", `<b class="esp-total">+${r}</b> ao total do teste (d${dp}).`); fim(); return true; }
     case "x-favor-tributo": mutar(pc => { const p = X(pc).pat = X(pc).pat || {}; p.favor = Math.min(6, (p.favor ?? 3) + conjVal(pc, d)); }); return true;
     case "x-favor-ganha": mutar(pc => { const p = X(pc).pat = X(pc).pat || {}; p.favor = Math.min(6, (p.favor ?? 3) + 1); }); return true;
     // ----- Bruxa -----
@@ -413,33 +423,55 @@ export function acao(a, el, ctx) {
       mutar(pc => { (X(pc).mald = X(pc).mald || []).push(t); pc.st.es += 1; }); return true;
     }
     case "x-mald-tira": mutar(pc => { X(pc).mald.splice(i, 1); }); return true;
-    case "x-comungar": {
-      const n = conjVal(ctx.pc, d), ro = rolls(n, () => rnd(6)), tab = r => (r <= 3 ? "sabor, cheiro ou sensação relevante" : r <= 5 ? "sons ou visão relevante" : "vivência psíquica da cena");
-      mutar(pc => { X(pc).comung = true; });
-      mostra("Comungar", `Dados: <b>${ro.join(", ")}</b><br><span class="muted small">Escolha um resultado: 1–3 sabor/cheiro/sensação · 4–5 sons ou visão · 6 vivência psíquica. Melhor opção agora: ${tab(Math.max(...ro))}.</span>`); fim(); return true;
-    }
     // ----- Assassino -----
     case "x-alvo-marca": {
       const t = ((document.getElementById("x-alvo-in") || {}).value || "").trim() || "alvo";
       if (ctx.pc.st.es >= d.esMax) { toast("Sem Estresse livre"); break; }
       mutar(pc => { X(pc).alvo = t; pc.st.es += 1; }); return true;
     }
-    case "x-alvo-rolar": { const t = tierOf(ctx.pc.nivel), ro = rolls(t, () => rnd(4)); mostra("Marcado para Morrer", `<b class="esp-total">+${soma(ro)}</b> de dano (${t}d4: ${ro.join(" + ")})`); break; }
     case "x-alvo-fim": mutar(pc => { X(pc).alvo = ""; }); return true;
     // ----- Brigão -----
     case "x-combo-tam": mutar(pc => { X(pc).combo = +v; }); return true;
+    // ----- Dados anotados (a pessoa rola na mesa; aqui só marca/anota) -----
+    case "x-rally-gasto": mutar(pc => { X(pc).rally.d = false; }); return true;
+    case "x-prece-prep": { const n = conjVal(ctx.pc, d); mutar(pc => { X(pc).prece = Array.from({ length: n }, () => ({ v: 0, u: false })); }); return true; }
+    case "x-prece-val": mutar(pc => { X(pc).prece[i].v = +v; }); return true;
+    case "x-prece-edita": mutar(pc => { X(pc).prece[i].v = 0; }); return true;
+    case "x-prece": mutar(pc => { X(pc).prece[i].u = true; }); return true;
+    case "x-prece-esp": { const p = ctx.pc.x.prece[i]; mutar(pc => { X(pc).prece[i].u = true; pc.st.esp = Math.min(d.espMax, pc.st.esp + p.v); }); toast(`+${p.v} Esperança`); return true; }
+    case "x-prece-limpar": mutar(pc => { X(pc).prece = []; }); return true;
+    case "x-favor-usar": mutar(pc => { const p = X(pc).pat = X(pc).pat || {}; p.favor = Math.max(0, (p.favor ?? 3) - 1); }); toast("−1 Favor: role o Dado do Patrono na mesa"); return true;
+    case "x-comungar": mutar(pc => { X(pc).comung = true; }); return true;
+    case "x-comungar-volta": mutar(pc => { X(pc).comung = false; }); return true;
     case "x-combo": {
       if (ctx.pc.st.es >= d.esMax) { toast("Sem Estresse livre"); break; }
-      const n = ctx.pc.x && ctx.pc.x.combo || 4, ro = [rnd(n)];
-      for (let g = 0; g < 40; g++) { const r = rnd(n); ro.push(r); if (r < ro[ro.length - 2]) break; }
-      mutar(pc => { pc.st.es += 1; });
-      mostra("Golpe Combinado", `<b class="esp-total">+${soma(ro)}</b> de dano extra · d${n}: ${ro.join(" → ")}<br><span class="muted small">Continuou até sair um resultado menor que o anterior. Os resultados não podem ser modificados.</span>`); fim(); return true;
+      mutar(pc => { pc.st.es += 1; }); toast("1 Estresse marcado: role o Dado de Combo na mesa"); return true;
     }
-    case "x-golpe": { const p = d.prof, a = rolls(p, () => rnd(8)), b = rolls(p, () => rnd(6)); mostra("Golpe do Lutador", `<b class="esp-total">${soma(a) + soma(b)}</b> físico (${p}d8: ${a.join("+")} · ${p}d6: ${b.join("+")})`); break; }
     // ----- Sessão -----
     case "x-sessao": mutar(pc => { const x = X(pc); x.prece = []; x.rally = { u: false, d: false }; }); toast("Dados de sessão limpos"); return true;
     default: ok = false;
   }
   if (ok) fim();
   return ok;
+}
+
+// ---------- Dados especiais na aba Jogo: um lembrete de que o personagem tem algo em jogo ----------
+// Devolve [{ faces, texto, estado, nome }] só do que está valendo agora (nada é rolado aqui).
+export function dadosEmJogo(pc, d) {
+  const x = pc.x || {}, out = [], cls = [pc.classe, pc.mc && pc.mc.cls];
+  if (cls.includes("Bard") && x.rally && x.rally.d) out.push({ faces: dadoNivel(pc, 6, 8), nome: "Inspiração", estado: "on" });
+  if (cls.includes("Guardian") && x.imp && x.imp.v) out.push({ faces: dadoNivel(pc, 4, 6), texto: String(x.imp.v), nome: "Imparável", estado: "on" });
+  if (cls.includes("Seraph")) (x.prece || []).forEach(p => { if (p.v && !p.u) out.push({ faces: 4, texto: String(p.v), nome: "Prece", estado: "on" }); });
+  if (cls.includes("Rogue") && pc.st.cond.includes("Encoberto")) for (let i = 0; i < tierOf(pc.nivel); i++) out.push({ faces: 6, nome: "Furtivo", estado: "on" });
+  if (pc.classe === "Assassin" && x.alvo) for (let i = 0; i < tierOf(pc.nivel); i++) out.push({ faces: 4, nome: "Marcado", estado: "on" });
+  if (pc.classe === "Brawler") out.push({ faces: x.combo || 4, nome: "Combo", estado: "on" });
+  if (pc.classe === "Warlock") { const f = x.pat ? x.pat.favor ?? 3 : 3; out.push({ faces: dadoNivel(pc, 6, 8), nome: "Patrono", estado: f ? "on" : "off" }); }
+  if (cls.includes("Wizard") && x.padrao) out.push({ faces: 12, texto: String(x.padrao), nome: "Número", estado: "on" });
+  if (d.forma && d.forma.dn) for (let i = 0; i < Math.min(d.prof, 4); i++) out.push({ faces: d.forma.dn.n, nome: "Forma", estado: "on" });
+  return out;
+}
+export function faixaDados(pc, d) {
+  const l = dadosEmJogo(pc, d);
+  if (!l.length) return "";
+  return `<button class="dd-faixa" data-act="especiais" aria-label="Dados especiais em jogo: abrir Especiais"><span class="dd-faixa-t">Dados especiais</span><span class="dd-faixa-l">${l.map(x => `<span class="dd-item">${dado(x.faces, x.texto, x.estado)}<small>${esc(x.nome)}</small></span>`).join("")}</span></button>`;
 }

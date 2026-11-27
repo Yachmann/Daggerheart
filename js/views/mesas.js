@@ -4,7 +4,7 @@ import { S, sb, user, criarMesa, entrarNaMesa, atualizarMesa, sairDaMesa, exclui
 import { EXP } from "../data.js";
 import { app } from "../main.js";
 import { cardPC } from "./fichas.js";
-import { voltar } from "./common.js";
+import { voltar, condBanner } from "./common.js";
 import { deriv } from "../calc.js";
 import { tokens as tokensDe, infimo, TOK_PADRAO } from "../homebrew.js";
 
@@ -61,7 +61,7 @@ const hbInf = (f, d) => { const m = S.mesas.find(x => x.id === f.mesa_id), c = m
 const tokTxt = f => { const t = tokensDe(f); return t ? `<span>Tokens <b>${t.resta}/${t.max}</b></span>` : ""; };
 function resumo(f) {
   const pc = f.data, d = deriv(pc);
-  const cond = (pc.st.cond || []).length ? `<div class="chips" style="margin-top:8px">${pc.st.cond.map(c => `<span class="tag">${esc(c)}</span>`).join("")}</div>` : "";
+  const cond = (d.forma ? `<div class="chips" style="margin-top:8px"><span class="tag forma-tag">Transformado: ${esc(d.forma.n)}</span></div>` : "") + condBanner(pc.st.cond, "ele");
   return cardPC(f).replace("</a>", `<div class="kv" style="margin-top:8px"><span>Evasão <b>${d.ev}</b></span><span>Limiares <b>${hbInf(f, d)}${d.lim[0]}/${d.lim[1]}</b></span>${tokTxt(f)}<span>Armadura <b>${d.armMax - pc.st.arm}/${d.armMax}</b></span></div>${cond}</a>`);
 }
 

@@ -70,9 +70,10 @@ export const voltar = (h, t = "Voltar") => `<a class="btn sm ghost" href="${h}">
 export { icon };
 
 // ---------- Destaque visual por condição ----------
-export const COND_COR = { "Vulnerável": "var(--blood)", "Contido": "var(--hope)", "Oculto": "var(--fear)" };
+export const COND_COR = { "Vulnerável": "var(--blood)", "Contido": "var(--hope)", "Oculto": "var(--fear)", "Encoberto": "var(--fear)" };
 export const COND_CLS = { "Vulnerável": "vuln", "Contido": "restr", "Oculto": "hide" };
 const COND_REGRA = { "Vulnerável": "testes contra {x} têm vantagem", "Contido": "{x} não pode se mover, mas pode agir", "Oculto": "ataques contra {x} têm desvantagem",
+  "Encoberto": "como Oculto, e {x} não é visto se ficar parado; termina após um ataque ou ao terminar um movimento à vista de um adversário",
   "Em Chamas": "{x} deve rolar um d4 sempre que fizer uma rolagem de ação",
   "Aflito": "{x} não pode limpar Pontos de Vida (PV) nem Estresse",
   "Adormecido": "permanece dormindo até sofrer dano",

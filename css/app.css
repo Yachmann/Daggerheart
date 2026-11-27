@@ -686,3 +686,34 @@ body.lm-open .topnav a span{display:none} body.lm-open .topnav a{padding:8px 10p
 .forma-faixa{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:12px; padding:8px 10px; border-radius:var(--k-rs,14px); border:2px solid var(--ka,var(--hope)); background:linear-gradient(135deg,color-mix(in srgb,var(--ka,var(--hope)) 22%,var(--surface)),var(--surface))}
 .forma-faixa .forma-ilu{flex:none}
 @media (max-width:520px){ .forma-card{grid-template-columns:64px 1fr} .forma-ilu .ilu{width:64px; height:64px} }
+
+/* ---- Painel do mestre: jogadores com condição ficam coloridos, como os adversários ---- */
+.grp-pc{border-radius:14px; margin:6px 0; padding:0 10px} .grp-pc.condfx{padding:4px 10px 8px}
+.grp-pc .grp-row{border-top:0} .grp-pc .cond-banner{margin:2px 0 0} .grp-pc .cb-item{font-size:.8rem; padding:4px 10px}
+.forma-tag{background:color-mix(in srgb,var(--hope) 25%,var(--surface)); border:1px solid var(--hope); font-weight:700}
+
+/* ---- Especiais: dados só como lembrete (ninguém rola no site) ---- */
+.dd{display:inline-grid; place-items:center; width:46px; height:46px; color:var(--kt,var(--ink))}
+.dd svg{width:100%; height:100%; overflow:visible; fill:color-mix(in srgb,var(--ka,var(--hope)) 18%,var(--surface)); stroke:currentColor; stroke-width:2.4; stroke-linejoin:round}
+.dd text{fill:currentColor; stroke:none; font:800 14px var(--sans,system-ui)}
+.dd.on svg{fill:color-mix(in srgb,var(--ka,var(--hope)) 38%,var(--surface)); stroke:var(--ka,var(--hope)); filter:drop-shadow(0 0 4px color-mix(in srgb,var(--ka,var(--hope)) 55%,transparent))}
+.dd.off{opacity:.38} .dd.off text{text-decoration:line-through}
+.dd.vazio svg{fill:transparent; stroke-dasharray:4 4; opacity:.7}
+.dd-bloco{display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:8px 10px; border-radius:var(--k-rs,12px); background:color-mix(in srgb,var(--ka,var(--hope)) 9%,var(--surface-2))}
+.dd-fila{display:flex; gap:4px; flex-wrap:wrap} .dd-leg{flex:1 1 150px; font-size:.92rem}
+.esp-rola{margin:0; font-size:.86rem; padding:8px 10px; border-radius:var(--k-rs,12px); border:1px dashed color-mix(in srgb,var(--ka,var(--hope)) 55%,var(--line))}
+.esp-prece.vazio .esp-prece-b .btn{min-width:34px}
+.dd-faixa{display:flex; align-items:center; gap:10px; flex-wrap:wrap; width:100%; margin:0 0 12px; padding:8px 12px; text-align:left; cursor:pointer; color:var(--ink); border:2px solid var(--ka,var(--hope)); border-radius:var(--k-rs,14px); background:linear-gradient(135deg,color-mix(in srgb,var(--ka,var(--hope)) 16%,var(--surface)),var(--surface))}
+.dd-faixa-t{font-size:.7rem; font-weight:800; letter-spacing:.09em; text-transform:uppercase; color:var(--kt,var(--muted))}
+.dd-faixa-l{display:flex; gap:8px; flex-wrap:wrap} .dd-item{display:grid; justify-items:center; gap:0} .dd-item small{font-size:.62rem; color:var(--muted); text-transform:uppercase; letter-spacing:.04em} .dd-item .dd{width:38px; height:38px}
+
+/* Ilustrações das formas: menores */
+.forma-card{grid-template-columns:52px 1fr}
+.forma-ilu .ilu{width:48px; height:48px}
+.forma-ilu.grande .ilu{width:68px; height:68px}
+.forma-ilu.mini .ilu{width:34px; height:34px}
+@media (max-width:520px){ .forma-card{grid-template-columns:44px 1fr} .forma-ilu .ilu{width:40px; height:40px} .forma-ilu.grande .ilu{width:60px; height:60px} }
+
+.forma-faixa .grow{flex:1 1 170px; min-width:0} .forma-faixa .btn{flex:none}
+
+.esp .dd{width:56px; height:56px}

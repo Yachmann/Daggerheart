@@ -7,7 +7,7 @@ import { app } from "../main.js";
 import { glifo, dado6 } from "../simbolos.js";
 import { hbCfg, infimo, tokens as tokensDe, gastarToken, devolverToken } from "../homebrew.js";
 import { montarLink, paraEntrega } from "../entrega.js";
-import { especiais, quantosEspeciais, htmlEspeciais, abriu as espAbriu, reinicia as espReinicia, acao as espAcao, entrada as espEntrada, descansoEspeciais } from "./especiais.js";
+import { especiais, quantosEspeciais, htmlEspeciais, abriu as espAbriu, reinicia as espReinicia, acao as espAcao, entrada as espEntrada, descansoEspeciais, faixaDados } from "./especiais.js";
 import { sairForma, formaAtiva } from "../forma.js";
 import { ilustracao } from "../ilustracoes.js";
 import { emblema } from "../emblemas.js";
@@ -98,6 +98,7 @@ function abaJogo(pc, d, ro) {
   const pessoal = "";
   const linha = (cls, nomeL, cor, corpo, extra = "") => `<div class="vr ${cls}" style="--cc:${cor}"><span class="vl">${nomeL}</span><div class="pips ${cls}">${corpo}</div>${extra}</div>`;
   return `${tokUI}
+  ${faixaDados(pc, d)}
   <div class="vitals">
     ${linha("esp", "Esperança", "var(--hope)", esp)}
     ${linha("pv", "Vida", "var(--blood)", pips("pv", d.pvMax, st.pv, "pv"))}
