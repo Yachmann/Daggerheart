@@ -17,6 +17,8 @@ export function sortearNomes(genero = "f", n = 8, sobrenome = true) {
   return varios(n, () => ({ n: sobrenome ? `${pick(base)} ${pick(SOBRE)}` : pick(base) }));
 }
 
+export const sortearSobrenome = () => pick(SOBRE);
+
 // ---------- Nomes de lugar ----------
 // Gênero e número: m, f, mp (plural masculino), fp (plural feminino). O índice escolhe a forma do artigo, da contração e do adjetivo.
 const G = { m: 0, f: 1, mp: 2, fp: 3 }, ART = ["o", "a", "os", "as"], DE = ["do", "da", "dos", "das"];

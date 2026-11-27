@@ -45,6 +45,21 @@
 /* Mago — círculo arcano: anéis concêntricos, borda dupla */
 [data-classe="Wizard"]{--k1:#3473BE; --k2:#C19225; --k-r:12px; --k-rs:10px; --k-pip:8px; --k-badge:12px; --k-bs:double; --k-bw:4px; --k-ls:.03em;
   --k-orn:repeating-radial-gradient(circle at 92% 8%,transparent 0 8px,color-mix(in srgb,var(--ka) 36%,transparent) 8px 9.5px)}
+/* Classes da expansão Hope & Fear */
+/* Assassino — lâminas finas cruzadas, cantos cortados */
+[data-classe="Assassin"]{--k1:#3B3A52; --k2:#B3394A; --k-r:3px 26px 3px 26px; --k-rs:3px 16px 3px 16px; --k-pip:2px 10px 2px 10px; --k-badge:3px 18px 3px 18px; --k-ls:.03em; --k-tt:uppercase; --k-nmsz:1.9rem;
+  --k-orn:repeating-linear-gradient(60deg,transparent 0 14px,color-mix(in srgb,var(--ka) 32%,transparent) 14px 15.5px)}
+/* Brigão — golpe: bordas pesadas, listras largas */
+[data-classe="Brawler"]{--k1:#C9592B; --k2:#8A8F98; --k-r:10px; --k-rs:8px; --k-pip:5px; --k-badge:8px; --k-band:10px; --k-bw:3px; --k-tt:uppercase; --k-ls:.05em; --k-nmsz:1.9rem;
+  --k-orn:repeating-linear-gradient(0deg,transparent 0 12px,color-mix(in srgb,var(--ka) 28%,transparent) 12px 16px)}
+/* Bruxo — pacto: brilho sombrio e arco de luz */
+[data-classe="Warlock"]{--k1:#6A2F8F; --k2:#2F8F86; --k-r:30px 30px 8px 30px; --k-rs:18px 18px 6px 18px; --k-pip:50% 50% 8% 50%; --k-badge:50% 50% 8% 50%; --k-fs:italic;
+  --k-glow:0 0 38px -10px color-mix(in srgb,var(--ka) 70%,transparent);
+  --k-orn:conic-gradient(from 200deg at 100% 0,transparent 0,color-mix(in srgb,var(--ka) 40%,transparent) 20%,color-mix(in srgb,var(--kb) 32%,transparent) 36%,transparent 54%)}
+/* Bruxa — ervas e luas: curvas suaves, borda pontilhada */
+[data-classe="Witch"]{--k1:#5E8C4A; --k2:#6A2F8F; --k-r:34px 34px 10px 34px; --k-rs:20px 20px 6px 20px; --k-pip:50%; --k-badge:50%; --k-bs:dotted; --k-bw:3px; --k-fs:italic;
+  --k-orn:radial-gradient(circle at 90% 10%,color-mix(in srgb,var(--ka) 36%,transparent) 0 18%,transparent 19%),radial-gradient(circle at 78% 4%,color-mix(in srgb,var(--kb) 30%,transparent) 0 11%,transparent 12%)}
+[data-mc="Assassin"]{--k2:#B3394A} [data-mc="Brawler"]{--k2:#C9592B} [data-mc="Warlock"]{--k2:#2F8F86} [data-mc="Witch"]{--k2:#5E8C4A}
 
 /* ---- cabeçalho da ficha ---- */
 :is(.ficha-tema[data-classe] .sheet-hero,.sheet-hero[data-classe]){
@@ -78,6 +93,11 @@
 .ficha-tema[data-classe] .sec > h2{padding-bottom:5px; border-bottom:2px solid color-mix(in srgb,var(--ka) 45%,transparent)}
 .ficha-tema[data-classe] .feat-h b{color:var(--kt)}
 .ficha-tema[data-classe] .fab{background:linear-gradient(135deg,var(--ka),var(--kb)); border-radius:var(--k-badge); box-shadow:var(--k-glow),0 8px 24px -6px rgba(0,0,0,.45)}
+/* Botão dos especiais: miolo claro, anel com as duas cores da classe e o emblema no tom da classe */
+.ficha-tema[data-classe] .fab.fab2{background:linear-gradient(var(--surface),var(--surface)) padding-box,linear-gradient(135deg,var(--ka),var(--kb)) border-box; border:3px solid transparent; color:var(--kt)}
+.ficha-tema[data-classe] .fab.fab2 .emblema{color:var(--kt)}
+.ficha-tema[data-classe] .fab2-n{background:linear-gradient(135deg,var(--ka),var(--kb))}
+.ficha-tema[data-classe] .esp-card .esp-cab{color:var(--kt)}
 
 /* ---- cartão na lista de personagens ---- */
 .pc-card[data-classe]{border:var(--k-bw) var(--k-bs) color-mix(in srgb,var(--ka) 50%,var(--line)); border-radius:var(--k-rs); box-shadow:var(--k-glow),var(--shadow);

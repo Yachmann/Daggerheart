@@ -528,6 +528,32 @@ await teste("nomes femininos e masculinos vêm de listas diferentes", () => {
   const fem = new Set(sortearNomes("f", 40, false).map(x => x.n)), masc = new Set(sortearNomes("m", 40, false).map(x => x.n));
   ok([...fem].every(n => !masc.has(n)), "um nome apareceu nas duas listas");
 });
+await teste("especiais: classes com regra própria e H&F mostram o botão; Guerreiro não", async () => {
+  const { quantosEspeciais, especiais, contadorFaltando } = await import("../js/views/especiais.js");
+  const mk = x => ({ ...novoPersonagem(), ...x });
+  for (const c of ["Bard", "Druid", "Guardian", "Ranger", "Rogue", "Seraph", "Sorcerer", "Wizard", "Assassin", "Brawler", "Warlock", "Witch"]) ok(quantosEspeciais(mk({ classe: c })) > 0, `${c} sem especiais`);
+  igual(quantosEspeciais(mk({ classe: "Warrior" })), 0);
+  igual(quantosEspeciais(mk({})), 0);
+  ok(quantosEspeciais(mk({ classe: "Ranger", subclasse: "Beastbound" })) > quantosEspeciais(mk({ classe: "Ranger" })), "companheiro não apareceu");
+  ok(especiais(mk({ classe: "Witch" })).some(s => s.t === "Expansão Hope & Fear") === false, "classe H&F fica em 'Da sua classe'");
+  ok(especiais(mk({ classe: "Warrior", comunidade: "Reborne" })).some(s => s.t === "Expansão Hope & Fear"), "comunidade H&F não apareceu");
+  igual(contadorFaltando(mk({ classe: "Seraph" })).n, "Dados de Oração");
+  igual(contadorFaltando(mk({ classe: "Seraph", recursos: [{ n: "Dados de Oração", v: 0, max: 4 }] })), null);
+});
+await teste("batalha sorteada: nome e descrição para cada adversário, sem equipamento", async () => {
+  const { nomearBatalha, GRUPOS } = await import("../js/batalha-nomes.js");
+  const { gerarBatalha } = await import("../js/gm.js");
+  for (const [k] of GRUPOS) for (let i = 0; i < 40; i++) {
+    const b = nomearBatalha(gerarBatalha({ tier: 1 + (i % 4), jogadores: 4 }), k);
+    ok(b.unidades.length > 0, "batalha vazia");
+    igual(new Set(b.unidades.map(u => u.name)).size, b.unidades.length);
+    b.unidades.forEach(u => {
+      ok(u.name && !/undefined|NaN|\{|\}|\s{2}/.test(u.name), `nome ruim: “${u.name}”`);
+      ok(u.desc && !/undefined|NaN|\{|\}|\s{2}/.test(u.desc), `descrição ruim: “${u.desc}”`);
+      ok(!/escudo|espada|machado|arco|armadura|lança|adaga|cajado/i.test(u.desc), `equipamento na descrição: “${u.desc}”`);
+    });
+  }
+});
 await teste("nomes de lugar saem bem formados em todos os tipos", () => {
   for (const t of TIPOS_LUGAR.map(x => x[0])) for (let i = 0; i < 100; i++) sortearLugares(t, 6).forEach(r => ok(r.n && !/undefined|NaN|\s{2}|^\s|\s$/.test(r.n), `nome ruim: “${r.n}”`));
 });

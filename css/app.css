@@ -269,6 +269,17 @@ mark{background:var(--hope-soft); color:inherit; border-radius:3px; padding:0 2p
 .fab{position:fixed; right:16px; bottom:calc(var(--nav-h) + var(--bot) + 16px); z-index:15; width:58px; height:58px; border-radius:18px; border:0; background:linear-gradient(135deg,var(--hope),var(--fear)); color:#fff; box-shadow:0 8px 24px -6px rgba(0,0,0,.45); display:grid; place-items:center}
 .fab .ic{width:28px; height:28px}
 @media (min-width:860px){ .fab{bottom:24px} }
+/* Botão dos especiais: menor, logo acima do Resumo de jogo */
+.fab.fab2{width:50px; height:50px; border-radius:16px; bottom:calc(var(--nav-h) + var(--bot) + 86px); background:linear-gradient(var(--surface),var(--surface)) padding-box,linear-gradient(135deg,var(--hope),var(--fear)) border-box; border:3px solid transparent; color:var(--ink)}
+@media (min-width:860px){ .fab.fab2{bottom:94px} }
+.fab.fab2 .emblema{width:30px; height:30px; color:var(--ink)}
+.fab2-n{position:absolute; top:-8px; right:-8px; min-width:20px; height:20px; padding:0 5px; border-radius:999px; display:grid; place-items:center; font-size:.72rem; font-weight:800; color:#fff; background:linear-gradient(135deg,var(--hope),var(--fear)); box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.fab.fab2.hf::after{content:"H&F"; position:absolute; bottom:-9px; left:50%; transform:translateX(-50%); padding:1px 6px; border-radius:999px; font-size:.6rem; font-weight:800; letter-spacing:.04em; color:#fff; background:var(--fear)}
+.esp-intro{margin:0}
+.esp-cab{font-size:.7rem; font-weight:800; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); margin-bottom:6px}
+.esp-tit{font-family:var(--display); font-size:1.35rem; font-weight:700; line-height:1.1; margin-bottom:6px}
+.esp-onde{margin:10px 0 0; padding:8px 10px; border-radius:var(--k-rs); font-size:.88rem; background:color-mix(in srgb,var(--ka) 12%,var(--surface-2))}
+.esp-comp{margin:0 0 6px}
 .roll-res{text-align:center; padding:8px 0 4px}
 .dice{display:flex; justify-content:center; gap:14px; margin:6px 0 10px}
 .die{width:72px; height:72px; border-radius:18px; display:grid; place-items:center; font-family:var(--display); font-size:2.2rem; font-weight:700; color:#fff}

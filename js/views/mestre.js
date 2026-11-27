@@ -14,8 +14,9 @@ import * as Mapas from "./mapas.js";
 import { ordenarRegistros } from "../cena.js";
 import { statBlock, envBlock, tipoTag, fonteTag, escolherBatalha, barraOrc } from "./mestre-ui.js";
 import { expTag } from "./common.js";
+import { nomearBatalha, GRUPOS } from "../batalha-nomes.js";
 
-const ui = { aba: "batalhas", ft: "", bq: "", q: "", tipo: "", tier: "", cat: "", fonte: "", livro: "adv", gt: "Standard", gp: 1, gen: null, rc: { tema: "qualquer", tier: 1, jog: 4, adj: 0 }, rcRes: null, comp: "", compCat: "geral", it: null, itCat: "Arma", itTier: "" };
+const ui = { aba: "batalhas", ft: "", bq: "", q: "", tipo: "", tier: "", cat: "", fonte: "", livro: "adv", gt: "Standard", gp: 1, gen: null, rc: { tema: "qualquer", tier: 1, jog: 4, adj: 0, nomear: false, grupo: "gangue" }, rcRes: null, comp: "", compCat: "geral", it: null, itCat: "Arma", itTier: "" };
 const ABAS = [["batalhas", "Batalhas"], ["biblioteca", "Biblioteca"], ["geradores", "Geradores"], ["locais", "Locais"], ["mapas", "Mapas"], ["notas", "Notas"], ["ia", "Conectar IA"]];
 
 function sub(p) { return p[0] || ""; }
@@ -150,9 +151,11 @@ function abaGeradores() {
       <label class="f">Patamar<select data-ch="rc" data-f="tier">${[1, 2, 3, 4].map(t => `<option${t === rc.tier ? " selected" : ""}>${t}</option>`).join("")}</select></label>
       <label class="f">Jogadores<input type="number" min="1" max="8" value="${rc.jog}" data-in="rc" data-f="jog" data-k="rcj"></label>
       <label class="f">Dificuldade<select data-ch="rc" data-f="adj"><option value="-1"${rc.adj === -1 ? " selected" : ""}>Mais fácil</option><option value="0"${rc.adj === 0 ? " selected" : ""}>Padrão</option><option value="2"${rc.adj === 2 ? " selected" : ""}>Mais difícil</option></select></label></div>
+    <label class="f" style="flex-direction:row;align-items:center;gap:8px;margin-top:10px"><input type="checkbox" data-ch="rcn" data-f="nomear"${rc.nomear ? " checked" : ""}> Sugerir nome e descrição para cada um</label>
+    ${rc.nomear ? `<label class="f">Quem são eles?<select data-ch="rcn" data-f="grupo">${GRUPOS.map(([k, n]) => `<option value="${k}"${k === rc.grupo ? " selected" : ""}>${n}</option>`).join("")}</select></label>` : ""}
     <div class="acts"><button class="btn hope" data-act="rcgen">Sortear batalha</button></div>
-    ${ui.rcRes ? `<div style="margin-top:12px">${barraOrc(ui.rcRes)}${agrupar(ui.rcRes).map(([n, k, u]) => `<div class="inv-row"><div class="grow"><b>${k > 1 ? k + "× " : ""}${esc(u.ref)}</b><div class="muted small">${esc(tipoTag(u))} · Dif ${esc(u.dif)} · PV ${u.hpMax}</div></div></div>`).join("")}
-      <div class="acts"><button class="btn" data-act="rcgen">Sortear outra</button><button class="btn hope" data-act="rcuse">${icon("sword")} Criar esta batalha</button></div></div>` : ""}</section>
+    ${ui.rcRes ? `<div style="margin-top:12px">${barraOrc(ui.rcRes)}${ui.rcNomeado ? ui.rcRes.unidades.map(u => `<div class="inv-row"><div class="grow"><b>${esc(u.name)}</b><div class="muted small">${esc(u.ref)} · ${esc(tipoTag(u))} · Dif ${esc(u.dif)} · PV ${u.hpMax}</div><div class="small">${esc(u.desc)}</div></div></div>`).join("") : agrupar(ui.rcRes).map(([n, k, u]) => `<div class="inv-row"><div class="grow"><b>${k > 1 ? k + "× " : ""}${esc(u.ref)}</b><div class="muted small">${esc(tipoTag(u))} · Dif ${esc(u.dif)} · PV ${u.hpMax}</div></div></div>`).join("")}
+      <div class="acts"><button class="btn" data-act="rcgen">Sortear outra</button>${ui.rcNomeado ? `<button class="btn" data-act="rcnomes">Novos nomes</button>` : ""}<button class="btn hope" data-act="rcuse">${icon("sword")} Criar esta batalha</button></div></div>` : ""}</section>
 
   <section class="card"><h3>Adversário aleatório</h3><p class="muted small" style="margin:2px 0 10px">Números de um adversário do SRD do mesmo tipo e patamar, habilidades sorteadas só do mesmo estilo de combate (arqueiro recebe habilidade de arqueiro, não de corpo a corpo).</p>
     <div class="row"><label class="f">Tipo<select data-ch="gt">${TIPOS.map(t => `<option value="${t}"${t === ui.gt ? " selected" : ""}>${TIPO_PT[t]}</option>`).join("")}</select></label><label class="f">Patamar<select data-ch="gp">${[1, 2, 3, 4].map(t => `<option${t === ui.gp ? " selected" : ""}>${t}</option>`).join("")}</select></label><button class="btn hope" data-act="gen" style="align-self:end">Gerar</button></div>
@@ -278,7 +281,8 @@ export async function on(a, el, ev) {
     case "livro": ui.livro = el.dataset.v; ui.q = ""; app.render(true); return;
     case "verladv": { const x = adversarios().find(y => y.name === el.dataset.n && y.src === el.dataset.s); if (x) verAdv(x); return; }
     case "verenv": { const e = ambientes().find(x => x.name === el.dataset.n); if (e) openSheet(envBlock(e), { title: e.name, wide: true }); return; }
-    case "rcgen": ui.rcRes = gerarBatalha({ tema: ui.rc.tema, tier: ui.rc.tier, jogadores: ui.rc.jog, ajuste: ui.rc.adj }); break;
+    case "rcgen": ui.rcRes = gerarBatalha({ tema: ui.rc.tema, tier: ui.rc.tier, jogadores: ui.rc.jog, ajuste: ui.rc.adj }); ui.rcNomeado = !!ui.rc.nomear; if (ui.rc.nomear) nomearBatalha(ui.rcRes, ui.rc.grupo); break;
+    case "rcnomes": if (ui.rcRes) nomearBatalha(ui.rcRes, ui.rc.grupo); break;
     case "rcuse": { const b = ui.rcRes; b.nome = `Batalha de patamar ${ui.rc.tier}`; salvarBatalha(b); ui.rcRes = null; location.hash = "#/mestre/batalha/" + b.id; return; }
     case "gen": ui.gen = gerarAdversario(ui.gt, ui.gp); break;
     case "gsave": { const x = { ...ui.gen, al: [ui.gen.name], src: undefined }; delete x.baseTier; GM.custom.unshift(x); salvarGM(); location.hash = "#/mestre/adversario/" + x.id; return; }
@@ -315,6 +319,7 @@ export function change(k, el) {
   if (k === "tkmax") { const t = TK(); t.max = Math.min(9, Math.max(1, parseInt(el.value, 10) || 3)); t.jog.forEach(j => (j.gasto = Math.min(j.gasto, t.max))); salvarGM(); app.render(true); return; }
   if (k === "f") ui[el.dataset.f] = el.value;
   else if (k === "rc") ui.rc[el.dataset.f] = el.dataset.f === "tema" ? el.value : parseInt(el.value, 10);
+  else if (k === "rcn") ui.rc[el.dataset.f] = el.type === "checkbox" ? el.checked : el.value;
   else if (k === "gt") ui.gt = el.value;
   else if (k === "gp") ui.gp = +el.value;
   else if (k === "cc") ui.compCat = el.value;

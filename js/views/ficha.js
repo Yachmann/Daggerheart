@@ -7,6 +7,8 @@ import { app } from "../main.js";
 import { glifo, dado6 } from "../simbolos.js";
 import { hbCfg, infimo, tokens as tokensDe, gastarToken, devolverToken } from "../homebrew.js";
 import { montarLink, paraEntrega } from "../entrega.js";
+import { especiais, quantosEspeciais, htmlEspeciais, contadorFaltando } from "./especiais.js";
+import { emblema } from "../emblemas.js";
 import { passarItem, podePassar } from "./dar.js";
 import { condFx, condBanner, COND_CLS, dcard, feat, armaHtml, armaduraHtml, coresClasse, temaAttr, temaVars, temaEmblema, classeSub, origemTxt, expTag, verCarta, enName, voltar, corDom } from "./common.js";
 
@@ -46,7 +48,15 @@ export function html(p, q) {
   </section>
   <div class="tabs" role="tablist">${ABAS.map(([k, n]) => `<button role="tab" aria-selected="${aba === k}" data-act="aba" data-v="${k}">${n}</button>`).join("")}</div>
   <div class="${ro ? "ro" : ""}">${corpo(pc, d, ro, f)}</div>
-  <button class="fab" data-act="cola" aria-label="Resumo de jogo" title="Resumo de jogo">${icon("book")}</button>${ro ? "" : tokensFlutuantes(f)}</div>`;
+  ${botaoEspeciais(pc)}<button class="fab" data-act="cola" aria-label="Resumo de jogo" title="Resumo de jogo">${icon("book")}</button>${ro ? "" : tokensFlutuantes(f)}</div>`;
+}
+
+// Botão dos especiais: fica acima do Resumo de jogo e só existe quando há algo diferente no personagem.
+function botaoEspeciais(pc) {
+  const n = quantosEspeciais(pc);
+  if (!n) return "";
+  const hf = especiais(pc).some(s => s.t === "Expansão Hope & Fear");
+  return `<button class="fab fab2${hf ? " hf" : ""}" data-act="especiais" aria-label="Especiais do personagem (${n})" title="O que é diferente no seu personagem">${emblema(pc.classe) || icon("book")}<span class="fab2-n">${n}</span></button>`;
 }
 
 // Tokens de ação [HB]: bolinhas flutuantes no canto inferior esquerdo, em todas as abas.
@@ -435,6 +445,8 @@ export function on(a, el) {
     case "itq": ed(pc => { const it = pc.inventario[i]; it.q = (it.q ?? 1) + v; if (it.q <= 0) pc.inventario.splice(i, 1); }); return;
     case "itemnovo": abrirNovoItem(); return;
     case "cola": abrirCola(); return;
+    case "especiais": openSheet(htmlEspeciais(pc), { title: "Especiais do personagem", wide: true }); return;
+    case "espcont": { const r = contadorFaltando(pc); if (!r) return; ed(pc => (pc.recursos = pc.recursos || []).push({ n: r.n, v: 0, max: r.max })); closeSheet(); toast(`Contador criado na aba Jogo: ${r.n}`); return; }
     case "passar": passarItem(ID, el.dataset.t, el.dataset.t === "eq" ? el.dataset.s : i); return;
     case "resdel":ed(pc => pc.reserva.splice(i, 1)); return;
     case "expnova": ed(pc => pc.exp.push({ n: "", v: 2 })); return;
